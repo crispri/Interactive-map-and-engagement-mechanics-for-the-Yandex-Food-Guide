@@ -1,25 +1,12 @@
 import './MyBottomSheet.css'
 import { BottomSheet } from 'react-spring-bottom-sheet'
-import { useEffect, useState } from 'react'
 import 'react-spring-bottom-sheet/dist/style.css'
 
 const MyBottomSheet = () => {
-
-  const [open, setOpen] = useState(false)
-  useEffect(() => {
-    setOpen(true)
-  }, [])
-
-  function onDismiss() {
-    setOpen(false)
-  }
-
   return (
     <>
-      <button onClick={() => setOpen(true)}>Open</button>
       <BottomSheet 
-        open={open}
-        onDismiss={onDismiss}
+        open={true}
         snapPoints={({ minHeight }) => minHeight}
       >
         My bottomsheet
