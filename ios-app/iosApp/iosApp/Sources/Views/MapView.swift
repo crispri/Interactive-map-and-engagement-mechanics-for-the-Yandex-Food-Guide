@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MapView: View {
-    @StateObject var mapManager = MapManager()
+    @EnvironmentObject var mapManager: MapManager
     var body: some View {
         ZStack{
             YandexMapView()

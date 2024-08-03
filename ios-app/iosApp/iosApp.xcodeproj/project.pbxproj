@@ -11,6 +11,7 @@
 		4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */; };
 		4F9DCAE92C5E6C4200B39252 /* YandexMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */; };
 		4F9DCAEB2C5E6D6F00B39252 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAEA2C5E6D6F00B39252 /* MapView.swift */; };
+		4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAED2C5E754A00B39252 /* DetailsView.swift */; };
 		4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC5121D2C5E5585006ED790 /* iosApp.swift */; };
 		4FC512202C5E5585006ED790 /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC5121F2C5E5585006ED790 /* GuideView.swift */; };
 		4FC512222C5E5586006ED790 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC512212C5E5586006ED790 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapView.swift; sourceTree = "<group>"; };
 		4F9DCAEA2C5E6D6F00B39252 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		4F9DCAEC2C5E73F900B39252 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4F9DCAED2C5E754A00B39252 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
 		4FC5121A2C5E5585006ED790 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FC5121D2C5E5585006ED790 /* iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosApp.swift; sourceTree = "<group>"; };
 		4FC5121F2C5E5585006ED790 /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				4FC5121F2C5E5585006ED790 /* GuideView.swift */,
 				4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */,
 				4F9DCAEA2C5E6D6F00B39252 /* MapView.swift */,
+				4F9DCAED2C5E754A00B39252 /* DetailsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -477,6 +480,7 @@
 				4F9DCAEB2C5E6D6F00B39252 /* MapView.swift in Sources */,
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,
+				4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
