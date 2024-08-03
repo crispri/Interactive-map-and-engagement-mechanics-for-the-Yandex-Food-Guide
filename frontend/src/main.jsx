@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Map from './components/map/Map.jsx'
 import App from './components/app/App.jsx'
+import Map from './components/map/Map.jsx'
+import MyBottomSheet from './components/bottomsheet/MyBottomSheet.jsx'
 
 import BottomSheet from './components/bottomsheet/BottomSheet.jsx'
 import './index.css'
@@ -45,9 +47,7 @@ async function main() {
   ]);
 
   ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>,
+    <RouterProvider router={router} />
   )
 }
 
