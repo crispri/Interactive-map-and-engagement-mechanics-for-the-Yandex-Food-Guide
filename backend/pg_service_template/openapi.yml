@@ -38,10 +38,13 @@ paths:
                     description:
                       type: string
                       example: "Список популярных мест в городе."
+                    is_public:
+                      type: bool
+                      exaple: "true"  
         '500':
           description: Внутренняя ошибка сервера.
 
-  /compilations/{id}/venues:
+  /compilations/{id}:
     get:
       summary: Получение всех заведений по ID подборки
       description: Возвращает список всех заведений, связанных с заданной подборкой.
@@ -66,12 +69,30 @@ paths:
                     id:
                       type: integer
                       example: 1
+                    lat:
+                      type: double
+                      example: 23.455
+                    lon:
+                      type: double
+                      example: 44.543    
                     name:
                       type: string
                       example: "Кафе 'Солнечный луч'"
+                    description:
+                      type: string
+                      example: "Уютное кафе"    
                     address:
                       type: string
                       example: "ул. Ленина, д. 5, кв. 1"
+                    is_approved:
+                      type:  bool
+                      example: "false"
+                    price_lb:
+                      type: integer
+                      example: "1000"
+                    price_ub:
+                      type: integer
+                      example: "2500"    
         '400':
           description: Неверный запрос (например, отсутствует ID подборки).
         '404':
