@@ -74,7 +74,10 @@ paths:
                         schema:
                             type: object
                             properties:
-                                coordinates:
+                                lower_left_corner:
+                                    description: coordinates
+                                    $ref: "#/components/schemas/coordinates"
+                                top_right_corner:
                                     description: coordinates
                                     $ref: "#/components/schemas/coordinates"
                                 max_count:
