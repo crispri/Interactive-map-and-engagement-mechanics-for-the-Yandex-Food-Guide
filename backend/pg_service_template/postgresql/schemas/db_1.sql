@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS guide.selections (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name TEXT NOT NULL,
     description TEXT NOT NULL,
-    is_public BOOLEAN NOT NULL
+    is_public SMALLINT NOT NULL
 );
 
 
