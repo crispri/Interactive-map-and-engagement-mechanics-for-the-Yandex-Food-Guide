@@ -1,17 +1,20 @@
-import { useState } from 'react'
-import reactLogo from '../../assets/react.svg'
-import viteLogo from '../../../public/vite.svg'
+import mainScreen from '../../assets/main_screen.jpg'
+import mapButton from '../../assets/map_button.svg'
 import './App.css'
-
-const LOCATION = {
-  center: [37.623082, 55.75254], // starting position [lng, lat]
-  zoom: 9 // starting zoom
-};
+import { useNavigate } from 'react-router-dom';
 
 function App() {
-  
+  const navigateTo = useNavigate();
   return (
     <>
+      <div className='App'>
+        <div className='screen'>
+          <div className='map'>
+            <img className="map_button" src={mapButton} onClick={() => navigateTo('/map')}/>
+          </div>
+          <img className="main_screen" src={mainScreen} alt="Main Screen" />
+        </div> 
+      </div>
     </>
   )
 
