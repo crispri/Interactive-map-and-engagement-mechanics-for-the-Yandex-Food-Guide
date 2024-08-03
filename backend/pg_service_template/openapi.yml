@@ -36,11 +36,11 @@ components:
                 is_public:
                     type: boolean
                 rating:
-                    type: number
-                    format: double
+                    type: double
+                    # format: double
                 check:
-                    type: number
-                    format: double
+                    type: double
+                    # format: double
 
     # responses:
     #     UnauthorizedError:
@@ -63,7 +63,7 @@ paths:
                             properties:
                                 coordinates:
                                     description: coordinates
-                                    $ref: "#/components/schemas/institution"
+                                    $ref: "#/components/schemas/coordinates"
                             required:
                                 - coordinates
 
@@ -78,6 +78,6 @@ paths:
                                     items:
                                         type: array
                                         items:
-                                            $ref: '#/components/schemas/bookmark'
-                '401':
-                    $ref: "#/components/responses/UnauthorizedError"
+                                            $ref: '#/components/schemas/institution'
+                # '401':
+                #     $ref: "#/components/responses/UnauthorizedError"
