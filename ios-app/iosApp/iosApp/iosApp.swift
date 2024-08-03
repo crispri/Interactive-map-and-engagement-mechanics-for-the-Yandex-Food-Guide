@@ -10,7 +10,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 @main
-struct iosAppApp: App {
+struct iosApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
