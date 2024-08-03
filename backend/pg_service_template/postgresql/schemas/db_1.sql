@@ -41,15 +41,6 @@ CREATE TABLE IF NOT EXISTS guide.places_selections (
     -- foreign key(selection_id) REFERENCES guide.selections(id)
 );
 
-CREATE TABLE IF NOT EXISTS guide.places_selections (
-    place_id UUID,
-    selection_id UUID
-    -- foreign key(place_id) REFERENCES guide.places(id),
-    -- foreign key(selection_id) REFERENCES guide.selections(id)
-);
-
-
-
 CREATE TABLE IF NOT EXISTS guide.visibility (
     selection_id UUID NOT NULL,
     user_id UUID NOT NULL
