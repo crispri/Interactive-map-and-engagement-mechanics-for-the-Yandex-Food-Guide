@@ -11,11 +11,8 @@ const LOCATION = {
 function App() {
   
   return (
-    <div style={{width: '100%', height: '100%'}}>
-      <YMap location={LOCATION} showScaleInCopyrights={true} ref={(x) => (map = x)}>
-        <YMapDefaultSchemeLayer />
-      </YMap>
-    </div>
+    <>
+    </>
   )
 
 }

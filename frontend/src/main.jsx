@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Map from './components/map/Map.jsx'
+import App from './components/app/App.jsx'
 
 import BottomSheet from './components/bottomsheet/BottomSheet.jsx'
 import './index.css'
@@ -25,6 +26,10 @@ async function main() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <App/>
+    },
+    {
+      path: "/map",
       element: (
         <div style={{width: '100%', height: '100%'}}>
           <YMap location={LOCATION} showScaleInCopyrights={true} ref={(x) => (map = x)}>
@@ -32,10 +37,6 @@ async function main() {
           </YMap>
         </div>
       )
-    },
-    {
-      path: "/map",
-      element: <Map />
     },
     {
       path: "/bottomsheet",
