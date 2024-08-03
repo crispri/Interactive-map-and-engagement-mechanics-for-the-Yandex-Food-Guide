@@ -41,6 +41,15 @@ components:
                 check:
                     type: number
                     format: double
+            required:
+                - id
+                - coordinates
+                - name
+                - description
+                - address
+                - is_public
+                - rating
+                - check
 
     # responses:
     #     UnauthorizedError:
