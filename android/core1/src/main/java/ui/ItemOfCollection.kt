@@ -40,7 +40,7 @@ fun BigCard() {
             modifier = Modifier.padding(8.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = painterResource(id = R.drawable.hardcode_picture_of_cafe),
                 contentDescription = "Фото места",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -55,10 +55,11 @@ fun BigCard() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Название",
+                    text = "Kalabasa",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
+                androidx.compose.material3.Icon(painter = painterResource(id = R.drawable.ic_raiting), contentDescription = "Оценка")
                 Text(
                     text = "4.5",
                     fontSize = 16.sp,
@@ -67,13 +68,13 @@ fun BigCard() {
             }
 
             Text(
-                text = "Некоторый текст, который описывает карточку.",
+                text = "До 23:00 м. Тверская 12мин",
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 1.5.dp)
             )
 
             Text(
-                text = "Описание в сером цвете.",
+                text = "Уютное атмосферное место. Сюда идут за десертами. Доброжелательное обслуживание",
                 fontSize = 14.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(top = 8.dp)
