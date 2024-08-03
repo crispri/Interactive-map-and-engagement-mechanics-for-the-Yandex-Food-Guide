@@ -51,7 +51,7 @@ fun CategoriesButton() {
                 .height(32.dp),
             content = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    painter = painterResource(id = R.drawable.ic_slot),
                     contentDescription = "Фильтр"
                 )
             }
