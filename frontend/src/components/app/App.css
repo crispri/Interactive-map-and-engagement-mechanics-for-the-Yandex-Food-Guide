@@ -40,3 +40,21 @@
 .read-the-docs {
   color: #888;
 }
+
+.map {
+  position: absolute;
+  right: 0;
+  z-index: 5;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.screen {
+  position: relative;
+  display: inline-block;
+}
+
+.screen .main_screen {
+  border-top-left-radius: 5%;
+  border-top-right-radius: 5%;
+}
