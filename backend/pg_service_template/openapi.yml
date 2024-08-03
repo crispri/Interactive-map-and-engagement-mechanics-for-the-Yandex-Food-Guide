@@ -1,0 +1,80 @@
+openapi: "3.0.2"
+info:
+    title: UrlShortener API
+    version: "1.0"
+servers:
+    - url: http://localhost:8080/
+components:
+    schemas:
+        error:
+            type: object
+            properties:
+                detail:
+                    description: error message
+                    type: string
+                    required: true                   
+
+paths:
+  /compilations:
+    get:
+      summary: Получение всех подборок
+      description: Возвращает список всех подборок.
+      responses:
+        '200':
+          description: Успешное получение списка подборок.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: "Популярные места"
+                    description:
+                      type: string
+                      example: "Список популярных мест в городе."
+        '500':
+          description: Внутренняя ошибка сервера.
+
+  /compilations/{id}/venues:
+    get:
+      summary: Получение всех заведений по ID подборки
+      description: Возвращает список всех заведений, связанных с заданной подборкой.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID подборки.
+          example: 1
+      responses:
+        '200':
+          description: Успешное получение списка заведений.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: "Кафе 'Солнечный луч'"
+                    address:
+                      type: string
+                      example: "ул. Ленина, д. 5, кв. 1"
+        '400':
+          description: Неверный запрос (например, отсутствует ID подборки).
+        '404':
+          description: Подборка или заведения не найдены.
+        '500':
+          description: Внутренняя ошибка сервера.
