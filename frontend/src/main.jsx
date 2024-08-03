@@ -1,11 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Map from './components/map/Map.jsx'
 import App from './components/app/App.jsx'
-import Map from './components/map/Map.jsx'
 import MyBottomSheet from './components/bottomsheet/MyBottomSheet.jsx'
-
-import BottomSheet from './components/bottomsheet/BottomSheet.jsx'
 import './index.css'
 import {
   createBrowserRouter,
@@ -41,8 +37,21 @@ async function main() {
       )
     },
     {
+      path: "/combine",
+      element: (
+        <>
+        <div style={{width: '100%', height: '100%'}}>
+          <YMap location={LOCATION} showScaleInCopyrights={true} ref={(x) => (map = x)}>
+            <YMapDefaultSchemeLayer />
+          </YMap>
+        </div>
+        <MyBottomSheet />
+        </>
+      )
+    },
+    {
       path: "/bottomsheet",
-      element: <BottomSheet />
+      element: <MyBottomSheet />
     }
   ]);
 
