@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './components/app/App.jsx'
 import Map from './components/map/Map.jsx'
-import BottomSheet from './components/bottomsheet/BottomSheet.jsx'
+import MyBottomSheet from './components/bottomsheet/MyBottomSheet.jsx'
 import './index.css'
 import {
   createBrowserRouter,
@@ -20,12 +20,10 @@ const router = createBrowserRouter([
   },
   {
     path: "/bottomsheet",
-    element: <BottomSheet />
+    element: <MyBottomSheet />
   }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
+    <RouterProvider router={router} />,
 )
