@@ -73,8 +73,14 @@ paths:
                                 coordinates:
                                     description: coordinates
                                     $ref: "#/components/schemas/coordinates"
+                                max_count:
+                                    type: integer
+                                user_id:
+                                    type: integer
                             required:
                                 - coordinates
+                                - max_count
+                                - user_id
 
             responses:
                 '200':
