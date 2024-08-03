@@ -1,6 +1,6 @@
 openapi: "3.0.2"
 info:
-    title: Bookmarker API
+    title: API для Гида
     version: "1.0"
 servers:
     -   url: http://localhost:8080/
@@ -36,11 +36,11 @@ components:
                 is_public:
                     type: boolean
                 rating:
-                    type: double
-                    # format: double
+                    type: number
+                    format: double
                 check:
-                    type: double
-                    # format: double
+                    type: number
+                    format: double
 
     # responses:
     #     UnauthorizedError:
