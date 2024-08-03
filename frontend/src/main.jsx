@@ -1,29 +1,53 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import Map from './components/map/Map.jsx'
 import App from './components/app/App.jsx'
 import Map from './components/map/Map.jsx'
 import MyBottomSheet from './components/bottomsheet/MyBottomSheet.jsx'
+
+import BottomSheet from './components/bottomsheet/BottomSheet.jsx'
 import './index.css'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />
-  },
-  {
-    path: "/map",
-    element: <Map />
-  },
-  {
-    path: "/bottomsheet",
-    element: <MyBottomSheet />
-  }
-]);
+window.map = null;
+main();
+const LOCATION = {
+  center: [37.623082, 55.75254], // starting position [lng, lat]
+  zoom: 9 // starting zoom
+};
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <RouterProvider router={router} />,
-)
+async function main() {
+
+  const [ymaps3React] = await Promise.all([ymaps3.import('@yandex/ymaps3-reactify'), ymaps3.ready]);
+  const reactify = ymaps3React.reactify.bindTo(React, ReactDOM);
+  const {YMap, YMapDefaultSchemeLayer} = reactify.module(ymaps3);
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <App/>
+    },
+    {
+      path: "/map",
+      element: (
+        <div style={{width: '100%', height: '100%'}}>
+          <YMap location={LOCATION} showScaleInCopyrights={true} ref={(x) => (map = x)}>
+            <YMapDefaultSchemeLayer />
+          </YMap>
+        </div>
+      )
+    },
+    {
+      path: "/bottomsheet",
+      element: <BottomSheet />
+    }
+  ]);
+
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <RouterProvider router={router} />
+  )
+}
+
