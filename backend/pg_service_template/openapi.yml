@@ -99,5 +99,5 @@ paths:
                                         type: array
                                         items:
                                             $ref: '#/components/schemas/institution'
-                # '401':
-                #     $ref: "#/components/responses/UnauthorizedError"
+                '400':
+                    description: invalid input parameters
