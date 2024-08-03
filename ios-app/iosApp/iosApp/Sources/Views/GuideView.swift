@@ -16,13 +16,12 @@ struct GuideView: View {
             .navigationTitle("Гид")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        // TODO: add action.
+                    NavigationLink {
+                        DetailsView()
                     } label: {
                         Image(systemName: "map")
                             .foregroundStyle(.black)
                     }
-
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
