@@ -191,7 +191,7 @@ fun Carousel() {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                /*                .height(50.dp)*/
+                /* .height(50.dp)*/
                 .background(Color.White)
         ) {
             items(itemsList) { item ->
