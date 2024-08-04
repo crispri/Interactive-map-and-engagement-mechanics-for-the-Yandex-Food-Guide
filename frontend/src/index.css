@@ -11,3 +11,6 @@
   border: 0;
   border-radius: 0;
 }
+.ymaps3x0--controls{
+  z-index: 1 !important;
+}
