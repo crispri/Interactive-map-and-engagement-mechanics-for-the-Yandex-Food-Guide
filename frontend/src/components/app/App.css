@@ -34,20 +34,20 @@
 }
 
 .card {
-  padding: 2em;
+  padding: 1em;
 }
 
 .read-the-docs {
   color: #888;
 }
 
-.map {
+/* .map {
   position: absolute;
   right: 0;
   z-index: 5;
   display: inline-block;
   vertical-align: top;
-}
+} */
 
 .screen {
   position: relative;
@@ -57,4 +57,15 @@
 .screen .main_screen {
   border-top-left-radius: 5%;
   border-top-right-radius: 5%;
+}
+
+.map_button {
+  position: absolute;
+  display: inline-block;
+  vertical-align: top;
+  background-color: white;
+  height: 50px;
+  width: 50px;
+  z-index: 5;
+  right: 10px;
 }
