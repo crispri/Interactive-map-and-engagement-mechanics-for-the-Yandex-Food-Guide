@@ -1,5 +1,3 @@
-package ui
-
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -46,7 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.example.core1.R
+import com.example.feature1.R
 import kotlin.math.roundToInt
 
 
@@ -92,16 +90,16 @@ fun MainScreen() {
             }
         }
 
-        Row (
+        Row(
             modifier = Modifier
                 .padding(start = 8.dp, end = 8.dp, top = 36.dp)
-        ){
+        ) {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.onSecondary, onClick = {},
                 shape = CircleShape
             ) {
                 Image(
-                    painter = painterResource(com.example.core2.R.drawable.baseline_arrow_back_24),
+                    painter = painterResource(R.drawable.baseline_arrow_back_24),
                     contentDescription = "go_back",
                     colorFilter = ColorFilter.tint(Color.Black)
                 )
@@ -137,7 +135,7 @@ fun CollectionCarousel() {
                 Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
             }
             CardWithImageAndText(
-                painterResource(id = R.drawable.hardcode_picture_of_cafe),
+                painterResource(id = com.example.core1.R.drawable.hardcode_picture_of_cafe),
                 "Kalabasa",
                 "Крутое место",
                 {},
@@ -148,8 +146,6 @@ fun CollectionCarousel() {
 }
 
 
-
-
 @Composable
 fun BottomSheetContent() {
     LazyColumn {
@@ -158,7 +154,6 @@ fun BottomSheetContent() {
         }
     }
 }
-
 
 
 @Composable
@@ -174,8 +169,8 @@ fun Carousel() {
     )
 
     Row(
-/*        modifier = Modifier.padding(top = 8.dp)*/
-    ){
+        /*        modifier = Modifier.padding(top = 8.dp)*/
+    ) {
         IconButton(
             onClick = { /*TODO*/ },
             colors = IconButtonColors(
