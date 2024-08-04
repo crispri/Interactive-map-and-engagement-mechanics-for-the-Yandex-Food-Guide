@@ -17,9 +17,12 @@
 		4FC5123B2C5E5586006ED790 /* iosAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC5123A2C5E5586006ED790 /* iosAppUITestsLaunchTests.swift */; };
 		8450397E015068C0754611A2 /* Pods_iosAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */; };
 		85FEE69FFF6D5E7FB6785FFF /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 628EC9234413B8A27E25DE28 /* Pods_iosApp.framework */; };
-		CB3714172C5E6F2F00C045A6 /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3714162C5E6F2F00C045A6 /* SelectionView.swift */; };
-		CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */; };
+		CB3714172C5E6F2F00C045A6 /* SnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3714162C5E6F2F00C045A6 /* SnippetView.swift */; };
+		CB3714192C5E781C00C045A6 /* PersonalSnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3714182C5E781C00C045A6 /* PersonalSnippetView.swift */; };
 		CB37141B2C5E808400C045A6 /* SelectionScrollViewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB37141A2C5E808400C045A6 /* SelectionScrollViewView.swift */; };
+		CB5CA3892C5F71C50025F771 /* SnippetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3882C5F71C50025F771 /* SnippetViewModel.swift */; };
+		CB5CA38B2C5F72660025F771 /* SnippetDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA38A2C5F72660025F771 /* SnippetDTO.swift */; };
+		CB5CA38D2C5F86DF0025F771 /* CollectionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA38C2C5F86DF0025F771 /* CollectionDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,9 +61,12 @@
 		AB953BFC42B520C290826951 /* Pods-iosAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.release.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B97334D73D92638EBD7FC9C4 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
-		CB3714162C5E6F2F00C045A6 /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
-		CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalSelectionView.swift; sourceTree = "<group>"; };
+		CB3714162C5E6F2F00C045A6 /* SnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetView.swift; sourceTree = "<group>"; };
+		CB3714182C5E781C00C045A6 /* PersonalSnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalSnippetView.swift; sourceTree = "<group>"; };
 		CB37141A2C5E808400C045A6 /* SelectionScrollViewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionScrollViewView.swift; sourceTree = "<group>"; };
+		CB5CA3882C5F71C50025F771 /* SnippetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SnippetViewModel.swift; path = iosApp/Sources/Views/SnippetViewModel.swift; sourceTree = SOURCE_ROOT; };
+		CB5CA38A2C5F72660025F771 /* SnippetDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SnippetDTO.swift; path = iosApp/Sources/Views/SnippetDTO.swift; sourceTree = SOURCE_ROOT; };
+		CB5CA38C2C5F86DF0025F771 /* CollectionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CollectionDTO.swift; path = iosApp/Sources/Views/CollectionDTO.swift; sourceTree = SOURCE_ROOT; };
 		F9B277B70BF9911916340C62 /* Pods-iosAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.debug.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,6 +174,8 @@
 		4FC512532C5E5F16006ED790 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CB5CA38A2C5F72660025F771 /* SnippetDTO.swift */,
+				CB5CA38C2C5F86DF0025F771 /* CollectionDTO.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -175,6 +183,7 @@
 		4FC512542C5E5F16006ED790 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				CB5CA3882C5F71C50025F771 /* SnippetViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -183,8 +192,8 @@
 			isa = PBXGroup;
 			children = (
 				4FC5121F2C5E5585006ED790 /* GuideView.swift */,
-				CB3714162C5E6F2F00C045A6 /* SelectionView.swift */,
-				CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */,
+				CB3714162C5E6F2F00C045A6 /* SnippetView.swift */,
+				CB3714182C5E781C00C045A6 /* PersonalSnippetView.swift */,
 				CB37141A2C5E808400C045A6 /* SelectionScrollViewView.swift */,
 			);
 			path = Views;
@@ -463,10 +472,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FC512202C5E5585006ED790 /* GuideView.swift in Sources */,
+				CB5CA38D2C5F86DF0025F771 /* CollectionDTO.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,
 				CB37141B2C5E808400C045A6 /* SelectionScrollViewView.swift in Sources */,
-				CB3714172C5E6F2F00C045A6 /* SelectionView.swift in Sources */,
-				CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */,
+				CB3714172C5E6F2F00C045A6 /* SnippetView.swift in Sources */,
+				CB3714192C5E781C00C045A6 /* PersonalSnippetView.swift in Sources */,
+				CB5CA3892C5F71C50025F771 /* SnippetViewModel.swift in Sources */,
+				CB5CA38B2C5F72660025F771 /* SnippetDTO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

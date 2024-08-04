@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SelectionView: View {
+struct SnippetView: View {
     @State var title: String
     @State var desc: String
     
@@ -29,5 +29,5 @@ struct SelectionView: View {
 }
 
 #Preview {
-    SelectionView(title: "Завтраки вне дома", desc: "Куда сходить · Места")
+    SnippetView(title: "Завтраки вне дома", desc: "Куда сходить · Места")
 }

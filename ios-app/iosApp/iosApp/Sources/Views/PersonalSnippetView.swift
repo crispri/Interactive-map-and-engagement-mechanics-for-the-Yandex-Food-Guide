@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PersonalSelectionView: View {
+struct PersonalSnippetView: View {
     var body: some View {
         VStack {
             Text("**Собрали для вас**")
@@ -25,5 +25,5 @@ struct PersonalSelectionView: View {
 }
 
 #Preview {
-    PersonalSelectionView()
+    PersonalSnippetView()
 }

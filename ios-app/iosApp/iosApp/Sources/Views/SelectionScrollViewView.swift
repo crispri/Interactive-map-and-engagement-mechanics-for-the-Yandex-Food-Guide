@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct SelectionScrollViewView: View {
+    @EnvironmentObject var viemModel: SnippetViewModel
+    
     var body: some View {
         ScrollView(.horizontal) {
             LazyHStack {
-                PersonalSelectionView()
-                SelectionView(title: "Завтраки вне дома", desc: "Куда сходить · Места")
-                SelectionView(title: "Завтраки вне дома", desc: "Куда сходить · Места")
-                SelectionView(title: "Завтраки вне дома", desc: "Куда сходить · Места")
-                SelectionView(title: "Завтраки вне дома", desc: "Куда сходить · Места")
-                SelectionView(title: "Завтраки вне дома", desc: "Куда сходить · Места")
+                PersonalSnippetView()
+                ForEach(viemModel.collections) { collection in
+                    SnippetView(title: collection.name, desc: collection.description)
+                }
             }
             .padding(.leading, 5)
         }
@@ -25,4 +25,5 @@ struct SelectionScrollViewView: View {
 
 #Preview {
     SelectionScrollViewView()
+        .environmentObject(SnippetViewModel())
 }
