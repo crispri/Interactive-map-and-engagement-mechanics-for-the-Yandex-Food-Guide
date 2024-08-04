@@ -25,18 +25,20 @@ const cardInfos = [
 }
 ];
 
+
 const MyBottomSheet = () => {
   return (
     <>
       <BottomSheet 
         open={true}
         blocking={false}
-        defaultSnap={({ maxHeight }) => maxHeight / 2}
+        defaultSnap={({ maxHeight }) => maxHeight * 0.05}
         snapPoints={({ maxHeight }) => [
-          maxHeight - maxHeight / 10,
-          maxHeight / 4,
-          maxHeight * 0.6,
-        ]}>
+          maxHeight / 3 * 2,
+          maxHeight * 0.05,
+          maxHeight
+        ]}
+      >
         <img src={sample} alt="sample" style={{width: '100%', height: '100%'}}/>
         <SheetContent cardInfos={cardInfos}></SheetContent>
       </BottomSheet >

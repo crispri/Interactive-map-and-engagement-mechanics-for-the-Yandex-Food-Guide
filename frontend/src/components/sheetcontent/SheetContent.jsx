@@ -5,7 +5,9 @@ const SheetContent = ({cardInfos}) => {
   return (
     <>
       {cardInfos.map((cardInfo, index) => (
-            <RestaurantCard cardInfo={cardInfo}/>
+        <div key={index}>
+          <RestaurantCard cardInfo={cardInfo}/>
+        </div>
       ))
       }
     </>
