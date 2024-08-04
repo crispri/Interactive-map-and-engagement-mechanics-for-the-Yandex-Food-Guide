@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct GuideView: View {
+    @StateObject var viewModel = SnippetViewModel()
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -18,6 +20,7 @@ struct GuideView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
                         DetailsView()
+                            .environmentObject(viewModel)
                     } label: {
                         Image(systemName: "map")
                             .foregroundStyle(.black)

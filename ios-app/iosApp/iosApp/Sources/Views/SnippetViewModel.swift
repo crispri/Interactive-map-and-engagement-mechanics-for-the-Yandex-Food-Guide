@@ -8,6 +8,9 @@
 import Foundation
 
 final class SnippetViewModel: ObservableObject {
+    var mapManager = MapManager()
+    @Published var userLocaitonTitle = "2-я Брестская, 1/5"
+    
     @Published var snippets: [SnippetDTO] = [
         SnippetDTO(
             id: 0,
@@ -56,4 +59,12 @@ final class SnippetViewModel: ObservableObject {
             snippets: [0]
         ),
     ]
+    
+    func eventOnAppear() {
+        eventFetchUserLocation()
+    }
+    
+    func eventFetchUserLocation() {
+        mapManager.currentUserLocation()
+    }
 }

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject private var mapManager = MapManager()
-    @State private var userLocaitonTitle = "2-я Брестская, 1/5"
+    @EnvironmentObject private var viewModel: SnippetViewModel
     
     var body: some View {
         VStack {
@@ -27,7 +26,16 @@ struct DetailsView: View {
         .toolbar(.hidden, for: .navigationBar)
         .background {
             MapView()
-                .environmentObject(mapManager)
+                .environmentObject(viewModel.mapManager)
+        }
+        .onAppear {
+            viewModel.eventOnAppear()
+        }
+        .sheet(isPresented: Binding.constant(true)) {
+            BottomSheetView()
+                .presentationDetents([.fraction(0.15), .medium,])
+                .presentationDragIndicator(.visible)
+                .interactiveDismissDisabled()
         }
     }
     
@@ -47,8 +55,7 @@ struct DetailsView: View {
     
     private var userLocationButton: some View {
         Button {
-            
-            mapManager.currentUserLocation()
+            viewModel.eventFetchUserLocation()
         } label: {
             VStack(spacing: 0) {
                 HStack(spacing: 4) {
@@ -61,7 +68,7 @@ struct DetailsView: View {
                         .frame(width: 10, height: 10)
                         .foregroundStyle(.black)
                 }
-                Text(userLocaitonTitle)
+                Text(viewModel.userLocaitonTitle)
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(.black)
             }
@@ -85,4 +92,5 @@ struct DetailsView: View {
 
 #Preview {
     DetailsView()
+        .environmentObject(SnippetViewModel())
 }
