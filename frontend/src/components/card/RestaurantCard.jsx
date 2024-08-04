@@ -6,9 +6,7 @@ const RestaurantCard = ({ cardInfo }) => {
   return (
     <div className='card'>
       <div className='image-with-favourite'>
-        <div className='favourite'>
-          <img className="fav_button" src={snippetFavourite} alt="Favourite" onClick={() => { }} />
-        </div>
+        <img className="fav_button" src={snippetFavourite} alt="Favourite" onClick={() => { }} />
         <img className="snippet" src={restaurantImage} alt="Restaurant" />
       </div>
       <div className="content">

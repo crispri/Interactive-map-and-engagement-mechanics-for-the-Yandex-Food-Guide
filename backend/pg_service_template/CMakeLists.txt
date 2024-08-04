@@ -26,8 +26,8 @@ userver_setup_environment()
 
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
-    src/handlers/recommendations/recommendations.hpp
-    src/handlers/recommendations/recommendations.cpp
+    src/handlers/guide/v1/restaurants/restaurants.hpp
+    src/handlers/guide/v1/restaurants/restaurants.cpp
     src/models/coordinates.hpp
     src/models/coordinates.cpp
     src/models/restaurant.hpp

@@ -50,10 +50,10 @@ components_manager:
             throttling_enabled: false
             url_trailing_slash: strict-match
 
-        handler-recommendations:                    # Finally! Our handler.
-            path: /recommendations               # Registering handler by URL '/v1/hello'.
-            method: GET                  # It will only reply to POST requests.
-            task_processor: main-task-processor  # Run it on CPU bound task processor
+        handler-restaurants:
+            path: /guide/v1/restaurants
+            method: GET
+            task_processor: main-task-processor
 
         postgres-db-1:
             dbconnection: $dbconnection

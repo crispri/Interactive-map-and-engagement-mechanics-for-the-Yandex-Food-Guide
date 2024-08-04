@@ -1,13 +1,13 @@
-package navigation
-
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.yandex.mapkit.mapview.MapView
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(mapView: MapView) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -15,10 +15,13 @@ fun AppNavigation() {
         startDestination = AppDestination.HOME_SCREEN
     ) {
         composable(AppDestination.HOME_SCREEN) {
+            HomeScreen(
+                actions.onMapScreen
+            )
         }
 
         composable(AppDestination.MAP_SCREEN) {
-            // MapScreen
+            MainScreen(actions.onBack, mapView)
         }
 
     }
