@@ -54,6 +54,21 @@ components:
                 - is_public
                 - rating
                 - check
+        selection:
+            type: object
+            properties:
+                id:
+                    type: integer
+                name:
+                    type: string
+                description:
+                    type: string
+                is_public:
+                    type: boolean    
+            required:
+                - id
+                - name
+                - description        
 
     # responses:
     #     UnauthorizedError:
@@ -102,3 +117,22 @@ paths:
                                             $ref: '#/components/schemas/institution'
                 '400':
                     description: invalid input parameters
+paths:
+    /guide/v1/selections:
+        get:
+            summary: Получение всех подборок
+            description: Возвращает список всех подборок.
+            responses:
+                '200':
+                description: Успешное получение списка подборок.
+                content:
+                    application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/selection'
+                '500':
+                description: Внутренняя ошибка сервера.                
