@@ -51,6 +51,9 @@ android {
 
 dependencies {
     implementation(project(":core1"))
+    implementation(project(":feature"))
+    implementation(project(":core2"))
+    implementation(project(":feature1"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -60,6 +63,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // mapkit
+    implementation(libs.map.kit)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

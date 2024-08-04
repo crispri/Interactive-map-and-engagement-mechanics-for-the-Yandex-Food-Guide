@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ import com.example.core1.R
 fun BigCard() {
     Card(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth()
             .background(Color.White),
         shape = RoundedCornerShape(16.dp),
@@ -40,7 +41,7 @@ fun BigCard() {
             modifier = Modifier.padding(8.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = painterResource(id = R.drawable.hardcode_picture_of_cafe),
                 contentDescription = "Фото места",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -55,25 +56,32 @@ fun BigCard() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Название",
+                    text = "Kalabasa",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = "4.5",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Row {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_raiting),
+                        modifier = Modifier.height(24.dp),
+                        contentDescription = "Оценка"
+                    )
+                    Text(
+                        text = "4.5",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
 
             Text(
-                text = "Некоторый текст, который описывает карточку.",
+                text = "До 23:00 м. Тверская 12мин",
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 1.5.dp)
             )
 
             Text(
-                text = "Описание в сером цвете.",
+                text = "Уютное атмосферное место. Сюда идут за десертами. Доброжелательное обслуживание",
                 fontSize = 14.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(top = 8.dp)
@@ -116,6 +124,7 @@ fun TextCard(text: String) {
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
