@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.example.core1.R
 
 @Composable
-fun BigCard() {
+fun BigCard(id: Int) {
     Card(
         modifier = Modifier
             .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
@@ -39,7 +39,7 @@ fun BigCard() {
             modifier = Modifier.padding(8.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.hardcode_picture_of_cafe),
+                painter = painterResource(id = id),
                 contentDescription = "Фото места",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -124,8 +124,8 @@ fun TextCard(text: String) {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun BigCardPreview() {
-    BigCard()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun BigCardPreview() {
+//    BigCard()
+//}

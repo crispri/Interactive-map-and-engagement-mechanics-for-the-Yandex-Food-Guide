@@ -4,9 +4,10 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.yandex.mapkit.mapview.MapView
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(mapView: MapView) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -20,7 +21,7 @@ fun AppNavigation() {
         }
 
         composable(AppDestination.MAP_SCREEN) {
-            MainScreen(actions.onBack)
+            MainScreen(actions.onBack, mapView)
         }
 
     }
