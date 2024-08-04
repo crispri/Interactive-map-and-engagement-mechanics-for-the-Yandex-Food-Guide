@@ -7,6 +7,6 @@
 
 namespace service {
 
-void AppendRecommendations(userver::components::ComponentList& component_list);
+void AppendRestaurantController(userver::components::ComponentList& component_list);
 
 }  // namespace service

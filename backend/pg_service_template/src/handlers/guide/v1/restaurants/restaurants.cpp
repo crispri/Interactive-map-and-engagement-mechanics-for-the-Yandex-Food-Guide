@@ -1,7 +1,7 @@
-#include "recommendations.hpp"
-#include "../../models/coordinates.hpp"
-#include "../../lib/error_response_builder.hpp"
-#include "../../models/restaurant.hpp"
+#include "restaurants.hpp"
+#include "../../../../models/coordinates.hpp"
+#include "../../../../lib/error_response_builder.hpp"
+#include "../../../../models/restaurant.hpp"
 
 #include <fmt/format.h>
 
@@ -18,11 +18,11 @@ namespace service {
 
 namespace {
 
-class Recommendations final : public userver::server::handlers::HttpHandlerBase {
+class RestaurantController final : public userver::server::handlers::HttpHandlerBase {
  public:
-  static constexpr std::string_view kName = "handler-recommendations";
+  static constexpr std::string_view kName = "handler-restaurants";
 
-    Recommendations(
+    RestaurantController(
         const userver::components::ComponentConfig& config,
         const userver::components::ComponentContext& component_context
     ) : 
@@ -83,23 +83,29 @@ class Recommendations final : public userver::server::handlers::HttpHandlerBase 
       // auto lower_left_corner = request_body_json["lower_left_corner"].As<TCoordinates>();
       // auto top_right_corner = request_body_json["top_right_corner"].As<TCoordinates>();
       
-      TRestaurant restaurant;
+      userver::formats::json::ValueBuilder responseJSON;
+      responseJSON["items"].Resize(0);
 
-      restaurant.address = "ул пушкина";
-      restaurant.coordinates = {2.28, 13.37};
-      restaurant.description = "описание";
-      restaurant.is_approved = false;
-      restaurant.is_favorite = false;
-      restaurant.name = "мак";
-      restaurant.price_lower_bound = 228;
-      restaurant.price_upper_bound = 1337;
-      restaurant.rating = 2.28;
-      // restaurant.tags = {"aboba", "ameba"};
-
-      userver::formats::json::ValueBuilder responseJSON{restaurant};
-      return userver::formats::json::ToPrettyString(responseJSON.ExtractValue(),
-                                                  {' ', 4});
-
+      for (int i = 0; i < 5; ++i) {
+        TRestaurant restaurant;
+        restaurant.id = "some uuid";
+        restaurant.address = "ул пушкина";
+        restaurant.coordinates = {1.28, 12.37};
+        restaurant.description = "описание";
+        restaurant.is_approved = false;
+        restaurant.is_favorite = false;
+        restaurant.name = "мак";
+        restaurant.price_lower_bound = 238;
+        restaurant.price_upper_bound = 137;
+        restaurant.rating = 2.8;
+        restaurant.tags = {"tag 1", "tag 2"};
+        responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
+      }
+      
+      return userver::formats::json::ToPrettyString(
+        responseJSON.ExtractValue(),
+        {' ', 4}
+      );
     }
 
   userver::storages::postgres::ClusterPtr pg_cluster_;
@@ -107,8 +113,8 @@ class Recommendations final : public userver::server::handlers::HttpHandlerBase 
 
 }  // namespace
 
-void AppendRecommendations(userver::components::ComponentList& component_list) {
-  component_list.Append<Recommendations>();
+void AppendRestaurantController(userver::components::ComponentList& component_list) {
+  component_list.Append<RestaurantController>();
 }
 
 }  // namespace service

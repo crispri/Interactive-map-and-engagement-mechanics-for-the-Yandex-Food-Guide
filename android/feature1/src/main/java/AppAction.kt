@@ -1,5 +1,3 @@
-package navigation
-
 import androidx.navigation.NavController
 
 class AppActions(navController: NavController) {

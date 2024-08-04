@@ -16,11 +16,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://maven.google.com/")
     }
 }
 
 rootProject.name = "YandexMapEat"
 include(":app")
 include(":core1")
+include(":feature")
+
 include(":core2")
 include(":feature1")

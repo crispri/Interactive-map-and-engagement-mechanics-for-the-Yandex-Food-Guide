@@ -2,7 +2,7 @@ import './MyBottomSheet.css'
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
-import SheetContent from '../sheetcontent/SheetContent'
+import SheetContent from '../sheetcontent/SheetContent';
 
 const cardInfos = [
 {
@@ -24,7 +24,6 @@ const cardInfos = [
   tags: ["1000-2500 ₽", "Японская", "Веганская", "Детское меню", "Кафе"]
 }
 ];
-
 
 const MyBottomSheet = () => {
   return (
