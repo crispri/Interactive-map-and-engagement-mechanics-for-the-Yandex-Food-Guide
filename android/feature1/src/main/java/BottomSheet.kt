@@ -98,7 +98,7 @@ fun MainScreen(
         ) {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.onSecondary,
-                onClick = {},
+                onClick = {navToBack()},
                 shape = CircleShape,
             ) {
                 Image(
