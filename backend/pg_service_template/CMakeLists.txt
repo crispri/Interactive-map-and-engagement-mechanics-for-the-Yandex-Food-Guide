@@ -26,8 +26,16 @@ userver_setup_environment()
 
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
-    src/hello.hpp
-    src/hello.cpp
+    src/handlers/recommendations/recommendations.hpp
+    src/handlers/recommendations/recommendations.cpp
+    src/models/coordinates.hpp
+    src/models/coordinates.cpp
+    src/models/restaurant.hpp
+    src/models/restaurant.cpp
+    src/lib/error_description.hpp
+    src/lib/error_description.cpp
+    src/lib/error_response_builder.hpp
+    src/lib/error_response_builder.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 
@@ -39,7 +47,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs)
 
 # Unit Tests
 add_executable(${PROJECT_NAME}_unittest
-    src/hello_test.cpp
+    # src/hello_test.cpp
 )
 target_link_libraries(${PROJECT_NAME}_unittest PRIVATE ${PROJECT_NAME}_objs userver::utest)
 add_google_tests(${PROJECT_NAME}_unittest)
@@ -47,7 +55,7 @@ add_google_tests(${PROJECT_NAME}_unittest)
 
 # Benchmarks
 add_executable(${PROJECT_NAME}_benchmark
-    src/hello_benchmark.cpp
+    # src/hello_benchmark.cpp
 )
 target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME}_objs userver::ubench)
 add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
