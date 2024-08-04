@@ -10,31 +10,37 @@ import SwiftUI
 struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var viewModel: SnippetViewModel
+    @State private var isBottomSheetPresented = true
     
     var body: some View {
         VStack {
-            HStack {
-                backButton
-                Spacer()
-                userLocationButton
-                Spacer()
-                bookmarkButton
-            }
-            .padding()
-            Spacer()
-        }
-        .toolbar(.hidden, for: .navigationBar)
-        .background {
             MapView()
                 .environmentObject(viewModel.mapManager)
+        }
+        .toolbar(.hidden, for: .navigationBar)
+        .overlay {
+            VStack {
+                HStack {
+                    backButton
+                    Spacer()
+                    userLocationButton
+                    Spacer()
+                    bookmarkButton
+                }
+                .padding()
+                Spacer()
+            }
         }
         .onAppear {
             viewModel.eventOnAppear()
         }
-        .sheet(isPresented: Binding.constant(true)) {
+        .sheet(isPresented: $isBottomSheetPresented) {
             BottomSheetView()
                 .presentationDetents([.fraction(0.15), .medium,])
                 .presentationDragIndicator(.visible)
+                .presentationBackgroundInteraction(
+                    .enabled
+                )
                 .interactiveDismissDisabled()
         }
     }
