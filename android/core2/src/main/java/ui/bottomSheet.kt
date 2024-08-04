@@ -1,9 +1,11 @@
 package ui
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,11 +14,19 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -28,27 +38,33 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.example.core1.R
+import kotlin.math.roundToInt
 
+
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    val scope = rememberCoroutineScope()
     val bottomSheetState = rememberBottomSheetScaffoldState()
+    val offsetState = remember { mutableFloatStateOf(-96f) }
 
-    val offsetState = remember { mutableFloatStateOf(500f) }
 
     LaunchedEffect(bottomSheetState.bottomSheetState) {
         snapshotFlow { bottomSheetState.bottomSheetState.requireOffset() }
             .collect { offset ->
                 offsetState.floatValue = offset
-                Log.d("tag", offsetState.floatValue.toString())
             }
     }
-
-    Column {
-        CollectionCarousel()
+    Box(modifier = Modifier.fillMaxSize()) {
         BottomSheetScaffold(
             scaffoldState = bottomSheetState,
             sheetContent = {
@@ -58,8 +74,8 @@ fun MainScreen() {
                         .heightIn(max = 600.dp)
                         .background(Color.White)
                 ) {
-                    Carousel()  // Add Carousel here
-                    Spacer(modifier = Modifier.height(16.dp)) // Add some space between Carousel and LazyColumn
+                    Carousel()
+                    Spacer(modifier = Modifier.height(16.dp))
                     BottomSheetContent()
                 }
             },
@@ -75,81 +91,120 @@ fun MainScreen() {
                 Text("Main Content")
             }
         }
+
+        Row (
+            modifier = Modifier
+                .padding(start = 8.dp, end = 8.dp, top = 36.dp)
+        ){
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.onSecondary, onClick = {},
+                shape = CircleShape
+            ) {
+                Image(
+                    painter = painterResource(com.example.core2.R.drawable.baseline_arrow_back_24),
+                    contentDescription = "go_back",
+                    colorFilter = ColorFilter.tint(Color.Black)
+                )
+            }
+
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(90.dp)
+                .offset(y = (-90).dp)
+                .offset { IntOffset(0, offsetState.floatValue.roundToInt() - 16) }
         ) {
-            CollectionCarousel(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(90.dp)
-                    .offset(y = offsetState.floatValue.dp)
-                    .align(Alignment.TopCenter)
+            CollectionCarousel()
+        }
+    }
+}
+
+
+@Composable
+fun CollectionCarousel() {
+    val items = (1..5).map { "Item $it" }
+
+    LazyRow(
+        modifier = Modifier
+            .height(90.dp)
+            .padding(horizontal = 6.dp) // Отступы в начале и в конце
+            .background(Color.White)
+    ) {
+        itemsIndexed(items) { index, item ->
+            if (index > 0) {
+                Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
+            }
+            CardWithImageAndText(
+                painterResource(id = R.drawable.hardcode_picture_of_cafe),
+                "Kalabasa",
+                "Крутое место",
+                {},
+                {}
             )
         }
     }
-
 }
+
+
+
 
 @Composable
 fun BottomSheetContent() {
     LazyColumn {
         items((1..20).toList()) { item ->
-            Text(
-                text = "Item $item",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                color = Color.Black
-            )
+            BigCard()
         }
     }
 }
+
+
 
 @Composable
 fun Carousel() {
-    val items = (1..4).map { "Item $it" }
+    val itemsList = listOf(
+        "Музыка громче",
+        "Завтраки",
+        "Винотека",
+        "Европейская",
+        "Коктели",
+        "Можно с собакой",
+        "Веранда"
+    )
 
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-            .background(Color.White)
-    ) {
-        items(items) { item ->
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(120.dp, 50.dp)
-                    .background(Color.DarkGray),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = item, color = Color.White)
+    Row(
+/*        modifier = Modifier.padding(top = 8.dp)*/
+    ){
+        IconButton(
+            onClick = { /*TODO*/ },
+            colors = IconButtonColors(
+                Color.LightGray,
+                Color.Black,
+                Color.LightGray,
+                Color.LightGray
+            ),
+            modifier = Modifier
+                .clip(RoundedCornerShape(16.dp))
+                .height(32.dp),
+            content = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_slot),
+                    contentDescription = "Фильтр"
+                )
+            }
+        )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                /*                .height(50.dp)*/
+                .background(Color.White)
+        ) {
+            items(itemsList) { item ->
+                CategoryButtonCard(text = item) {
+                }
             }
         }
     }
 }
 
-@Composable
-fun CollectionCarousel(modifier: Modifier = Modifier) {
-    val items = (1..5).map { "Item $it" }
-
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp)
-            .background(Color.White)
-    ) {
-        items(items) { item ->
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(160.dp, 90.dp)
-                    .background(Color.DarkGray),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = item, color = Color.White)
-            }
-        }
-    }
-}
