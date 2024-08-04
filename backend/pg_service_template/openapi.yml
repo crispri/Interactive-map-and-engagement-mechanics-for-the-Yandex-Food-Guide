@@ -118,7 +118,7 @@ paths:
                                             $ref: '#/components/schemas/institution'
                 '400':
                     description: invalid input parameters
-paths:
+
     /guide/v1/selections:
         get:
             summary: Получение всех подборок
