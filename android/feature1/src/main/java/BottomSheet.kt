@@ -1,5 +1,6 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -37,9 +39,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.feature1.R
 import com.yandex.mapkit.mapview.MapView
 import kotlin.math.roundToInt
@@ -89,20 +92,72 @@ fun MainScreen(
 
         Row(
             modifier = Modifier
-                .padding(start = 8.dp, end = 8.dp, top = 36.dp)
+                .padding(start = 8.dp, end = 8.dp, top = 46.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             FloatingActionButton(
-                onClick = navToBack,
                 containerColor = MaterialTheme.colorScheme.onSecondary,
-                shape = CircleShape
+                onClick = {},
+                shape = CircleShape,
             ) {
                 Image(
+                    modifier = Modifier.size(28.dp, 28.dp),
                     painter = painterResource(R.drawable.baseline_arrow_back_24),
                     contentDescription = "go_back",
                     colorFilter = ColorFilter.tint(Color.Black)
                 )
             }
 
+            Spacer(modifier = Modifier.weight(0.4f))
+
+            Box(
+                modifier = Modifier.weight(2.2f),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Text(
+                            text = "Ваше местоположение",
+                            fontSize = 16.sp,
+                            color = Color.Black,
+                        )
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(R.drawable.baseline_keyboard_arrow_right_24),
+                            contentDescription = "smth",
+                            colorFilter = ColorFilter.tint(Color.Black)
+                        )
+                    }
+                    Text(
+                        text = "Льва Толстого, 16",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(0.4f))
+
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.onSurface,
+                onClick = {},
+                shape = CircleShape,
+            ) {
+                Image(
+                    modifier = Modifier.size(28.dp, 28.dp),
+                    painter = painterResource(R.drawable.baseline_bookmark_border_24),
+                    contentDescription = "go_back",
+                    colorFilter = ColorFilter.tint(Color.White)
+                )
+            }
         }
 
         Box(
