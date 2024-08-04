@@ -1,4 +1,5 @@
 #include "restaurant.hpp"
+#include <userver/formats/json/value_builder.hpp>
 
 
 namespace service {
@@ -19,6 +20,10 @@ userver::formats::json::Value Serialize(
     item["price_lower_bound"] = restaurant.price_lower_bound;
     item["price_upper_bound"] = restaurant.price_upper_bound;
     item["is_favorite"] = restaurant.is_favorite;
+    item["tags"].Resize(0);
+    for (const auto& tag : restaurant.tags) {
+        item["tags"].PushBack(userver::formats::json::ValueBuilder{tag});
+    }
 
     return item.ExtractValue();
 }
