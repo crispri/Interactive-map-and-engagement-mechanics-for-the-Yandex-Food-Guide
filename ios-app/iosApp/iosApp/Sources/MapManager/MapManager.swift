@@ -67,4 +67,21 @@ class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.lastUserLocation = locations.last
     }
+    
+    func addPoints() {
+        let iconStyle = YMKIconStyle()
+        let image = UIImage(named: "pin") ?? UIImage()
+        
+        let placemark1 = map.mapObjects.addPlacemark()
+        placemark1.geometry = .init(latitude: 55.733766, longitude: 37.589872)
+        placemark1.setIconWith(image, style: iconStyle)
+        
+        let placemark2 = map.mapObjects.addPlacemark()
+        placemark2.geometry = .init(latitude: 55.732964, longitude: 37.589473)
+        placemark2.setIconWith(image, style: iconStyle)
+        
+        let placemark3 = map.mapObjects.addPlacemark()
+        placemark3.geometry = .init(latitude: 55.733240, longitude: 37.590344)
+        placemark3.setIconWith(image, style: iconStyle)
+    }
 }

@@ -24,6 +24,45 @@ final class SnippetViewModel: ObservableObject {
             check: 9,
             priceLowerBound: 1200,
             priceUpperBound: 6000
+        ),
+        SnippetDTO(
+            id: 1,
+            lat: 55.74048502788512,
+            lon: 37.610338866258985,
+            name: "Blanc",
+            description: "Ресторан авторской кухни, расположенный в исторической части города",
+            address: "м. Китай-город",
+            approver: true,
+            rating: 5,
+            check: 9,
+            priceLowerBound: 1200,
+            priceUpperBound: 6000
+        ),
+        SnippetDTO(
+            id: 2,
+            lat: 55.74048502788512,
+            lon: 37.610338866258985,
+            name: "Lions Head",
+            description: "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
+            address: "м. Тургеневская",
+            approver: true,
+            rating: 5,
+            check: 9,
+            priceLowerBound: 1200,
+            priceUpperBound: 6000
+        ),
+        SnippetDTO(
+            id: 3,
+            lat: 55.74048502788512,
+            lon: 37.610338866258985,
+            name: "Ya Cafe",
+            description: "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
+            address: "м. Тургеневская",
+            approver: true,
+            rating: 5,
+            check: 9,
+            priceLowerBound: 1200,
+            priceUpperBound: 6000
         )
     ]
     
@@ -62,6 +101,7 @@ final class SnippetViewModel: ObservableObject {
     
     func eventOnAppear() {
         eventFetchUserLocation()
+        mapManager.addPoints()
     }
     
     func eventFetchUserLocation() {

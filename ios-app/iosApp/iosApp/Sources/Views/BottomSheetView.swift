@@ -8,13 +8,21 @@
 import SwiftUI
 
 struct BottomSheetView: View {
+    @EnvironmentObject private var viewModel: SnippetViewModel
+    
     var body: some View {
         VStack {
             FilterView()
                 .padding(.top, 16)
             ScrollView {
-                
+                VStack(spacing: 0) {
+                    ForEach(viewModel.snippets, id: \.self) { snippet in
+                        SnippetCell(restaurant: snippet)
+                    }
+                }
+                .scrollTargetLayout()
             }
+            .scrollTargetBehavior(.viewAligned)
         }
     }
 }
