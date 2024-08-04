@@ -1,6 +1,7 @@
 package com.example.yandexmapeat
 
-import Utils
+import AppNavigation
+import MapScreen
 import android.content.ContentValues.TAG
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -12,7 +13,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import com.example.feature.R
+import com.example.feature1.R
 import com.example.yandexmapeat.ui.theme.YandexMapEatTheme
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -22,7 +23,6 @@ import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
-import ui.MapScreen
 
 class MainActivity : ComponentActivity() {
     private lateinit var mapView: MapView
@@ -96,7 +96,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             YandexMapEatTheme {
-                MapScreen(mapView = mapView)
+                AppNavigation(mapView = mapView)
+
             }
         }
 

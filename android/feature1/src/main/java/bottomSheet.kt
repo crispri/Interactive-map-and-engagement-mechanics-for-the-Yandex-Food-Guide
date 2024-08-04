@@ -41,12 +41,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.feature1.R
+import com.yandex.mapkit.mapview.MapView
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    navToBack: () -> Unit
+    navToBack: () -> Unit,
+    mapView: MapView
 ) {
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val offsetState = remember { mutableFloatStateOf(-96f) }
@@ -81,7 +83,7 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Main Content")
+                MapScreen(mapView = mapView)
             }
         }
 
@@ -145,8 +147,9 @@ fun CollectionCarousel() {
 @Composable
 fun BottomSheetContent() {
     LazyColumn {
-        items((1..20).toList()) { item ->
-            BigCard()
+        val list = listOf(R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe)
+        items(list) { item ->
+            BigCard(item)
         }
     }
 }
