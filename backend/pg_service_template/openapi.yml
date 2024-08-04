@@ -72,7 +72,7 @@ components:
             name: Authorization
 paths:
     /guide/v1/restaurants:
-        get:
+        post:
             description: Get recommended establishments in the area
             requestBody:
                 required: true
