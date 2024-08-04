@@ -119,23 +119,30 @@ paths:
                 '400':
                     description: invalid input parameters
 
-    # /guide/v1/selections:
-    #     get:
-    #         summary: Получение всех подборок
-    #         description: Возвращает список всех подборок.
-    #         responses:
-    #             '200':
-    #             description: Успешное получение списка подборок.
-    #             content:
-    #                 application/json:
-    #                         schema:
-    #                             type: object
-    #                             properties:
-    #                                 items:
-    #                                     type: array
-    #                                     items:
-    #                                         $ref: '#/components/schemas/selection'
-    #             '500':
-    #             description: Внутренняя ошибка сервера.           
-    
-    
+        
+    /guide/v1/selections:
+        get:
+            summary: Получение всех подборок
+            description: Возвращает список всех подборок.
+            responses:
+            '200':
+                description: Успешное получение списка подборок.
+                content:
+                application/json:
+                    schema:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                        id:
+                            type: integer
+                            example: 1
+                        name:
+                            type: string
+                            example: "Популярные места"
+                        description:
+                            type: string
+                            example: "Список популярных мест в городе."
+            '500':
+                description: Внутренняя ошибка сервера.
+            
