@@ -3,7 +3,7 @@ info:
     title: API для Гида
     version: "1.0"
 servers:
-    -   url: 51.250.39.97:8080/
+    -   url: http://51.250.39.97:8080/
 components:
     schemas:
         coordinates:
