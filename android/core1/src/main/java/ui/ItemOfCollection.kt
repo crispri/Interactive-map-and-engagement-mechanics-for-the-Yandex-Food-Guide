@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -59,12 +60,18 @@ fun BigCard() {
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
-                androidx.compose.material3.Icon(painter = painterResource(id = R.drawable.ic_raiting), contentDescription = "Оценка")
-                Text(
-                    text = "4.5",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Row {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_raiting),
+                        modifier = Modifier.height(24.dp),
+                        contentDescription = "Оценка"
+                    )
+                    Text(
+                        text = "4.5",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
 
             Text(
