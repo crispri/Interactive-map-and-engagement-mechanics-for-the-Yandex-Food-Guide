@@ -59,16 +59,17 @@ components:
                 - address
                 - is_public
                 - rating
-                - check
+                - price_lower_bound
+                - price_upper_bound
 
     # responses:
     #     UnauthorizedError:
     #         description: X-Ya-User-Ticket key is missing or invalid
-    # securitySchemes:
-    #     UserTicketAuth:
-    #         type: apiKey
-    #         in: header
-    #         name: X-Ya-User-Ticket
+    securitySchemes:
+        UserTicketAuth:
+            type: apiKey
+            in: header
+            name: Authorization
 paths:
     /guide/v1/restaurants:
         get:
@@ -93,7 +94,8 @@ paths:
                             required:
                                 - coordinates
                                 - max_count
-                                - user_id
+            security:
+                -   UserTicketAuth: [ ]
             responses:
                 '200':
                     description: OK
