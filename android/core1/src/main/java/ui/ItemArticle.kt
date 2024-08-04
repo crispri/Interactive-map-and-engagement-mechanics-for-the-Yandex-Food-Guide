@@ -35,12 +35,12 @@ fun CardWithImageAndText(
     onFavoriteClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.clip(RoundedCornerShape(16.dp))
+        modifier = Modifier.clip(RoundedCornerShape(20.dp))
     ) {
         Box(
             modifier = Modifier
                 .width(216.dp)
-                .height(100.dp)
+                .height(90.dp)
 
         ) {
 

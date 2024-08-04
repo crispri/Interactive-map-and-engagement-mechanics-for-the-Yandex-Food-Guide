@@ -35,7 +35,7 @@ fun CategoriesButton() {
         "Веранда"
     )
     Row(
-        modifier = Modifier.padding(top = 8.dp)
+/*        modifier = Modifier.padding(top = 8.dp)*/
     ) {
         IconButton(
             onClick = { /*TODO*/ },
@@ -46,7 +46,7 @@ fun CategoriesButton() {
                 Color.LightGray
             ),
             modifier = Modifier
-                .padding(vertical = 4.dp)
+/*                .padding(vertical = 4.dp)*/
                 .clip(RoundedCornerShape(16.dp))
                 .height(32.dp),
             content = {
@@ -71,7 +71,7 @@ fun CategoryButtonCard(text: String, clickOnCategory: () -> Unit) {
         onClick = clickOnCategory,
         colors = ButtonColors(Color.LightGray, Color.Black, Color.LightGray, Color.LightGray),
         modifier = Modifier
-            .padding(4.dp)
+            .padding(horizontal = 4.dp)
             .clip(RoundedCornerShape(16.dp))
             .height(32.dp),
     ) {
