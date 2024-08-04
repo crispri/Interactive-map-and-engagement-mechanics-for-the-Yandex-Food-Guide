@@ -1,5 +1,4 @@
-package navigation
-
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
@@ -15,10 +14,13 @@ fun AppNavigation() {
         startDestination = AppDestination.HOME_SCREEN
     ) {
         composable(AppDestination.HOME_SCREEN) {
+            HomeScreen(
+                actions.onMapScreen
+            )
         }
 
         composable(AppDestination.MAP_SCREEN) {
-            // MapScreen
+            MainScreen(actions.onBack)
         }
 
     }
