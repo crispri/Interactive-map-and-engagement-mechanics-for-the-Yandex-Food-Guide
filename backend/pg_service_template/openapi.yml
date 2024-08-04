@@ -61,6 +61,8 @@ components:
                 - rating
                 - price_lower_bound
                 - price_upper_bound
+                - tags
+                - is_favorite
 
     # responses:
     #     UnauthorizedError:
@@ -89,11 +91,8 @@ paths:
                                     $ref: "#/components/schemas/coordinates"
                                 max_count:
                                     type: integer
-                                user_id:
-                                    type: integer
                             required:
                                 - coordinates
-                                - max_count
             security:
                 -   UserTicketAuth: [ ]
             responses:
