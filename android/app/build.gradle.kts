@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -20,7 +18,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        //buildConfigField("String", "MAPKIT_API_KEY", "8e691497-5f95-489d-862e-b24bd7507b87")
     }
 
     buildTypes {
@@ -55,6 +52,8 @@ android {
 dependencies {
     implementation(project(":core1"))
     implementation(project(":feature"))
+    implementation(project(":core2"))
+    implementation(project(":feature1"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -76,4 +75,3 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
-
