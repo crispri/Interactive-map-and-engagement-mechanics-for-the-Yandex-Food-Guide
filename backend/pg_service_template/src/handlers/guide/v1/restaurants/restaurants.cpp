@@ -88,16 +88,17 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
 
       for (int i = 0; i < 5; ++i) {
         TRestaurant restaurant;
+        restaurant.id = "some uuid";
         restaurant.address = "ул пушкина";
-        restaurant.coordinates = {2.28, 13.37};
+        restaurant.coordinates = {1.28, 12.37};
         restaurant.description = "описание";
         restaurant.is_approved = false;
         restaurant.is_favorite = false;
         restaurant.name = "мак";
-        restaurant.price_lower_bound = 228;
-        restaurant.price_upper_bound = 1337;
-        restaurant.rating = 2.28;
-        restaurant.tags = {"aboba", "ameba"};
+        restaurant.price_lower_bound = 238;
+        restaurant.price_upper_bound = 137;
+        restaurant.rating = 2.8;
+        restaurant.tags = {"tag 1", "tag 2"};
         responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
       }
       

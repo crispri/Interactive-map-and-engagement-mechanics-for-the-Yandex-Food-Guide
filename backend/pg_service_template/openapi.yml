@@ -20,11 +20,11 @@ components:
             required:
                 - lat
                 - lon
-        institution:
+        restaurant:
             type: object
             properties:
                 id: 
-                    type: integer
+                    type: string
                 coordinates:
                     $ref: "#/components/schemas/coordinates"
                 name:
@@ -33,18 +33,24 @@ components:
                     type: string
                 address:
                     type: string
-                approved:
+                is_approved:
                     type: boolean
                 rating:
-                    type: number
-                    format: double
-                check:
                     type: number
                     format: double
                 price_lower_bound:
                     type: integer
                 price_upper_bound:
                     type: integer
+                tags:
+                    type: object
+                    properties:
+                        items:
+                            type: array
+                            items:
+                                type: string
+                is_favorite:
+                    type: boolean
             required:
                 - id
                 - coordinates
@@ -64,7 +70,7 @@ components:
     #         in: header
     #         name: X-Ya-User-Ticket
 paths:
-    /recommendations:
+    /guide/v1/restaurants:
         get:
             description: Get recommended establishments in the area
             requestBody:
@@ -99,6 +105,8 @@ paths:
                                     items:
                                         type: array
                                         items:
-                                            $ref: '#/components/schemas/institution'
+                                            $ref: '#/components/schemas/restaurant'
                 '400':
                     description: invalid input parameters
+                '401':
+                    description: unauthorized

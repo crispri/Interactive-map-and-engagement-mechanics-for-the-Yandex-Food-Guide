@@ -6,6 +6,7 @@
 namespace service {
 
 struct TRestaurant {
+    std::string id;
     TCoordinates coordinates;
     std::string name;
     std::string description;

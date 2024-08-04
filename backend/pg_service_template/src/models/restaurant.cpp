@@ -11,6 +11,7 @@ userver::formats::json::Value Serialize(
 )
 {
     userver::formats::json::ValueBuilder item;
+    item["id"] = restaurant.id;
     item["coordinates"] = restaurant.coordinates;
     item["name"] = restaurant.name;
     item["description"] = restaurant.description;
