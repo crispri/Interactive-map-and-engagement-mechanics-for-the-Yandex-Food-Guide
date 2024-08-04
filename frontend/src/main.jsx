@@ -61,7 +61,10 @@ const TestComponent = () => {
     },
     {
       path: "/map",
-      element: <TestComponent/>
+      element: <>
+      <TestComponent/>
+      <MyBottomSheet/>
+      </>
     },
     {
       path: "/combine",
