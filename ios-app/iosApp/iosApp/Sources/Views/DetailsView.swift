@@ -9,25 +9,39 @@ import SwiftUI
 
 struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject private var mapManager = MapManager()
-    @State private var userLocaitonTitle = "2-я Брестская, 1/5"
+    @EnvironmentObject private var viewModel: SnippetViewModel
+    @State private var isBottomSheetPresented = true
     
     var body: some View {
         VStack {
-            HStack {
-                backButton
-                Spacer()
-                userLocationButton
-                Spacer()
-                bookmarkButton
-            }
-            .padding()
-            Spacer()
+            MapView()
+                .environmentObject(viewModel.mapManager)
         }
         .toolbar(.hidden, for: .navigationBar)
-        .background {
-            MapView()
-                .environmentObject(mapManager)
+        .overlay {
+            VStack {
+                HStack {
+                    backButton
+                    Spacer()
+                    userLocationButton
+                    Spacer()
+                    bookmarkButton
+                }
+                .padding()
+                Spacer()
+            }
+        }
+        .onAppear {
+            viewModel.eventOnAppear()
+        }
+        .sheet(isPresented: $isBottomSheetPresented) {
+            BottomSheetView()
+                .presentationDetents([.fraction(0.15), .medium,])
+                .presentationDragIndicator(.visible)
+                .presentationBackgroundInteraction(
+                    .enabled
+                )
+                .interactiveDismissDisabled()
         }
     }
     
@@ -47,8 +61,7 @@ struct DetailsView: View {
     
     private var userLocationButton: some View {
         Button {
-            
-            mapManager.currentUserLocation()
+            viewModel.eventFetchUserLocation()
         } label: {
             VStack(spacing: 0) {
                 HStack(spacing: 4) {
@@ -61,7 +74,7 @@ struct DetailsView: View {
                         .frame(width: 10, height: 10)
                         .foregroundStyle(.black)
                 }
-                Text(userLocaitonTitle)
+                Text(viewModel.userLocaitonTitle)
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(.black)
             }
@@ -85,4 +98,5 @@ struct DetailsView: View {
 
 #Preview {
     DetailsView()
+        .environmentObject(SnippetViewModel())
 }

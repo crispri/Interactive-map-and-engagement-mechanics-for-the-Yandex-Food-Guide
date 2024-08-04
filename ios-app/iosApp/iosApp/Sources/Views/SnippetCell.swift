@@ -10,7 +10,6 @@ import SwiftUI
 var textNames = ["1000-2500р", "Европейская", "Коктейли", "Завтрак"]
 
 struct SnippetCell: View {
-    @EnvironmentObject var viewModel: SnippetViewModel
     @State var restaurant: SnippetDTO
 
     var body: some View {
