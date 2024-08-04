@@ -107,4 +107,10 @@ final class SnippetViewModel: ObservableObject {
     func eventFetchUserLocation() {
         mapManager.currentUserLocation()
     }
+
+    private let networkManager = NetworkManager()
+    
+    public func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
+        return try await networkManager.fetchSnippets(from: lowerLeftCorner, to: topRightCorner)
+    }
 }
