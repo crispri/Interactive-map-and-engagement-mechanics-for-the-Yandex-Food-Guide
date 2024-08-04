@@ -10,6 +10,9 @@ import SwiftUI
 var textNames = ["1000-2500р", "Европейская", "Коктейли", "Завтрак"]
 
 struct SnippetCell: View {
+    @EnvironmentObject var viewModel: SnippetViewModel
+    @State var restaurant: SnippetDTO
+
     var body: some View {
         VStack {
             ImageRest()
@@ -51,7 +54,7 @@ struct SnippetCell: View {
 
     private func NameRest() -> some View {
         HStack {
-            Text("Ведомости.Ланч")
+            Text(restaurant.name)
                 .bold()
                 .font(.system(size: 16))
             Spacer()
@@ -59,7 +62,7 @@ struct SnippetCell: View {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 12, height: 12)
-                Text("4.8")
+                Text("\(restaurant.rating)")
                     .font(.system(size: 14))
             }
         }
@@ -82,7 +85,7 @@ struct SnippetCell: View {
     }
 
     private func Description() -> some View {
-        Text("Ресторан авторской кухни, расположенный в исторической части города")
+        Text(restaurant.description)
             .foregroundStyle(.gray)
             .lineLimit(2)
             .font(.system(size: 13))
@@ -109,5 +112,5 @@ struct SnippetCell: View {
 }
 
 #Preview {
-    SnippetCell()
+    SnippetCell(restaurant: SnippetViewModel().snippets[0])
 }
