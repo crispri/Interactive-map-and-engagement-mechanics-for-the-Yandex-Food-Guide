@@ -22,8 +22,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "YandexMapEat"
 include(":app")
-include(":core1")
+include(":core")
 include(":feature")
-
-include(":core2")
-include(":feature1")

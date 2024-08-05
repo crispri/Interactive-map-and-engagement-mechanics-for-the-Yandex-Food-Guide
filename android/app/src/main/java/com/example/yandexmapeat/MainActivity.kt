@@ -1,7 +1,6 @@
 package com.example.yandexmapeat
 
-import AppNavigation
-import MapScreen
+import presintation.navigation.AppNavigation
 import android.content.ContentValues.TAG
 import android.graphics.Bitmap
 import android.graphics.Canvas
