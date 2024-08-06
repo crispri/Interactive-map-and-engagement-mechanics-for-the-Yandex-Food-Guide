@@ -145,4 +145,30 @@ paths:
                             example: "Список популярных мест в городе."
             '500':
                 description: Внутренняя ошибка сервера.
-            
+    /guide/v1/selections/{id}:
+         get:
+            summary: Получить список всех заведений в подборке
+            description: Возвращает список всех заведений, относящихся к заданной подборке
+            parameters:
+                - name: collectionId
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                  description: Идентификатор подборки
+            responses:
+                '200':
+                description: Успешный ответ
+                content:
+                    application/json:
+                    schema:
+                        type: array
+                        items:
+                        $ref: '#/components/schemas/institution'
+                '400':
+                  description: Неверный запрос
+                '404':
+                  description: Подборка не найдена
+                '500':
+                  description: Внутренняя ошибка сервера
+                  
