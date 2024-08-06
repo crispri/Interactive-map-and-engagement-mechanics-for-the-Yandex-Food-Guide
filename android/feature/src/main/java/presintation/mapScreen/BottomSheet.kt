@@ -1,5 +1,7 @@
 package presintation.mapScreen
 
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,8 +30,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableFloatStateOf
@@ -40,41 +44,61 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.feature1.R
+import com.example.feature.R
 import com.yandex.mapkit.mapview.MapView
+import custom_bottom_sheet.rememberBottomSheetState
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     navToBack: () -> Unit,
     mapView: MapView
 ) {
-    val bottomSheetState = rememberBottomSheetScaffoldState()
-    val offsetState = remember { mutableFloatStateOf(-96f) }
 
-    LaunchedEffect(bottomSheetState.bottomSheetState) {
-        snapshotFlow { bottomSheetState.bottomSheetState.requireOffset() }
+    val offsetState = remember { mutableFloatStateOf(-96f) }
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
+    val sheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        defineValues = {
+            SheetValue.Hidden at height(100.dp)
+            SheetValue.PartiallyExpanded at offset(percent = 60)
+            SheetValue.Expanded at contentHeight
+        }
+    )
+
+    val bottomSheetState = custom_bottom_sheet.rememberBottomSheetScaffoldState(
+        sheetState = sheetState
+    )
+
+    LaunchedEffect(bottomSheetState.sheetState) {
+        snapshotFlow { bottomSheetState.sheetState.requireOffset() }
             .collect { offset ->
                 offsetState.floatValue = offset
             }
     }
+
+
+
     Box(modifier = Modifier.fillMaxSize()) {
-        BottomSheetScaffold(
+        custom_bottom_sheet.BottomSheetScaffold(
             scaffoldState = bottomSheetState,
             sheetContent = {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 600.dp)
+                        .heightIn(max = screenHeight - 240.dp, min = 80.dp)
                         .background(Color.White)
                 ) {
                     Carousel()
@@ -82,7 +106,6 @@ fun MainScreen(
                     BottomSheetContent()
                 }
             },
-            sheetPeekHeight = 80.dp,
             sheetContainerColor = Color.White
         ) {
             Box(
@@ -185,15 +208,15 @@ fun CollectionCarousel() {
     LazyRow(
         modifier = Modifier
             .height(90.dp)
-            .padding(horizontal = 6.dp) // Отступы в начале и в конце
-            .background(Color.White)
+            .padding(horizontal = 6.dp)
+            .background(Color.Transparent)
     ) {
         itemsIndexed(items) { index, item ->
             if (index > 0) {
-                Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
+                Spacer(modifier = Modifier.width(6.dp))
             }
             CardWithImageAndText(
-                painterResource(id = com.example.core1.R.drawable.hardcode_picture_of_cafe),
+                painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
                 "Kalabasa",
                 "Крутое место",
                 {},
