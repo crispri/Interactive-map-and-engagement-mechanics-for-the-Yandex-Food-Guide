@@ -9,6 +9,8 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include "handlers/recommendations/recommendations.hpp"
+#include "handlers/guide/v1/selections/selections.hpp"
+#include "handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp"
 
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
@@ -20,6 +22,8 @@ int main(int argc, char* argv[]) {
                             .Append<userver::clients::dns::Component>();
 
   service::AppendRecommendations(component_list);
+  service::AppendSelections(component_list);
+  service::AppendReccomendationsBySelectionId(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

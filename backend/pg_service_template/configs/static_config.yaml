@@ -54,6 +54,16 @@ components_manager:
             path: /recommendations               # Registering handler by URL '/v1/hello'.
             method: GET                  # It will only reply to POST requests.
             task_processor: main-task-processor  # Run it on CPU bound task processor
+        handler-selections:
+            path: /guide/v1/selections              # Registering handler by URL '/v1/hello'.
+            method: GET                  # It will only reply to POST requests.
+            task_processor: main-task-processor  # Run it on CPU bound task processor
+        handler-recs-by-selection-id:
+            path: /guide/v1/selections/{id}              # Registering handler by URL '/v1/hello'.
+            method: GET                  # It will only reply to POST requests.
+            task_processor: main-task-processor
+
+
 
         postgres-db-1:
             dbconnection: $dbconnection

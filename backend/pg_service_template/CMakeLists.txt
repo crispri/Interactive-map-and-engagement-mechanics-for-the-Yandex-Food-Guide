@@ -36,6 +36,12 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/lib/error_description.cpp
     src/lib/error_response_builder.hpp
     src/lib/error_response_builder.cpp
+    src/handlers/guide/v1/selections/selections.hpp
+    src/handlers/guide/v1/selections/selections.cpp
+    src/models/selection.hpp
+    src/models/selection.cpp
+    src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp
+    src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 
