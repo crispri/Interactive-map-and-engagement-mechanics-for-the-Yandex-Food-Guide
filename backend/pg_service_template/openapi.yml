@@ -125,16 +125,18 @@ paths:
             summary: Получение всех подборок
             description: Возвращает список всех подборок.
             responses:
-            '200':
-                description: Успешное получение списка подборок.
-                content:
-                    application/json:
-                    schema:
-                        type: array
-                        items:
-                        $ref: '#/components/schemas/selection'
-            '500':
-                description: Внутренняя ошибка сервера.
+                '200':
+                    description: Успешное получение списка подборок.
+                    content:
+                        application/json:
+                            schema:
+                            properties:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/selection'
+                '500':
+                    description: Внутренняя ошибка сервера.
     /guide/v1/selections/{id}:
          get:
             summary: Получить список всех заведений в подборке
@@ -149,17 +151,19 @@ paths:
                   description: Идентификатор подборки в формате UUID
             responses:
                 '200':
-                description: Успешный ответ
-                content:
-                    application/json:
-                    schema:
-                        type: array
-                        items:
-                        $ref: '#/components/schemas/institution'
+                    description: Успешный ответ
+                    content:
+                        application/json:
+                        schema:
+                            properties:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/institution'
                 '400':
-                  description: Неверный запрос
+                    description: Неверный запрос
                 '404':
-                  description: Подборка не найдена
+                    description: Подборка не найдена
                 '500':
-                  description: Внутренняя ошибка сервера
+                    description: Внутренняя ошибка сервера
                   
