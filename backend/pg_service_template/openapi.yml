@@ -130,7 +130,8 @@ paths:
                     content:
                         application/json:
                             schema:
-                            properties:
+                                type: object
+                                properties:
                                     items:
                                         type: array
                                         items:
@@ -155,11 +156,12 @@ paths:
                     content:
                         application/json:
                             schema:
-                            properties:
+                                type: object
+                                properties:
                                     items:
                                         type: array
                                         items:
-                                            $ref: '#/components/schemas/selection'
+                                            $ref: '#/components/schemas/institution'
                 '400':
                     description: Неверный запрос
                 '404':
