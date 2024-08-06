@@ -128,7 +128,6 @@ paths:
             '200':
                 description: Успешное получение списка подборок.
                 content:
-                content:
                     application/json:
                     schema:
                         type: array
