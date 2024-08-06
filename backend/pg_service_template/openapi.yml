@@ -128,21 +128,12 @@ paths:
             '200':
                 description: Успешное получение списка подборок.
                 content:
-                application/json:
+                content:
+                    application/json:
                     schema:
-                    type: array
-                    items:
-                        type: object
-                        properties:
-                        id:
-                            type: integer
-                            example: 1
-                        name:
-                            type: string
-                            example: "Популярные места"
-                        description:
-                            type: string
-                            example: "Список популярных мест в городе."
+                        type: array
+                        items:
+                        $ref: '#/components/schemas/selection'
             '500':
                 description: Внутренняя ошибка сервера.
     /guide/v1/selections/{id}:
@@ -150,12 +141,13 @@ paths:
             summary: Получить список всех заведений в подборке
             description: Возвращает список всех заведений, относящихся к заданной подборке
             parameters:
-                - name: collectionId
+                - name: selectionId
                   in: path
                   required: true
                   schema:
-                    type: integer
-                  description: Идентификатор подборки
+                    type: string
+                    format: uuid
+                  description: Идентификатор подборки в формате UUID
             responses:
                 '200':
                 description: Успешный ответ
