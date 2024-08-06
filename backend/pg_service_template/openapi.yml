@@ -151,15 +151,15 @@ paths:
                   description: Идентификатор подборки в формате UUID
             responses:
                 '200':
-                    description: Успешный ответ
+                    description: Успешное получение списка подборок.
                     content:
                         application/json:
-                        schema:
+                            schema:
                             properties:
                                     items:
                                         type: array
                                         items:
-                                            $ref: '#/components/schemas/institution'
+                                            $ref: '#/components/schemas/selection'
                 '400':
                     description: Неверный запрос
                 '404':
