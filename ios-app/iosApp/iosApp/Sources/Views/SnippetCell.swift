@@ -8,10 +8,12 @@
 import SwiftUI
 
 var textNames = ["1000-2500р", "Европейская", "Коктейли", "Завтрак"]
+var imageRest = ["1rest", "2rest", "3rest"]
 
 struct SnippetCell: View {
     @EnvironmentObject var viewModel: SnippetViewModel
     @State var restaurant: SnippetDTO
+    @State private var currentPage = 0
 
     var body: some View {
         VStack {
@@ -30,11 +32,30 @@ struct SnippetCell: View {
 
     private func ImageRest() -> some View {
         ZStack(alignment: .topTrailing) {
-            Image("1rest")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 200)
-                .cornerRadius(24)
+            var pages: [Image] {
+                var arr = [Image]()
+                for i in imageRest {
+                    arr.append(Image(i))
+                }
+                return arr
+            }
+
+            ImageRestWithPC(pages: pages)
+//            Image("1rest")
+//                .resizable()
+//                .aspectRatio(contentMode: .fill)
+//                .frame(height: 200)
+//                .cornerRadius(24)
+
+//            ZStack {
+//
+//
+//                PageControl(numberOfPages: 3, currentPage:$currentPage)
+//                    .frame(width: 20.0, height: 20)
+//                    .padding(.top, 150)
+//                    .padding()
+//            }
+//
 
             ZStack {
                 Image(systemName: "circle.fill")
