@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -64,6 +66,13 @@ dependencies {
     // mapkit
     implementation(libs.map.kit)
 
+    //DI - Hilt
+    implementation(libs.hilt)
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation("androidx.fragment:fragment-ktx:1.8.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,4 +80,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+}
+
+kapt {
+    correctErrorTypes = true
 }
