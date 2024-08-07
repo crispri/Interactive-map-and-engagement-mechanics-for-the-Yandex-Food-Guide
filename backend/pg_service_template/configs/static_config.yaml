@@ -52,7 +52,7 @@ components_manager:
 
         handler-restaurants:
             path: /guide/v1/restaurants
-            method: GET
+            method: POST
             task_processor: main-task-processor
 
         postgres-db-1:
