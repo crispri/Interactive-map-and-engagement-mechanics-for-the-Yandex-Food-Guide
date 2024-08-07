@@ -81,6 +81,9 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
+    // MockWebServer
+    testImplementation(libs.mockwebserver)
+
 }
 kapt {
     correctErrorTypes = true
