@@ -38,10 +38,9 @@ struct DetailsView: View {
             BottomSheetView()
                 .presentationDetents([.fraction(0.15), .medium,])
                 .presentationDragIndicator(.visible)
-                .presentationBackgroundInteraction(
-                    .enabled
-                )
+                .presentationBackgroundInteraction(.enabled)
                 .interactiveDismissDisabled()
+                .presentationCornerRadius(40)
         }
     }
     

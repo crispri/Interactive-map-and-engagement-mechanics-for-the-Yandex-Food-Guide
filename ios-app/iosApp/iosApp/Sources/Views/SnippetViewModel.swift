@@ -9,7 +9,7 @@ import Foundation
 
 final class SnippetViewModel: ObservableObject {
     var mapManager = MapManager()
-    @Published var userLocaitonTitle = "2-я Брестская, 1/5"
+    @Published var userLocaitonTitle = "<Здесь будет адрес>"
     
     @Published var snippets: [SnippetDTO] = [
         SnippetDTO(
