@@ -22,7 +22,7 @@ struct BottomSheetView: View {
                 }
                 .scrollTargetLayout()
             }
-            .scrollTargetBehavior(.paging)
+            .scrollTargetBehavior(.viewAligned)
         }
     }
 }

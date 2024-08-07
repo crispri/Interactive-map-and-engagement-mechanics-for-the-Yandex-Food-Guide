@@ -14,7 +14,8 @@ struct DetailsView: View {
     
     var body: some View {
         VStack {
-            MapView()
+            YandexMapView()
+                .edgesIgnoringSafeArea(.all)
                 .environmentObject(viewModel.mapManager)
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -36,7 +37,7 @@ struct DetailsView: View {
         }
         .sheet(isPresented: $isBottomSheetPresented) {
             BottomSheetView()
-                .presentationDetents([.fraction(0.15), .medium,])
+                .presentationDetents([.fraction(0.10), .medium,])
                 .presentationDragIndicator(.visible)
                 .presentationBackgroundInteraction(.enabled)
                 .interactiveDismissDisabled()
