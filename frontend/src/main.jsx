@@ -61,9 +61,10 @@ const TestComponent = () => {
     },
     {
       path: "/map",
-      element: <>
-      <TestComponent/>
-      <MyBottomSheet/>
+      element: 
+      <>
+        <TestComponent/>
+        {/* <MyBottomSheet/> */}
       </>
     },
     {

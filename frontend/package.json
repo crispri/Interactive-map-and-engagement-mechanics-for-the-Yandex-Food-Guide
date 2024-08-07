@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.7",
     "@yandex/ymaps3-types": "^0.0.27",
     "react": "17.0.2",
     "react-dom": "17.0.2",
