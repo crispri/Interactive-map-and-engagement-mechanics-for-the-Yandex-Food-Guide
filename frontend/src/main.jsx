@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import App from './components/app/App.jsx'
 import MyBottomSheet from './components/bottomsheet/MyBottomSheet.jsx'
 import './index.css'
-import { useState } from 'react'
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -20,13 +20,19 @@ const LOCATION = {
 
 async function main() {
 
-  const [ymaps3React] = await Promise.all([ymaps3.import('@yandex/ymaps3-reactify'), ymaps3.ready]);
-  const reactify = ymaps3React.reactify.bindTo(React, ReactDOM);
-  const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker, YMapControls} = reactify.module(ymaps3);
-  const {YMapGeolocationControl, YMapZoomControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-controls@0.0.1'));
+const [ymaps3React] = await Promise.all([ymaps3.import('@yandex/ymaps3-reactify'), ymaps3.ready]);
+const reactify = ymaps3React.reactify.bindTo(React, ReactDOM);
+const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker, YMapControls, YMapListener} = reactify.module(ymaps3);
+const {YMapGeolocationControl, YMapZoomControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-controls@0.0.1'));
 
 const TestComponent = () => {
+  const [currentPolygon, setCurrentPolygon] = React.useState(null);
+  const updateHandler = (obj) => {
+    setCurrentPolygon(obj.location.bounds)
+  }
+
  return (
+ <>
   <div style={{width: '100%', height: '100%'}}>
     <YMap location={LOCATION} showScaleInCopyrights={true} ref={(x) => (map = x)}>
       <YMapDefaultSchemeLayer />
@@ -36,6 +42,7 @@ const TestComponent = () => {
           <Pin/>
         </YMapMarker>
       ))}
+      <YMapListener onUpdate={updateHandler}/>
       <YMapControls position="left">
           {/* Add the geolocation control to the map */}
           <YMapGeolocationControl />
@@ -43,6 +50,8 @@ const TestComponent = () => {
       </YMapControls>
     </YMap>    
   </div>
+  <MyBottomSheet />
+ </>
  )
 }
   const router = createBrowserRouter([
