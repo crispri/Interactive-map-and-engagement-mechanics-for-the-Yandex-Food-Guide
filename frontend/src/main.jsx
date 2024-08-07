@@ -25,10 +25,7 @@ async function main() {
   const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker, YMapControls} = reactify.module(ymaps3);
   const {YMapGeolocationControl, YMapZoomControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-controls@0.0.1'));
 
-  console.dir(ymaps3.YMap);
-
 const TestComponent = () => {
-
  return (
   <div style={{width: '100%', height: '100%'}}>
     <YMap location={LOCATION} showScaleInCopyrights={true} ref={(x) => (map = x)}>
@@ -55,9 +52,10 @@ const TestComponent = () => {
     },
     {
       path: "/map",
-      element: <>
-      <TestComponent/>
-      <MyBottomSheet/>
+      element: 
+      <>
+        <TestComponent/>
+        {/* <MyBottomSheet/> */}
       </>
     },
     {
