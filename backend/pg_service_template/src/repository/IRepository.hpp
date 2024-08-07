@@ -2,6 +2,18 @@
 #include <vector>
 #include <string>
 
+
+/*
+ * IRestaurantRepository
+ *
+ * std::vector<TRestaurant>
+ *
+ * + ходить в файлик не только для моков
+ *
+ *
+ * 
+ */
+
 namespace service {
 
 template <typename T>

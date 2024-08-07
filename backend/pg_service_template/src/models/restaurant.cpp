@@ -1,7 +1,7 @@
 #include "restaurant.hpp"
 #include <userver/formats/json/value_builder.hpp>
 #include <lib/time_parser.hpp>
-
+#include <boost/uuid/uuid_io.hpp>
 #include <userver/logging/log.hpp>
 
 
@@ -13,7 +13,7 @@ userver::formats::json::Value Serialize(
 )
 {
     userver::formats::json::ValueBuilder item;
-    item["id"] = restaurant.id;
+    item["id"] = boost::uuids::to_string(restaurant.id);
     item["coordinates"] = restaurant.coordinates;
     item["name"] = restaurant.name;
     item["description"] = restaurant.description;
@@ -36,7 +36,7 @@ userver::formats::json::Value Serialize(
 }
 
 std::tuple<
-    std::string&,
+    boost::uuids::uuid&,
     double&,
     double&,
     std::string&,
