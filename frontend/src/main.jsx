@@ -1,21 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/app/App.jsx'
 import MyBottomSheet from './components/bottomsheet/MyBottomSheet.jsx'
 import './index.css'
+import { store } from './lib/store.js'
+import { Provider, useDispatch } from 'react-redux'
+import useDebounce from './lib/useDebounce.js'
+import { getRestaurants } from './lib/restaurantsSlice.js'
 
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import Pin from './components/pin/Pin.jsx'
-import { COORDINATES } from './assets/variables.js'
+import { _apiUrl, COORDINATES } from './assets/variables.js'
 
 window.map = null;
 main();
 const LOCATION = {
-  center: [37.623082, 55.75254], // starting position [lng, lat]
-  zoom: 12 // starting zoom
+  bounds: [
+    [36.80247982617612, 56.562308221456746],
+    [38.28586537185843, 54.744847233097076]
+  ],
+  // center: [37.623082, 55.75254], // starting position [lng, lat]
+  // zoom: 12 // starting zoom
 };
 
 async function main() {
@@ -26,10 +34,27 @@ const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker, YMapC
 const {YMapGeolocationControl, YMapZoomControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-controls@0.0.1'));
 
 const TestComponent = () => {
-  const [currentPolygon, setCurrentPolygon] = React.useState(null);
+  const [currentPolygon, setCurrentPolygon] = React.useState(LOCATION.bounds);
+  const dispatch = useDispatch()
   const updateHandler = (obj) => {
     setCurrentPolygon(obj.location.bounds)
   }
+  const debouncedValue = useDebounce(currentPolygon, 500);
+
+  useEffect(() => {
+    console.log('debouncedValue', debouncedValue);
+    dispatch(getRestaurants({
+      "lower_left_corner": {
+        "lat": debouncedValue[0][1],
+        "lon": debouncedValue[0][0]
+      },
+      "top_right_corner": {
+        "lat": debouncedValue[1][1],
+        "lon": debouncedValue[1][0]
+      },
+      "max_count": 0
+    }))
+  }, [debouncedValue])
 
  return (
  <>
@@ -87,8 +112,11 @@ const TestComponent = () => {
   ]);
 
 
-ReactDOM.render( <RouterProvider router={router} />, 
-
-document.getElementById('root')
-);
+  ReactDOM.render( 
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  , 
+    document.getElementById('root')
+  );
 }
