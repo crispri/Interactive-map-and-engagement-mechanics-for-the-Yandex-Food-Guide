@@ -1,8 +1,7 @@
 #include "restaurants.hpp"
-#include <models/coordinates.hpp>
 #include <lib/error_response_builder.hpp>
+#include <models/coordinates.hpp>
 #include <models/restaurant.hpp>
-#include <repository/restaurant_repository.hpp>
 
 #include <fmt/format.h>
 
@@ -14,6 +13,10 @@
 #include <userver/storages/postgres/cluster.hpp>
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
+
+#include <boost/uuid/string_generator.hpp>
+
+#include <service/RestaurantService.hpp>
 
 namespace service {
 
@@ -81,9 +84,9 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
           request_body_json["top_right_corner"].As<TCoordinates>()
       );
 
-      RestaurantRepository repo(pg_cluster_);
-      auto restaurants = repo.GetByFilter(filters);
+      RestaurantService service(pg_cluster_);
 
+      auto restaurants = service.GetByFilter(filters);
       userver::formats::json::ValueBuilder responseJSON;
       responseJSON["items"].Resize(0);
       for (auto& restaurant : restaurants) {
