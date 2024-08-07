@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SnippetDTO: Codable {
+struct SnippetDTO: Codable, Hashable {
     let id: Int64
     let lat: Double
     let lon: Double

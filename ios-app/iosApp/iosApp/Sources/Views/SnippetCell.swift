@@ -11,7 +11,6 @@ var textNames = ["1000-2500р", "Европейская", "Коктейли", "�
 var imageRest = ["1rest", "2rest", "3rest"]
 
 struct SnippetCell: View {
-    @EnvironmentObject var viewModel: SnippetViewModel
     @State var restaurant: SnippetDTO
     @State private var currentPage = 0
 
