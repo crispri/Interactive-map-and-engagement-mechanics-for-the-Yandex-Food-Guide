@@ -45,7 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.feature1.R
+import com.example.feature.R
 import com.yandex.mapkit.mapview.MapView
 import ui.BigCard
 import ui.CardWithImageAndText
@@ -193,7 +193,7 @@ fun CollectionCarousel() {
                 Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
             }
             CardWithImageAndText(
-                painterResource(id = com.example.core1.R.drawable.hardcode_picture_of_cafe),
+                painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
                 "Kalabasa",
                 "Крутое место",
                 {},
