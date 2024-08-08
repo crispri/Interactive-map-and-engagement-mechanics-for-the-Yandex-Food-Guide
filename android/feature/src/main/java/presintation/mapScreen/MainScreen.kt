@@ -1,7 +1,8 @@
 package presintation.mapScreen
 
-import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -35,8 +36,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableFloatStateOf
@@ -45,9 +48,11 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -61,12 +66,13 @@ import model.NavigateToLocationEvent
 import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
+import custom_bottom_sheet.rememberBottomSheetState
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
     uiState: MainUiState,
@@ -74,23 +80,41 @@ fun MainScreen(
     send: (Event) -> Unit,
     mapView: MapView
 ) {
-    val bottomSheetState = rememberBottomSheetScaffoldState()
-    val offsetState = remember { mutableFloatStateOf(-96f) }
 
-    LaunchedEffect(bottomSheetState.bottomSheetState) {
-        snapshotFlow { bottomSheetState.bottomSheetState.requireOffset() }
+    val offsetState = remember { mutableFloatStateOf(-96f) }
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
+    val sheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        defineValues = {
+            SheetValue.Hidden at height(100.dp)
+            SheetValue.PartiallyExpanded at offset(percent = 60)
+            SheetValue.Expanded at contentHeight
+        }
+    )
+
+    val bottomSheetState = custom_bottom_sheet.rememberBottomSheetScaffoldState(
+        sheetState = sheetState
+    )
+
+    LaunchedEffect(bottomSheetState.sheetState) {
+        snapshotFlow { bottomSheetState.sheetState.requireOffset() }
             .collect { offset ->
                 offsetState.floatValue = offset
             }
     }
+
+
+
     Box(modifier = Modifier.fillMaxSize()) {
-        BottomSheetScaffold(
+        custom_bottom_sheet.BottomSheetScaffold(
             scaffoldState = bottomSheetState,
             sheetContent = {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 600.dp)
+                        .heightIn(max = screenHeight - 240.dp, min = 80.dp)
                         .background(Color.White)
                 ) {
                     Carousel()
@@ -98,7 +122,6 @@ fun MainScreen(
                     BottomSheetContent(uiState.restaurantsOnMap)
                 }
             },
-            sheetPeekHeight = 80.dp,
             sheetContainerColor = Color.White
         ) {
             Box(
@@ -237,12 +260,12 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
     LazyRow(
         modifier = Modifier
             .height(90.dp)
-            .padding(horizontal = 6.dp) // Отступы в начале и в конце
-            .background(Color.White)
+            .padding(horizontal = 6.dp)
+            .background(Color.Transparent)
     ) {
         itemsIndexed(recommendations) { index, item ->
             if (index > 0) {
-                Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
+                Spacer(modifier = Modifier.width(6.dp))
             }
             CardWithImageAndText(
                 painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
