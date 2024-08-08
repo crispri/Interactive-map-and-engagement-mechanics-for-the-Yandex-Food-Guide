@@ -1,7 +1,8 @@
 #include "restaurants.hpp"
-#include "../../../../models/coordinates.hpp"
-#include "../../../../lib/error_response_builder.hpp"
-#include "../../../../models/restaurant.hpp"
+#include <models/coordinates.hpp>
+#include <lib/error_response_builder.hpp>
+#include <models/restaurant.hpp>
+#include <repository/restaurant_repository.hpp>
 
 #include <fmt/format.h>
 
@@ -52,14 +53,8 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
         );
       }
 
-      /*
-        TODO:
-          - Проверка авторизации пользователя.
-      */
-      
       const auto& request_body_string = request.RequestBody();
       userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
-
 
       if (!request_body_json.HasMember("lower_left_corner") && !request_body_json.HasMember("top_right_corner")) {
         return errorBuilder.build(
@@ -67,6 +62,7 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
             ErrorDescriprion::kCornersNotSpecified
         );
       }
+
       if (!request_body_json.HasMember("lower_left_corner")) {
         return errorBuilder.build(
             userver::server::http::HttpStatus::kBadRequest,
@@ -80,25 +76,17 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
         );
       }
 
-      // auto lower_left_corner = request_body_json["lower_left_corner"].As<TCoordinates>();
-      // auto top_right_corner = request_body_json["top_right_corner"].As<TCoordinates>();
-      
+      TRestaurantFilter filters(
+          request_body_json["lower_left_corner"].As<TCoordinates>(),
+          request_body_json["top_right_corner"].As<TCoordinates>()
+      );
+
+      RestaurantRepository repo(pg_cluster_);
+      auto restaurants = repo.GetByFilter(filters);
+
       userver::formats::json::ValueBuilder responseJSON;
       responseJSON["items"].Resize(0);
-
-      for (int i = 0; i < 5; ++i) {
-        TRestaurant restaurant;
-        restaurant.id = "some uuid";
-        restaurant.address = "ул пушкина";
-        restaurant.coordinates = {1.28, 12.37};
-        restaurant.description = "описание";
-        restaurant.is_approved = false;
-        restaurant.is_favorite = false;
-        restaurant.name = "мак";
-        restaurant.price_lower_bound = 238;
-        restaurant.price_upper_bound = 137;
-        restaurant.rating = 2.8;
-        restaurant.tags = {"tag 1", "tag 2"};
+      for (auto& restaurant : restaurants) {
         responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
       }
       
@@ -108,7 +96,7 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
       );
     }
 
-  userver::storages::postgres::ClusterPtr pg_cluster_;
+    userver::storages::postgres::ClusterPtr pg_cluster_;
 };
 
 }  // namespace

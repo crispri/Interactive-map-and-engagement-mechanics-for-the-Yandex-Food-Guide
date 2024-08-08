@@ -12,6 +12,7 @@ composeBom = "2024.04.01"
 map = "4.7.0-lite"
 appcompat = "1.7.0"
 material = "1.12.0"
+mockwebserver = "4.9.3"
 navigationRuntimeKtx = "2.7.7"
 graphicsShapesAndroid = "1.0.0-rc01"
 dagger-hilt = "2.48"
@@ -39,6 +40,7 @@ hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagg
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-graphics-shapes-android = { group = "androidx.graphics", name = "graphics-shapes-android", version.ref = "graphicsShapesAndroid" }
+mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
 
 
 [plugins]

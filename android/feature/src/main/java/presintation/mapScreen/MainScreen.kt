@@ -53,6 +53,7 @@ import androidx.core.content.ContextCompat
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
+import com.example.feature.R
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import model.Event

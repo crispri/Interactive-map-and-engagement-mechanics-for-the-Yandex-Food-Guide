@@ -1,25 +1,20 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+
 }
 
 android {
-    namespace = "com.example.yandexmapeat"
+    namespace = "com.example.feature"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.yandexmapeat"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -31,6 +26,12 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -38,21 +39,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
+
 }
 
 dependencies {
-    implementation(project(":feature"))
+    implementation(project(":core"))
+
+    // mapkit
+    implementation(libs.map.kit)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -62,17 +56,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
-    // mapkit
-    implementation(libs.map.kit)
-
-    //DI - Hilt
-    implementation(libs.hilt)
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
-    implementation("androidx.fragment:fragment-ktx:1.8.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -81,6 +64,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Navigation
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -89,8 +75,15 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    //DI - Hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation("androidx.fragment:fragment-ktx:1.8.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
     // MockWebServer
     testImplementation(libs.mockwebserver)
+
 }
 kapt {
     correctErrorTypes = true

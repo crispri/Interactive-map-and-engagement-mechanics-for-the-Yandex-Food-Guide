@@ -23,6 +23,7 @@ endif()
 
 userver_setup_environment()
 
+include_directories("src/")
 
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
@@ -32,10 +33,18 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/models/coordinates.cpp
     src/models/restaurant.hpp
     src/models/restaurant.cpp
+    src/models/restaurant_filter.hpp
+    src/models/restaurant_filter.cpp
     src/lib/error_description.hpp
     src/lib/error_description.cpp
     src/lib/error_response_builder.hpp
     src/lib/error_response_builder.cpp
+    src/lib/time_parser.hpp
+    src/lib/time_parser.cpp
+    src/repository/restaurant_repository.hpp
+    src/repository/restaurant_repository.cpp
+    src/repository/IRepository.hpp
+    src/repository/IRepositoryWithFilter.hpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

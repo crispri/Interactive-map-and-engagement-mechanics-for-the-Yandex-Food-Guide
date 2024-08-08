@@ -4,3 +4,5 @@ export const COORDINATES = [
 	[37.295, 55.415],
 	[37.565729, 55.742927]
 ]
+
+export const _apiUrl = import.meta.env.VITE_API_URL;
