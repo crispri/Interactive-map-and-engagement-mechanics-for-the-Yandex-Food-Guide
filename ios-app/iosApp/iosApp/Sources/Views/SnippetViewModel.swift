@@ -17,8 +17,32 @@ final class SnippetViewModel: ObservableObject {
     
     func eventOnAppear() {
         eventFetchUserLocation()
-        mapManager.placePins(snippets)
-        mapManager.centerCamera(to: .pins)
+        Task {
+            print("Task started")
+            
+            do {
+                let res = try await loadSnippets(
+                    lowerLeftCorner: Point(
+                        lat: 55.582003,
+                        lon: 37.363641
+                    ),
+                    topRightCorner: Point(
+                        lat: 55.895010,
+                        lon: 37.852533
+                    )
+                )
+                
+                for i in 0..<res.count{
+                    print(
+                        res[i].address
+                    )}
+                print("Task finished")
+            }
+            catch {
+                print(error)
+            }
+            print("request sent")
+        }
     }
     
     func eventFetchUserLocation() {
@@ -26,6 +50,7 @@ final class SnippetViewModel: ObservableObject {
     }
     
     public func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
-        return try await networkManager.fetchSnippets(from: lowerLeftCorner, to: topRightCorner)
+        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner)
+        return data
     }
 }
