@@ -26,7 +26,7 @@ struct FilterView: View {
             // TODO: add action.
         } label: {
             Image(systemName: "slider.horizontal.3")
-                .foregroundStyle(.black)
+                .tint(.primary)
                 .padding(10)
                 .background(Color(hex: 0x5C5A57).opacity(0.1))
                 .clipShape(Circle())
@@ -40,7 +40,7 @@ struct FilterView: View {
         } label: {
             Text(title)
                 .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(.black)
+                .tint(.primary)
                 .padding(10)
                 .background(Color(hex: 0x5C5A57).opacity(0.1))
                 .clipShape(Capsule())

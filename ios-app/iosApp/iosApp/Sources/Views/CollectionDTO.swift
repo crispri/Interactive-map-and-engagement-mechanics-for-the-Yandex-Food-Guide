@@ -13,3 +13,38 @@ struct CollectionDTO: Codable, Identifiable {
     let description: String
     let snippets: [Int64]
 }
+
+extension CollectionDTO {
+    static var mockData = [
+        CollectionDTO(
+            name: "Топ-50 ресторанов Москвы",
+            description: "Лучшие рестораны по версии Анатолия",
+            snippets: [0]
+        ),
+        CollectionDTO(
+            name: "Топ-49 ресторанов Москвы",
+            description: "Лучшие рестораны по версии Анатолия",
+            snippets: [0]
+        ),
+        CollectionDTO(
+            name: "Топ-48 ресторанов Москвы",
+            description: "Лучшие рестораны по версии Анатолия",
+            snippets: [0]
+        ),
+        CollectionDTO(
+            name: "Топ-50 ресторанов Москвы",
+            description: "Лучшие рестораны по версии Анатолия",
+            snippets: [0]
+        ),
+        CollectionDTO(
+            name: "Топ-49 ресторанов Москвы",
+            description: "Лучшие рестораны по версии Анатолия",
+            snippets: [0]
+        ),
+        CollectionDTO(
+            name: "Топ-48 ресторанов Москвы",
+            description: "Лучшие рестораны по версии Анатолия",
+            snippets: [0]
+        ),
+    ]
+}

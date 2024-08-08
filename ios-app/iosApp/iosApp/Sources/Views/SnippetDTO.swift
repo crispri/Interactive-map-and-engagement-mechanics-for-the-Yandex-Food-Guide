@@ -67,3 +67,48 @@ struct SnippetDTO: Codable, Hashable {
         case closeTime = "close_time"
     }
 }
+
+extension SnippetDTO {
+    static var mockData = [
+        SnippetDTO(
+            id: "0",
+            coordinates: Coordinates(lat: 55.74048502788512, lon: 37.610338866258985),
+            name: "Сыроварня",
+            description: "Крупная сеть ресторанов с собственным сырным производством",
+            address: "Берсеневский пер., 2, стр.1, Москва, 119072",
+            rating: 5,
+            priceLowerBound: 1200,
+            priceUpperBound: 6000
+        ),
+        SnippetDTO(
+            id: "1",
+            coordinates: Coordinates(lat: 55.755956, lon: 37.643203),
+            name: "Blanc",
+            description: "Ресторан авторской кухни, расположенный в исторической части города",
+            address: "Хохловский переулок, 7-9с2",
+            rating: 5,
+            priceLowerBound: 1200,
+            priceUpperBound: 6000
+        ),
+        SnippetDTO(
+            id: "2",
+            coordinates: Coordinates(lat: 55.762986, lon: 37.634945),
+            name: "Lions Head",
+            description: "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
+            address: "Мясницкая улица, 15",
+            rating: 5,
+            priceLowerBound: 1200,
+            priceUpperBound: 6000
+        ),
+        SnippetDTO(
+            id: "3",
+            coordinates: Coordinates(lat: 55.804959, lon: 37.589506),
+            name: "Ya Cafe",
+            description: "Здесь вы найдете красивый зал, а также вкусное и разнообразное меню.",
+            address: "Новодмитровская улица, 2к1",
+            rating: 5,
+            priceLowerBound: 1200,
+            priceUpperBound: 6000
+        )
+    ]
+}

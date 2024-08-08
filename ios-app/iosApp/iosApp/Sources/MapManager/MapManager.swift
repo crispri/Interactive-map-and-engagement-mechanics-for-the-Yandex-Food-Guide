@@ -10,52 +10,18 @@ import CoreLocation
 import YandexMapsMobile
 
 class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
-    private let manager = CLLocationManager()
     let mapView = YMKMapView(frame: CGRect.zero)
-    @Published var lastUserLocation: CLLocation? = nil
-    lazy var map : YMKMap = {
-        return mapView?.mapWindow.map ?? .init()
-    }()
+    private lazy var map : YMKMap = {  return mapView?.mapWindow.map ?? .init() }()
+    private let manager = CLLocationManager()
+    private var targetPin: YMKPoint = .init()
     
     override init() {
         super.init()
         self.manager.delegate = self
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
-    }
-    
-    func currentUserLocation() {
-        if let myLocation = lastUserLocation {
-            centerMapLocation(
-                target: YMKPoint(
-                    latitude: myLocation.coordinate.latitude,
-                    longitude: myLocation.coordinate.longitude
-                ),
-                map: mapView ?? .init()
-            )
-        } else if let myLocation = manager.location {
-            centerMapLocation(
-                target: YMKPoint(
-                    latitude: myLocation.coordinate.latitude,
-                    longitude: myLocation.coordinate.longitude
-                ),
-                map: mapView ?? .init()
-            )
-        } else {
-            print("Failed to get user location")
-        }
-    }
-    
-    func centerMapLocation(target location: YMKPoint?, map: YMKMapView) {
-        guard let location = location else {
-            print("Failed to get user location")
-            return
-        }
         
-        map.mapWindow.map.move(
-            with: YMKCameraPosition(target: location, zoom: 18, azimuth: 0, tilt: 0),
-            animation: YMKAnimation(type: YMKAnimationType.smooth, duration: 0.5)
-        )
+        map.isAwesomeModelsEnabled = true
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -64,24 +30,72 @@ class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        self.lastUserLocation = locations.last
-    }
-    
-    func addPoints() {
+    func placePins(_ models: [SnippetDTO]) {
         let iconStyle = YMKIconStyle()
         let image = UIImage(named: "pin") ?? UIImage()
         
-        let placemark1 = map.mapObjects.addPlacemark()
-        placemark1.geometry = .init(latitude: 55.733766, longitude: 37.589872)
-        placemark1.setIconWith(image, style: iconStyle)
+        for model in models {
+            let placemark = map.mapObjects.addPlacemark()
+            placemark.geometry = .init(
+                latitude: model.coordinates.lat,
+                longitude: model.coordinates.lon
+            )
+            placemark.setIconWith(image, style: iconStyle)
+        }
         
-        let placemark2 = map.mapObjects.addPlacemark()
-        placemark2.geometry = .init(latitude: 55.732964, longitude: 37.589473)
-        placemark2.setIconWith(image, style: iconStyle)
+        guard let model = models.first else { return }
+        targetPin = .init(
+            latitude: model.coordinates.lat,
+            longitude: model.coordinates.lon
+        )
+    }
+    
+    func centerCamera(to option: CameraTargetOption) {
+        switch option {
+        case .user:
+            guard let userLocation = manager.location else { return }
+            centerMapLocation(
+                target: YMKPoint(
+                    latitude: userLocation.coordinate.latitude,
+                    longitude: userLocation.coordinate.longitude
+                ),
+                map: mapView ?? .init()
+            )
+        case .pins:
+            centerMapLocation(
+                target: targetPin,
+                map: mapView ?? .init()
+            )
+        }
+    }
+    
+    func getScreenPoints() -> (lowerLeftCorner: Point, topRightCorner: Point) {
+        let lowerLeftScreenPoint = YMKScreenPoint(x: 0, y: Float(mapView?.mapWindow.height() ?? 0))
+        let topRightScreenPoint = YMKScreenPoint(x: Float(mapView?.mapWindow.width() ?? 0), y: 0)
         
-        let placemark3 = map.mapObjects.addPlacemark()
-        placemark3.geometry = .init(latitude: 55.733240, longitude: 37.590344)
-        placemark3.setIconWith(image, style: iconStyle)
+        let lowerLeftWorldPoint = mapView?.mapWindow.screenToWorld(with: lowerLeftScreenPoint) ?? YMKPoint()
+        let topRightWorldPoint = mapView?.mapWindow.screenToWorld(with: topRightScreenPoint) ?? YMKPoint()
+        
+        return (
+            lowerLeftCorner: .init(lat: lowerLeftWorldPoint.latitude, lon: lowerLeftWorldPoint.longitude),
+            topRightCorner: .init(lat: topRightWorldPoint.latitude, lon: topRightWorldPoint.longitude)
+        )
+    }
+    
+    private func centerMapLocation(target location: YMKPoint?, map: YMKMapView) {
+        guard let location = location else {
+            print("Failed to get user location")
+            return
+        }
+        
+        map.mapWindow.map.move(
+            with: YMKCameraPosition(target: location, zoom: 16, azimuth: 0, tilt: 0),
+            animation: YMKAnimation(type: YMKAnimationType.smooth, duration: 0.5)
+        )
+    }
+    
+    enum CameraTargetOption {
+        case user
+        case pins
     }
 }

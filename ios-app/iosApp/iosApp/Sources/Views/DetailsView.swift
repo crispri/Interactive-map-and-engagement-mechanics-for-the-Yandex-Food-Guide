@@ -14,7 +14,8 @@ struct DetailsView: View {
     
     var body: some View {
         VStack {
-            MapView()
+            YandexMapView()
+                .edgesIgnoringSafeArea(.all)
                 .environmentObject(viewModel.mapManager)
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -36,12 +37,11 @@ struct DetailsView: View {
         }
         .sheet(isPresented: $isBottomSheetPresented) {
             BottomSheetView()
-                .presentationDetents([.fraction(0.15), .medium,])
+                .presentationDetents([.fraction(0.10), .medium,])
                 .presentationDragIndicator(.visible)
-                .presentationBackgroundInteraction(
-                    .enabled
-                )
+                .presentationBackgroundInteraction(.enabled)
                 .interactiveDismissDisabled()
+                .presentationCornerRadius(40)
         }
     }
     
@@ -61,7 +61,7 @@ struct DetailsView: View {
     
     private var userLocationButton: some View {
         Button {
-            viewModel.eventFetchUserLocation()
+            viewModel.eventCenterCamera(to: .user)
         } label: {
             VStack(spacing: 0) {
                 HStack(spacing: 4) {
