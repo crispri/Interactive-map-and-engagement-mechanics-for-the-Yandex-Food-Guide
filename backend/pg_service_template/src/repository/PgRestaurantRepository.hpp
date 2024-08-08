@@ -12,7 +12,7 @@ class PgRestaurantRepository : public IRestaurantRepository {
     const std::string kTableName_;
 
 public:
-    PgRestaurantRepository(const userver::storages::postgres::ClusterPtr& pg_cluster);
+    explicit PgRestaurantRepository(const userver::storages::postgres::ClusterPtr& pg_cluster);
 
     std::vector<TRestaurant> GetAll() override;
     std::optional<TRestaurant> GetById(const boost::uuids::uuid& id) override;

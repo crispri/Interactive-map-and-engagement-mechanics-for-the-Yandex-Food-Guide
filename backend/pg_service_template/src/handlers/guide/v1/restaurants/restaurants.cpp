@@ -10,12 +10,11 @@
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
-#include <userver/storages/postgres/cluster.hpp>
-#include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
 #include <boost/uuid/string_generator.hpp>
 
+#include <components/RestaurantServiceComponent.hpp>
 #include <service/RestaurantService.hpp>
 
 namespace service {
@@ -35,10 +34,10 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
         config,
         component_context
     ),
-    pg_cluster_(
-      component_context
-        .FindComponent<userver::components::Postgres>("postgres-db-1")
-        .GetCluster()
+    restaurant_service_(
+        component_context
+        .FindComponent<RestaurantServiceComponent>()
+        .GetService()
     )
     {}
 
@@ -84,9 +83,7 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
           request_body_json["top_right_corner"].As<TCoordinates>()
       );
 
-      RestaurantService service(pg_cluster_);
-
-      auto restaurants = service.GetByFilter(filters);
+      auto restaurants = restaurant_service_.GetByFilter(filters);
       userver::formats::json::ValueBuilder responseJSON;
       responseJSON["items"].Resize(0);
       for (auto& restaurant : restaurants) {
@@ -99,7 +96,7 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
       );
     }
 
-    userver::storages::postgres::ClusterPtr pg_cluster_;
+    RestaurantService restaurant_service_;
 };
 
 }  // namespace

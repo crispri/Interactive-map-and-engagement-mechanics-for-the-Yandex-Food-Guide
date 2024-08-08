@@ -46,6 +46,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/repository/IRestaurantRepository.hpp
     src/service/RestaurantService.hpp
     src/service/RestaurantService.cpp
+    src/components/RestaurantServiceComponent.hpp
+    src/components/RestaurantServiceComponent.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

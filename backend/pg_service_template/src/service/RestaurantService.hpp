@@ -6,14 +6,15 @@ namespace service {
 
 
 class RestaurantService {
-  std::unique_ptr<IRestaurantRepository> repository_;
+    std::shared_ptr<IRestaurantRepository> repository_;
 
 public:
-  RestaurantService(const userver::storages::postgres::ClusterPtr& pg_cluster);
+    explicit RestaurantService(const userver::storages::postgres::ClusterPtr& pg_cluster);
+    RestaurantService(const RestaurantService& other) = default;
 
-  std::vector<TRestaurant> GetAll();
-  std::optional<TRestaurant> GetById(const boost::uuids::uuid& id);
-  std::vector<TRestaurant> GetByFilter(const TRestaurantFilter& filter);
+    std::vector<TRestaurant> GetAll() const;
+    std::optional<TRestaurant> GetById(const boost::uuids::uuid& id) const;
+    std::vector<TRestaurant> GetByFilter(const TRestaurantFilter& filter) const;
 };
 
 
