@@ -67,10 +67,11 @@ dependencies {
     implementation(libs.map.kit)
 
     //DI - Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
+    implementation(libs.hilt)
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.fragment:fragment-ktx:1.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

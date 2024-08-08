@@ -19,15 +19,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.R
+import model.Restaurant
 
 @Composable
-fun BigCard(id: Int) {
+fun BigCard(restaurant: Restaurant) {
     Card(
         modifier = Modifier
             .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
@@ -40,7 +43,7 @@ fun BigCard(id: Int) {
             modifier = Modifier.padding(8.dp)
         ) {
             Image(
-                painter = painterResource(id = id),
+                painter = painterResource(id = R.drawable.hardcode_picture_of_cafe),
                 contentDescription = "Фото места",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -55,7 +58,7 @@ fun BigCard(id: Int) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Kalabasa",
+                    text = restaurant.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -66,7 +69,7 @@ fun BigCard(id: Int) {
                         contentDescription = "Оценка"
                     )
                     Text(
-                        text = "4.5",
+                        text = restaurant.rating.toString(),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -74,13 +77,13 @@ fun BigCard(id: Int) {
             }
 
             Text(
-                text = "До 23:00 м. Тверская 12мин",
+                text = restaurant.address,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 1.5.dp)
             )
 
             Text(
-                text = "Уютное атмосферное место. Сюда идут за десертами. Доброжелательное обслуживание",
+                text = restaurant.description,
                 fontSize = 14.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(top = 8.dp)

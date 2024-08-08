@@ -1,16 +1,19 @@
 package presintation.navigation
 
-import presintation.homeScreen.HomeScreen
-import presintation.mapScreen.MainScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.yandex.mapkit.mapview.MapView
+import presintation.homeScreen.HomeScreen
+import presintation.mapScreen.MainScreen
+import presintation.mapScreen.MainViewModel
 
 @Composable
-fun AppNavigation(mapView: MapView) {
+fun AppNavigation() {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -24,7 +27,14 @@ fun AppNavigation(mapView: MapView) {
         }
 
         composable(AppDestination.MAP_SCREEN) {
-            MainScreen(actions.onBack, mapView)
+            val mainViewModel: MainViewModel = hiltViewModel()
+            val uiState by mainViewModel.uiState.collectAsState()
+
+            MainScreen(
+                uiState = uiState,
+                navToBack = actions.onBack,
+                send = mainViewModel::send
+            )
         }
 
     }

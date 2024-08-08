@@ -46,7 +46,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
-import com.yandex.mapkit.mapview.MapView
+import model.Event
+import model.Recommendation
+import model.Restaurant
+import model.SaveInCollectionEvent
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
@@ -55,8 +58,9 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    uiState: MainUiState,
     navToBack: () -> Unit,
-    mapView: MapView
+    send: (Event) -> Unit,
 ) {
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val offsetState = remember { mutableFloatStateOf(-96f) }
@@ -79,7 +83,7 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
-                    BottomSheetContent()
+                    BottomSheetContent(uiState.restaurantsOnMap)
                 }
             },
             sheetPeekHeight = 80.dp,
@@ -91,7 +95,7 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                MapScreen(mapView = mapView)
+                MapScreen(uiState)
             }
         }
 
@@ -103,7 +107,7 @@ fun MainScreen(
         ) {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.onSecondary,
-                onClick = {navToBack()},
+                onClick = { navToBack() },
                 shape = CircleShape,
             ) {
                 Image(
@@ -141,7 +145,7 @@ fun MainScreen(
                         )
                     }
                     Text(
-                        text = "Льва Толстого, 16",
+                        text = uiState.currentAddress,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
@@ -153,7 +157,9 @@ fun MainScreen(
 
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.onSurface,
-                onClick = {},
+                onClick = {
+                    send(SaveInCollectionEvent(""))
+                },
                 shape = CircleShape,
             ) {
                 Image(
@@ -172,15 +178,14 @@ fun MainScreen(
                 .offset(y = (-90).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt() - 16) }
         ) {
-            CollectionCarousel()
+            CollectionCarousel(uiState.recommendations)
         }
     }
 }
 
 
 @Composable
-fun CollectionCarousel() {
-    val items = (1..5).map { "Item $it" }
+fun CollectionCarousel(recommendations: List<Recommendation>) {
 
     LazyRow(
         modifier = Modifier
@@ -188,14 +193,14 @@ fun CollectionCarousel() {
             .padding(horizontal = 6.dp) // Отступы в начале и в конце
             .background(Color.White)
     ) {
-        itemsIndexed(items) { index, item ->
+        itemsIndexed(recommendations) { index, item ->
             if (index > 0) {
                 Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
             }
             CardWithImageAndText(
                 painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
-                "Kalabasa",
-                "Крутое место",
+                text = item.title,
+                description = item.description,
                 {},
                 {}
             )
@@ -205,10 +210,11 @@ fun CollectionCarousel() {
 
 
 @Composable
-fun BottomSheetContent() {
+fun BottomSheetContent(
+    restaurants: List<Restaurant>
+) {
     LazyColumn {
-        val list = listOf(R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe)
-        items(list) { item ->
+        items(restaurants) { item ->
             BigCard(item)
         }
     }
