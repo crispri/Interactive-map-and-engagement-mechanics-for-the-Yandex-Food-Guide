@@ -13,7 +13,7 @@ data class MainUiState(
     val restaurantsOnMap: List<Restaurant> = listOf(),
     val recommendations: List<Recommendation> = listOf(),
     val zoomValue: Float = 16.5f,
-    val startLocation: Point = Point(59.9402, 30.315),
+    val centeringIsRequired: Boolean = true,
 
     val listOfRestaurant: List<Restaurant> = listOf(),
     val isLoading: Boolean = false,

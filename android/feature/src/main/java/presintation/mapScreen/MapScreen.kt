@@ -13,24 +13,34 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
+import model.CancelCentering
+import model.Event
 
 @Composable
-fun MapScreen(uiState: MainUiState) {
+fun MapScreen(
+    uiState: MainUiState,
+    send: (Event) -> Unit,
+    mapView: MapView
+) {
 
     AndroidView(
         modifier = Modifier.fillMaxSize(),
-        factory = { context ->
-            MapView(context)
+        factory = {
+            mapView
         },
     )
     { mapView ->
+
         fun moveToStartLocation(startLocation: Point, zoomValue: Float) {
             mapView.mapWindow.map.move(
                 CameraPosition(startLocation, zoomValue, 0.0f, 0.0f)
             )
         }
 
-        moveToStartLocation(Point(55.733415, 37.590042), 14.0f)
+        if (uiState.centeringIsRequired) {
+            moveToStartLocation(uiState.currentDeviceLocation, 14.0f)
+            send(CancelCentering())
+        }
 
         fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
             val drawable = ContextCompat.getDrawable(context, art) ?: return null
@@ -72,7 +82,3 @@ fun MapScreen(uiState: MainUiState) {
         }
     }
 }
-
-
-
-
