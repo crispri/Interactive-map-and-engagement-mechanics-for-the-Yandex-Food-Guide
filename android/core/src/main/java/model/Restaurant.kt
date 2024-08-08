@@ -4,7 +4,7 @@ import com.yandex.mapkit.geometry.Point
 
 data class Restaurant(
     val id: String,
-    val coorinates: Point,
+    val coordinates: Point,
     val name: String,
     val description: String,
     val address: String,
@@ -12,6 +12,8 @@ data class Restaurant(
     val rating: Double,
     val priceLowerBound: Int,
     val priceUpperBound: Int,
+    val openTime: String,
+    val closeTime: String,
+    val isFavorite: Boolean,
     val tags: List<String>,
-    val isFavorite: Boolean
 )

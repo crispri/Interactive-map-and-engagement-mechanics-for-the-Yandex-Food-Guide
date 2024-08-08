@@ -1,5 +1,7 @@
 package presintation.mapScreen
 
+import Utils
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import model.Event
 import model.SaveInCollectionEvent
+import network.util.NetworkState
 import repository.RestaurantRepositoryImpl
 import javax.inject.Inject
 
@@ -26,21 +29,56 @@ class MainViewModel @Inject constructor(
 
     private fun fetchData() {
         viewModelScope.launch {
-            repository.restaurants.collect { restaurants ->
-                _uiState.update {
-                    it.copy(
-                        restaurantsOnMap = restaurants,
-                    )
-                }
-            }
+            repository.getRestaurants("Asd", 55.0, 37.0, 56.0, 38.0, 0)
+                .collect { state ->
+                    when (state) {
+                        is NetworkState.Failure -> {
+                            Log.d("NetworkException", "NetworkFailure")
 
-            repository.recommendations.collect { recommendations ->
-                _uiState.update {
-                    it.copy(
-                        recommendations = recommendations,
-                    )
+                            // Пока не работает бек, возвращаем захардкоженные данные
+                            _uiState.update {
+                                it.copy(
+                                    restaurantsOnMap = Utils.restaurants,
+                                    recommendations = Utils.recommendations,
+                                    listOfRestaurant = Utils.restaurants,
+                                )
+                            }
+                        }
+
+                        is NetworkState.Success -> {
+                            Log.d("NetworkSuccess", "")
+                            _uiState.update {
+                                it.copy(
+                                    restaurantsOnMap = Utils.restaurants,
+                                    recommendations = Utils.recommendations,
+                                    listOfRestaurant = state.data,
+                                )
+                            }
+                        }
+
+                        is NetworkState.Loading -> {
+
+                        }
+
+                        else -> {}
+                    }
                 }
-            }
+
+//            repository.restaurants.collect { restaurants ->
+//                _uiState.update {
+//                    it.copy(
+//                        restaurantsOnMap = restaurants,
+//                    )
+//                }
+//            }
+//
+//            repository.recommendations.collect { recommendations ->
+//                _uiState.update {
+//                    it.copy(
+//                        recommendations = recommendations,
+//                    )
+//                }
+//            }
         }
     }
 
