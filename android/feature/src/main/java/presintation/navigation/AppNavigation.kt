@@ -1,19 +1,22 @@
 package presintation.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.yandex.mapkit.mapview.MapView
 import presintation.homeScreen.HomeScreen
 import presintation.mapScreen.MainScreen
 import presintation.mapScreen.MainViewModel
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(mapView: MapView) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -33,7 +36,8 @@ fun AppNavigation() {
             MainScreen(
                 uiState = uiState,
                 navToBack = actions.onBack,
-                send = mainViewModel::send
+                send = mainViewModel::send,
+                mapView = mapView
             )
         }
 

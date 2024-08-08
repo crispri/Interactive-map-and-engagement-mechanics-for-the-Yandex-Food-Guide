@@ -1,5 +1,12 @@
 package presintation.mapScreen
 
+import android.content.Context
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -47,7 +55,9 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
+import com.yandex.mapkit.mapview.MapView
 import model.Event
+import model.NavigateToLocationEvent
 import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
@@ -62,6 +72,7 @@ fun MainScreen(
     uiState: MainUiState,
     navToBack: () -> Unit,
     send: (Event) -> Unit,
+    mapView: MapView
 ) {
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val offsetState = remember { mutableFloatStateOf(-96f) }
@@ -96,7 +107,7 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                MapScreen(uiState)
+                MapScreen(uiState, send, mapView)
             }
         }
 
@@ -183,7 +194,38 @@ fun MainScreen(
                 .offset(y = (-90).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt() - 16) }
         ) {
-            CollectionCarousel(uiState.recommendations)
+            Column {
+
+                AnimatedVisibility(
+                    visible = offsetState.floatValue > 800.0f,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically()
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier
+                            .padding(start = 8.dp, end = 8.dp)
+                            .fillMaxWidth()
+                    ) {
+                        FloatingActionButton(
+                            containerColor = MaterialTheme.colorScheme.onSecondary,
+                            onClick = {
+                                send(NavigateToLocationEvent())
+                            },
+                            shape = CircleShape,
+                        ) {
+                            Image(
+                                modifier = Modifier.size(28.dp, 28.dp),
+                                painter = painterResource(R.drawable.ic_navigate_to_location),
+                                contentDescription = "go_to_current_location",
+                                colorFilter = ColorFilter.tint(Color.Black)
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                CollectionCarousel(uiState.recommendations)
+            }
         }
     }
 }

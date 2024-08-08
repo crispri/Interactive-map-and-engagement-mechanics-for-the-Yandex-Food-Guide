@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import model.CancelCentering
 import model.Event
+import model.NavigateToLocationEvent
 import model.SaveInCollectionEvent
 import network.util.NetworkState
 import repository.RestaurantRepositoryImpl
@@ -87,6 +89,17 @@ class MainViewModel @Inject constructor(
             is SaveInCollectionEvent -> {
                 saveInCollection(event.restaurantId)
             }
+            is NavigateToLocationEvent -> {
+                _uiState.update {
+                    it.copy( centeringIsRequired = true)
+                }
+            }
+            is CancelCentering -> {
+                _uiState.update {
+                    it.copy( centeringIsRequired = false)
+                }
+            }
+
 
 
         }
