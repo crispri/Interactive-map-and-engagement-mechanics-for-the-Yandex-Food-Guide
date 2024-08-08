@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
+import model.Coordinates
+import network.api.RequestBody
 import network.api.YandexMapEatApi
 import network.util.toToken
 import okhttp3.mockwebserver.MockResponse
@@ -29,7 +31,7 @@ class ApiServiceTest {
 
         val gson: Gson = GsonBuilder().create()
         val retrofit = Retrofit.Builder()
-            .baseUrl(mockWebServer.url("http://51.250.39.97:8080/"))
+            .baseUrl(mockWebServer.url("/51.250.39.97:8080/"))
             //.baseUrl(mockWebServer.url("/"))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -75,7 +77,7 @@ class ApiServiceTest {
         mockWebServer.enqueue(mockResponse)
 
         // Запрос к API
-        val response = apiService.getRestaurants("Asd".toToken(), 55, 37, 56, 38, //0
+        val response = apiService.getRestaurants("Asd".toToken(), requestBody = RequestBody(Coordinates(55.0, 37.0), Coordinates(56.0, 38.0,))
              )
 
         // Проверка результата
@@ -94,7 +96,7 @@ class ApiServiceTest {
         mockWebServer.enqueue(mockResponse)
 
         try {
-            val list = apiService.getRestaurants("Asd".toToken(), 55, 37, 56, 38, // 0
+            val list = apiService.getRestaurants("Asd".toToken(), requestBody = RequestBody(Coordinates(55.0, 37.0), Coordinates(56.0, 38.0,))
             )
             assertTrue(false)
         } catch (e: Exception) {
@@ -116,7 +118,7 @@ class ApiServiceTest {
 
         // Запрос к API
         try {
-            apiService.getRestaurants("Asd".toToken(), 55, 37, 56, 38, // 0
+            apiService.getRestaurants("Asd".toToken(), requestBody = RequestBody(Coordinates(55.0, 37.0), Coordinates(56.0, 38.0,))
             )
             assertTrue(false)
         } catch (e: Exception) {

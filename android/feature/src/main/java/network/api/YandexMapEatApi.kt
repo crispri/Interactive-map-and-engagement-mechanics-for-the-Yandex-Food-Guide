@@ -12,15 +12,13 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface YandexMapEatApi {
+
     @POST("guide/v1/restaurants")
     suspend fun getRestaurants(
         @Header("Authorization") token: String,
+        @Header("Accept") accept: String = "application/json",
+        @Header("Content-Type") contentType: String = "application/json",
         @Body requestBody: RequestBody,
-//        @Query("lower_left_lat") lowerLeftLat: Int,
-//        @Query("lower_left_lon") lowerLeftLon: Int,
-//        @Query("top_right_lat") topRightLat: Int,
-//        @Query("top_right_lon") topRightLon: Int,
-        //@Query("max_count") maxCount: Int
     ): RestaurantListResponseForJson
 
     @PUT("guide/v1/restaurants/{id}")
@@ -35,5 +33,5 @@ interface YandexMapEatApi {
 data class RequestBody(
     @SerializedName("lower_left_corner") val lowerLeftCorner: Coordinates,
     @SerializedName("top_right_corner") val topRightCorner: Coordinates,
-    @SerializedName("max_count") val maxCount: Int
+    // @SerializedName("max_count") val maxCount: Int
 )

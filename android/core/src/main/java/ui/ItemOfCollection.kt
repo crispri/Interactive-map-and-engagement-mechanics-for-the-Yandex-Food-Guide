@@ -19,15 +19,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.R
 import model.Restaurant
+import java.text.DecimalFormat
 
 @Composable
 fun BigCard(restaurant: Restaurant) {
@@ -69,9 +69,9 @@ fun BigCard(restaurant: Restaurant) {
                         contentDescription = "Оценка"
                     )
                     Text(
-                        text = restaurant.rating.toString(),
+                        text = DecimalFormat("#.#").format(restaurant.rating).toString(),
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             }
@@ -86,7 +86,10 @@ fun BigCard(restaurant: Restaurant) {
                 text = restaurant.description,
                 fontSize = 14.sp,
                 color = Color.Gray,
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier.padding(top = 8.dp),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                lineHeight = 15.sp,
             )
 
             val itemsList = listOf(
