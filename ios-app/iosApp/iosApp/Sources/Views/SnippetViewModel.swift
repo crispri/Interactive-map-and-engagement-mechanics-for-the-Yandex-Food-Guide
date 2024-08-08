@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class SnippetViewModel: ObservableObject {
     @Published var userLocaitonTitle = "<Здесь будет адрес>"
     @Published var snippets = SnippetDTO.mockData
@@ -16,7 +17,7 @@ final class SnippetViewModel: ObservableObject {
     private let networkManager = NetworkManager()
     
     func eventOnAppear() {
-        eventFetchUserLocation()
+        eventCenterCamera(to: .user)
         Task {
             print("Task started")
             
@@ -45,8 +46,8 @@ final class SnippetViewModel: ObservableObject {
         }
     }
     
-    func eventFetchUserLocation() {
-        mapManager.centerCamera(to: .user)
+    func eventCenterCamera(to option: MapManager.CameraTargetOption) {
+        mapManager.centerCamera(to: option)
     }
     
     public func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {

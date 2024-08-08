@@ -37,16 +37,16 @@ class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         for model in models {
             let placemark = map.mapObjects.addPlacemark()
             placemark.geometry = .init(
-                latitude: model.lat,
-                longitude: model.lon
+                latitude: model.coordinates.lat,
+                longitude: model.coordinates.lon
             )
             placemark.setIconWith(image, style: iconStyle)
         }
         
         guard let model = models.first else { return }
         targetPin = .init(
-            latitude: model.lat,
-            longitude: model.lon
+            latitude: model.coordinates.lat,
+            longitude: model.coordinates.lon
         )
     }
     

@@ -61,7 +61,7 @@ struct DetailsView: View {
     
     private var userLocationButton: some View {
         Button {
-            viewModel.eventFetchUserLocation()
+            viewModel.eventCenterCamera(to: .user)
         } label: {
             VStack(spacing: 0) {
                 HStack(spacing: 4) {
