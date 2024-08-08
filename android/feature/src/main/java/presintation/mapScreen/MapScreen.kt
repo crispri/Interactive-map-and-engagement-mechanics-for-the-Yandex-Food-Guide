@@ -61,7 +61,7 @@ fun MapScreen(uiState: MainUiState) {
 
         uiState.restaurantsOnMap.forEach {
             mapObjectCollection.addPlacemark().apply {
-                geometry = it.coorinates
+                geometry = it.coordinates
                 setIcon(restaurantMarkerImageProvider)
             }
         }

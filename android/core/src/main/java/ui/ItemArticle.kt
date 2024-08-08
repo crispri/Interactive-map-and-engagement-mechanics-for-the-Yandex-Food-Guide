@@ -3,6 +3,7 @@ package ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,21 +55,32 @@ fun CardWithImageAndText(
 
             Column(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(top = 19.dp)
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
             ) {
-
                 Text(
                     text = text,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center,
+                    lineHeight = 15.sp,
                 )
                 Text(
                     text = description,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally).padding(start = 18.dp, end = 18.dp),
+                    textAlign = TextAlign.Center,
+                    lineHeight = 15.sp,
                 )
             }
 
@@ -106,8 +120,8 @@ fun CardWithImageAndText(
 fun CardWithImageAndTextPreview() {
     CardWithImageAndText(
         painterResource(id = R.drawable.hardcode_picture_of_cafe),
-        "Kalabasa",
-        "Крутое место",
+        "Kalabasa ",
+        "Куда сходить чтобы вкусно поесть даже очень вкусно прям вау",
         {},
         {}
     )

@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -134,21 +135,25 @@ fun MainScreen(
                     ) {
                         Text(
                             text = "Ваше местоположение",
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                             color = Color.Black,
+                            maxLines = 1,
+                            textAlign = TextAlign.Center,
                         )
                         Image(
                             modifier = Modifier.size(20.dp),
                             painter = painterResource(R.drawable.baseline_keyboard_arrow_right_24),
-                            contentDescription = "smth",
+                            contentDescription = "Стрелка",
                             colorFilter = ColorFilter.tint(Color.Black)
                         )
                     }
                     Text(
                         text = uiState.currentAddress,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black
+                        color = Color.Black,
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
                     )
                 }
             }

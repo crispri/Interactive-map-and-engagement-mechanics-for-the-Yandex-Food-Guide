@@ -36,7 +36,7 @@ object Utils {
     val restaurants = listOf(
         Restaurant(
             id = "",
-            coorinates = Point(55.736863, 37.596052),
+            coordinates = Point(55.736863, 37.596052),
             name = "Blanc",
             description = "Ресторан авторской кухни, расположенный в исторической части города",
             address = "До 00:00, м. Китай-город, 28мин на машине",
@@ -47,11 +47,13 @@ object Utils {
             tags = listOf(
                 "Европейская", "Коктейли", "Завтрак"
             ),
-            isFavorite = false
+            isFavorite = false,
+            openTime = "",
+            closeTime = "",
         ),
         Restaurant(
             id = "",
-            coorinates = Point(55.734252, 37.588973),
+            coordinates = Point(55.734252, 37.588973),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
             address = "До 00:00, м. Тургеневская, 29мин на машине",
@@ -62,11 +64,13 @@ object Utils {
             tags = listOf(
                 "Европейская", "Коктейли", "Завтрак"
             ),
-            isFavorite = false
+            isFavorite = false,
+            openTime = "",
+            closeTime = "",
         ),
         Restaurant(
             id = "",
-            coorinates = Point(55.732005, 37.587676),
+            coordinates = Point(55.732005, 37.587676),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
             address = "До 00:00, м. Тургеневская, 29мин на машине",
@@ -77,11 +81,13 @@ object Utils {
             tags = listOf(
                 "Европейская", "Коктейли", "Завтрак"
             ),
-            isFavorite = false
+            isFavorite = false,
+            openTime = "",
+            closeTime = "",
         ),
         Restaurant(
             id = "",
-            coorinates = Point(55.731359, 37.589837),
+            coordinates = Point(55.731359, 37.589837),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
             address = "До 00:00, м. Тургеневская, 29мин на машине",
@@ -92,11 +98,13 @@ object Utils {
             tags = listOf(
                 "Европейская", "Коктейли", "Завтрак"
             ),
-            isFavorite = false
+            isFavorite = false,
+            openTime = "",
+            closeTime = "",
         ),
         Restaurant(
             id = "",
-            coorinates = Point(55.732321, 37.592902),
+            coordinates = Point(55.732321, 37.592902),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
             address = "До 00:00, м. Тургеневская, 29мин на машине",
@@ -107,12 +115,14 @@ object Utils {
             tags = listOf(
                 "Европейская", "Коктейли", "Завтрак"
             ),
-            isFavorite = false
+            isFavorite = false,
+            openTime = "",
+            closeTime = "",
         ),
 
         Restaurant(
             id = "",
-            coorinates = Point(55.736012, 37.595277),
+            coordinates = Point(55.736012, 37.595277),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
             address = "До 00:00, м. Тургеневская, 29мин на машине",
@@ -123,11 +133,13 @@ object Utils {
             tags = listOf(
                 "Европейская", "Коктейли", "Завтрак"
             ),
-            isFavorite = false
+            isFavorite = false,
+            openTime = "",
+            closeTime = "",
         ),
         Restaurant(
             id = "",
-            coorinates = Point(55.730026, 37.589179),
+            coordinates = Point(55.730026, 37.589179),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
             address = "До 00:00, м. Тургеневская, 29мин на машине",
@@ -138,9 +150,9 @@ object Utils {
             tags = listOf(
                 "Европейская", "Коктейли", "Завтрак"
             ),
-            isFavorite = false
+            isFavorite = false,
+            openTime = "",
+            closeTime = "",
         ),
-
-
-        )
+    )
 }

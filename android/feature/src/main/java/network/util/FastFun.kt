@@ -1,11 +1,13 @@
 package network.util
 
+import com.yandex.mapkit.geometry.Point
+import model.Restaurant
 import network.dto.response.RestaurantItemForJson
-import presintation.model.RestaurantModel
+import model.Coordinates
 
-fun RestaurantModel.forJson(): RestaurantItemForJson = RestaurantItemForJson(
+fun Restaurant.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     id,
-    coordinates,
+    Coordinates(lat = coordinates.latitude,  lon = coordinates.longitude),
     name,
     description,
     address,
@@ -13,13 +15,15 @@ fun RestaurantModel.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     rating,
     priceLowerBound,
     priceUpperBound,
+    openTime,
+    closeTime,
     isFavorite,
     tags,
 )
 
-fun RestaurantItemForJson.toModel(): RestaurantModel = RestaurantModel(
+fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
     id,
-    coordinates,
+    Point(coordinates.lat, coordinates.lon),
     name,
     description,
     address,
@@ -27,6 +31,8 @@ fun RestaurantItemForJson.toModel(): RestaurantModel = RestaurantModel(
     rating,
     priceLowerBound,
     priceUpperBound,
+    openTime,
+    closeTime,
     isFavorite,
     tags,
 )

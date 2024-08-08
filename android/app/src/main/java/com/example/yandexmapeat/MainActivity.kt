@@ -6,13 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.yandexmapeat.ui.theme.YandexMapEatTheme
-import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
-import network.NetworkRepository
-import network.datasource.NetworkDatasource
 import presintation.navigation.AppNavigation
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -25,16 +20,19 @@ class MainActivity : ComponentActivity() {
             permissions.getOrDefault(android.Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                 // Precise location access granted.
             }
+
             permissions.getOrDefault(android.Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                 // Only approximate location access granted.
-            } else -> {
-            // No location access granted.
-        }
+            }
+
+            else -> {
+                // No location access granted.
+            }
         }
     }
 
-    @Inject
-    lateinit var networkDatasource: NetworkDatasource
+//    @Inject
+//    lateinit var networkDatasource: YandexMapEatApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,11 +42,11 @@ class MainActivity : ComponentActivity() {
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
             )
         )
-        val networkRepository = NetworkRepository(networkDatasource)
-
-        runBlocking {
-            networkRepository.getList()
-        }
+//        val networkRepository = RestaurantRepositoryImpl()
+//
+//        runBlocking {
+//            networkRepository.getList()
+//        }
         locationPermissionRequest.launch(
             arrayOf(
                 android.Manifest.permission.ACCESS_FINE_LOCATION,

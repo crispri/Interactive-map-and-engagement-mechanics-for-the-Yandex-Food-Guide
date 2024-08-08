@@ -15,6 +15,9 @@ data class MainUiState(
     val zoomValue: Float = 16.5f,
     val startLocation: Point = Point(59.9402, 30.315),
 
+    val listOfRestaurant: List<Restaurant> = listOf(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
 
     /*val mapObjectCollection: MapObjectCollection? = null,
     val placemarkMapObject: PlacemarkMapObject? = null,*/

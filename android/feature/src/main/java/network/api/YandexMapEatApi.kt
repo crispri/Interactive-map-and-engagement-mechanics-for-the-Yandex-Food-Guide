@@ -4,22 +4,22 @@ import com.google.gson.annotations.SerializedName
 import network.dto.request.RestaurantItemRequestForJson
 import network.dto.response.RestaurantListResponseForJson
 import network.dto.response.RestaurantResponseForJson
-import presintation.model.Coordinates
+import model.Coordinates
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface YandexMapEatApi {
     @POST("guide/v1/restaurants")
     suspend fun getRestaurants(
         @Header("Authorization") token: String,
-        @Query("lower_left_lat") lowerLeftLat: Int,
-        @Query("lower_left_lon") lowerLeftLon: Int,
-        @Query("top_right_lat") topRightLat: Int,
-        @Query("top_right_lon") topRightLon: Int,
+        @Body requestBody: RequestBody,
+//        @Query("lower_left_lat") lowerLeftLat: Int,
+//        @Query("lower_left_lon") lowerLeftLon: Int,
+//        @Query("top_right_lat") topRightLat: Int,
+//        @Query("top_right_lon") topRightLon: Int,
         //@Query("max_count") maxCount: Int
     ): RestaurantListResponseForJson
 
