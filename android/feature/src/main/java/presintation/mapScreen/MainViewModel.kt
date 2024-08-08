@@ -29,7 +29,7 @@ class MainViewModel @Inject constructor(
 
     private fun fetchData() {
         viewModelScope.launch {
-            repository.getRestaurants("Asd", 55.0, 37.0, 56.0, 38.0, 0)
+            repository.getRestaurants("Asd", lowerLeftLat = 55.0, lowerLeftLon = 37.0, topRightLat = 56.0, topRightLon =  38.0, maxCount = 0)
                 .collect { state ->
                     when (state) {
                         is NetworkState.Failure -> {
@@ -49,7 +49,7 @@ class MainViewModel @Inject constructor(
                             Log.d("NetworkSuccess", "")
                             _uiState.update {
                                 it.copy(
-                                    restaurantsOnMap = Utils.restaurants,
+                                    restaurantsOnMap = state.data,
                                     recommendations = Utils.recommendations,
                                     listOfRestaurant = state.data,
                                 )

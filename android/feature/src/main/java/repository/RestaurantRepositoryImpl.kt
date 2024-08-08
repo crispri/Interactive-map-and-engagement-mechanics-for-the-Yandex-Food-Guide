@@ -49,21 +49,24 @@ class RestaurantRepositoryImpl @Inject constructor(
 
             val response = api.getRestaurants(
                 bearToken,
-                RequestBody(
+                requestBody =  RequestBody(
                     Coordinates(
-                        lowerLeftLon,
-                        lowerLeftLat,
+                        lon = lowerLeftLon,
+                        lat = lowerLeftLat,
                     ),
                     Coordinates(
-                        topRightLat,
-                        topRightLon,
+                        lat = topRightLat,
+                        lon = topRightLon,
                     ),
-                    0,
+                    // maxCount,
                 )
             )
             Log.d(
                 "SourceGet", response.items.toString()
             )
+
+            Log.d("Response", response.toString())
+            Log.d("ResponseItems", response.items.toString())
             emit(
                 NetworkState.Success(
                     response.items.map(RestaurantItemForJson::toModel),
