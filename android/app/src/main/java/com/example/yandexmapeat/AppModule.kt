@@ -20,6 +20,7 @@ object AppModule {
     @Singleton
     fun provideRestaurantRepositoryImpl(): RestaurantRepositoryImpl {
         return RestaurantRepositoryImpl()
+    }
     fun provideNetworkDataSource(api: YandexMapEatApi): INetworkDatasource {
         return NetworkDatasource(api)
     }
