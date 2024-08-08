@@ -34,7 +34,8 @@ components_manager:
 
         testsuite-support: {}
 
-        restaurant-service-component: {}
+        restaurant-service-component:
+            load-enabled: true
 
         http-client:
             load-enabled: $is-testing

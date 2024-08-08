@@ -27,9 +27,9 @@ userver::formats::json::Value Serialize(
     item["close_time"] = TimeParser::Parse(restaurant.close_time);
     item["tags"].Resize(0);
     if (restaurant.tags) {
-      for (const auto& tag : restaurant.tags.value()) {
-        item["tags"].PushBack(userver::formats::json::ValueBuilder{tag});
-      }
+        for (const auto& tag : restaurant.tags.value()) {
+            item["tags"].PushBack(userver::formats::json::ValueBuilder{tag});
+        }
     }
 
     return item.ExtractValue();

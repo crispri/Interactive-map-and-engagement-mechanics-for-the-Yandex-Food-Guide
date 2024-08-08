@@ -14,7 +14,6 @@
 
 #include <boost/uuid/string_generator.hpp>
 
-#include <components/RestaurantServiceComponent.hpp>
 #include <service/RestaurantService.hpp>
 
 namespace service {
@@ -22,8 +21,8 @@ namespace service {
 namespace {
 
 class RestaurantController final : public userver::server::handlers::HttpHandlerBase {
- public:
-  static constexpr std::string_view kName = "handler-restaurants";
+public:
+    static constexpr std::string_view kName = "handler-restaurants";
 
     RestaurantController(
         const userver::components::ComponentConfig& config,
@@ -36,8 +35,7 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
     ),
     restaurant_service_(
         component_context
-        .FindComponent<RestaurantServiceComponent>()
-        .GetService()
+        .FindComponent<RestaurantService>()
     )
     {}
 
@@ -46,63 +44,63 @@ class RestaurantController final : public userver::server::handlers::HttpHandler
         userver::server::request::RequestContext&
     ) const override 
     {
-      ErrorResponseBuilder errorBuilder(request);
+        ErrorResponseBuilder errorBuilder(request);
 
-      if (!request.HasHeader("Authorization")) {
-        return errorBuilder.build(
-            userver::server::http::HttpStatus::kUnauthorized,
-            ErrorDescriprion::kTokenNotSpecified
+        if (!request.HasHeader("Authorization")) {
+            return errorBuilder.build(
+                userver::server::http::HttpStatus::kUnauthorized,
+                ErrorDescriprion::kTokenNotSpecified
+            );
+        }
+
+        const auto& request_body_string = request.RequestBody();
+        userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
+
+        if (!request_body_json.HasMember("lower_left_corner") && !request_body_json.HasMember("top_right_corner")) {
+            return errorBuilder.build(
+                userver::server::http::HttpStatus::kBadRequest,
+                ErrorDescriprion::kCornersNotSpecified
+            );
+        }
+
+        if (!request_body_json.HasMember("lower_left_corner")) {
+            return errorBuilder.build(
+                userver::server::http::HttpStatus::kBadRequest,
+                ErrorDescriprion::kLowerLeftCornerNotSpecified
+            );
+        }
+        if (!request_body_json.HasMember("top_right_corner")) {
+            return errorBuilder.build(
+                userver::server::http::HttpStatus::kBadRequest,
+                ErrorDescriprion::kTopRightCornerNotSpecified
+            );
+        }
+
+        TRestaurantFilter filters(
+            request_body_json["lower_left_corner"].As<TCoordinates>(),
+            request_body_json["top_right_corner"].As<TCoordinates>()
         );
-      }
 
-      const auto& request_body_string = request.RequestBody();
-      userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
-
-      if (!request_body_json.HasMember("lower_left_corner") && !request_body_json.HasMember("top_right_corner")) {
-        return errorBuilder.build(
-            userver::server::http::HttpStatus::kBadRequest,
-            ErrorDescriprion::kCornersNotSpecified
-        );
-      }
-
-      if (!request_body_json.HasMember("lower_left_corner")) {
-        return errorBuilder.build(
-            userver::server::http::HttpStatus::kBadRequest,
-            ErrorDescriprion::kLowerLeftCornerNotSpecified
-        );
-      }
-      if (!request_body_json.HasMember("top_right_corner")) {
-        return errorBuilder.build(
-            userver::server::http::HttpStatus::kBadRequest,
-            ErrorDescriprion::kTopRightCornerNotSpecified
-        );
-      }
-
-      TRestaurantFilter filters(
-          request_body_json["lower_left_corner"].As<TCoordinates>(),
-          request_body_json["top_right_corner"].As<TCoordinates>()
-      );
-
-      auto restaurants = restaurant_service_.GetByFilter(filters);
-      userver::formats::json::ValueBuilder responseJSON;
-      responseJSON["items"].Resize(0);
-      for (auto& restaurant : restaurants) {
-        responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
-      }
+        auto restaurants = restaurant_service_.GetByFilter(filters);
+        userver::formats::json::ValueBuilder responseJSON;
+        responseJSON["items"].Resize(0);
+        for (auto& restaurant : restaurants) {
+            responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
+        }
       
-      return userver::formats::json::ToPrettyString(
-        responseJSON.ExtractValue(),
-        {' ', 4}
-      );
+        return userver::formats::json::ToPrettyString(
+            responseJSON.ExtractValue(),
+            {' ', 4}
+        );
     }
 
-    RestaurantService restaurant_service_;
+    RestaurantService& restaurant_service_;
 };
 
 }  // namespace
 
 void AppendRestaurantController(userver::components::ComponentList& component_list) {
-  component_list.Append<RestaurantController>();
+    component_list.Append<RestaurantController>();
 }
 
 }  // namespace service
