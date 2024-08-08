@@ -11,7 +11,7 @@ import Foundation
 final class SnippetViewModel: ObservableObject {
     @Published var userLocaitonTitle = "<Здесь будет адрес>"
     @Published var snippets = SnippetDTO.mockData
-    @Published var collections = CollectionDTO.mockData
+    @Published var collections = SelectionDTO.mockData
     
     @Published var mapManager = MapManager()
     private let networkManager = NetworkManager()

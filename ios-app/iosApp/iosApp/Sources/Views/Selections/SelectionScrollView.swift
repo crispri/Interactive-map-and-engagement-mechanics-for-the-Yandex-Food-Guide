@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-struct SelectionScrollViewView: View {
+struct SelectionScrollView: View {
     @EnvironmentObject var viemModel: SnippetViewModel
     
     var body: some View {
         ScrollView(.horizontal) {
             LazyHStack {
-                PersonalSnippetView()
+                PersonalSelectionView()
                 ForEach(viemModel.collections) { collection in
                     Button {
                         // TODO: add action.
                     } label: {
-                        SnippetView(title: collection.name, desc: collection.description)
+                        SelectionView(title: collection.name, desc: collection.description)
                     }
                 }
             }
@@ -30,6 +30,6 @@ struct SelectionScrollViewView: View {
 }
 
 #Preview {
-    SelectionScrollViewView()
+    SelectionScrollView()
         .environmentObject(SnippetViewModel())
 }
