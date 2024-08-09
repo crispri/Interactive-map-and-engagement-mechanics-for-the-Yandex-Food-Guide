@@ -12,7 +12,7 @@ data class MainUiState(
     val currentAddress: String = "Льва Толстого, 16",
     val restaurantsOnMap: List<Restaurant> = listOf(),
     val recommendations: List<Recommendation> = listOf(),
-    val zoomValue: Float = 16.5f,
+    val zoomValue: Float = 16.0f,
     val centeringIsRequired: Boolean = true,
 
     val listOfRestaurant: List<Restaurant> = listOf(),
