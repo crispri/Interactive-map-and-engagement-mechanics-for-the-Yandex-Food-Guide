@@ -19,5 +19,11 @@ public:
     std::vector<TRestaurant> GetByFilter(const TRestaurantFilter& filter) override;
 };
 
+/*
+ * в main кладем кладем конкретную реализацию.
+ *
+ */
+
+
 
 } // service
