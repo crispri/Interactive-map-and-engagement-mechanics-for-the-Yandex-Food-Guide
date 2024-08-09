@@ -9,12 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.feature.R
+import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
 import model.Event
+
 
 @Composable
 fun MapScreen(
@@ -38,7 +40,7 @@ fun MapScreen(
         }
 
         if (uiState.centeringIsRequired) {
-            moveToStartLocation(uiState.currentDeviceLocation, 14.0f)
+            moveToStartLocation(uiState.currentDeviceLocation, uiState.zoomValue)
             send(CancelCentering())
         }
 
