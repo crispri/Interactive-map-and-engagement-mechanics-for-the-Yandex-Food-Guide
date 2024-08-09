@@ -191,41 +191,46 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(90.dp)
-                .offset(y = (-90).dp)
-                .offset { IntOffset(0, offsetState.floatValue.roundToInt() - 16) }
-        ) {
-            Column {
-
-                AnimatedVisibility(
-                    visible = offsetState.floatValue > 800.0f,
-                    enter = fadeIn() + expandVertically(),
-                    exit = fadeOut() + shrinkVertically()
+                .offset(y = (-100).dp)
+                .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
+        )
+        {
+            CollectionCarousel(uiState.recommendations)
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .offset(y = (-160).dp)
+                .offset { IntOffset(0, offsetState.floatValue.roundToInt()) })
+        {
+            AnimatedVisibility(
+                visible = offsetState.floatValue > 950.0f,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .fillMaxWidth()
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier
-                            .padding(start = 8.dp, end = 8.dp)
-                            .fillMaxWidth()
+                    FloatingActionButton(
+                        containerColor = MaterialTheme.colorScheme.onSecondary,
+                        onClick = {
+                            send(NavigateToLocationEvent())
+                        },
+                        shape = CircleShape,
                     ) {
-                        FloatingActionButton(
-                            containerColor = MaterialTheme.colorScheme.onSecondary,
-                            onClick = {
-                                send(NavigateToLocationEvent())
-                            },
-                            shape = CircleShape,
-                        ) {
-                            Image(
-                                modifier = Modifier.size(28.dp, 28.dp),
-                                painter = painterResource(R.drawable.ic_navigate_to_location),
-                                contentDescription = "go_to_current_location",
-                                colorFilter = ColorFilter.tint(Color.Black)
-                            )
-                        }
+                        Image(
+                            modifier = Modifier.size(28.dp, 28.dp),
+                            painter = painterResource(R.drawable.ic_navigate_to_location),
+                            contentDescription = "go_to_current_location",
+                            colorFilter = ColorFilter.tint(Color.Black)
+                        )
                     }
                 }
-                Spacer(modifier = Modifier.padding(vertical = 8.dp))
-                CollectionCarousel(uiState.recommendations)
             }
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
         }
     }
 }
@@ -237,12 +242,12 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
     LazyRow(
         modifier = Modifier
             .height(90.dp)
-            .padding(horizontal = 6.dp) // Отступы в начале и в конце
+            .padding(horizontal = 6.dp)
             .background(Color.White)
     ) {
         itemsIndexed(recommendations) { index, item ->
             if (index > 0) {
-                Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
+                Spacer(modifier = Modifier.width(6.dp))
             }
             CardWithImageAndText(
                 painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
