@@ -8,7 +8,6 @@
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
 
-
 #include "handlers/guide/v1/restaurants/restaurants.hpp"
 #include "handlers/guide/v1/ml/ml_sort.hpp"
 
@@ -21,12 +20,8 @@ int main(int argc, char* argv[]) {
                             .Append<userver::components::Postgres>("postgres-db-1")
                             .Append<userver::clients::dns::Component>();
 
-<<<<<<< HEAD
   service::AppendRestaurantController(component_list);
-=======
-  service::AppendRecommendations(component_list);
   service::AppendMLSort(component_list);
->>>>>>> 13616c0 (addded ml handler)
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }
