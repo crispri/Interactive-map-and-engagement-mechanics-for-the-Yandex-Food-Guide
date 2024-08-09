@@ -9,19 +9,30 @@ import Foundation
 import CoreLocation
 import YandexMapsMobile
 
-class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
+final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     let mapView = YMKMapView(frame: CGRect.zero)
     private lazy var map : YMKMap = {  return mapView?.mapWindow.map ?? .init() }()
     private let manager = CLLocationManager()
     private var targetPin: YMKPoint = .init()
+    private let cameraListener = CameraListener()
+    var delegate: SnippetViewModel? = nil
+    private var placedPins: Set<String> = []
     
     override init() {
         super.init()
+        self.cameraListener.delegate = self
+        map.addCameraListener(with: cameraListener)
+        
         self.manager.delegate = self
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
         
         map.isAwesomeModelsEnabled = true
+    }
+    
+    @MainActor 
+    func eventOnGesture() {
+        delegate?.eventOnGesture()
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -35,12 +46,16 @@ class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         let image = UIImage(named: "pin") ?? UIImage()
         
         for model in models {
+            guard !placedPins.contains(model.id) else { continue }
+            
             let placemark = map.mapObjects.addPlacemark()
             placemark.geometry = .init(
                 latitude: model.coordinates.lat,
                 longitude: model.coordinates.lon
             )
             placemark.setIconWith(image, style: iconStyle)
+            
+            placedPins.insert(model.id)
         }
         
         guard let model = models.first else { return }

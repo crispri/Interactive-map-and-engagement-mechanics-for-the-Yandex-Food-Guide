@@ -16,7 +16,7 @@ struct DetailsView: View {
         VStack {
             YandexMapView()
                 .edgesIgnoringSafeArea(.all)
-                .environmentObject(viewModel.mapManager)
+                .environmentObject(viewModel.mapManager)                
         }
         .toolbar(.hidden, for: .navigationBar)
         .overlay {

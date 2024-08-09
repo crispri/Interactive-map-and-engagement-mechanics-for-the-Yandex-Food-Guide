@@ -41,6 +41,7 @@
 		CBFD7EE72C655CC100CEC0BC /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD7EDF2C655CC100CEC0BC /* PageViewController.swift */; };
 		CBFD7EEB2C65633D00CEC0BC /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CBFD7EEA2C65633D00CEC0BC /* .gitignore */; };
 		CBFD7EED2C65634D00CEC0BC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CBFD7EEC2C65634D00CEC0BC /* README.md */; };
+		CBFD7EEF2C65723100CEC0BC /* CameraListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD7EEE2C65723100CEC0BC /* CameraListener.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		CBFD7EDF2C655CC100CEC0BC /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		CBFD7EEA2C65633D00CEC0BC /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .gitignore; path = ../../.gitignore; sourceTree = "<group>"; };
 		CBFD7EEC2C65634D00CEC0BC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
+		CBFD7EEE2C65723100CEC0BC /* CameraListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraListener.swift; sourceTree = "<group>"; };
 		F9B277B70BF9911916340C62 /* Pods-iosAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.debug.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */,
+				CBFD7EEE2C65723100CEC0BC /* CameraListener.swift */,
 			);
 			path = MapManager;
 			sourceTree = "<group>";
@@ -596,6 +599,7 @@
 				CBFD7ED22C655C6F00CEC0BC /* SelectionDTO.swift in Sources */,
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
+				CBFD7EEF2C65723100CEC0BC /* CameraListener.swift in Sources */,
 				CBFD7EE12C655CC100CEC0BC /* BottomSheetView.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,
 				CB5CA3962C5FCCAA0025F771 /* GetSnippetsRequestModel.swift in Sources */,
