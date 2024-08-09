@@ -1,0 +1,173 @@
+openapi: 3.0.2
+info:
+  title: API для Гида
+  version: "1.0"
+servers:
+- url: http://localhost:8080/
+paths:
+  /recommendations:
+    get:
+      description: Get recommended establishments in the area
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object'
+        content:
+          application/json:
+            schema:
+              properties:
+                lower_left_corner:
+                  $ref: '#/components/schemas/coordinates'
+                top_right_corner:
+                  $ref: '#/components/schemas/coordinates'
+                max_count:
+                  type: integer
+                user_id:
+                  type: integer
+              required:
+              - coordinates
+              - max_count
+              - user_id
+              type: object
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: OK
+        "400":
+          description: invalid input parameters
+      x-contentType: application/json
+      x-accepts: application/json
+components:
+  requestBodies:
+    inline_object:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      required: true
+  schemas:
+    restaurants_list:
+      properties:
+        restaurants_list:
+          description: List of restaurants
+          items:
+            type: integer
+          type: array
+      required:
+      - restaurants_list
+      type: object
+    coordinates:
+      example:
+        lon: 1.4658129805029452
+        lat: 6.027456183070403
+      properties:
+        lat:
+          description: Latitude
+          format: double
+          type: number
+        lon:
+          description: Longitude
+          format: double
+          type: number
+      required:
+      - lat
+      - lon
+      type: object
+    institution:
+      example:
+        approved: true
+        address: address
+        price_lower_bound: 2
+        coordinates:
+          lon: 1.4658129805029452
+          lat: 6.027456183070403
+        name: name
+        rating: 5.962133916683182
+        description: description
+        price_upper_bound: 7
+        id: 0
+        check: 5.637376656633329
+      properties:
+        id:
+          type: integer
+        coordinates:
+          $ref: '#/components/schemas/coordinates'
+        name:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        approved:
+          type: boolean
+        rating:
+          format: double
+          type: number
+        check:
+          format: double
+          type: number
+        price_lower_bound:
+          type: integer
+        price_upper_bound:
+          type: integer
+      required:
+      - address
+      - check
+      - coordinates
+      - description
+      - id
+      - is_public
+      - name
+      - rating
+      type: object
+    inline_object:
+      properties:
+        lower_left_corner:
+          $ref: '#/components/schemas/coordinates'
+        top_right_corner:
+          $ref: '#/components/schemas/coordinates'
+        max_count:
+          type: integer
+        user_id:
+          type: integer
+      required:
+      - coordinates
+      - max_count
+      - user_id
+      type: object
+    inline_response_200:
+      example:
+        items:
+        - approved: true
+          address: address
+          price_lower_bound: 2
+          coordinates:
+            lon: 1.4658129805029452
+            lat: 6.027456183070403
+          name: name
+          rating: 5.962133916683182
+          description: description
+          price_upper_bound: 7
+          id: 0
+          check: 5.637376656633329
+        - approved: true
+          address: address
+          price_lower_bound: 2
+          coordinates:
+            lon: 1.4658129805029452
+            lat: 6.027456183070403
+          name: name
+          rating: 5.962133916683182
+          description: description
+          price_upper_bound: 7
+          id: 0
+          check: 5.637376656633329
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/institution'
+          type: array
+      type: object
+
