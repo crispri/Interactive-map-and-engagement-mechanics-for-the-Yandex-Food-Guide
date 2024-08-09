@@ -11,38 +11,46 @@ import Foundation
 final class SnippetViewModel: ObservableObject {
     @Published var userLocaitonTitle = "<Здесь будет адрес>"
     @Published var snippets = SnippetDTO.mockData
-    @Published var collections = CollectionDTO.mockData
+    @Published var collections = SelectionDTO.mockData
     
     @Published var mapManager = MapManager()
     private let networkManager = NetworkManager()
     
+    init() {
+        mapManager.delegate = self
+    }
+    
     func eventOnAppear() {
         eventCenterCamera(to: .user)
+        eventOnGesture()
+    }
+    
+    func eventOnGesture() {
         Task {
-            print("Task started")
-            
             do {
-                let res = try await loadSnippets(
+                let square = mapManager.getScreenPoints()
+                
+                print("\(square.lowerLeftCorner) \(square.topRightCorner)")
+                
+                let restaurants = try await loadSnippets(
                     lowerLeftCorner: Point(
-                        lat: 55.582003,
-                        lon: 37.363641
+                        lat: square.lowerLeftCorner.lat,
+                        lon: square.lowerLeftCorner.lon
                     ),
                     topRightCorner: Point(
-                        lat: 55.895010,
-                        lon: 37.852533
+                        lat: square.topRightCorner.lat,
+                        lon: square.topRightCorner.lon
                     )
                 )
                 
-                for i in 0..<res.count{
-                    print(
-                        res[i].address
-                    )}
-                print("Task finished")
+                for i in 0..<restaurants.count{ print(restaurants[i].address) }
+                
+                snippets = restaurants
+                mapManager.placePins(restaurants)
             }
             catch {
                 print(error)
             }
-            print("request sent")
         }
     }
     
