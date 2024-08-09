@@ -55,6 +55,11 @@ components_manager:
             method: POST
             task_processor: main-task-processor
 
+        handler-ml_sort:                   # Finally! Our handler.
+            path: /ml               # Registering handler by URL '/v1/hello'.
+            method: GET                  # It will only reply to POST requests.
+            task_processor: main-task-processor  # Run it on CPU bound task processor
+
         postgres-db-1:
             dbconnection: $dbconnection
             dbconnection#env: DB_CONNECTION
