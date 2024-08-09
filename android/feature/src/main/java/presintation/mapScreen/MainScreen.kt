@@ -242,12 +242,12 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
     LazyRow(
         modifier = Modifier
             .height(90.dp)
-            .padding(horizontal = 6.dp) // Отступы в начале и в конце
+            .padding(horizontal = 6.dp)
             .background(Color.White)
     ) {
         itemsIndexed(recommendations) { index, item ->
             if (index > 0) {
-                Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
+                Spacer(modifier = Modifier.width(6.dp))
             }
             CardWithImageAndText(
                 painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
