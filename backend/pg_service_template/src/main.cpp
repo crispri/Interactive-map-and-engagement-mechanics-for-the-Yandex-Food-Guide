@@ -11,6 +11,7 @@
 #include "handlers/recommendations/recommendations.hpp"
 #include "handlers/guide/v1/selections/selections.hpp"
 #include "handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp"
+#include "handlers/guide/v1/restaurants/restaurants.hpp"
 
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
@@ -24,6 +25,7 @@ int main(int argc, char* argv[]) {
   service::AppendRecommendations(component_list);
   service::AppendSelections(component_list);
   service::AppendReccomendationsBySelectionId(component_list);
+  service::AppendRestaurantController(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

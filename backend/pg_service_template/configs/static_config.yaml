@@ -63,7 +63,10 @@ components_manager:
             method: GET                  # It will only reply to POST requests.
             task_processor: main-task-processor
 
-
+        handler-restaurants:
+            path: /guide/v1/restaurants
+            method: POST
+            task_processor: main-task-processor
 
         postgres-db-1:
             dbconnection: $dbconnection
