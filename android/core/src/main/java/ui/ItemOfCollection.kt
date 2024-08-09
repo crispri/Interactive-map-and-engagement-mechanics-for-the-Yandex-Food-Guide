@@ -2,6 +2,7 @@ package ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,12 +31,13 @@ import model.Restaurant
 import java.text.DecimalFormat
 
 @Composable
-fun BigCard(restaurant: Restaurant) {
+fun BigCard(restaurant: Restaurant, navToRestaurant: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth()
-            .background(Color.White),
+            .background(Color.White)
+            .clickable {navToRestaurant()},
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {

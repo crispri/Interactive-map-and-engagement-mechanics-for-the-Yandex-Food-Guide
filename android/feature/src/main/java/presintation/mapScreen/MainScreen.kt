@@ -1,8 +1,6 @@
 package presintation.mapScreen
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -29,7 +27,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -38,8 +35,6 @@ import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableFloatStateOf
@@ -48,11 +43,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -75,6 +69,195 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
+    navToRestaurant: () -> Unit,
+    uiState: MainUiState,
+    navToBack: () -> Unit,
+    send: (Event) -> Unit,
+    mapView: MapView
+) {
+
+    val offsetState = remember { mutableFloatStateOf(-96f) }
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val offsetInDp = with(LocalDensity.current) {
+        offsetState.floatValue.toDp()
+    }
+
+    val sheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        defineValues = {
+            SheetValue.Hidden at height(100.dp)
+            SheetValue.PartiallyExpanded at offset(percent = 60)
+            SheetValue.Expanded at contentHeight
+        }
+    )
+
+    val bottomSheetState = custom_bottom_sheet.rememberBottomSheetScaffoldState(
+        sheetState = sheetState
+    )
+
+    LaunchedEffect(bottomSheetState.sheetState) {
+        snapshotFlow { bottomSheetState.sheetState.requireOffset() }
+            .collect { offset ->
+                offsetState.floatValue = offset
+            }
+    }
+
+
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        custom_bottom_sheet.BottomSheetScaffold(
+            scaffoldState = bottomSheetState,
+            sheetContent = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = screenHeight - 240.dp, min = 80.dp)
+                        .background(Color.White)
+                ) {
+                    Carousel()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
+                }
+            },
+            sheetContainerColor = Color.White
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+                contentAlignment = Alignment.Center
+            ) {
+                MapScreen(uiState, send, mapView)
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .padding(start = 8.dp, end = 8.dp, top = 46.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.onSecondary,
+                onClick = { navToBack() },
+                shape = CircleShape,
+            ) {
+                Image(
+                    modifier = Modifier.size(28.dp, 28.dp),
+                    painter = painterResource(R.drawable.baseline_arrow_back_24),
+                    contentDescription = "go_back",
+                    colorFilter = ColorFilter.tint(Color.Black)
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(0.4f))
+
+            Box(
+                modifier = Modifier.weight(2.2f),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Text(
+                            text = "Ваше местоположение",
+                            fontSize = 14.sp,
+                            color = Color.Black,
+                            maxLines = 1,
+                            textAlign = TextAlign.Center,
+                        )
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(R.drawable.baseline_keyboard_arrow_right_24),
+                            contentDescription = "Стрелка",
+                            colorFilter = ColorFilter.tint(Color.Black)
+                        )
+                    }
+                    Text(
+                        text = uiState.currentAddress,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(0.4f))
+
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.onSurface,
+                onClick = {
+                    send(SaveInCollectionEvent(""))
+                },
+                shape = CircleShape,
+            ) {
+                Image(
+                    modifier = Modifier.size(28.dp, 28.dp),
+                    painter = painterResource(R.drawable.baseline_bookmark_border_24),
+                    contentDescription = "go_back",
+                    colorFilter = ColorFilter.tint(Color.White)
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(90.dp)
+                .offset(y = (-100).dp)
+                .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
+        ) {
+                CollectionCarousel(uiState.recommendations)
+        }
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .offset(y = (-160).dp)
+                .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
+        ){
+            AnimatedVisibility(
+                visible = offsetState.floatValue > 800.0f,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .fillMaxWidth()
+                ) {
+                    FloatingActionButton(
+                        containerColor = MaterialTheme.colorScheme.onSecondary,
+                        onClick = {
+                            send(NavigateToLocationEvent())
+                        },
+                        shape = CircleShape,
+                    ) {
+                        Image(
+                            modifier = Modifier.size(28.dp, 28.dp),
+                            painter = painterResource(R.drawable.ic_navigate_to_location),
+                            contentDescription = "go_to_current_location",
+                            colorFilter = ColorFilter.tint(Color.Black)
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+        }
+    }
+}
+
+
+/*fun MainScreen(
+    navToRestaurant: () -> Unit,
     uiState: MainUiState,
     navToBack: () -> Unit,
     send: (Event) -> Unit,
@@ -119,7 +302,7 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
-                    BottomSheetContent(uiState.restaurantsOnMap)
+                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                 }
             },
             sheetContainerColor = Color.White
@@ -256,7 +439,24 @@ fun MainScreen(
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
         }
     }
-}
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @Composable
@@ -286,11 +486,12 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 
 @Composable
 fun BottomSheetContent(
-    restaurants: List<Restaurant>
+    restaurants: List<Restaurant>,
+    navToRestaurant: () -> Unit,
 ) {
     LazyColumn {
         items(restaurants) { item ->
-            BigCard(item)
+            BigCard(item, navToRestaurant)
         }
     }
 }
