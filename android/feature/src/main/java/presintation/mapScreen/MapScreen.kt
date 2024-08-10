@@ -88,7 +88,7 @@ fun MapScreen(
         }
 
         mapObjectCollection.addPlacemark().apply {
-            geometry = Point(55.733415, 37.590042)
+            geometry = curLocation.value!!
             setIcon(curLocationMarkerImageProvider)
         }
     }
