@@ -8,6 +8,10 @@
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
 
+#include "handlers/recommendations/recommendations.hpp"
+#include "handlers/guide/v1/selections/selections.hpp"
+#include "handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp"
+#include "handlers/guide/v1/restaurants/restaurants.hpp"
 #include "handlers/guide/v1/ml/ml_sort.hpp"
 #include <handlers/guide/v1/restaurants/restaurants.hpp>
 #include <handlers/guide/v1/restaurant_by_id/restaurant_by_id.hpp>
@@ -23,6 +27,9 @@ int main(int argc, char* argv[]) {
                             .Append<userver::components::Postgres>("postgres-db-1")
                             .Append<userver::clients::dns::Component>();
 
+  service::AppendRecommendations(component_list);
+  service::AppendSelections(component_list);
+  service::AppendReccomendationsBySelectionId(component_list);
   service::AppendRestaurantController(component_list);
   service::AppendMLSort(component_list);
   service::AppendRestaurantService(component_list);
