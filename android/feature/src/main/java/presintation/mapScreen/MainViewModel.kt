@@ -4,12 +4,14 @@ import Utils
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import model.CancelCentering
+import model.ChangeDeviceLocation
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.SaveInCollectionEvent
@@ -65,6 +67,22 @@ class MainViewModel @Inject constructor(
                         else -> {}
                     }
                 }
+
+//            repository.restaurants.collect { restaurants ->
+//                _uiState.update {
+//                    it.copy(
+//                        restaurantsOnMap = restaurants,
+//                    )
+//                }
+//            }
+//
+//            repository.recommendations.collect { recommendations ->
+//                _uiState.update {
+//                    it.copy(
+//                        recommendations = recommendations,
+//                    )
+//                }
+//            }
         }
     }
 

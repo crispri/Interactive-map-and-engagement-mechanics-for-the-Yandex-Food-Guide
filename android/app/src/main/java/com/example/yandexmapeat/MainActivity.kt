@@ -19,6 +19,7 @@ import com.yandex.mapkit.location.LocationManager
 import com.yandex.mapkit.location.LocationStatus
 import com.yandex.mapkit.mapview.MapView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableStateFlow
 import presintation.navigation.AppNavigation
 
 @AndroidEntryPoint
@@ -56,8 +57,7 @@ class MainActivity : ComponentActivity() {
         locationManager = mapkit.createLocationManager()
         locationListener = object : LocationListener{
             override fun onLocationUpdated(p0: Location) {
-                Log.e("Location", "latitude: ${p0.position.latitude}")
-                Log.e("Location", "longitude: ${p0.position.longitude}")
+                curLocation.value = Point(p0.position.latitude, p0.position.longitude)
             }
 
             override fun onLocationStatusUpdated(p0: LocationStatus) {
@@ -66,6 +66,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        locationManager.requestSingleUpdate(locationListener)
 
         locationPermissionRequest.launch(
             arrayOf(
@@ -83,7 +85,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             YandexMapEatTheme {
-                AppNavigation(mapView)
+                AppNavigation(mapView, curLocation)
             }
         }
 
@@ -93,7 +95,6 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         MapKitFactory.getInstance().onStart()
         mapView.onStart()
-        locationManager.requestSingleUpdate(locationListener)
     }
 
     override fun onStop() {
