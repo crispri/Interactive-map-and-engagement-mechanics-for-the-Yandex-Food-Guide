@@ -15,13 +15,13 @@ import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
-import model.Event
+import model.MainScreenEvent
 
 
 @Composable
 fun MapScreen(
     uiState: MainUiState,
-    send: (Event) -> Unit,
+    send: (MainScreenEvent) -> Unit,
     mapView: MapView
 ) {
 

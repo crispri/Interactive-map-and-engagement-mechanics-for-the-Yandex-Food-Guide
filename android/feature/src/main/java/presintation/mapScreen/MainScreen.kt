@@ -55,10 +55,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
 import com.yandex.mapkit.mapview.MapView
-import model.Event
+import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.Recommendation
-import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
 import ui.BigCard
@@ -72,7 +71,7 @@ fun MainScreen(
     navToRestaurant: () -> Unit,
     uiState: MainUiState,
     navToBack: () -> Unit,
-    send: (Event) -> Unit,
+    send: (MainScreenEvent) -> Unit,
     mapView: MapView
 ) {
 
@@ -117,7 +116,16 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
-                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
+                    /*BottomSheetContent(uiState.restaurantsOnMap){
+                        navToRestaurant()
+                    }*/
+                    LazyColumn {
+                        items(uiState.restaurantsOnMap) { item ->
+                            BigCard(item) {
+                                navToRestaurant()
+                            }
+                        }
+                    }
                 }
             },
             sheetContainerColor = Color.White
@@ -215,14 +223,14 @@ fun MainScreen(
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
-                CollectionCarousel(uiState.recommendations)
+            CollectionCarousel(uiState.recommendations)
         }
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .offset(y = (-160).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
-        ){
+        ) {
             AnimatedVisibility(
                 visible = offsetState.floatValue > 800.0f,
                 enter = fadeIn() + expandVertically(),
@@ -484,17 +492,21 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 }
 
 
-@Composable
+/*@Composable
 fun BottomSheetContent(
     restaurants: List<Restaurant>,
     navToRestaurant: () -> Unit,
 ) {
     LazyColumn {
         items(restaurants) { item ->
-            BigCard(item, navToRestaurant)
+            BigCard(item){
+                send()
+                navToRestaurant()
+
+            }
         }
     }
-}
+}*/
 
 
 @Composable

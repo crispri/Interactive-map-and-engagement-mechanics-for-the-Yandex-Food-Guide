@@ -5,14 +5,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.yandex.mapkit.mapview.MapView
 import presintation.homeScreen.HomeScreen
 import presintation.mapScreen.MainScreen
 import presintation.mapScreen.MainViewModel
 import presintation.restaurantScreen.RestaurantScreen
+import presintation.restaurantScreen.RestaurantViewModel
 
 @Composable
 fun AppNavigation(mapView: MapView) {
@@ -33,6 +36,7 @@ fun AppNavigation(mapView: MapView) {
             val uiState by mainViewModel.uiState.collectAsState()
 
             MainScreen(
+
                 navToRestaurant = actions.onRestaurantScreen,
                 uiState = uiState,
                 navToBack = actions.onBack,
@@ -41,8 +45,13 @@ fun AppNavigation(mapView: MapView) {
             )
         }
 
-        composable(AppDestination.RESTAURANT_SCREEN) {
-            RestaurantScreen(navToBack = actions.onBack)
+        composable(route = "${AppDestination.RESTAURANT_SCREEN}/{itemId}",
+            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
+        )
+        { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
+            val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+            RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send,)
         }
 
     }

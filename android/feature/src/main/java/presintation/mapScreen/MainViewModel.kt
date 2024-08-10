@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import model.CancelCentering
-import model.Event
+import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.SaveInCollectionEvent
 import network.util.NetworkState
@@ -65,26 +65,10 @@ class MainViewModel @Inject constructor(
                         else -> {}
                     }
                 }
-
-//            repository.restaurants.collect { restaurants ->
-//                _uiState.update {
-//                    it.copy(
-//                        restaurantsOnMap = restaurants,
-//                    )
-//                }
-//            }
-//
-//            repository.recommendations.collect { recommendations ->
-//                _uiState.update {
-//                    it.copy(
-//                        recommendations = recommendations,
-//                    )
-//                }
-//            }
         }
     }
 
-    fun send(event: Event) {
+    fun send(event: MainScreenEvent) {
         when (event) {
             is SaveInCollectionEvent -> {
                 saveInCollection(event.restaurantId)
