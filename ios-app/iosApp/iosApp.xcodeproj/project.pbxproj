@@ -8,14 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		49CB9296A4D47EB392F1B553 /* Pods_iosApp_iosAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9676E586B79D78349CE364A /* Pods_iosApp_iosAppUITests.framework */; };
-		4F69DC722C6776E70026828E /* CustomBottomSheetPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC712C6776E70026828E /* CustomBottomSheetPosition.swift */; };
-		4F69DC742C67770C0026828E /* Comparable+clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC732C67770C0026828E /* Comparable+clamped.swift */; };
-		4F69DC762C6777220026828E /* View+MessureSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC752C6777220026828E /* View+MessureSize.swift */; };
-		4F69DC782C67774D0026828E /* CustomBottomSheetPositionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC772C67774D0026828E /* CustomBottomSheetPositionKey.swift */; };
-		4F69DC7A2C6777860026828E /* SizePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC792C6777860026828E /* SizePreferenceKey.swift */; };
-		4F69DC7C2C6777AB0026828E /* IBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC7B2C6777AB0026828E /* IBottomSheetView.swift */; };
-		4F69DC7E2C6777DD0026828E /* RoundedCornersShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC7D2C6777DD0026828E /* RoundedCornersShape.swift */; };
-		4F69DC802C6777FE0026828E /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC7F2C6777FE0026828E /* CustomBottomSheet.swift */; };
 		4F69DC832C678BD00026828E /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 4F69DC822C678BD00026828E /* BottomSheet */; };
 		4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */; };
 		4F9DCAE92C5E6C4200B39252 /* YandexMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */; };
@@ -73,14 +65,6 @@
 /* Begin PBXFileReference section */
 		0CE29E8AFACB873B7D675F44 /* Pods-iosApp-iosAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp-iosAppUITests.release.xcconfig"; path = "Target Support Files/Pods-iosApp-iosAppUITests/Pods-iosApp-iosAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2EB3BAEFB0B97B1C7BE0A91C /* Pods-iosApp-iosAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp-iosAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-iosApp-iosAppUITests/Pods-iosApp-iosAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		4F69DC712C6776E70026828E /* CustomBottomSheetPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetPosition.swift; sourceTree = "<group>"; };
-		4F69DC732C67770C0026828E /* Comparable+clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+clamped.swift"; sourceTree = "<group>"; };
-		4F69DC752C6777220026828E /* View+MessureSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+MessureSize.swift"; sourceTree = "<group>"; };
-		4F69DC772C67774D0026828E /* CustomBottomSheetPositionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetPositionKey.swift; sourceTree = "<group>"; };
-		4F69DC792C6777860026828E /* SizePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizePreferenceKey.swift; sourceTree = "<group>"; };
-		4F69DC7B2C6777AB0026828E /* IBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBottomSheetView.swift; sourceTree = "<group>"; };
-		4F69DC7D2C6777DD0026828E /* RoundedCornersShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornersShape.swift; sourceTree = "<group>"; };
-		4F69DC7F2C6777FE0026828E /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
 		4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapView.swift; sourceTree = "<group>"; };
 		4F9DCAEC2C5E73F900B39252 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -155,21 +139,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F69DC702C6776CC0026828E /* CustomBottomSheet */ = {
-			isa = PBXGroup;
-			children = (
-				4F69DC712C6776E70026828E /* CustomBottomSheetPosition.swift */,
-				4F69DC732C67770C0026828E /* Comparable+clamped.swift */,
-				4F69DC752C6777220026828E /* View+MessureSize.swift */,
-				4F69DC772C67774D0026828E /* CustomBottomSheetPositionKey.swift */,
-				4F69DC792C6777860026828E /* SizePreferenceKey.swift */,
-				4F69DC7B2C6777AB0026828E /* IBottomSheetView.swift */,
-				4F69DC7D2C6777DD0026828E /* RoundedCornersShape.swift */,
-				4F69DC7F2C6777FE0026828E /* CustomBottomSheet.swift */,
-			);
-			path = CustomBottomSheet;
-			sourceTree = "<group>";
-		};
 		4F9DCAE52C5E6AF800B39252 /* MapManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +303,6 @@
 		CBFD7EDC2C655CC100CEC0BC /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
-				4F69DC702C6776CC0026828E /* CustomBottomSheet */,
 				CBFD7ED82C655CC100CEC0BC /* BottomSheetView.swift */,
 				CBFD7ED92C655CC100CEC0BC /* FilterView.swift */,
 				CBFD7EDA2C655CC100CEC0BC /* SnippetCell.swift */,
@@ -633,27 +601,19 @@
 				CBFD7EE42C655CC100CEC0BC /* SelectionView.swift in Sources */,
 				CB5CA3942C5FB9BC0025F771 /* NetworkingError.swift in Sources */,
 				CBFD7EE72C655CC100CEC0BC /* PageViewController.swift in Sources */,
-				4F69DC722C6776E70026828E /* CustomBottomSheetPosition.swift in Sources */,
 				CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */,
-				4F69DC782C67774D0026828E /* CustomBottomSheetPositionKey.swift in Sources */,
 				CB5CA3902C5FB60B0025F771 /* Configuration.swift in Sources */,
 				CBFD7ED12C655C6F00CEC0BC /* SnippetDTO.swift in Sources */,
 				CBFD7ED22C655C6F00CEC0BC /* SelectionDTO.swift in Sources */,
-				4F69DC7E2C6777DD0026828E /* RoundedCornersShape.swift in Sources */,
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
-				4F69DC762C6777220026828E /* View+MessureSize.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
-				4F69DC802C6777FE0026828E /* CustomBottomSheet.swift in Sources */,
 				CBFD7EEF2C65723100CEC0BC /* CameraListener.swift in Sources */,
 				CBFD7EE12C655CC100CEC0BC /* BottomSheetView.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,
 				CB5CA3962C5FCCAA0025F771 /* GetSnippetsRequestModel.swift in Sources */,
-				4F69DC742C67770C0026828E /* Comparable+clamped.swift in Sources */,
 				CBFD7ED42C655C8600CEC0BC /* Color+hex.swift in Sources */,
 				CB5CA3992C5FD7290025F771 /* ISnippetsResponse.swift in Sources */,
 				4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */,
-				4F69DC7A2C6777860026828E /* SizePreferenceKey.swift in Sources */,
-				4F69DC7C2C6777AB0026828E /* IBottomSheetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
