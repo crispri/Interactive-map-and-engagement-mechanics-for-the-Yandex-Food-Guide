@@ -1,15 +1,8 @@
-<<<<<<<< HEAD:backend/pg_service_template/src/handlers/guide/v1/restaurants/restaurants.cpp
 #include "restaurants.hpp"
 #include <models/coordinates.hpp>
 #include <lib/error_response_builder.hpp>
 #include <models/restaurant.hpp>
 #include <repository/restaurant_repository.hpp>
-========
-#include "recommendations.hpp"
-#include "../../../../lib/error_response_builder.hpp"
-#include "../../../../models/coordinates.hpp"
-#include "../../../../models/restaurant.hpp"
->>>>>>>> ff9f986 (fixed some issues):backend/pg_service_template/src/handlers/guide/v1/recommendations/recommendations.cpp
 
 #include <fmt/format.h>
 
