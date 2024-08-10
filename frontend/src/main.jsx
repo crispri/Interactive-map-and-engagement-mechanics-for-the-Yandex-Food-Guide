@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/app/App.jsx'
 import MyBottomSheet from './components/bottomsheet/MyBottomSheet.jsx'
@@ -23,7 +23,7 @@ const LOCATION = {
     [38.28586537185843, 54.744847233097076]
   ],
   // center: [37.623082, 55.75254], // starting position [lng, lat]
-  // zoom: 12 // starting zoom
+  zoom: 13 // starting zoom
 };
 
 async function main() {
@@ -33,13 +33,16 @@ const reactify = ymaps3React.reactify.bindTo(React, ReactDOM);
 const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker, YMapControls, YMapListener} = reactify.module(ymaps3);
 const {YMapGeolocationControl, YMapZoomControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-controls@0.0.1'));
 
+// кластеризация
+const {YMapClusterer, clusterByGrid} = await ymaps3.import('@yandex/ymaps3-clusterer@0.0.1');
+
 const TestComponent = () => {
   const [currentPolygon, setCurrentPolygon] = React.useState(LOCATION.bounds);
   const dispatch = useDispatch()
   const updateHandler = (obj) => {
     setCurrentPolygon(obj.location.bounds)
   }
-  const debouncedValue = useDebounce(currentPolygon, 500);
+  const debouncedValue = useDebounce(currentPolygon, 1000);
 
   useEffect(() => {
     console.log('debouncedValue', debouncedValue);
@@ -56,22 +59,34 @@ const TestComponent = () => {
     }))
   }, [debouncedValue])
 
+  const gridSizedMethod = useMemo(() => clusterByGrid({ gridSize: 64 }), []);
  return (
  <>
   <div style={{width: '100%', height: '100%'}}>
     <YMap location={LOCATION} showScaleInCopyrights={true} ref={(x) => (map = x)}>
       <YMapDefaultSchemeLayer />
       <YMapDefaultFeaturesLayer/>
+
+      {/* <YMapClusterer 
+        marker={marker} 
+        cluster={cluster} 
+        method={gridSizedMethod} 
+        features={points} 
+      /> */}
+
       {COORDINATES.map(el => (
         <YMapMarker coordinates={el} key={el}>
           <Pin/>
         </YMapMarker>
       ))}
-      <YMapListener onUpdate={updateHandler}/>
+
+      <YMapListener 
+        onUpdate={updateHandler}
+      />
       <YMapControls position="left">
           {/* Add the geolocation control to the map */}
-          <YMapGeolocationControl />
-          <YMapZoomControl />
+          <YMapGeolocationControl/>
+          <YMapZoomControl/>
       </YMapControls>
     </YMap>    
   </div>
@@ -91,19 +106,6 @@ const TestComponent = () => {
         <TestComponent/>
         {/* <MyBottomSheet/> */}
       </>
-    },
-    {
-      path: "/combine",
-      element: (
-        <>
-        <div style={{width: '100%', height: '100%'}}>
-          <YMap location={LOCATION} showScaleInCopyrights={true} ref={(x) => (map = x)}>
-            <YMapDefaultSchemeLayer />
-          </YMap>
-        </div>
-        <MyBottomSheet />
-        </>
-      )
     },
     {
       path: "/bottomsheet",
