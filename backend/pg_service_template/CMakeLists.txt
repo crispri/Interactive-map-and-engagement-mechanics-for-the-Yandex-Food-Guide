@@ -43,10 +43,11 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/lib/error_response_builder.cpp
     src/lib/time_parser.hpp
     src/lib/time_parser.cpp
-    src/repository/restaurant_repository.hpp
-    src/repository/restaurant_repository.cpp
-    src/repository/IRepository.hpp
-    src/repository/IRepositoryWithFilter.hpp
+    src/repository/PgRestaurantRepository.hpp
+    src/repository/PgRestaurantRepository.cpp
+    src/repository/IRestaurantRepository.hpp
+    src/service/RestaurantService.hpp
+    src/service/RestaurantService.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

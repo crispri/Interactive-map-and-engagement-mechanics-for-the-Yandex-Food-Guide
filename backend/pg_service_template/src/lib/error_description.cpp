@@ -1,5 +1,5 @@
 #include "error_description.hpp"
-#include <asm-generic/errno-base.h>
+
 #include <unordered_map>
 #include <string>
 

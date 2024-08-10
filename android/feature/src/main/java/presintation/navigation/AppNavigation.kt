@@ -1,22 +1,23 @@
 package presintation.navigation
 
-import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
 import presintation.homeScreen.HomeScreen
 import presintation.mapScreen.MainScreen
 import presintation.mapScreen.MainViewModel
+import presintation.restaurantScreen.RestaurantScreen
 
 @Composable
-fun AppNavigation(mapView: MapView) {
+fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -34,11 +35,17 @@ fun AppNavigation(mapView: MapView) {
             val uiState by mainViewModel.uiState.collectAsState()
 
             MainScreen(
+                navToRestaurant = actions.onRestaurantScreen,
                 uiState = uiState,
                 navToBack = actions.onBack,
                 send = mainViewModel::send,
-                mapView = mapView
+                mapView = mapView,
+                curLocation = curLocation
             )
+        }
+
+        composable(AppDestination.RESTAURANT_SCREEN) {
+            RestaurantScreen(navToBack = actions.onBack)
         }
 
     }

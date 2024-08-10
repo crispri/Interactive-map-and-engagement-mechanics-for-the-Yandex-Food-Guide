@@ -114,7 +114,7 @@ public:
 
 }  // namespace
 
-void AppendRestaurantController(userver::components::ComponentList& component_list) {
+void AppendRestaurantByIdController(userver::components::ComponentList& component_list) {
     component_list.Append<RestaurantController>();
 }
 
