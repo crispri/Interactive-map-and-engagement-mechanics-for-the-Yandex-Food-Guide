@@ -1,6 +1,5 @@
 openapi: "3.0.2"
 info:
-
     title: API для Гида
     version: "1.0"
 servers:
@@ -62,23 +61,22 @@ components:
                 - price_upper_bound
                 - tags
                 - is_favorite
-
         selection:
             type: object
             properties:
                 id:
-                    type: integer
+                    type: string
+                    format: uuid
                 name:
                     type: string
                 description:
                     type: string
                 is_public:
-                    type: boolean    
+                    type: short    
             required:
                 - id
                 - name
                 - description
-                - is_public       
 
     # responses:
     #     UnauthorizedError:
@@ -125,9 +123,75 @@ paths:
                                             $ref: '#/components/schemas/restaurant'
                 '400':
                     description: invalid input parameters
-<<<<<<< backend/pg_service_template/openapi.yml
+                '401':
+                    description: unauthorized
 
-        
+
+    /guide/v1/ml:
+        post:
+            description: Sort restaurants ids list by ML (mock)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                restaurant_ids:
+                                    description: List of restaurant ids
+                                    type: array
+                                    items: {
+                                        type: integer
+                                    }
+                            required:
+                                - restaurant_ids
+            security:
+                - UserTicketAuth: [ ]
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    restaurant_ids:
+                                        type: array
+                                        items: {
+                                            type: integer
+                                        }
+                '400':
+                    description: invalid input parameters
+                '401':
+                    description: unauthorized
+
+
+
+    /guide/v1/restaurant/{id}:
+        get:
+            description: Get restaurant by id
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: uuid of the user to get.
+                  schema:
+                    type: string
+            security:
+                -   UserTicketAuth: [ ]
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/restaurant'
+                '400':
+                    description: invalid input parameters
+                '401':
+                    description: unauthorized
+
+
     /guide/v1/selections:
         get:
             summary: Получение всех подборок
@@ -176,8 +240,3 @@ paths:
                     description: Подборка не найдена
                 '500':
                     description: Внутренняя ошибка сервера
-                  
-=======
-                '401':
-                    description: unauthorized
->>>>>>> backend/pg_service_template/openapi.yml
