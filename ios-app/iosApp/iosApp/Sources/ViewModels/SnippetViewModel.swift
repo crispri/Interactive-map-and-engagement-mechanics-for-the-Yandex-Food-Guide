@@ -13,7 +13,7 @@ final class SnippetViewModel: ObservableObject {
     @Published var snippets = SnippetDTO.mockData
     @Published var collections = SelectionDTO.mockData
     
-    @Published var mapManager = MapManager()
+    var mapManager = MapManager()
     private let networkManager = NetworkManager()
     
     init() {

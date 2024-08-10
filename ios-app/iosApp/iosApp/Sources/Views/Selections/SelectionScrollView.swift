@@ -15,17 +15,16 @@ struct SelectionScrollView: View {
             LazyHStack {
                 PersonalSelectionView()
                 ForEach(viemModel.collections) { collection in
-                    Button {
-                        // TODO: add action.
-                    } label: {
-                        SelectionView(title: collection.name, desc: collection.description)
-                    }
+                    SelectionView(title: collection.name, desc: collection.description)
+                        .onTapGesture {
+                            // TODO:
+                            print(collection.name)
+                        }
                 }
             }
             .padding(.horizontal)
         }
         .scrollIndicators(.hidden)
-        .frame(height: 80)
     }
 }
 
