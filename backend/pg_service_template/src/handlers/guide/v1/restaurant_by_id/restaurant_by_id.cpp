@@ -46,6 +46,17 @@ public:
         userver::server::request::RequestContext&
     ) const override 
     {
+        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Origin"), "*" );
+        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Headers"), "true" );
+        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Credentials"), "Content-Type, Authorization, Origin, X-Requested-With, Accept" );
+
+        if ( request.GetMethod() == userver::server::http::HttpMethod::kOptions ) {
+            request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Methods"),
+                                                 "GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,PATCH" );
+            request.GetHttpResponse().SetStatus( userver::server::http::HttpStatus::kOk );
+            return "";
+        }
+        
         ErrorResponseBuilder errorBuilder(request);
 
         if (!request.HasHeader("Authorization")) {
@@ -91,11 +102,6 @@ public:
         for (auto& restaurant : restaurants) {
             responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
         }
-      
-        auto &response = request.GetHttpResponse();
-        
-        response.SetHeader(std::string_view("Access-Control-Allow-Origin"), "*");
-        response.SetHeader(std::string_view("Access-Control-Allow-Headers"), "Origin, X-Requested-With, Content-Type, Accept");
 
         return userver::formats::json::ToPrettyString(
             responseJSON.ExtractValue(),
@@ -108,7 +114,7 @@ public:
 
 }  // namespace
 
-void AppendRestaurantController(userver::components::ComponentList& component_list) {
+void AppendRestaurantByIdController(userver::components::ComponentList& component_list) {
     component_list.Append<RestaurantController>();
 }
 
