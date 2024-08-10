@@ -13,35 +13,15 @@ struct DetailsView: View {
     @State private var isBottomSheetPresented = true
     
     var body: some View {
-        VStack {
+        ZStack {
             YandexMapView()
                 .edgesIgnoringSafeArea(.all)
-                .environmentObject(viewModel.mapManager)                
+                .environmentObject(viewModel.mapManager)
+            CustomBottomSheet(content: BottomSheetView())
         }
         .toolbar(.hidden, for: .navigationBar)
-        .overlay {
-            VStack {
-                HStack {
-                    backButton
-                    Spacer()
-                    userLocationButton
-                    Spacer()
-                    bookmarkButton
-                }
-                .padding()
-                Spacer()
-            }
-        }
         .onAppear {
             viewModel.eventOnAppear()
-        }
-        .sheet(isPresented: $isBottomSheetPresented) {
-            BottomSheetView()
-                .presentationDetents([.fraction(0.10), .medium,])
-                .presentationDragIndicator(.visible)
-                .presentationBackgroundInteraction(.enabled)
-                .interactiveDismissDisabled()
-                .presentationCornerRadius(40)
         }
     }
     
