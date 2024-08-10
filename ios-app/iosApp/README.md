@@ -21,3 +21,14 @@ iosApp.xcworkspace
 
 #### 4. Выберите локальное устройство для билда
 
+![Alt text](image.png)
+
+#### 5. Выберите аккаунт разработчика в файле iosApp.xcodeproj
+
+![Alt text](image-1.png)
+
+#### 6. Выберите валидный bundle identifier
+
+![Alt text](image-2.png)
+
+#### 7. Запустите приложение
