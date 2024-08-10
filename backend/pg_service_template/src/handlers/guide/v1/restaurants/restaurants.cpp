@@ -5,6 +5,8 @@
 
 #include <fmt/format.h>
 
+#include <string>
+#include <string_view>
 #include <userver/components/component.hpp>
 #include <userver/formats/json/serialize.hpp>
 #include <userver/formats/json/value.hpp>
@@ -53,6 +55,8 @@ public:
             );
         }
 
+        
+
         const auto& request_body_string = request.RequestBody();
         userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
 
@@ -88,6 +92,10 @@ public:
             responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
         }
       
+        auto &response = request.GetHttpResponse();
+        
+        response.SetHeader(std::string_view("Access-Control-Allow-Origin"), "*");
+
         return userver::formats::json::ToPrettyString(
             responseJSON.ExtractValue(),
             {' ', 4}
