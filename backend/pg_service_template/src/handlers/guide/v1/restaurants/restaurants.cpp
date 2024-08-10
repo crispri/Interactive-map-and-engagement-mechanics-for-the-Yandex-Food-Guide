@@ -87,7 +87,9 @@ public:
         for (auto& restaurant : restaurants) {
             responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
         }
-      
+        auto &response = request.GetHttpResponse();
+        response.SetHeader(std::string_view("Access-Control-Allow-Origin"),"*");
+
         return userver::formats::json::ToPrettyString(
             responseJSON.ExtractValue(),
             {' ', 4}
