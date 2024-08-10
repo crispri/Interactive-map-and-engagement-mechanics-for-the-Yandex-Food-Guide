@@ -131,7 +131,7 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                MapScreen(uiState, send, mapView)
+                MapScreen(uiState, send, mapView, curLocation)
             }
         }
 
