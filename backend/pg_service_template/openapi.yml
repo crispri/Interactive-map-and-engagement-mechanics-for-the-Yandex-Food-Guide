@@ -109,3 +109,28 @@ paths:
                     description: invalid input parameters
                 '401':
                     description: unauthorized
+
+
+    /guide/v1/restaurant/{id}:
+        get:
+            description: Get restaurant by id
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: uuid of the user to get.
+                  schema:
+                    type: string
+            security:
+                -   UserTicketAuth: [ ]
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/restaurant'
+                '400':
+                    description: invalid input parameters
+                '401':
+                    description: unauthorized
