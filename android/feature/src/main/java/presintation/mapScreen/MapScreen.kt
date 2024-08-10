@@ -5,16 +5,17 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.feature.R
-import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
+import model.ChangeDeviceLocation
 import model.Event
 
 
@@ -22,7 +23,8 @@ import model.Event
 fun MapScreen(
     uiState: MainUiState,
     send: (Event) -> Unit,
-    mapView: MapView
+    mapView: MapView,
+    curLocation: MutableState<Point?>
 ) {
 
     AndroidView(
@@ -33,14 +35,21 @@ fun MapScreen(
     )
     { mapView ->
 
-        fun moveToStartLocation(startLocation: Point, zoomValue: Float) {
+        fun moveToStartLocation(curLocation: Point, zoomValue: Float) {
             mapView.mapWindow.map.move(
-                CameraPosition(startLocation, zoomValue, 0.0f, 0.0f)
+                CameraPosition(curLocation, zoomValue, 0.0f, 0.0f)
             )
         }
 
-        if (uiState.centeringIsRequired) {
-            moveToStartLocation(uiState.currentDeviceLocation, uiState.zoomValue)
+        /*if(curLocation != uiState.currentDeviceLocation && uiState.currentDeviceLocation != null){
+            send(ChangeDeviceLocation(curLocation))
+        }*/
+        if(curLocation.value != null){
+            send(ChangeDeviceLocation(curLocation.value!!))
+        }
+
+        if (uiState.centeringIsRequired && curLocation.value != null) {
+            moveToStartLocation(curLocation.value!!, uiState.zoomValue)
             send(CancelCentering())
         }
 

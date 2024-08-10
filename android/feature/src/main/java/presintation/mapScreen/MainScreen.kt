@@ -37,6 +37,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
@@ -54,6 +55,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
+import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
 import model.Event
 import model.NavigateToLocationEvent
@@ -73,7 +75,8 @@ fun MainScreen(
     uiState: MainUiState,
     navToBack: () -> Unit,
     send: (Event) -> Unit,
-    mapView: MapView
+    mapView: MapView,
+    curLocation: MutableState<Point?>
 ) {
 
     val offsetState = remember { mutableFloatStateOf(-96f) }
@@ -313,7 +316,7 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                MapScreen(uiState, send, mapView)
+                MapScreen(uiState, send, mapView, curLocation)
             }
         }
 
