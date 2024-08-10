@@ -1,20 +1,35 @@
 package com.example.yandexmapeat
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.mutableStateOf
+import androidx.core.content.ContextCompat
+import com.example.feature.R
 import com.example.yandexmapeat.ui.theme.YandexMapEatTheme
+import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.location.Location
+import com.yandex.mapkit.location.LocationListener
+import com.yandex.mapkit.location.LocationManager
+import com.yandex.mapkit.location.LocationStatus
 import com.yandex.mapkit.mapview.MapView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableStateFlow
 import presintation.navigation.AppNavigation
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    lateinit var mapView: MapView
+    private lateinit var mapView: MapView
+    private lateinit var locationManager: LocationManager
+    private lateinit var locationListener: LocationListener
+    private lateinit var mapkit: MapKit
+    private var curLocation = mutableStateOf<Point?>(null)
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -37,6 +52,22 @@ class MainActivity : ComponentActivity() {
         setApiKey(savedInstanceState)
         MapKitFactory.initialize(this)
 
+        mapkit = MapKitFactory.getInstance()
+
+        locationManager = mapkit.createLocationManager()
+        locationListener = object : LocationListener{
+            override fun onLocationUpdated(p0: Location) {
+                curLocation.value = Point(p0.position.latitude, p0.position.longitude)
+            }
+
+            override fun onLocationStatusUpdated(p0: LocationStatus) {
+                if(p0 == LocationStatus.NOT_AVAILABLE){
+                    Log.e("LocationStatus", "LocationStatus is NOT_AVAILABLE")
+                }
+            }
+        }
+
+        locationManager.requestSingleUpdate(locationListener)
 
         locationPermissionRequest.launch(
             arrayOf(
@@ -54,7 +85,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             YandexMapEatTheme {
-                AppNavigation(mapView)
+                AppNavigation(mapView, curLocation)
             }
         }
 
@@ -70,6 +101,11 @@ class MainActivity : ComponentActivity() {
         mapView.onStop()
         MapKitFactory.getInstance().onStop()
         super.onStop()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        locationManager.requestSingleUpdate(locationListener)
     }
 
     private fun setApiKey(savedInstanceState: Bundle?) {

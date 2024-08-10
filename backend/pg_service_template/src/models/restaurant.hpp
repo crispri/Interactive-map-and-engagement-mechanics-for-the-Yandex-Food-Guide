@@ -2,13 +2,14 @@
 
 #include <userver/formats/json/value_builder.hpp>
 #include <userver/utils/time_of_day.hpp>
+#include <boost/uuid/uuid.hpp>
 #include "coordinates.hpp"
 
 
 namespace service {
 
 struct TRestaurant {
-    std::string id;
+    boost::uuids::uuid id;
     TCoordinates coordinates;
     std::string name;
     std::string description;
@@ -23,7 +24,7 @@ struct TRestaurant {
     bool is_favorite;
 
     std::tuple<
-        std::string&,
+        boost::uuids::uuid&,
         double&,
         double&,
         std::string&,
