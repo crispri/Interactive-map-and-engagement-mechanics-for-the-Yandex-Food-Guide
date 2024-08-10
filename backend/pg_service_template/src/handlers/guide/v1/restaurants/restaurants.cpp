@@ -95,6 +95,7 @@ public:
         auto &response = request.GetHttpResponse();
         
         response.SetHeader(std::string_view("Access-Control-Allow-Origin"), "*");
+        response.SetHeader(std::string_view("Access-Control-Allow-Headers"), "Origin, X-Requested-With, Content-Type, Accept");
 
         return userver::formats::json::ToPrettyString(
             responseJSON.ExtractValue(),
