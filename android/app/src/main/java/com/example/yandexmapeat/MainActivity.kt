@@ -6,15 +6,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.mutableStateOf
 import com.example.yandexmapeat.ui.theme.YandexMapEatTheme
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.location.Location
 import com.yandex.mapkit.location.LocationListener
 import com.yandex.mapkit.location.LocationManager
 import com.yandex.mapkit.location.LocationStatus
 import com.yandex.mapkit.mapview.MapView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableStateFlow
 import presintation.navigation.AppNavigation
 
 @AndroidEntryPoint
@@ -24,6 +27,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var locationManager: LocationManager
     private lateinit var locationListener: LocationListener
     private lateinit var mapkit: MapKit
+    private var curLocation = mutableStateOf<Point?>(null)
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -36,11 +40,12 @@ class MainActivity : ComponentActivity() {
                 // Only approximate location access granted.
             } else -> {
             // No location access granted.
-        }
+            }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         setApiKey(savedInstanceState)
@@ -51,8 +56,7 @@ class MainActivity : ComponentActivity() {
         locationManager = mapkit.createLocationManager()
         locationListener = object : LocationListener{
             override fun onLocationUpdated(p0: Location) {
-                Log.e("Location", "latitude: ${p0.position.latitude}")
-                Log.e("Location", "longitude: ${p0.position.longitude}")
+                curLocation.value = Point(p0.position.latitude, p0.position.longitude)
             }
 
             override fun onLocationStatusUpdated(p0: LocationStatus) {
@@ -61,6 +65,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        locationManager.requestSingleUpdate(locationListener)
 
         locationPermissionRequest.launch(
             arrayOf(
@@ -78,7 +84,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             YandexMapEatTheme {
-                AppNavigation(mapView)
+                AppNavigation(mapView, curLocation)
             }
         }
 
@@ -88,7 +94,6 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         MapKitFactory.getInstance().onStart()
         mapView.onStart()
-        locationManager.requestSingleUpdate(locationListener)
     }
 
     override fun onStop() {

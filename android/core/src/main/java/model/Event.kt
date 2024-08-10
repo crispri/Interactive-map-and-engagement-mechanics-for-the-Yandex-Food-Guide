@@ -1,5 +1,7 @@
 package model
 
+import com.yandex.mapkit.geometry.Point
+
 abstract class Event {}
 
 class SaveInCollectionEvent(
@@ -9,3 +11,6 @@ class SaveInCollectionEvent(
 class NavigateToLocationEvent : Event()
 
 class CancelCentering : Event()
+
+class ChangeDeviceLocation(val curLocation: Point) : Event()
+
