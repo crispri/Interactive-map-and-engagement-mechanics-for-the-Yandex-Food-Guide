@@ -1,6 +1,7 @@
 #include "recommendations_by_selection_id.hpp"
-#include "../../../../lib/error_response_builder.hpp"
-#include "../../../../models/restaurant.hpp"
+#include <boost/uuid/string_generator.hpp>
+#include <lib/error_response_builder.hpp>
+#include <models/restaurant.hpp>
 
 #include <fmt/format.h>
 
@@ -13,6 +14,11 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 #include <regex>
+#include <boost/uuid/string_generator.hpp>
+
+
+
+#include "service/SelectionService.hpp"
 
 namespace service {
 
@@ -37,10 +43,9 @@ class RecommendationsBySelectionId final : public userver::server::handlers::Htt
         config,
         component_context
     ),
-    pg_cluster_(
+    selection_service_(
       component_context
-        .FindComponent<userver::components::Postgres>("postgres-db-1")
-        .GetCluster()
+        .FindComponent<SelectionService>()
     )
     {}
 
@@ -49,6 +54,16 @@ class RecommendationsBySelectionId final : public userver::server::handlers::Htt
         userver::server::request::RequestContext&
     ) const override 
     {
+      request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Origin"), "*" );
+      request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Headers"), "true" );
+      request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Credentials"), "Content-Type, Authorization, Origin, X-Requested-With, Accept" );
+
+      if ( request.GetMethod() == userver::server::http::HttpMethod::kOptions ) {
+            request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Methods"),
+                                                 "GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,PATCH" );
+            request.GetHttpResponse().SetStatus( userver::server::http::HttpStatus::kOk );
+            return "";
+      }
       ErrorResponseBuilder errorBuilder(request);
 
       if (!request.HasHeader("Authorization")) {
@@ -61,32 +76,28 @@ class RecommendationsBySelectionId final : public userver::server::handlers::Htt
       if(!IsUUID(id)){
          return errorBuilder.build(
             userver::server::http::HttpStatus::kBadRequest,
-            ErrorDescriprion::kWrongIdSelection
+            ErrorDescriprion::kInvalidSelectionId
         );
       }
 
       
 
-      TRestaurant restaurant;
-
-      restaurant.address = "ул.Москворечье д.19";
-      restaurant.coordinates = {3.45, 15.31};
-      restaurant.description = "Азиатская кухня";
-      restaurant.is_approved = false;
-      restaurant.is_favorite = false;
-      restaurant.name = "Тануки";
-      restaurant.price_lower_bound = 500;
-      restaurant.price_upper_bound = 1500;
-      restaurant.rating = 4.10;
-    
-
-      userver::formats::json::ValueBuilder responseJSON{restaurant};
-      return userver::formats::json::ToPrettyString(responseJSON.ExtractValue(),
-                                                  {' ', 4});
+        boost::uuids::string_generator gen;
+        auto restaurants = selection_service_.GetById(gen(id));
+        userver::formats::json::ValueBuilder responseJSON;
+        responseJSON["items"].Resize(0);
+        for (auto& restaurant : restaurants) {
+            responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
+        }
+      
+        return userver::formats::json::ToPrettyString(
+            responseJSON.ExtractValue(),
+            {' ', 4}
+        );                                        
 
     }
 
-  userver::storages::postgres::ClusterPtr pg_cluster_;
+   SelectionService& selection_service_;
 };
 
 }  // namespace

@@ -35,6 +35,7 @@ components_manager:
         testsuite-support: {}
 
         restaurant-service-component: {}
+        selection-service-component: {}
 
         ml-service-component: {}
 
@@ -72,6 +73,14 @@ components_manager:
             path: /guide/v1/ml
             method: POST
             task_processor: main-task-processor
+        handler-selections:
+            path: /guide/v1/selections
+            method: POST
+            task_processor: main-task-processor 
+        handler-recs-by-selection-id:
+            path: /guide/v1/selections/{id}
+            method: POST
+            task_processor: main-task-processor       
 
 
         handler-restaurant-by-id:
