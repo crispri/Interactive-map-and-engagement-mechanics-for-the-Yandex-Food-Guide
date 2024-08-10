@@ -65,6 +65,19 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         )
     }
     
+    func placeUser() {
+        guard let userLocation = manager.location else { return }
+        let iconStyle = YMKIconStyle()
+        let image = UIImage(named: "me") ?? UIImage()
+        
+        let placemark = map.mapObjects.addPlacemark()
+        placemark.geometry = .init(
+            latitude: userLocation.coordinate.latitude,
+            longitude: userLocation.coordinate.longitude
+        )
+        placemark.setIconWith(image, style: iconStyle)
+    }
+    
     func centerCamera(to option: CameraTargetOption) {
         switch option {
         case .user:

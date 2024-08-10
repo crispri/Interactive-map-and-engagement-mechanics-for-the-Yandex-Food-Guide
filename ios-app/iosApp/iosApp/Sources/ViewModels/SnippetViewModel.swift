@@ -22,6 +22,7 @@ final class SnippetViewModel: ObservableObject {
     
     func eventOnAppear() {
         eventCenterCamera(to: .user)
+        mapManager.placeUser()
         eventOnGesture()
     }
     
