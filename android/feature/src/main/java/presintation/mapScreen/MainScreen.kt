@@ -1,5 +1,12 @@
 package presintation.mapScreen
 
+import android.content.Context
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,13 +47,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.feature1.R
+import com.example.feature.R
 import com.yandex.mapkit.mapview.MapView
+import model.Event
+import model.NavigateToLocationEvent
+import model.Recommendation
+import model.Restaurant
+import model.SaveInCollectionEvent
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
@@ -55,7 +69,9 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    uiState: MainUiState,
     navToBack: () -> Unit,
+    send: (Event) -> Unit,
     mapView: MapView
 ) {
     val bottomSheetState = rememberBottomSheetScaffoldState()
@@ -79,7 +95,7 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
-                    BottomSheetContent()
+                    BottomSheetContent(uiState.restaurantsOnMap)
                 }
             },
             sheetPeekHeight = 80.dp,
@@ -91,7 +107,7 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                MapScreen(mapView = mapView)
+                MapScreen(uiState, send, mapView)
             }
         }
 
@@ -103,7 +119,7 @@ fun MainScreen(
         ) {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.onSecondary,
-                onClick = {navToBack()},
+                onClick = { navToBack() },
                 shape = CircleShape,
             ) {
                 Image(
@@ -130,21 +146,25 @@ fun MainScreen(
                     ) {
                         Text(
                             text = "Ваше местоположение",
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                             color = Color.Black,
+                            maxLines = 1,
+                            textAlign = TextAlign.Center,
                         )
                         Image(
                             modifier = Modifier.size(20.dp),
                             painter = painterResource(R.drawable.baseline_keyboard_arrow_right_24),
-                            contentDescription = "smth",
+                            contentDescription = "Стрелка",
                             colorFilter = ColorFilter.tint(Color.Black)
                         )
                     }
                     Text(
-                        text = "Льва Толстого, 16",
-                        fontSize = 16.sp,
+                        text = uiState.currentAddress,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black
+                        color = Color.Black,
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
@@ -153,7 +173,9 @@ fun MainScreen(
 
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.onSurface,
-                onClick = {},
+                onClick = {
+                    send(SaveInCollectionEvent(""))
+                },
                 shape = CircleShape,
             ) {
                 Image(
@@ -169,33 +191,68 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(90.dp)
-                .offset(y = (-90).dp)
-                .offset { IntOffset(0, offsetState.floatValue.roundToInt() - 16) }
-        ) {
-            CollectionCarousel()
+                .offset(y = (-100).dp)
+                .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
+        )
+        {
+            CollectionCarousel(uiState.recommendations)
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .offset(y = (-160).dp)
+                .offset { IntOffset(0, offsetState.floatValue.roundToInt()) })
+        {
+            AnimatedVisibility(
+                visible = offsetState.floatValue > 950.0f,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .fillMaxWidth()
+                ) {
+                    FloatingActionButton(
+                        containerColor = MaterialTheme.colorScheme.onSecondary,
+                        onClick = {
+                            send(NavigateToLocationEvent())
+                        },
+                        shape = CircleShape,
+                    ) {
+                        Image(
+                            modifier = Modifier.size(28.dp, 28.dp),
+                            painter = painterResource(R.drawable.ic_navigate_to_location),
+                            contentDescription = "go_to_current_location",
+                            colorFilter = ColorFilter.tint(Color.Black)
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
         }
     }
 }
 
 
 @Composable
-fun CollectionCarousel() {
-    val items = (1..5).map { "Item $it" }
+fun CollectionCarousel(recommendations: List<Recommendation>) {
 
     LazyRow(
         modifier = Modifier
             .height(90.dp)
-            .padding(horizontal = 6.dp) // Отступы в начале и в конце
+            .padding(horizontal = 6.dp)
             .background(Color.White)
     ) {
-        itemsIndexed(items) { index, item ->
+        itemsIndexed(recommendations) { index, item ->
             if (index > 0) {
-                Spacer(modifier = Modifier.width(6.dp)) // Отступ между элементами
+                Spacer(modifier = Modifier.width(6.dp))
             }
             CardWithImageAndText(
-                painterResource(id = com.example.core1.R.drawable.hardcode_picture_of_cafe),
-                "Kalabasa",
-                "Крутое место",
+                painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
+                text = item.title,
+                description = item.description,
                 {},
                 {}
             )
@@ -205,10 +262,11 @@ fun CollectionCarousel() {
 
 
 @Composable
-fun BottomSheetContent() {
+fun BottomSheetContent(
+    restaurants: List<Restaurant>
+) {
     LazyColumn {
-        val list = listOf(R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe, R.drawable.hardcode_picture_of_cafe)
-        items(list) { item ->
+        items(restaurants) { item ->
             BigCard(item)
         }
     }

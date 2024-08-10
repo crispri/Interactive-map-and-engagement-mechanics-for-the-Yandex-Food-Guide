@@ -6,6 +6,8 @@ servers:
     -   url: http://51.250.39.97:8080/
 components:
     schemas:
+
+
         coordinates:
             type: object
             properties:
@@ -110,6 +112,7 @@ paths:
                 '401':
                     description: unauthorized
 
+
     /guide/v1/ml:
         post:
             description: Sort restaurants ids list by ML (mock)
@@ -130,7 +133,6 @@ paths:
                                 - restaurant_ids
             security:
                 - UserTicketAuth: [ ]
-
             responses:
                 '200':
                     description: OK
