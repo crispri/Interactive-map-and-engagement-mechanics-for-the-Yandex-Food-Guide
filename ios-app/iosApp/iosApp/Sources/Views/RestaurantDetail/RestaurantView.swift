@@ -46,16 +46,18 @@ struct RestaurantView: View {
 
                 VStack {
                     ChatGPT()
-                    //                        .frame(width: 400, height: 60)
-                        .border(Color.black)
+                    //.frame(width: 400, height: 60)
                         .padding(16)
                         .cornerRadius(20)
                     ComentYGPT()
-                        .padding(16)
+                        .padding()
                         .background(.white)
                         .clipShape(.rect(cornerRadius: 16))
+                        .padding([.leading, .trailing, .bottom], 16)
+//                        .clipShape(.rect(cornerRadius: 16))
 //                        .frame(height: 100)
                 }
+                .padding(.horizontal)
                 .background(Color.chatGPT)
                 .clipShape(.rect(cornerRadius: 16))
                 }
@@ -208,7 +210,7 @@ struct RestaurantView: View {
                 HStack {
                     Text("сгенерировано нейросетью на основе отзывов")
                         .lineLimit(1)
-                        .font(.system(size: 14))
+                        .font(.system(size: 12))
                     Image(systemName: "chevron.right")
                 }
                 .foregroundStyle(.gray)
@@ -218,6 +220,7 @@ struct RestaurantView: View {
 
     private func ComentYGPT() -> some View {
         Text("Коктейль-бар Мэлт - это стильное и уютное метсто, где вы можете насладиться вкусной едой и напитками. Здесь вы можете попробовать лучши коктейли в городе")
+            .font(.system(size: 14))
     }
 }
 
