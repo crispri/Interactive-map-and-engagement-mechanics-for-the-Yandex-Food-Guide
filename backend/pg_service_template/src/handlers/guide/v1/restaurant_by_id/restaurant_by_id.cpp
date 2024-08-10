@@ -1,4 +1,4 @@
-#include "restaurants.hpp"
+#include "restaurant_by_id.hpp"
 #include <lib/error_response_builder.hpp>
 #include <models/coordinates.hpp>
 #include <models/restaurant.hpp>
@@ -12,21 +12,24 @@
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/server/http/http_status.hpp>
 #include <userver/utils/assert.hpp>
 
 #include <boost/uuid/string_generator.hpp>
 
 #include <service/RestaurantService.hpp>
+#include <boost/lexical_cast.hpp>
+#include "lib/error_description.hpp"
 
 namespace service {
 
 namespace {
 
-class RestaurantController final : public userver::server::handlers::HttpHandlerBase {
+class RestaurantByIdController final : public userver::server::handlers::HttpHandlerBase {
 public:
-    static constexpr std::string_view kName = "handler-restaurants";
+    static constexpr std::string_view kName = "handler-restaurant-by-id";
 
-    RestaurantController(
+    RestaurantByIdController(
         const userver::components::ComponentConfig& config,
         const userver::components::ComponentContext& component_context
     ) : 
@@ -56,7 +59,6 @@ public:
             request.GetHttpResponse().SetStatus( userver::server::http::HttpStatus::kOk );
             return "";
         }
-        
         ErrorResponseBuilder errorBuilder(request);
 
         if (!request.HasHeader("Authorization")) {
@@ -66,45 +68,24 @@ public:
             );
         }
 
-        
+        boost::uuids::string_generator gen;
+        auto id = gen(request.GetPathArg("id"));
 
-        const auto& request_body_string = request.RequestBody();
-        userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
-
-        if (!request_body_json.HasMember("lower_left_corner") && !request_body_json.HasMember("top_right_corner")) {
+        auto restaurant = restaurant_service_.GetById(id);
+        if (!restaurant) {
             return errorBuilder.build(
-                userver::server::http::HttpStatus::kBadRequest,
-                ErrorDescriprion::kCornersNotSpecified
+                userver::server::http::HttpStatus::kNotFound,
+                ErrorDescriprion::kRestaurantNotFound
             );
         }
-
-        if (!request_body_json.HasMember("lower_left_corner")) {
-            return errorBuilder.build(
-                userver::server::http::HttpStatus::kBadRequest,
-                ErrorDescriprion::kLowerLeftCornerNotSpecified
-            );
-        }
-        if (!request_body_json.HasMember("top_right_corner")) {
-            return errorBuilder.build(
-                userver::server::http::HttpStatus::kBadRequest,
-                ErrorDescriprion::kTopRightCornerNotSpecified
-            );
-        }
-
-        TRestaurantFilter filters(
-            request_body_json["lower_left_corner"].As<TCoordinates>(),
-            request_body_json["top_right_corner"].As<TCoordinates>()
-        );
-
-        auto restaurants = restaurant_service_.GetByFilter(filters);
         userver::formats::json::ValueBuilder responseJSON;
-        responseJSON["items"].Resize(0);
-        for (auto& restaurant : restaurants) {
-            responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
-        }
+        // responseJSON["restaurant"] = userver::formats::json::ValueBuilder{restaurant};
+        // for (auto& restaurant : restaurants) {
+        //     responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
+        // }
 
         return userver::formats::json::ToPrettyString(
-            responseJSON.ExtractValue(),
+            userver::formats::json::ValueBuilder{restaurant.value()}.ExtractValue(),
             {' ', 4}
         );
     }
@@ -115,7 +96,7 @@ public:
 }  // namespace
 
 void AppendRestaurantByIdController(userver::components::ComponentList& component_list) {
-    component_list.Append<RestaurantController>();
+    component_list.Append<RestaurantByIdController>();
 }
 
 }  // namespace service

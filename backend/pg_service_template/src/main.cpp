@@ -9,6 +9,7 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include <handlers/guide/v1/restaurants/restaurants.hpp>
+#include <handlers/guide/v1/restaurant_by_id/restaurant_by_id.hpp>
 #include <service/RestaurantService.hpp>
 
 int main(int argc, char* argv[]) {
@@ -22,6 +23,7 @@ int main(int argc, char* argv[]) {
 
   service::AppendRestaurantController(component_list);
   service::AppendRestaurantService(component_list);
+  service::AppendRestaurantByIdController(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }
