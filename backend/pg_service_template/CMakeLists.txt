@@ -29,6 +29,8 @@ include_directories("src/")
 add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/guide/v1/restaurants/restaurants.hpp
     src/handlers/guide/v1/restaurants/restaurants.cpp
+    src/handlers/guide/v1/ml/ml_sort.hpp
+    src/handlers/guide/v1/ml/ml_sort.cpp
     src/handlers/guide/v1/restaurant_by_id/restaurant_by_id.cpp
     src/handlers/guide/v1/restaurant_by_id/restaurant_by_id.hpp
     src/models/coordinates.hpp
@@ -48,6 +50,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/repository/IRestaurantRepository.hpp
     src/service/RestaurantService.hpp
     src/service/RestaurantService.cpp
+    src/service/MLService.hpp
+    src/service/MLService.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

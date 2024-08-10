@@ -111,6 +111,46 @@ paths:
                     description: unauthorized
 
 
+    /guide/v1/ml:
+        post:
+            description: Sort restaurants ids list by ML (mock)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                restaurant_ids:
+                                    description: List of restaurant ids
+                                    type: array
+                                    items: {
+                                        type: integer
+                                    }
+                            required:
+                                - restaurant_ids
+            security:
+                - UserTicketAuth: [ ]
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    restaurant_ids:
+                                        type: array
+                                        items: {
+                                            type: integer
+                                        }
+                '400':
+                    description: invalid input parameters
+                '401':
+                    description: unauthorized
+
+
+
     /guide/v1/restaurant/{id}:
         get:
             description: Get restaurant by id

@@ -36,6 +36,8 @@ components_manager:
 
         restaurant-service-component: {}
 
+        ml-service-component: {}
+
         http-client:
             load-enabled: $is-testing
             fs-task-processor: fs-task-processor
@@ -55,6 +57,11 @@ components_manager:
         handler-restaurants:
             path: /guide/v1/restaurants
             method: POST,OPTIONS
+            task_processor: main-task-processor
+
+        handler-ml:
+            path: /guide/v1/ml
+            method: POST
             task_processor: main-task-processor
 
 
