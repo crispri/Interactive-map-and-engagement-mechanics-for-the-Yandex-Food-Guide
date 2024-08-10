@@ -54,6 +54,7 @@ public:
             request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Methods"),
                                                  "GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,PATCH" );
             request.GetHttpResponse().SetStatus( userver::server::http::HttpStatus::kOk );
+            return "";
         }
         
         ErrorResponseBuilder errorBuilder(request);
