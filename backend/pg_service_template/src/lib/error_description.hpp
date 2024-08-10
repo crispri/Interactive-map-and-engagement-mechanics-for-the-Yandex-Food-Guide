@@ -8,6 +8,7 @@ enum class ErrorDescriprion {
     kTopRightCornerNotSpecified,
     kCornersNotSpecified,
     kTokenNotSpecified,
+    kListNotSpecified
 };
 
 extern const std::unordered_map<ErrorDescriprion, std::string> errorMapping;

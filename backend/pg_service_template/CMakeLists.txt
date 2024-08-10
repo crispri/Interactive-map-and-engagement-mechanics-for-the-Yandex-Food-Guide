@@ -29,6 +29,8 @@ include_directories("src/")
 add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/guide/v1/restaurants/restaurants.hpp
     src/handlers/guide/v1/restaurants/restaurants.cpp
+    src/handlers/guide/v1/ml/ml_sort.hpp
+    src/handlers/guide/v1/ml/ml_sort.cpp
     src/models/coordinates.hpp
     src/models/coordinates.cpp
     src/models/restaurant.hpp
