@@ -87,9 +87,11 @@ fun MapScreen(
             }
         }
 
-        mapObjectCollection.addPlacemark().apply {
-            geometry = Point(55.733415, 37.590042)
-            setIcon(curLocationMarkerImageProvider)
+        if(curLocation.value != null){
+            mapObjectCollection.addPlacemark().apply {
+                geometry = curLocation.value!!
+                setIcon(curLocationMarkerImageProvider)
+            }
         }
     }
 }
