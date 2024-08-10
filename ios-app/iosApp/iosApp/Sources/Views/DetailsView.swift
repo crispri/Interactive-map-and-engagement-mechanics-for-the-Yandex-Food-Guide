@@ -18,12 +18,6 @@ struct DetailsView: View {
             YandexMapView()
                 .edgesIgnoringSafeArea(.all)
                 .environmentObject(viewModel.mapManager)
-                .bottomSheet(
-                    bottomSheetPosition: Binding<BottomSheetPosition>,
-                    switchablePositions: [BottomSheetPosition],
-                    title: String?,
-                    content: BottomSheetView()
-                )
         }
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
