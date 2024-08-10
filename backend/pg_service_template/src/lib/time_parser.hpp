@@ -6,8 +6,8 @@
 namespace service {
 
 struct TimeParser {
-  static std::string Parse(
-      const userver::utils::datetime::TimeOfDay<std::chrono::seconds>& time
+    static std::string Parse(
+        const userver::utils::datetime::TimeOfDay<std::chrono::seconds>& time
     );
 };
 

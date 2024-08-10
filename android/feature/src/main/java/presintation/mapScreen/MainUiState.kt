@@ -1,9 +1,6 @@
 package presintation.mapScreen
 
-import android.graphics.Bitmap
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.map.MapObjectCollection
-import com.yandex.mapkit.map.PlacemarkMapObject
 import model.Recommendation
 import model.Restaurant
 

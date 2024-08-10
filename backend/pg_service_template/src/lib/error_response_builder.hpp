@@ -6,10 +6,11 @@
 
 namespace service {
 
+
 class ErrorResponseBuilder {
 
 private:
-  const userver::server::http::HttpRequest &request;
+    const userver::server::http::HttpRequest &request;
 
 public:
     explicit ErrorResponseBuilder(
@@ -22,5 +23,6 @@ public:
     );
 
 };
+
 
 }; // namespace service

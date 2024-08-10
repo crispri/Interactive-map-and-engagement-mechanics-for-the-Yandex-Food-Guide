@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.content.ContextCompat
+import com.example.feature.R
 import com.example.yandexmapeat.ui.theme.YandexMapEatTheme
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -40,12 +42,11 @@ class MainActivity : ComponentActivity() {
                 // Only approximate location access granted.
             } else -> {
             // No location access granted.
-            }
+        }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         setApiKey(savedInstanceState)

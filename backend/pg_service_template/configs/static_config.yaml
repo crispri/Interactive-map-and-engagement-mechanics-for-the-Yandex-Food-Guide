@@ -34,6 +34,8 @@ components_manager:
 
         testsuite-support: {}
 
+        restaurant-service-component: {}
+
         http-client:
             load-enabled: $is-testing
             fs-task-processor: fs-task-processor

@@ -8,7 +8,8 @@
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
 
-#include "handlers/guide/v1/restaurants/restaurants.hpp"
+#include <handlers/guide/v1/restaurants/restaurants.hpp>
+#include <service/RestaurantService.hpp>
 
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
@@ -20,6 +21,7 @@ int main(int argc, char* argv[]) {
                             .Append<userver::clients::dns::Component>();
 
   service::AppendRestaurantController(component_list);
+  service::AppendRestaurantService(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }
