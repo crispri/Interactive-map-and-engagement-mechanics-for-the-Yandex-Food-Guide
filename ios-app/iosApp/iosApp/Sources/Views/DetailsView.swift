@@ -33,7 +33,10 @@ struct DetailsView: View {
                 )
                 .enableAppleScrollBehavior(true)
                 .showDragIndicator(true)
-                .customBackground(.white)
+                .customBackground(
+                    Color.white
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                )
             VStack {
                 HStack {
                     backButton
