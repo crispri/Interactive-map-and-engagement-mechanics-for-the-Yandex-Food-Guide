@@ -12,12 +12,42 @@ struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var viewModel: SnippetViewModel
     @State private var isBottomSheetPresented = true
+    @State var sheetPosition: BottomSheetPosition = .relative(0.15)
     
     var body: some View {
         ZStack {
             YandexMapView()
                 .edgesIgnoringSafeArea(.all)
                 .environmentObject(viewModel.mapManager)
+                .bottomSheet(
+                    bottomSheetPosition: $sheetPosition,
+                    switchablePositions: [
+                        .relative(0.15),
+                        .relative(0.5),
+                        .relative(0.8)
+                    ],
+                    content: {
+                        BottomSheetView()
+                            .background(Color.white)
+                    }
+                )
+                .enableAppleScrollBehavior(true)
+                .showDragIndicator(true)
+                .customBackground(
+                    Color.white
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                )
+            VStack {
+                HStack {
+                    backButton
+                    Spacer()
+                    userLocationButton
+                    Spacer()
+                    bookmarkButton
+                }
+                .padding()
+                Spacer()
+            }
         }
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
