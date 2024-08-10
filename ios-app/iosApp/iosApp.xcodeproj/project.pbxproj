@@ -16,6 +16,7 @@
 		4F69DC7C2C6777AB0026828E /* IBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC7B2C6777AB0026828E /* IBottomSheetView.swift */; };
 		4F69DC7E2C6777DD0026828E /* RoundedCornersShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC7D2C6777DD0026828E /* RoundedCornersShape.swift */; };
 		4F69DC802C6777FE0026828E /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F69DC7F2C6777FE0026828E /* CustomBottomSheet.swift */; };
+		4F69DC832C678BD00026828E /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 4F69DC822C678BD00026828E /* BottomSheet */; };
 		4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */; };
 		4F9DCAE92C5E6C4200B39252 /* YandexMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */; };
 		4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAED2C5E754A00B39252 /* DetailsView.swift */; };
@@ -131,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85FEE69FFF6D5E7FB6785FFF /* Pods_iosApp.framework in Frameworks */,
+				4F69DC832C678BD00026828E /* BottomSheet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +393,9 @@
 			dependencies = (
 			);
 			name = iosApp;
+			packageProductDependencies = (
+				4F69DC822C678BD00026828E /* BottomSheet */,
+			);
 			productName = iosApp;
 			productReference = 4FC5121A2C5E5585006ED790 /* iosApp.app */;
 			productType = "com.apple.product-type.application";
@@ -466,6 +471,9 @@
 				Base,
 			);
 			mainGroup = 4FC512112C5E5585006ED790;
+			packageReferences = (
+				4F69DC812C678BD00026828E /* XCRemoteSwiftPackageReference "BottomSheet" */,
+			);
 			productRefGroup = 4FC5121B2C5E5585006ED790 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -997,6 +1005,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4F69DC812C678BD00026828E /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lucaszischka/BottomSheet.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4F69DC822C678BD00026828E /* BottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F69DC812C678BD00026828E /* XCRemoteSwiftPackageReference "BottomSheet" */;
+			productName = BottomSheet;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4FC512122C5E5585006ED790 /* Project object */;
 }

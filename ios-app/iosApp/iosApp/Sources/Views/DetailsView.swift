@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import BottomSheet
 
 struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
@@ -17,7 +18,12 @@ struct DetailsView: View {
             YandexMapView()
                 .edgesIgnoringSafeArea(.all)
                 .environmentObject(viewModel.mapManager)
-            CustomBottomSheet(content: BottomSheetView())
+                .bottomSheet(
+                    bottomSheetPosition: Binding<BottomSheetPosition>,
+                    switchablePositions: [BottomSheetPosition],
+                    title: String?,
+                    content: BottomSheetView()
+                )
         }
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
