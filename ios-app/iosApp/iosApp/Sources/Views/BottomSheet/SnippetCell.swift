@@ -33,13 +33,17 @@ struct SnippetCell: View {
         ZStack(alignment: .topTrailing) {
             var pages: [Image] {
                 var arr = [Image]()
-                for i in imageRest {
-                    arr.append(Image(i))
+                for name in imageRest {
+                    arr.append(
+                        Image(name)
+                            .resizable()
+                    )
                 }
                 return arr
             }
 
             ImageRestWithPC(pages: pages)
+                .frame(height: 150)
 //            Image("1rest")
 //                .resizable()
 //                .aspectRatio(contentMode: .fill)

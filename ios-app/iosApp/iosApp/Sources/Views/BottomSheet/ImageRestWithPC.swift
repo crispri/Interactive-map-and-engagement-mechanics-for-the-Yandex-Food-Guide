@@ -12,13 +12,12 @@ struct ImageRestWithPC<Page: View>: View {
                 .frame(width: CGFloat(pages.count * 18))
                 .padding(.trailing)
         }
-        .frame(height: 150)
-        .aspectRatio(contentMode: .fill)
         .cornerRadius(24)
     }
 }
 
-
+let images = [Image("1rest"), Image("2rest"), Image("3rest")].map { $0.resizable() }
 #Preview {
-    ImageRestWithPC(pages: [Image("1rest"), Image("2rest"), Image("3rest")])
+    ImageRestWithPC(pages: images)
+        .frame(height: 150)
 }
