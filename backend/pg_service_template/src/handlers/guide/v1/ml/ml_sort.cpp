@@ -1,5 +1,5 @@
 #include "ml_sort.hpp"
-#include "../../../../lib/error_response_builder.hpp"
+#include <lib/error_response_builder.hpp>
 #include <models/coordinates.hpp>
 #include <models/restaurant.hpp>
 
@@ -16,6 +16,8 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
+#include <service/MLService.hpp>
+
 namespace service {
 
 namespace {
@@ -28,7 +30,12 @@ class MLSort final : public userver::server::handlers::HttpHandlerBase {
          const userver::components::ComponentContext& component_context)
       :
 
-        HttpHandlerBase(config, component_context) {}
+      HttpHandlerBase(config, component_context),
+      ml_service_(
+          component_context
+              .FindComponent<MLService>()
+      )
+  {}
 
   std::string HandleRequestThrow(
       const userver::server::http::HttpRequest& request,
@@ -58,10 +65,12 @@ class MLSort final : public userver::server::handlers::HttpHandlerBase {
     auto restaurant_ids =
         request_body_json["restaurant_ids"].As<std::vector<int>>();
 
-    std::random_device rd;
-    std::mt19937 g(rd());
+//    std::random_device rd;
+//    std::mt19937 g(rd());
+//
+//    std::shuffle(restaurant_ids.begin(), restaurant_ids.end(), g);
 
-    std::shuffle(restaurant_ids.begin(), restaurant_ids.end(), g);
+    service::MLService::MLSort(restaurant_ids);
 
     userver::formats::json::ValueBuilder responseJSON;
 
@@ -75,7 +84,8 @@ class MLSort final : public userver::server::handlers::HttpHandlerBase {
                                                   {' ', 4});
   }
 
-  userver::storages::postgres::ClusterPtr pg_cluster_;
+
+  MLService& ml_service_;
 };
 
 }  // namespace

@@ -11,6 +11,7 @@
 #include "handlers/guide/v1/ml/ml_sort.hpp"
 #include <handlers/guide/v1/restaurants/restaurants.hpp>
 #include <service/RestaurantService.hpp>
+#include <service/MLService.hpp>
 
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
@@ -24,6 +25,7 @@ int main(int argc, char* argv[]) {
   service::AppendRestaurantController(component_list);
   service::AppendMLSort(component_list);
   service::AppendRestaurantService(component_list);
+  service::AppendMLService(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }
