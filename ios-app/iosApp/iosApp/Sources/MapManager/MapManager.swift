@@ -9,6 +9,7 @@ import Foundation
 import CoreLocation
 import YandexMapsMobile
 
+@MainActor
 final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     let mapView = YMKMapView(frame: CGRect.zero)
     private lazy var map : YMKMap = {  return mapView?.mapWindow.map ?? .init() }()
@@ -30,7 +31,6 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         map.isAwesomeModelsEnabled = true
     }
     
-    @MainActor 
     func eventOnGesture() {
         delegate?.onCameraMove()
     }
