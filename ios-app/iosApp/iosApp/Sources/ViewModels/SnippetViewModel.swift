@@ -27,6 +27,7 @@ final class SnippetViewModel: ObservableObject {
         eventOnGesture()
     }
     
+    @MainActor
     func eventOnGesture() {
         fetchSnippets()
         fetchSelections()
@@ -41,23 +42,20 @@ final class SnippetViewModel: ObservableObject {
     func fetchSnippets() {
         Task {
             do {
-                let square = mapManager.getScreenPoints()
+                let rect = mapManager.getScreenPoints()
+                let ll = rect.lowerLeftCorner
+                let tr = rect.topRightCorner
                 
-                print("\(square.lowerLeftCorner) \(square.topRightCorner)")
+                print("Square position: \(ll.description) \(tr.description)")
+                if abs(ll.lat - tr.lat) > 0.1 {
+                    mapManager.disablePins()
+                    mapManager.cleanPins()
+                    return
+                }
                 
                 let restaurants = try await loadSnippets(
-                    lowerLeftCorner: Point(
-                        lat: square.lowerLeftCorner.lat,
-                        lon: square.lowerLeftCorner.lon
-                    ),
-                    topRightCorner: Point(
-                        lat: square.topRightCorner.lat,
-                        lon: square.topRightCorner.lon
-                    )
+                    lowerLeftCorner: .init(lat: ll.lat, lon: ll.lon), topRightCorner: .init(lat: tr.lat, lon: tr.lon)
                 )
-                
-                for i in 0..<restaurants.count{ print(restaurants[i].address) }
-                
                 snippets = restaurants
                 mapManager.placePins(restaurants)
             }

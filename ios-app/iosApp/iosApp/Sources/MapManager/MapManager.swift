@@ -16,7 +16,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     private var targetPin: YMKPoint = .init()
     private let cameraListener = CameraListener()
     var delegate: SnippetViewModel? = nil
-    private var placedPins: Set<String> = []
+    private var placedPins: [String: (YMKPlacemarkMapObject, Bool)] = [:]
     
     override init() {
         super.init()
@@ -41,28 +41,53 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         }
     }
     
-    func placePins(_ models: [SnippetDTO]) {
+    func placePins(_ pins: [SnippetDTO]) {
         let iconStyle = YMKIconStyle()
         let image = UIImage(named: "pin") ?? UIImage()
         
-        for model in models {
-            guard !placedPins.contains(model.id) else { continue }
-            
-            let placemark = map.mapObjects.addPlacemark()
-            placemark.geometry = .init(
-                latitude: model.coordinates.lat,
-                longitude: model.coordinates.lon
-            )
-            placemark.setIconWith(image, style: iconStyle)
-            
-            placedPins.insert(model.id)
-        }
+        var cnt = 0;
         
-        guard let model = models.first else { return }
+        disablePins()
+        
+        for pin in pins {
+            if var pp = placedPins[pin.id] {
+                pp.1 = true
+                placedPins[pin.id] = pp
+            } else {
+                let placemark = map.mapObjects.addPlacemark()
+                placemark.geometry = .init(
+                    latitude: pin.coordinates.lat,
+                    longitude: pin.coordinates.lon
+                )
+                placemark.setIconWith(image, style: iconStyle)
+                placedPins[pin.id] = (placemark, true)
+                cnt += 1
+            }
+        }
+        print("\(cnt) restaurants added;")
+        
+        cleanPins()
+        
+        guard let model = pins.first else { return }
         targetPin = .init(
             latitude: model.coordinates.lat,
             longitude: model.coordinates.lon
         )
+    }
+    
+    func disablePins() {
+        for kv in placedPins {
+            placedPins[kv.key] = (kv.value.0, false)
+        }
+    }
+    
+    func cleanPins() {
+        for kv in placedPins {
+            if !kv.value.1 {
+                map.mapObjects.remove(with: kv.value.0)
+                placedPins.removeValue(forKey: kv.key)
+            }
+        }
     }
     
     func placeUser() {
