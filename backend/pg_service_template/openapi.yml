@@ -62,6 +62,15 @@ components:
                 - tags
                 - is_favorite
 
+        scores:
+            type: object
+            properties:
+                restaurant_id:
+                    type: string
+                score:
+                    type: integer
+
+
     # responses:
     #     UnauthorizedError:
     #         description: X-Ya-User-Ticket key is missing or invalid
@@ -111,7 +120,7 @@ paths:
                     description: unauthorized
 
 
-    /guide/v1/ml:
+    /guide/v1/ml-sort:
         post:
             description: Sort restaurants ids list by ML (mock)
             requestBody:
@@ -148,6 +157,46 @@ paths:
                     description: invalid input parameters
                 '401':
                     description: unauthorized
+
+
+    /guide/v1/ml-rate:
+        post:
+            description: Rate restaurants ids list by ML based on user info (mock)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                restaurant_ids:
+                                    description: List of restaurant ids
+                                    type: array
+                                    items: {
+                                        type: integer
+                                    }
+                            required:
+                                - restaurant_ids
+            security:
+                - UserTicketAuth: [ ]
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    restaurant_ids:
+                                        type: array
+                                        items: {
+                                            $ref: '#/components/schemas/scores'
+                                        }
+                '400':
+                    description: invalid input parameters
+                '401':
+                    description: unauthorized
+
 
 
 
