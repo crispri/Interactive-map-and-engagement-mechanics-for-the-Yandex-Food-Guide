@@ -8,11 +8,13 @@
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
 
-#include "handlers/guide/v1/ml/ml_sort.hpp"
+#include <handlers/guide/v1/ml/ml_sort.hpp>
+#include <handlers/guide/v1/ml/ml_rate.hpp>
 #include <handlers/guide/v1/restaurants/restaurants.hpp>
 #include <handlers/guide/v1/restaurant_by_id/restaurant_by_id.hpp>
 #include <service/RestaurantService.hpp>
 #include <service/MLService.hpp>
+
 
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
@@ -28,6 +30,8 @@ int main(int argc, char* argv[]) {
   service::AppendRestaurantService(component_list);
   service::AppendRestaurantByIdController(component_list);
   service::AppendMLService(component_list);
+  service::AppendMLRate(component_list);
+
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }
