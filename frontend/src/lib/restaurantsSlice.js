@@ -12,6 +12,7 @@ export const getRestaurants = createAsyncThunk(
 					headers: {
 					  "Content-Type": "application/json;charset=utf-8",
 					  "Authorization": "token",
+
 					},
 					body: JSON.stringify(coordinates),
 				}
@@ -31,18 +32,105 @@ export const getRestaurants = createAsyncThunk(
 const restaurantsSlice = createSlice({
 	name: 'restaurants',
 	initialState: {
-		restaurants: [],
+		mock_restaurants: [
+			{
+			  id: "1",
+			  coordinates: {
+				lat: 55.755826,
+				lon: 37.617299,
+			  },
+			  name: "Русская кухня",
+			  description: "Традиционная русская кухня с современным акцентом.",
+			  address: "ул. Арбат, д. 12, Москва, Россия",
+			  is_approved: true,
+			  rating: 4.7,
+			  price_lower_bound: 20,
+			  price_upper_bound: 50,
+			  tags: ["Русская", "Традиционная", "Современная"],
+			  is_favorite: true,
+			},
+			{
+			  id: "2",
+			  coordinates: {
+				lat: 55.770717,
+				lon: 37.621516,
+			  },
+			  name: "Грузинская Хинкальная",
+			  description: "Настоящие грузинские хинкали и другие национальные блюда.",
+			  address: "ул. Тверская, д. 25, Москва, Россия",
+			  is_approved: true,
+			  rating: 4.6,
+			  price_lower_bound: 15,
+			  price_upper_bound: 35,
+			  tags: ["Грузинская", "Хинкали", "Национальная"],
+			  is_favorite: false,
+			},
+			{
+			  id: "3",
+			  coordinates: {
+				lat: 55.757026,
+				lon: 37.610514,
+			  },
+			  name: "Итальянская пицца",
+			  description: "Настоящая итальянская пицца с хрустящей корочкой.",
+			  address: "ул. Большая Никитская, д. 14, Москва, Россия",
+			  is_approved: true,
+			  rating: 4.8,
+			  price_lower_bound: 25,
+			  price_upper_bound: 60,
+			  tags: ["Итальянская", "Пицца", "Фастфуд"],
+			  is_favorite: true,
+			},
+			{
+			  id: "4",
+			  coordinates: {
+				lat: 55.743836,
+				lon: 37.605015,
+			  },
+			  name: "Французское Бистро",
+			  description: "Уютное французское бистро с отличным кофе и круассанами.",
+			  address: "ул. Пятницкая, д. 10, Москва, Россия",
+			  is_approved: true,
+			  rating: 4.9,
+			  price_lower_bound: 30,
+			  price_upper_bound: 70,
+			  tags: ["Французская", "Бистро", "Кофе"],
+			  is_favorite: true,
+			},
+			{
+			  id: "5",
+			  coordinates: {
+				lat: 55.751244,
+				lon: 37.618423,
+			  },
+			  name: "Японский Суши-Бар",
+			  description: "Свежие суши и сашими прямо из Японии.",
+			  address: "ул. Моховая, д. 15, Москва, Россия",
+			  is_approved: true,
+			  rating: 4.7,
+			  price_lower_bound: 40,
+			  price_upper_bound: 90,
+			  tags: ["Японская", "Суши", "Морепродукты"],
+			  is_favorite: false,
+			}
+		  ],
+		  restaurants: []
 	},
 	reducers: {
-
+		// fetchMockData: (state, action) => {
+		// 	state.restaurants = state.mock_restaurants.map(el => ({
+		// 		...mock_restaurants,
+		// 		coordinates: [el.coordinates.lon, el.coordinates.lat]
+		// 	}))
+		// }
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getRestaurants.fulfilled, (state, action) => {
-				state.restaurants = action.payload
-				console.log(action.payload);
+				state.restaurants = action.payload.items
 			})
 	}
 })
+
 
 export default restaurantsSlice.reducer
