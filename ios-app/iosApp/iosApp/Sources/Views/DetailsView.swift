@@ -12,8 +12,7 @@ struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var viewModel: SnippetViewModel
     @State private var isBottomSheetPresented = true
-    @State var sheetPosition: BottomSheetPosition = .relative(SheetDetents.bottom.rawValue)
-    @State private var sheetDetents = SheetDetents.bottom
+    @State var sheetPosition: BottomSheetPosition = .relative(0.25)
     
     var body: some View {
         ZStack {
@@ -28,14 +27,14 @@ struct DetailsView: View {
                         .relative(0.9)
                     ],
                     content: {
-                        BottomSheetView(sheetDetents: $sheetDetents)
+                        BottomSheetView(sheetPosition: $sheetPosition)
                     }
                 )
                 .enableAppleScrollBehavior(true)
                 .showDragIndicator(false)
                 .customBackground(
                     Color.clear
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .clipShape(RoundedRectangle(cornerRadius: 0))
                 )
             VStack {
                 HStack {
@@ -103,17 +102,6 @@ struct DetailsView: View {
                 .clipShape(Circle())
         }
         .shadow(radius: 20, x: 0, y: 8)
-    }
-}
-
-enum SheetDetents: CGFloat {
-    case bottom = 0.25
-    case medium = 0.5
-    case large = 0.9
-    
-    func getPadding() -> CGFloat {
-        let height = UIScreen.main.bounds.height
-        return height * (1 - self.rawValue)
     }
 }
 

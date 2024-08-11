@@ -10,7 +10,8 @@ import BottomSheet
 
 struct BottomSheetView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
-    @Binding var sheetDetents: SheetDetents
+    @Binding var sheetPosition: BottomSheetPosition
+    @State var bottomPadding: CGFloat = 0
     
     var body: some View {
         VStack {
@@ -33,11 +34,11 @@ struct BottomSheetView: View {
                     .animation(.spring, value: viewModel.snippets)
                 }
                 .scrollTargetBehavior(.viewAligned)
-                .padding(.bottom, sheetDetents.getPadding())
             }
             .background {
-                Color.white
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.white)
+                    .frame(minHeight: 600)
             }
         }
     }
