@@ -2,17 +2,23 @@ import './RestaurantCard.css'
 import restaurantImage from '../../assets/restaurant_example.png'
 import snippetFavourite from '../../assets/snippet_favourite.svg'
 
-const RestaurantCard = ({ cardInfo }) => {
+const RestaurantCard = ({ cardInfo, setId, sheetRef }) => {
+
+  function handleClick() {
+    setId(cardInfo.id);
+    sheetRef.current.snapTo(({ maxHeight }) => maxHeight);
+  }
+
   return (
-    <div className='card'>
-      <div className='image-with-favourite'>
-        <img className="fav_button" src={snippetFavourite} alt="Favourite" onClick={() => { }} />
+    <div className='card' onClick={handleClick}>
+      <div className='image-with-favourite' onClick={handleClick}>
+        <img className="fav_button" src={snippetFavourite} alt="Favourite" onClick={handleClick} />
         <img className="snippet" src={restaurantImage} alt="Restaurant" />
       </div>
       <div className="content">
         <div className='title-rating'>
           <div className="title">{cardInfo.title}</div>
-          <div className="rating">
+          <div className="rating" onClick={handleClick}>
             <span className="star">★</span>
             <span>4.8</span>
           </div>

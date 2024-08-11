@@ -1,19 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { _apiUrl } from '../assets/variables'
 
-export const getRestaurants = createAsyncThunk(
-	'restaurants/getRestaurants',
-	async (coordinates) => {
+export const getRestaurantById = createAsyncThunk(
+	'restaurants/getRestaurantById',
+	async (id) => {
 		try {
 			const response = await fetch(
-				`${_apiUrl}/guide/v1/restaurants`,
+				`${_apiUrl}/guide/v1/restaurants/${id}`,
 				{
-					method: "POST",
+					method: "GET",
 					headers: {
 					  "Content-Type": "application/json;charset=utf-8",
 					  "Authorization": "token",
 					},
-					body: JSON.stringify(coordinates),
 				}
 			)
 			if (response.ok) {
@@ -28,7 +27,7 @@ export const getRestaurants = createAsyncThunk(
 	}
 )
 
-const restaurantsSlice = createSlice({
+const restaurantByIdSlice = createSlice({
 	name: 'restaurants',
 	initialState: {
 		restaurants: [],
@@ -38,11 +37,11 @@ const restaurantsSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(getRestaurants.fulfilled, (state, action) => {
+			.addCase(getRestaurantById.fulfilled, (state, action) => {
 				state.restaurants = action.payload
 				console.log(action.payload);
 			})
 	}
 })
 
-export default restaurantsSlice.reducer
+export default restaurantByIdSlice.reducer
