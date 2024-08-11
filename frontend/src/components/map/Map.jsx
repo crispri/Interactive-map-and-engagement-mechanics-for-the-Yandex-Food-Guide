@@ -1,10 +1,13 @@
+import React, { useEffect, useMemo } from 'react'
+import ReactDOM from 'react-dom'
 import './Map.css'
-import useDebounce from './lib/useDebounce.js'
-import { getRestaurants } from './lib/restaurantsSlice.js'
-import { COORDINATES } from './assets/variables.js'
+import useDebounce from '../../lib/useDebounce'
+import { getRestaurants } from '../../lib/restaurantsSlice'
+import { COORDINATES } from '../../assets/variables'
+import MyBottomSheet from '../bottomsheet/MyBottomSheet'
+
 import Pin from '../pin/Pin'
 import { useDispatch } from 'react-redux'
-import { useEffect, useMemo } from 'react'
 
 const [ymaps3React] = await Promise.all([ymaps3.import('@yandex/ymaps3-reactify'), ymaps3.ready]);
 const reactify = ymaps3React.reactify.bindTo(React, ReactDOM);
@@ -13,15 +16,10 @@ const {YMapGeolocationControl, YMapZoomControl} = reactify.module(await ymaps3.i
 
 // кластеризация
 const {YMapClusterer, clusterByGrid} = await ymaps3.import('@yandex/ymaps3-clusterer@0.0.1');
+window.map = null;
 
 const Map = () => {
-  window.map = null;
-  const [currentPolygon, setCurrentPolygon] = React.useState(LOCATION.bounds);
-  const dispatch = useDispatch()
-  const updateHandler = (obj) => {
-    setCurrentPolygon(obj.location.bounds)
-  }
-  const debouncedValue = useDebounce(currentPolygon, 1000);
+
   const LOCATION = {
     bounds: [
       [36.80247982617612, 56.562308221456746],
@@ -30,6 +28,13 @@ const Map = () => {
     // center: [37.623082, 55.75254], // starting position [lng, lat]
     zoom: 13 // starting zoom
   };
+  const [currentPolygon, setCurrentPolygon] = React.useState(LOCATION.bounds);
+  const dispatch = useDispatch()
+  const updateHandler = (obj) => {
+    setCurrentPolygon(obj.location.bounds)
+  }
+  const debouncedValue = useDebounce(currentPolygon, 1000);
+  
 
   useEffect(() => {
     console.log('debouncedValue', debouncedValue);
@@ -54,12 +59,12 @@ const Map = () => {
       <YMapDefaultSchemeLayer />
       <YMapDefaultFeaturesLayer/>
 
-      <YMapClusterer 
+      {/* <YMapClusterer 
         marker={marker} 
         cluster={cluster} 
         method={gridSizedMethod} 
         features={points} 
-      />
+      /> */}
 
       {COORDINATES.map(el => (
         <YMapMarker coordinates={el} key={el}>

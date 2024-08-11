@@ -2,9 +2,10 @@ import React, { useEffect, useMemo } from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/app/App.jsx'
 import MyBottomSheet from './components/bottomsheet/MyBottomSheet.jsx'
+import Navbar from './components/navbar/Navbar.jsx'
 import './index.css'
 import { store } from './lib/store.js'
-import { Provider, useDispatch } from 'react-redux'
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import useDebounce from './lib/useDebounce.js'
 import { getRestaurants } from './lib/restaurantsSlice.js'
 
@@ -15,6 +16,7 @@ import {
 import Pin from './components/pin/Pin.jsx'
 import { _apiUrl, COORDINATES } from './assets/variables.js'
 
+
 window.map = null;
 main();
 const LOCATION = {
@@ -23,7 +25,7 @@ const LOCATION = {
     [38.28586537185843, 54.744847233097076]
   ],
   // center: [37.623082, 55.75254], // starting position [lng, lat]
-  zoom: 13 // starting zoom
+  zoom: 16 // starting zoom
 };
 
 async function main() {
@@ -33,33 +35,32 @@ const reactify = ymaps3React.reactify.bindTo(React, ReactDOM);
 const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker, YMapControls, YMapListener} = reactify.module(ymaps3);
 const {YMapGeolocationControl, YMapZoomControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-controls@0.0.1'));
 
-// кластеризация
-const {YMapClusterer, clusterByGrid} = await ymaps3.import('@yandex/ymaps3-clusterer@0.0.1');
-
-const TestComponent = () => {
+const Map = () => {
   const [currentPolygon, setCurrentPolygon] = React.useState(LOCATION.bounds);
   const dispatch = useDispatch()
   const updateHandler = (obj) => {
     setCurrentPolygon(obj.location.bounds)
   }
-  const debouncedValue = useDebounce(currentPolygon, 1000);
+  const debouncedValue = useDebounce(currentPolygon, 300);
+  const restaurants = useSelector((state) => state.restaurantsSlice.restaurants).map(el => ({
+    ...el,
+    coordinates: [el.coordinates.lon, el.coordinates.lat],
+  }))
 
   useEffect(() => {
-    console.log('debouncedValue', debouncedValue);
     dispatch(getRestaurants({
       "lower_left_corner": {
-        "lat": debouncedValue[0][1],
+        "lat": debouncedValue[1][1],
         "lon": debouncedValue[0][0]
       },
       "top_right_corner": {
-        "lat": debouncedValue[1][1],
+        "lat": debouncedValue[0][1],
         "lon": debouncedValue[1][0]
       },
       "max_count": 0
     }))
   }, [debouncedValue])
 
-  const gridSizedMethod = useMemo(() => clusterByGrid({ gridSize: 64 }), []);
  return (
  <>
   <div style={{width: '100%', height: '100%'}}>
@@ -67,16 +68,9 @@ const TestComponent = () => {
       <YMapDefaultSchemeLayer />
       <YMapDefaultFeaturesLayer/>
 
-      {/* <YMapClusterer 
-        marker={marker} 
-        cluster={cluster} 
-        method={gridSizedMethod} 
-        features={points} 
-      /> */}
-
-      {COORDINATES.map(el => (
-        <YMapMarker coordinates={el} key={el}>
-          <Pin/>
+      {restaurants.map(el => (
+        <YMapMarker coordinates={el.coordinates} key={el.id}>
+          <Pin type={'normis'} item={el}/>
         </YMapMarker>
       ))}
 
@@ -103,8 +97,9 @@ const TestComponent = () => {
       path: "/map",
       element: 
       <>
-        <TestComponent/>
-        {/* <MyBottomSheet/> */}
+        <Navbar/>
+        <Map/>
+        <MyBottomSheet/>
       </>
     },
     {

@@ -1,5 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500');
 
 #root {
   position: relative;
@@ -18,3 +20,6 @@
 .ymaps3x0--controls{
   z-index: 1 !important;
 }
+/* .ymaps3x0--marker{
+  transform: translateX(-50%) !important;
+} */
