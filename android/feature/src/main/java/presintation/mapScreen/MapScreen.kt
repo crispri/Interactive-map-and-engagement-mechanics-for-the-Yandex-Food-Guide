@@ -21,7 +21,7 @@ import model.Event
 @Composable
 fun MapScreen(
     uiState: MainUiState,
-    send: (Event) -> Unit,
+    send: (Event) -> Unit,       //такое же
     mapView: MapView
 ) {
 

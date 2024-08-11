@@ -84,7 +84,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun send(event: Event) {
+    fun send(event: Event) {                       //распарсить все события из Event
         when (event) {
             is SaveInCollectionEvent -> {
                 saveInCollection(event.restaurantId)

@@ -23,6 +23,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -32,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -72,7 +74,7 @@ val listImages = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(
-    navToBack: () -> Unit,
+    navToBack: () -> Unit
 ) {
 
     val configuration = LocalConfiguration.current
@@ -81,12 +83,18 @@ fun RestaurantScreen(
 
 
     val bottomSheetState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded,
-        skipHiddenState = true,
-        confirmValueChange = { newState ->
-            newState != SheetValue.Hidden
-        })
+        bottomSheetState = rememberSaveable(
+            saver = SheetStateSaver(skipPartiallyExpanded = false, skipHiddenState = true,
+                confirmValueChange = { newState ->
+                    newState != SheetValue.Hidden
+                })
+        ) {
+            SheetState(
+                skipPartiallyExpanded = false,
+                initialValue = SheetValue.PartiallyExpanded,
+                skipHiddenState = true,
+            )
+        }
     )
 
     val offsetState = remember { mutableFloatStateOf(200f) }
@@ -235,3 +243,17 @@ fun RestaurantScreen(
         }
     }
 }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+fun SheetStateSaver(
+    skipPartiallyExpanded: Boolean,
+    confirmValueChange: (SheetValue) -> Boolean,
+    skipHiddenState: Boolean,
+) = androidx.compose.runtime.saveable.Saver<SheetState, SheetValue>(
+    save = { it.currentValue },
+    restore = { savedValue ->
+        SheetState(skipPartiallyExpanded, savedValue, confirmValueChange, skipHiddenState)
+    }
+)
+
