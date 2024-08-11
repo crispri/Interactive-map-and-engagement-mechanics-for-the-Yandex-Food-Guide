@@ -14,13 +14,14 @@ import androidx.navigation.navArgument
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
 import presintation.homeScreen.HomeScreen
+import presintation.mapScreen.CustomMapView
 import presintation.mapScreen.MainScreen
 import presintation.mapScreen.MainViewModel
 import presintation.restaurantScreen.RestaurantScreen
 import presintation.restaurantScreen.RestaurantViewModel
 
 @Composable
-fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
+fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -32,6 +33,7 @@ fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
                 actions.onMapScreen
             )
         }
+
 
         composable(AppDestination.MAP_SCREEN) {
             val mainViewModel: MainViewModel = hiltViewModel()
@@ -53,7 +55,8 @@ fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
         { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
             val restaurantViewModel: RestaurantViewModel = hiltViewModel()
-            RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send,)
+            val uiState by restaurantViewModel.uiState.collectAsState()
+            RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send, uiState = uiState)
         }
 
     }

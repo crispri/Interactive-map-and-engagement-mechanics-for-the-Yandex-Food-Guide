@@ -1,7 +1,5 @@
 package presintation.restaurantScreen
 
-import com.yandex.mapkit.geometry.Point
-import model.Recommendation
 import model.Restaurant
 
 data class RestaurantUiState(

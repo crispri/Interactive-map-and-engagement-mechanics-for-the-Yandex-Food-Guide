@@ -1,3 +1,7 @@
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import androidx.core.content.ContextCompat
 import com.yandex.mapkit.geometry.Point
 import model.Recommendation
 import model.Restaurant
@@ -12,6 +16,19 @@ object Utils {
         Point(55.736012, 37.595277),
         Point(55.730026, 37.589179),
     )
+
+    fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
+        val drawable = ContextCompat.getDrawable(context, art) ?: return null
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
 
     val recommendations = listOf(
         Recommendation(

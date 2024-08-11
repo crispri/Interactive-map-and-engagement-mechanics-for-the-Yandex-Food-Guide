@@ -1,5 +1,6 @@
 package presintation.restaurantScreen
 
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -44,8 +45,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.feature.R
-import model.MainScreenEvent
 import presintation.mapScreen.Carousel
+import presintation.mapScreen.MainUiState
 import ui.AboutPlaceCard
 import ui.GetRestaurantInfo
 import ui.ImageCarousel
@@ -56,9 +57,9 @@ import ui.TopCard
 import kotlin.math.roundToInt
 
 
-
 //моки:)
-val description = "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
+val description =
+    "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
 
 val listImages = listOf(
     R.drawable.hardcode_picture_of_cafe,
@@ -78,22 +79,23 @@ fun RestaurantScreen(
     navToBack: () -> Unit,
     restaurantId: String,
     send: (RestaurantScreenEvent) -> Unit,
+    uiState: RestaurantUiState,
 ) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWeight = configuration.screenWidthDp.dp
 
-    LaunchedEffect(restaurantId){
+    LaunchedEffect(restaurantId) {
         send(GetRestaurantInfo(restaurantId))
     }
 
     val bottomSheetState = rememberBottomSheetScaffoldState(
         rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded,
-        skipHiddenState = true,
-        confirmValueChange = { newState ->
-            newState != SheetValue.Hidden
-        })
+            initialValue = SheetValue.PartiallyExpanded,
+            skipHiddenState = true,
+            confirmValueChange = { newState ->
+                newState != SheetValue.Hidden
+            })
     )
 
     val offsetState = remember { mutableFloatStateOf(200f) }
@@ -105,7 +107,7 @@ fun RestaurantScreen(
         snapshotFlow { bottomSheetState.bottomSheetState.requireOffset() }
             .collect { offset ->
                 offsetState.floatValue = offset
-                if (!isRequired){
+                if (!isRequired) {
                     sheetHeight = offsetState.floatValue
                     isRequired = true
                 }
@@ -132,7 +134,7 @@ fun RestaurantScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     ImageCarousel(listImages = listImages)
                     Spacer(modifier = Modifier.height(4.dp))
-                    AboutPlaceCard(true)
+                    AboutPlaceCard(true, text = uiState.currentRestaurant?.description ?: "", )
                     Spacer(modifier = Modifier.height(16.dp))
                     ImageCarousel(listImages = listImages)
                 }
@@ -170,7 +172,7 @@ fun RestaurantScreen(
                 visible = offsetState.floatValue > sheetHeight - 200f,
                 enter = fadeIn(),
                 exit = fadeOut()
-            ){
+            ) {
                 PlaceWidgetCard()
             }
         }
@@ -188,17 +190,17 @@ fun RestaurantScreen(
             visible = offsetState.floatValue > sheetHeight - 200f,
             enter = fadeIn(),
             exit = fadeOut()
-        ){
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp, top = 40.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
-            ){
+            ) {
                 FloatingActionButton(
                     modifier = Modifier.size(40.dp),
                     containerColor = Color.White,
-                    onClick = {navToBack()},
+                    onClick = { navToBack() },
                     shape = CircleShape,
                 ) {
                     Image(
@@ -225,17 +227,17 @@ fun RestaurantScreen(
         }
 
 
-        if (isTopCardVisible){
+        if (isTopCardVisible) {
             Box(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .fillMaxWidth()
-            ){
+            ) {
                 AnimatedVisibility(
                     visible = offsetState.floatValue < sheetHeight - 200f,
                     enter = fadeIn(),
                     exit = fadeOut()
-                ){
+                ) {
                     TopCard(navToBack = navToBack)
                 }
             }

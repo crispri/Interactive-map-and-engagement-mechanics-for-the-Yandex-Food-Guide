@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import model.Restaurant
 import network.util.NetworkState
 import repository.RestaurantRepositoryImpl
 import ui.GetRestaurantInfo
@@ -31,7 +32,7 @@ class RestaurantViewModel @Inject constructor(
         }
     }
 
-    private fun getRestaurantById(restaurantId: String){
+    fun getRestaurantById(restaurantId: String){
         viewModelScope.launch {
             repository.getRestaurants("Asd", lowerLeftLat = 55.0, lowerLeftLon = 37.0, topRightLat = 56.0, topRightLon =  38.0, maxCount = 0)
                 .collect { state ->

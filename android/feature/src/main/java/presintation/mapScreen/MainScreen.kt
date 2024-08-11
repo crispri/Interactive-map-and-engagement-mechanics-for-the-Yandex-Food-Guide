@@ -70,11 +70,11 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
-    navToRestaurant: () -> Unit,
+    navToRestaurant: (String) -> Unit,
     uiState: MainUiState,
     navToBack: () -> Unit,
     send: (MainScreenEvent) -> Unit,
-    mapView: MapView,
+    mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
 
@@ -125,7 +125,7 @@ fun MainScreen(
                     LazyColumn {
                         items(uiState.restaurantsOnMap) { item ->
                             BigCard(item) {
-                                navToRestaurant()
+                                navToRestaurant(item.id)
                             }
                         }
                     }

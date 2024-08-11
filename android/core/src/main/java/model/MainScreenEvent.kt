@@ -1,5 +1,7 @@
 package model
 
+import com.yandex.mapkit.geometry.Point
+
 abstract class MainScreenEvent {}
 
 class SaveInCollectionEvent(
@@ -9,3 +11,8 @@ class SaveInCollectionEvent(
 class NavigateToLocationEvent : MainScreenEvent()
 
 class CancelCentering : MainScreenEvent()
+
+class UpdateItemsOnMap(
+    val lowerLeft: Point,
+    val topRight: Point,
+) : MainScreenEvent()

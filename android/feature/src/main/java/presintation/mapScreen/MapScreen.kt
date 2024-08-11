@@ -1,31 +1,71 @@
 package presintation.mapScreen
 
+import Utils.createBitmapFromVector
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.feature.R
+import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.CameraUpdateReason
+import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.launch
 import model.CancelCentering
 import model.MainScreenEvent
-import model.ChangeDeviceLocation
+import model.UpdateItemsOnMap
 
 
 @Composable
 fun MapScreen(
     uiState: MainUiState,
     send: (MainScreenEvent) -> Unit,
-    mapView: MapView,
+    mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
+    val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
+    val restaurantMarker =
+        remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
+    val restaurantMarkerImageProvider = remember { ImageProvider.fromBitmap(restaurantMarker) }
+
+    val curLocationMarker = remember {
+        createBitmapFromVector(R.drawable.current_location_marker_svg, context = mapView.context)
+    }
+
+    val curLocationMarkerImageProvider = remember { ImageProvider.fromBitmap(curLocationMarker) }
+
+    LaunchedEffect(Unit) {
+        val cameraListener = CameraListener { p0, p1, p2, p3 ->
+            if (p3) {
+                val topRightPoint = mapView.mapWindow.map.visibleRegion.topRight
+                val bottomLeftPoint = mapView.mapWindow.map.visibleRegion.bottomLeft
+                send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint))
+                Log.d("CameraListener", "Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
+            }
+        }
+        mapView.addCameraListener(cameraListener)
+
+        mapObjectCollection.addPlacemark().apply {
+            //geometry = Point(55.733415, 37.590042)
+            geometry = curLocation.value ?: Point(55.733415, 37.590042)
+            setIcon(curLocationMarkerImageProvider)
+        }
+    }
 
     AndroidView(
         modifier = Modifier.fillMaxSize(),
@@ -41,54 +81,25 @@ fun MapScreen(
             )
         }
 
-        if(curLocation.value != null){
-            send(ChangeDeviceLocation(curLocation.value!!))
-        }
-
         if (uiState.centeringIsRequired && curLocation.value != null) {
             moveToStartLocation(curLocation.value!!, uiState.zoomValue)
             send(CancelCentering())
         }
 
-        fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
-            val drawable = ContextCompat.getDrawable(context, art) ?: return null
-            val bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth,
-                drawable.intrinsicHeight,
-                Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            return bitmap
-        }
+        val mapKit = MapKitFactory.getInstance()
 
-        val mapObjectCollection = mapView.mapWindow.map.mapObjects
-
-        val restaurantMarker = createBitmapFromVector(
-            R.drawable.restaurant_marker,
-            context = mapView.context
-        )
-        val restaurantMarkerImageProvider = ImageProvider.fromBitmap(restaurantMarker)
-
-        val curLocationMarker = createBitmapFromVector(
-            R.drawable.current_location_marker_svg,
-            context = mapView.context
-        )
-        val curLocationMarkerImageProvider = ImageProvider.fromBitmap(curLocationMarker)
-
+        mapObjectCollection.clear()
+        Log.e("mapObjectCollection", "mapObjectCollection.clear()")
         uiState.restaurantsOnMap.forEach {
             mapObjectCollection.addPlacemark().apply {
                 geometry = it.coordinates
                 setIcon(restaurantMarkerImageProvider)
             }
         }
-
-        if(curLocation.value != null){
-            mapObjectCollection.addPlacemark().apply {
-                geometry = curLocation.value!!
-                setIcon(curLocationMarkerImageProvider)
-            }
+        mapObjectCollection.addPlacemark().apply {
+            //geometry = Point(55.733415, 37.590042)
+            geometry = curLocation.value ?: Point(55.733415, 37.590042)
+            setIcon(curLocationMarkerImageProvider)
         }
     }
 }
