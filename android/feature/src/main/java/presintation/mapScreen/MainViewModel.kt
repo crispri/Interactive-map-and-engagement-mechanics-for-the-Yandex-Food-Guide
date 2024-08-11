@@ -40,6 +40,7 @@ class MainViewModel @Inject constructor(
                             // Пока не работает бек, возвращаем захардкоженные данные
                             _uiState.update {
                                 it.copy(
+                                    isLoading = false,
                                     restaurantsOnMap = Utils.restaurants,
                                     recommendations = Utils.recommendations,
                                     listOfRestaurant = Utils.restaurants,
@@ -51,6 +52,7 @@ class MainViewModel @Inject constructor(
                             Log.d("NetworkSuccess", "")
                             _uiState.update {
                                 it.copy(
+                                    isLoading = false,
                                     restaurantsOnMap = state.data,
                                     recommendations = Utils.recommendations,
                                     listOfRestaurant = state.data,
@@ -59,7 +61,11 @@ class MainViewModel @Inject constructor(
                         }
 
                         is NetworkState.Loading -> {
-
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         else -> {}
