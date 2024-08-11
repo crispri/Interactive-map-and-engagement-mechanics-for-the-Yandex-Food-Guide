@@ -8,7 +8,7 @@ enum class ErrorDescriprion {
     kTopRightCornerNotSpecified,
     kCornersNotSpecified,
     kTokenNotSpecified,
-    kWrongIdSelection
+    kWrongIdSelection,
     kListNotSpecified,
     kRestaurantNotFound,
 };

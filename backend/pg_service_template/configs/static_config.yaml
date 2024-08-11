@@ -54,10 +54,6 @@ components_manager:
             throttling_enabled: false
             url_trailing_slash: strict-match
 
-        handler-recommendations:
-            path: /recommendations
-            method: GET,OPTIONS
-            task_processor: main-task-processor
         handler-selections:
             path: /guide/v1/selections
             method: GET,OPTIONS
