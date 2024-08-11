@@ -47,33 +47,56 @@ class MainViewModel @Inject constructor(
                     is NetworkState.Failure -> {
                         Log.d("NetworkException", "NetworkFailure")
 
-                        // Пока не работает бек, возвращаем захардкоженные данные
-                        _uiState.update {
-                            it.copy(
-                                restaurantsOnMap = Utils.restaurants,
-                                recommendations = Utils.recommendations,
-                                listOfRestaurant = Utils.restaurants,
-                            )
+                            // Пока не работает бек, возвращаем захардкоженные данные
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    restaurantsOnMap = Utils.restaurants,
+                                    recommendations = Utils.recommendations,
+                                    listOfRestaurant = Utils.restaurants,
+                                )
+                            }
                         }
-                    }
 
-                    is NetworkState.Success -> {
-                        Log.d("NetworkSuccess", "")
-                        _uiState.update {
-                            it.copy(
-                                restaurantsOnMap = state.data,
-                                recommendations = Utils.recommendations,
-                                listOfRestaurant = state.data,
-                            )
+                        is NetworkState.Success -> {
+                            Log.d("NetworkSuccess", "")
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    restaurantsOnMap = state.data,
+                                    recommendations = Utils.recommendations,
+                                    listOfRestaurant = state.data,
+                                )
+                            }
                         }
-                    }
 
-                    is NetworkState.Loading -> {
+                        is NetworkState.Loading -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = true
+                                )
+                            }
+                        }
 
+                        else -> {}
                     }
-                    else -> {}
                 }
-            }
+
+//            repository.restaurants.collect { restaurants ->
+//                _uiState.update {
+//                    it.copy(
+//                        restaurantsOnMap = restaurants,
+//                    )
+//                }
+//            }
+//
+//            repository.recommendations.collect { recommendations ->
+//                _uiState.update {
+//                    it.copy(
+//                        recommendations = recommendations,
+//                    )
+//                }
+//            }
         }
     }
 
@@ -94,6 +117,11 @@ class MainViewModel @Inject constructor(
                     it.copy(centeringIsRequired = false)
                 }
             }
+            /*is ChangeDeviceLocation -> {
+                _uiState.update {
+                    it.copy( currentDeviceLocation = event.curLocation)
+                }
+            }*/
 
             is UpdateItemsOnMap -> {
                 fetchRestaurants(event.lowerLeft, event.topRight)

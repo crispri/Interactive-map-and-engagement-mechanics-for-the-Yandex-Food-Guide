@@ -1,10 +1,15 @@
 package presintation.mapScreen
 
 import Utils.createBitmapFromVector
+import Utils.createBitmapFromView
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.feature.R
@@ -27,6 +33,8 @@ import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import kotlinx.coroutines.launch
 import model.CancelCentering
+import model.ChangeDeviceLocation
+import ui.createViewNormalPinCard
 import model.MainScreenEvent
 import model.UpdateItemsOnMap
 
@@ -38,6 +46,7 @@ fun MapScreen(
     mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
+    val context = LocalContext.current
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
     val restaurantMarker =
         remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
@@ -79,6 +88,13 @@ fun MapScreen(
             mapView.mapWindow.map.move(
                 CameraPosition(curLocation, zoomValue, 0.0f, 0.0f)
             )
+        }
+
+        /*if(curLocation != uiState.currentDeviceLocation && uiState.currentDeviceLocation != null){
+            send(ChangeDeviceLocation(curLocation))
+        }*/
+        if(curLocation.value != null){
+            send(ChangeDeviceLocation(curLocation.value!!))
         }
 
         if (uiState.centeringIsRequired && curLocation.value != null) {

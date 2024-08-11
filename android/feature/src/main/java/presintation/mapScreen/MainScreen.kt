@@ -60,6 +60,7 @@ import com.yandex.mapkit.mapview.MapView
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.Recommendation
+import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
 import ui.BigCard
@@ -228,12 +229,12 @@ fun MainScreen(
         ) {
             CollectionCarousel(uiState.recommendations)
         }
-        Column(
+        Column (
             modifier = Modifier
                 .fillMaxWidth()
                 .offset(y = (-160).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
-        ) {
+        ){
             AnimatedVisibility(
                 visible = offsetState.floatValue > 800.0f,
                 enter = fadeIn() + expandVertically(),
@@ -497,6 +498,7 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 
 /*@Composable
 fun BottomSheetContent(
+    isLoading: Boolean,
     restaurants: List<Restaurant>,
     navToRestaurant: () -> Unit,
 ) {
@@ -506,6 +508,16 @@ fun BottomSheetContent(
                 send()
                 navToRestaurant()
 
+            }
+        }
+    }
+}
+    if (isLoading) {
+        CircularProgressBar()
+    } else {
+        LazyColumn {
+            items(restaurants) { item ->
+                BigCard(item, navToRestaurant)
             }
         }
     }
