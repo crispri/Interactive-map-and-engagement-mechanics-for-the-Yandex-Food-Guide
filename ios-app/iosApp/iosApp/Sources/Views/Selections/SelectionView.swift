@@ -35,7 +35,7 @@ struct SelectionView: View {
                         .fontWeight(.semibold)
                         .foregroundStyle(.white)
                         .multilineTextAlignment(.center)
-                        .lineLimit(selected ? 1 : .zero)
+                        .lineLimit(selected ? 1 : 2)
                     if selected {
                         Text(desc)
                             .foregroundStyle(.white)
@@ -69,7 +69,7 @@ struct SelectionView: View {
                 height: selected ? 80 : 60.05
             )
             .clipShape(RoundedRectangle(cornerRadius: 16.19))
-            .animation(.default, value: selected)
+            .animation(.spring(duration: 0.2), value: selected)
         }
     }
 }

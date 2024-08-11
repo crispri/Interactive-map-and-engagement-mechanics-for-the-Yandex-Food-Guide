@@ -32,6 +32,7 @@ struct SelectionScrollView: View {
                             if let selectedCollection = viewModel.selectedCollection,
                                selectedCollection == viewModel.collections[index] {
                                 viewModel.selectedCollection = nil
+                                viewModel.fetchSnippets()
                             } else {
                                 viewModel.selectedCollection = viewModel.collections[index]
                                 reader.scrollTo(index, anchor: .center)
@@ -46,7 +47,7 @@ struct SelectionScrollView: View {
                     }
                 }
                 .padding(.horizontal)
-                .animation(.default, value:  viewModel.selectedCollection)
+                .animation(.spring(duration: 0.2), value:  viewModel.selectedCollection)
             }
             .scrollIndicators(.hidden)
             .frame(height: 100)

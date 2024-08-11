@@ -75,7 +75,15 @@ final class NetworkManager {
         return data.items
     }
     
-    func fetchSelectionSnippets() async throws -> [SnippetDTO] {
+    func fetchSelectionSnippets(id: String) async throws -> [SnippetDTO] {
+        let request = try makeRequest(
+            path: "selections/\(id)",
+            method: "GET",
+            requestModel: nil
+        )
         
+        let data: SnippetsResponse = try await performRequest(request: request)
+        
+        return data.items
     }
 }

@@ -28,6 +28,17 @@ final class SnippetViewModel: ObservableObject {
     }
     
     func eventOnGesture() {
+        fetchSnippets()
+        fetchSelections()
+    }
+    
+    func eventCenterCamera(to option: MapManager.CameraTargetOption) {
+        mapManager.centerCamera(to: option)
+    }
+    
+    // MARK: tasks for fetching snippets and collections.
+    
+    func fetchSnippets() {
         Task {
             do {
                 let square = mapManager.getScreenPoints()
@@ -54,6 +65,9 @@ final class SnippetViewModel: ObservableObject {
                 print(error)
             }
         }
+    }
+    
+    func fetchSelections() {
         Task {
             do {
                 collections = try await loadSelections()
@@ -63,21 +77,32 @@ final class SnippetViewModel: ObservableObject {
         }
     }
     
-    func eventCenterCamera(to option: MapManager.CameraTargetOption) {
-        mapManager.centerCamera(to: option)
+    func fetchSelectionSnippets(id: String) {
+        Task {
+            do {
+                snippets = try await loadSelectionSnippets(id: id)
+                mapManager.placePins(snippets)
+                print("🔥 \(snippets)")
+            } catch {
+                print(error)
+            }
+        }
     }
     
-    func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
+    // MARK: load data from server.
+    
+    private func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
         let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner)
         return data
     }
     
-    func loadSelections() async throws -> [SelectionDTO] {
+    private func loadSelections() async throws -> [SelectionDTO] {
         let data = try await networkManager.fetchSelections()
         return data
     }
     
-    func fetchSelectionSnippets(id: String) {
-        
+    private func loadSelectionSnippets(id: String) async throws -> [SnippetDTO] {
+        let data = try await networkManager.fetchSelectionSnippets(id: id)
+        return data
     }
 }

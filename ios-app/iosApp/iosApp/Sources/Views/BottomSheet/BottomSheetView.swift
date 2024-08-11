@@ -30,6 +30,7 @@ struct BottomSheetView: View {
                         }
                     }
                     .scrollTargetLayout()
+                    .animation(.spring, value: viewModel.snippets)
                 }
                 .scrollTargetBehavior(.viewAligned)
                 .padding(.bottom, sheetDetents.getPadding())
