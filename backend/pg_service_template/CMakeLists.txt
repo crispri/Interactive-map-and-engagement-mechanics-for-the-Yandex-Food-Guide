@@ -61,11 +61,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/guide/v1/selections/selections.cpp
     src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp
     src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.cpp    
-<<<<<<< HEAD
     src/service/MLService.hpp
     src/service/MLService.cpp
-=======
->>>>>>> selections
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 
