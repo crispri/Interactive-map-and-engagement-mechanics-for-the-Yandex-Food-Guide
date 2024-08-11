@@ -38,6 +38,7 @@ const MyBottomSheet = () => {
     threshold: 0.8,
   };
 
+  console.log(sheetRef.current);
   // let observer = new IntersectionObserver(callback, options);
 
 
