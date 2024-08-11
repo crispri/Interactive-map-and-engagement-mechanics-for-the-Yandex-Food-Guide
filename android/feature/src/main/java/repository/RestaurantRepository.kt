@@ -26,5 +26,7 @@ interface RestaurantRepository {
         token: String,
         login: String
     ): Flow<NetworkState<Restaurant>>
+
+
 }
 
