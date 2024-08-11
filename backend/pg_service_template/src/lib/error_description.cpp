@@ -11,4 +11,10 @@ const std::unordered_map<ErrorDescriprion, std::string> errorMapping = {
     {ErrorDescriprion::kWrongIdSelection, "WRONG_ID_SELECTION"},
     {ErrorDescriprion::kListNotSpecified, "LIST_NOT_SPECIFIED"},
     {ErrorDescriprion::kRestaurantNotFound, "RESTAURANT_NOT_FOUND"},
+    {ErrorDescriprion::kOperatorNotSpecified, "OPERATOR_NOT_SPECIFIED"},
+    {ErrorDescriprion::kValueNotSpecified, "VALUE_NOT_SPECIFIED"},
+    {ErrorDescriprion::kInvalidValueArraySize, "INVALID_VALUE_ARRAY_SIZE"},
+    {ErrorDescriprion::kValueIsNotArray, "VALUE_IS_NOT_ARRAY"},
+    {ErrorDescriprion::kInvalidOperator, "INVALID_OPERATOR"},
+
 };

@@ -56,7 +56,6 @@ public:
             request.GetHttpResponse().SetStatus( userver::server::http::HttpStatus::kOk );
             return "";
         }
-        
         ErrorResponseBuilder errorBuilder(request);
 
         if (!request.HasHeader("Authorization")) {
@@ -65,6 +64,9 @@ public:
                 ErrorDescriprion::kTokenNotSpecified
             );
         }
+        
+
+        
 
         const auto& request_body_string = request.RequestBody();
         userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);

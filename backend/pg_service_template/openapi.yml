@@ -6,6 +6,21 @@ servers:
     -   url: http://51.250.39.97:8080/
 components:
     schemas:
+        restaurant-filter:
+            type: object
+            properties:
+                property:
+                    type: string
+                value:
+                    type: array
+                    description: Список параметров любого типа (int, string, time и прочее)
+                    items:
+                        type: string
+                operator:
+                    type: string
+                    enum: [
+                        "lt", "gt", "le", "ge", "in", "notin", "eq", "neq"
+                    ]
         coordinates:
             type: object
             properties:
@@ -25,6 +40,7 @@ components:
             properties:
                 id: 
                     type: string
+                    format: uuid
                 coordinates:
                     $ref: "#/components/schemas/coordinates"
                 name:
@@ -42,6 +58,12 @@ components:
                     type: integer
                 price_upper_bound:
                     type: integer
+                open_time:
+                    type: string
+                    format: time
+                close_time:
+                    type: string
+                    format: time
                 tags:
                     type: array
                     items:
@@ -72,7 +94,8 @@ components:
                 description:
                     type: string
                 is_public:
-                    type: short    
+                    description: 2 байта тег
+                    type: integer
             required:
                 - id
                 - name
@@ -105,6 +128,12 @@ paths:
                                     $ref: "#/components/schemas/coordinates"
                                 max_count:
                                     type: integer
+                                filters:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/restaurant-filter'
+                                    
                             required:
                                 - coordinates
             security:
@@ -167,7 +196,7 @@ paths:
 
 
 
-    /guide/v1/restaurant/{id}:
+    /guide/v1/restaurants/{id}:
         get:
             description: Get restaurant by id
             parameters:
@@ -177,6 +206,7 @@ paths:
                   description: uuid of the user to get.
                   schema:
                     type: string
+                    format: uuid
             security:
                 -   UserTicketAuth: [ ]
             responses:
@@ -215,7 +245,7 @@ paths:
             summary: Получить список всех заведений в подборке
             description: Возвращает список всех заведений, относящихся к заданной подборке
             parameters:
-                - name: selectionId
+                - name: id
                   in: path
                   required: true
                   schema:
@@ -233,7 +263,7 @@ paths:
                                     items:
                                         type: array
                                         items:
-                                            $ref: '#/components/schemas/institution'
+                                            $ref: '#/components/schemas/restaurant'
                 '400':
                     description: Неверный запрос
                 '404':
