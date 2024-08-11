@@ -129,10 +129,9 @@ paths:
                                 max_count:
                                     type: integer
                                 filters:
+                                    type: array
                                     items:
-                                        type: array
-                                        items:
-                                            $ref: '#/components/schemas/restaurant-filter'
+                                        $ref: '#/components/schemas/restaurant-filter'
                                     
                             required:
                                 - coordinates

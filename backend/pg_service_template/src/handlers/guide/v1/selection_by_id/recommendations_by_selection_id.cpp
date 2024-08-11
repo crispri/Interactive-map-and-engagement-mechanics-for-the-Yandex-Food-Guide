@@ -1,6 +1,6 @@
 #include "recommendations_by_selection_id.hpp"
 #include "../../../../lib/error_response_builder.hpp"
-#include "../../../../models/restaurant.hpp"
+#include "../../../../models/TRestaurant.hpp"
 
 #include <fmt/format.h>
 

@@ -16,5 +16,8 @@ const std::unordered_map<ErrorDescriprion, std::string> errorMapping = {
     {ErrorDescriprion::kInvalidValueArraySize, "INVALID_VALUE_ARRAY_SIZE"},
     {ErrorDescriprion::kValueIsNotArray, "VALUE_IS_NOT_ARRAY"},
     {ErrorDescriprion::kInvalidOperator, "INVALID_OPERATOR"},
-
+    {ErrorDescriprion::kPropertyNotSpecified, "PROPERTY_NOT_SPECIFIED"},
+    {ErrorDescriprion::kInvalidPropertyName, "INVALID_PROPERTY_NAME"},
+    {ErrorDescriprion::kInvalidValueType, "INVALID_VALUE_TYPE"},
+    {ErrorDescriprion::kFiltersIsNotArray, "FILTERS_IS_NOT_ARRAY"},
 };

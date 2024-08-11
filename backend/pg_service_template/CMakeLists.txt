@@ -33,20 +33,20 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/guide/v1/ml/ml_sort.cpp
     src/handlers/guide/v1/restaurant_by_id/restaurant_by_id.cpp
     src/handlers/guide/v1/restaurant_by_id/restaurant_by_id.hpp
-    src/models/coordinates.hpp
-    src/models/coordinates.cpp
-    src/models/restaurant.hpp
-    src/models/restaurant.cpp
-    src/models/restaurant_filter.hpp
-    src/models/restaurant_filter.cpp
+        src/models/TCoordinates.hpp
+        src/models/TCoordinates.cpp
+        src/models/TRestaurant.hpp
+        src/models/TRestaurant.cpp
+        src/models/TRestaurantFilter.hpp
+        src/models/TRestaurantFilter.cpp
     src/lib/error_description.hpp
     src/lib/error_description.cpp
     src/lib/error_response_builder.hpp
     src/lib/error_response_builder.cpp
     src/handlers/guide/v1/selections/selections.hpp
     src/handlers/guide/v1/selections/selections.cpp
-    src/models/selection.hpp
-    src/models/selection.cpp
+        src/models/TSelection.hpp
+        src/models/TSelection.cpp
     src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp
     src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.cpp
     src/lib/time_parser.hpp
@@ -58,6 +58,9 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/service/RestaurantService.cpp
     src/service/MLService.hpp
     src/service/MLService.cpp
+        src/models/RestaurantFilterJSON/IRestaurantFilterJSON.hpp
+        src/models/RestaurantFilterJSON/RatingRestaurantFilterJSON.cpp
+        src/models/RestaurantFilterJSON/RatingRestaurantFilterJSON.hpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 
