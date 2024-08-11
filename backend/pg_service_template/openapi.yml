@@ -6,18 +6,6 @@ servers:
     -   url: http://51.250.39.97:8080/
 components:
     schemas:
-        score_list:
-            type: object
-            properties:
-                restaurant_id:
-                    type: integer
-                score:
-                    type: integer
-            required:
-                - restaurant_id
-                - score
-
-
         coordinates:
             type: object
             properties:
@@ -123,7 +111,7 @@ paths:
                     description: unauthorized
 
 
-    /guide/v1/ml_sort:
+    /guide/v1/ml:
         post:
             description: Sort restaurants ids list by ML (mock)
             requestBody:
@@ -156,42 +144,6 @@ paths:
                                         items: {
                                             type: integer
                                         }
-                '400':
-                    description: invalid input parameters
-                '401':
-                    description: unauthorized
-
-
-
-    /guide/v1/ml_rate:
-        post:
-            description: Rate restaurants ids list by ML based on user and restaurants (mock)
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                restaurant_ids:
-                                    description: List of restaurant ids
-                                    type: array
-                                    items: {
-                                        type: integer
-                                    }
-                            required:
-                                - restaurant_ids
-            security:
-                - UserTicketAuth: [ ]
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/score_list'
                 '400':
                     description: invalid input parameters
                 '401':

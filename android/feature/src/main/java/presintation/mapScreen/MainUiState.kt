@@ -4,6 +4,8 @@ import com.yandex.mapkit.geometry.Point
 import model.Recommendation
 import model.Restaurant
 
+
+//все отображаемые элементы
 data class MainUiState(
     //val currentDeviceLocation: Point? = null,
     val currentAddress: String = "Льва Толстого, 16",

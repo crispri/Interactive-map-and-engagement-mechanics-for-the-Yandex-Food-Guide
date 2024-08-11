@@ -1,12 +1,18 @@
 package presintation.mapScreen
 
+import Utils.createBitmapFromView
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.feature.R
@@ -17,6 +23,7 @@ import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
 import model.ChangeDeviceLocation
 import model.Event
+import ui.createViewNormalPinCard
 
 
 @Composable
@@ -26,7 +33,7 @@ fun MapScreen(
     mapView: MapView,
     curLocation: MutableState<Point?>
 ) {
-
+    val context = LocalContext.current
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = {
@@ -68,11 +75,25 @@ fun MapScreen(
 
         val mapObjectCollection = mapView.mapWindow.map.mapObjects
 
-        val restaurantMarker = createBitmapFromVector(
-            R.drawable.restaurant_marker,
+//         Изначальные Дашины пины
+//        val restaurantMarker = createBitmapFromVector(
+//            R.drawable.restaurant_marker,
+//            context = mapView.context
+//        )
+//        val restaurantMarkerImageProvider = ImageProvider.fromBitmap(restaurantMarker)
+
+        val restaurantMarkerMini = createBitmapFromVector(
+            com.example.core.R.drawable.ic_mini_pin,
             context = mapView.context
         )
-        val restaurantMarkerImageProvider = ImageProvider.fromBitmap(restaurantMarker)
+        val restaurantMarkerImageProviderMini = ImageProvider.fromBitmap(restaurantMarkerMini)
+
+//       val restaurantMarkerNormal = createBitmapFromView(createViewNormalPinCard(context))
+
+//        val restaurantMarkerImageProviderNormal = ImageProvider.fromBitmap(restaurantMarkerNormal)
+//
+//        val restaurantMarkerMax = createBitmapFromView(createViewSuperPinCard(context))
+//        val restaurantMarkerImageProviderMax = ImageProvider.fromBitmap(restaurantMarkerMax)
 
         val curLocationMarker = createBitmapFromVector(
             R.drawable.current_location_marker_svg,
@@ -80,10 +101,23 @@ fun MapScreen(
         )
         val curLocationMarkerImageProvider = ImageProvider.fromBitmap(curLocationMarker)
 
-        uiState.restaurantsOnMap.forEach {
+        uiState.restaurantsOnMap.forEachIndexed { index, restaurant ->
+            val currentPin =
+                if (index < 3) {
+                    // Показываются большие пины - restaurantMarkerImageProviderMax
+                    restaurantMarkerImageProviderMini
+                } else
+                    if (index < 7) {
+                        // Показываются средние пины - restaurantMarkerImageProviderNormal
+                        restaurantMarkerImageProviderMini
+                    } else {
+                        // Показываются средние пины - restaurantMarkerImageProviderMini
+                        restaurantMarkerImageProviderMini
+                    }
+
             mapObjectCollection.addPlacemark().apply {
-                geometry = it.coordinates
-                setIcon(restaurantMarkerImageProvider)
+                geometry = restaurant.coordinates
+                setIcon(currentPin)
             }
         }
 
@@ -95,3 +129,4 @@ fun MapScreen(
         }
     }
 }
+
