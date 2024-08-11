@@ -7,7 +7,7 @@ import model.Restaurant
 
 //все отображаемые элементы
 data class MainUiState(
-    val currentDeviceLocation: Point = Point(55.733415, 37.590042),
+    //val currentDeviceLocation: Point? = null,
     val currentAddress: String = "Льва Толстого, 16",
     val restaurantsOnMap: List<Restaurant> = listOf(),
     val recommendations: List<Recommendation> = listOf(),

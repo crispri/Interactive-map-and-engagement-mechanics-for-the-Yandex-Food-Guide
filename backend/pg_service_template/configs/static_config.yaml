@@ -35,6 +35,9 @@ components_manager:
         testsuite-support: {}
 
         restaurant-service-component: {}
+        selection-service-component: {}
+
+        ml-service-component: {}
 
         http-client:
             load-enabled: $is-testing
@@ -52,9 +55,37 @@ components_manager:
             throttling_enabled: false
             url_trailing_slash: strict-match
 
+        handler-selections:
+            path: /guide/v1/selections
+            method: GET,OPTIONS
+            task_processor: main-task-processor
+        handler-recs-by-selection-id:
+            path: /guide/v1/selections/{id}
+            method: GET,OPTIONS
+            task_processor: main-task-processor
+
         handler-restaurants:
             path: /guide/v1/restaurants
+            method: POST,OPTIONS
+            task_processor: main-task-processor
+
+        handler-ml:
+            path: /guide/v1/ml
             method: POST
+            task_processor: main-task-processor
+        handler-selections:
+            path: /guide/v1/selections
+            method: GET
+            task_processor: main-task-processor 
+        handler-recs-by-selection-id:
+            path: /guide/v1/selections/{id}
+            method: GET
+            task_processor: main-task-processor       
+
+
+        handler-restaurant-by-id:
+            path: /guide/v1/restaurants/{id}
+            method: GET,OPTIONS
             task_processor: main-task-processor
 
         postgres-db-1:

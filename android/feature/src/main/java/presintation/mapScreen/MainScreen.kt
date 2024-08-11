@@ -42,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -63,6 +64,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
+import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
 import model.Event
 import model.NavigateToLocationEvent
@@ -84,7 +86,8 @@ fun MainScreen(
     uiState: MainUiState,
     navToBack: () -> Unit,
     send: (Event) -> Unit,
-    mapView: MapView
+    mapView: MapView,
+    curLocation: MutableState<Point?>
 ) {
 
     val offsetState = remember { mutableFloatStateOf(-96f) }
@@ -123,7 +126,7 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
-                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
+                    BottomSheetContent(uiState.isLoading, uiState.restaurantsOnMap, navToRestaurant)
                 }
             },
             sheetContainerColor = Color.White
@@ -134,7 +137,7 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                MapScreen(uiState, send, mapView)
+                MapScreen(uiState, send, mapView, curLocation)
             }
         }
 
@@ -220,14 +223,14 @@ fun MainScreen(
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
-                CollectionCarousel(uiState.recommendations)
+            CollectionCarousel(uiState.recommendations)
         }
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .offset(y = (-160).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
-        ){
+        ) {
             AnimatedVisibility(
                 visible = offsetState.floatValue > 800.0f,
                 enter = fadeIn() + expandVertically(),
@@ -318,12 +321,17 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 
 @Composable
 fun BottomSheetContent(
+    isLoading: Boolean,
     restaurants: List<Restaurant>,
     navToRestaurant: () -> Unit,
 ) {
-    LazyColumn {
-        items(restaurants) { item ->
-            BigCard(item, navToRestaurant)
+    if (isLoading) {
+        CircularProgressBar()
+    } else {
+        LazyColumn {
+            items(restaurants) { item ->
+                BigCard(item, navToRestaurant)
+            }
         }
     }
 }

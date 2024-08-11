@@ -25,6 +25,7 @@ components:
             properties:
                 id: 
                     type: string
+                    format: uuid
                 coordinates:
                     $ref: "#/components/schemas/coordinates"
                 name:
@@ -61,6 +62,22 @@ components:
                 - price_upper_bound
                 - tags
                 - is_favorite
+        selection:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                description:
+                    type: string
+                is_public:
+                    type: short    
+            required:
+                - id
+                - name
+                - description            
 
     # responses:
     #     UnauthorizedError:
@@ -109,3 +126,117 @@ paths:
                     description: invalid input parameters
                 '401':
                     description: unauthorized
+    /guide/v1/restaurant/{id}:
+        get:
+            description: Get restaurant by id
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: uuid of the user to get.
+                  schema:
+                    type: string
+            security:
+                -   UserTicketAuth: [ ]
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/restaurant'
+                '400':
+                    description: invalid input parameters
+                '401':
+                    description: unauthorized                
+                                                  
+    /guide/v1/selections:
+        get:
+            summary: Получение всех подборок
+            description: Возвращает список всех подборок.
+            responses:
+                '200':
+                    description: Успешное получение списка подборок.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/selection'
+                '500':
+                    description: Внутренняя ошибка сервера.
+
+    /guide/v1/selections/{id}:
+         get:
+            summary: Получить список всех заведений в подборке
+            description: Возвращает список всех заведений, относящихся к заданной подборке
+            parameters:
+                - name: selectionId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+                  description: Идентификатор подборки в формате UUID
+            responses:
+                '200':
+                    description: Успешное получение списка подборок.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/restaurant'
+                '400':
+                    description: Неверный запрос
+                '404':
+                    description: Подборка не найдена
+                '500':
+                    description: Внутренняя ошибка сервера
+    /guide/v1/ml:
+        post:
+            description: Sort restaurants ids list by ML (mock)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                restaurant_ids:
+                                    description: List of restaurant ids
+                                    type: array
+                                    items: {
+                                        type: integer
+                                    }
+                            required:
+                                - restaurant_ids
+            security:
+                - UserTicketAuth: [ ]
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    restaurant_ids:
+                                        type: array
+                                        items: {
+                                            type: integer
+                                        }
+                '400':
+                    description: invalid input parameters
+                '401':
+                    description: unauthorized
+
+
+
+   

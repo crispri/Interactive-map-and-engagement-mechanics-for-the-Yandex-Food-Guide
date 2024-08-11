@@ -5,6 +5,8 @@
 
 #include <fmt/format.h>
 
+#include <string>
+#include <string_view>
 #include <userver/components/component.hpp>
 #include <userver/formats/json/serialize.hpp>
 #include <userver/formats/json/value.hpp>
@@ -44,6 +46,17 @@ public:
         userver::server::request::RequestContext&
     ) const override 
     {
+        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Origin"), "*" );
+        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Headers"), "Content-Type, Authorization, Origin, X-Requested-With, Accept" );
+        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Credentials"), "true" );
+
+        if ( request.GetMethod() == userver::server::http::HttpMethod::kOptions ) {
+            request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Methods"),
+                                                 "GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,PATCH" );
+            request.GetHttpResponse().SetStatus( userver::server::http::HttpStatus::kOk );
+            return "";
+        }
+        
         ErrorResponseBuilder errorBuilder(request);
 
         if (!request.HasHeader("Authorization")) {
@@ -87,7 +100,7 @@ public:
         for (auto& restaurant : restaurants) {
             responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
         }
-      
+
         return userver::formats::json::ToPrettyString(
             responseJSON.ExtractValue(),
             {' ', 4}

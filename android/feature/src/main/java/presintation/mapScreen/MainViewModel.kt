@@ -4,12 +4,14 @@ import Utils
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import model.CancelCentering
+import model.ChangeDeviceLocation
 import model.Event
 import model.NavigateToLocationEvent
 import model.SaveInCollectionEvent
@@ -40,6 +42,7 @@ class MainViewModel @Inject constructor(
                             // Пока не работает бек, возвращаем захардкоженные данные
                             _uiState.update {
                                 it.copy(
+                                    isLoading = false,
                                     restaurantsOnMap = Utils.restaurants,
                                     recommendations = Utils.recommendations,
                                     listOfRestaurant = Utils.restaurants,
@@ -51,6 +54,7 @@ class MainViewModel @Inject constructor(
                             Log.d("NetworkSuccess", "")
                             _uiState.update {
                                 it.copy(
+                                    isLoading = false,
                                     restaurantsOnMap = state.data,
                                     recommendations = Utils.recommendations,
                                     listOfRestaurant = state.data,
@@ -59,7 +63,11 @@ class MainViewModel @Inject constructor(
                         }
 
                         is NetworkState.Loading -> {
-
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         else -> {}
@@ -99,6 +107,11 @@ class MainViewModel @Inject constructor(
                     it.copy( centeringIsRequired = false)
                 }
             }
+            /*is ChangeDeviceLocation -> {
+                _uiState.update {
+                    it.copy( currentDeviceLocation = event.curLocation)
+                }
+            }*/
 
 
 
