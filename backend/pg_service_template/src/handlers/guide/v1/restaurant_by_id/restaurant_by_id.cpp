@@ -50,8 +50,8 @@ public:
     ) const override 
     {
         request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Origin"), "*" );
-        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Headers"), "true" );
-        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Credentials"), "Content-Type, Authorization, Origin, X-Requested-With, Accept" );
+        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Headers"), "Content-Type, Authorization, Origin, X-Requested-With, Accept" );
+        request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Credentials"), "true" );
 
         if ( request.GetMethod() == userver::server::http::HttpMethod::kOptions ) {
             request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Methods"),
@@ -59,6 +59,7 @@ public:
             request.GetHttpResponse().SetStatus( userver::server::http::HttpStatus::kOk );
             return "";
         }
+        
         ErrorResponseBuilder errorBuilder(request);
 
         if (!request.HasHeader("Authorization")) {
