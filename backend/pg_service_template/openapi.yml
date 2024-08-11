@@ -168,11 +168,7 @@ paths:
                                             $ref: '#/components/schemas/selection'
                 '500':
                     description: Внутренняя ошибка сервера.
-<<<<<<< HEAD
 
-=======
-                    
->>>>>>> selections
     /guide/v1/selections/{id}:
          get:
             summary: Получить список всех заведений в подборке
