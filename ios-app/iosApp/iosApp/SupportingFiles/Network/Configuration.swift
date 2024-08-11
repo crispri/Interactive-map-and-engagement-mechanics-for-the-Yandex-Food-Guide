@@ -14,4 +14,10 @@ struct Configuration {
     static var token: String {
         "Yavanna"
     }
+    static var geocoderURL: String {
+        "https://geocode-maps.yandex.ru/1.x/"
+    }
+    static var geocoderKey: String {
+        "8468b494-d413-4abb-8175-919dad37a245"
+    }
 }

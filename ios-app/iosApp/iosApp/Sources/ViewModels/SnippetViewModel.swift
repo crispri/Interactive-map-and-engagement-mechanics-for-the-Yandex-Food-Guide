@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import CoreLocation
 
 @MainActor
 final class SnippetViewModel: ObservableObject {
-    @Published var userLocaitonTitle = "<Здесь будет адрес>"
+    @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = SnippetDTO.mockData
     @Published var collections = SelectionDTO.mockData
     
@@ -21,13 +22,17 @@ final class SnippetViewModel: ObservableObject {
     }
     
     func eventOnAppear() {
+        Task {
+            try? await loadAddress()
+        }
+        
         eventCenterCamera(to: .user)
         mapManager.placeUser()
-        eventOnGesture()
+        onCameraMove()
     }
     
     @MainActor
-    func eventOnGesture() {
+    func onCameraMove() {
         Task {
             do {
                 let rect = mapManager.getScreenPoints()
@@ -60,5 +65,26 @@ final class SnippetViewModel: ObservableObject {
     public func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
         let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner)
         return data
+    }
+    
+    public func loadAddress() async throws {
+        do {
+            let userLocation = try mapManager.getUserLocation()
+            
+            let data = try await networkManager.fetchAddress(loc: userLocation)
+            do {
+                let decoder = JSONDecoder()
+                let geocoderResponse = try decoder.decode(GeocoderResponse.self, from: data)
+                let address = geocoderResponse.response.geoObjectCollection.featureMember.first?.geoObject.name ?? "Неизвестный адрес"
+                print(address)
+                userLocaitonTitle = address
+            } catch {
+                print("Ошибка декодирования: \(error)")
+            }
+        }
+        catch {
+            userLocaitonTitle = "Ошибка геолокации"
+        }
+        
     }
 }
