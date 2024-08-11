@@ -1,5 +1,5 @@
 //
-//  InputListener.swift
+//  CameraListener.swift
 //  iosApp
 //
 //  Created by Stanislav Leonchik on 09.08.2024.
@@ -10,16 +10,28 @@ import YandexMapsMobile
 
 final class CameraListener: NSObject, YMKMapCameraListener {
     var delegate: MapManager?
-    
-    // TODO: Уменьшить количество запросов в секунду
-    @MainActor
+    private var lastRequestTime: Date?
+    private let throttleInterval: TimeInterval = 2.0
+
     func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateReason: YMKCameraUpdateReason, finished: Bool) {
-        if let delegate {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                delegate.eventOnGesture()
-            }
-        } else {
+        guard let delegate else {
             print("No delegate")
+            return
+        }
+
+        let now = Date()
+
+        if let lastTime = lastRequestTime {
+            if now.timeIntervalSince(lastTime) < throttleInterval {
+                return
+            }
+        }
+
+        lastRequestTime = now
+
+        Task { @MainActor in
+            print("...restaurant request")
+            delegate.eventOnGesture()
         }
     }
 }
