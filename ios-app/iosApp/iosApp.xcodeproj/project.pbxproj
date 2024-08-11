@@ -24,6 +24,8 @@
 		6E6A20B72C68B6390029ABCC /* BigPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A20B62C68B6390029ABCC /* BigPinView.swift */; };
 		8450397E015068C0754611A2 /* Pods_iosAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */; };
 		85FEE69FFF6D5E7FB6785FFF /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 628EC9234413B8A27E25DE28 /* Pods_iosApp.framework */; };
+		CB1F19182C68FF35006DE5EC /* GeocoderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1F19172C68FF35006DE5EC /* GeocoderResponse.swift */; };
+		CB28CEE62C6926B400266944 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CB28CEE52C6926B400266944 /* README.md */; };
 		CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */; };
 		CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */; };
 		CB5CA3902C5FB60B0025F771 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA38F2C5FB60B0025F771 /* Configuration.swift */; };
@@ -44,7 +46,6 @@
 		CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD7EDE2C655CC100CEC0BC /* PageControl.swift */; };
 		CBFD7EE72C655CC100CEC0BC /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD7EDF2C655CC100CEC0BC /* PageViewController.swift */; };
 		CBFD7EEB2C65633D00CEC0BC /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CBFD7EEA2C65633D00CEC0BC /* .gitignore */; };
-		CBFD7EED2C65634D00CEC0BC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CBFD7EEC2C65634D00CEC0BC /* README.md */; };
 		CBFD7EEF2C65723100CEC0BC /* CameraListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD7EEE2C65723100CEC0BC /* CameraListener.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +92,8 @@
 		AB953BFC42B520C290826951 /* Pods-iosAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.release.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B97334D73D92638EBD7FC9C4 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
+		CB1F19172C68FF35006DE5EC /* GeocoderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocoderResponse.swift; sourceTree = "<group>"; };
+		CB28CEE52C6926B400266944 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalSelectionView.swift; sourceTree = "<group>"; };
 		CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionScrollView.swift; sourceTree = "<group>"; };
 		CB5CA38F2C5FB60B0025F771 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -111,7 +114,6 @@
 		CBFD7EDE2C655CC100CEC0BC /* PageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
 		CBFD7EDF2C655CC100CEC0BC /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		CBFD7EEA2C65633D00CEC0BC /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .gitignore; path = ../../.gitignore; sourceTree = "<group>"; };
-		CBFD7EEC2C65634D00CEC0BC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 		CBFD7EEE2C65723100CEC0BC /* CameraListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraListener.swift; sourceTree = "<group>"; };
 		F9B277B70BF9911916340C62 /* Pods-iosAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.debug.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -158,7 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				CBFD7EEA2C65633D00CEC0BC /* .gitignore */,
-				CBFD7EEC2C65634D00CEC0BC /* README.md */,
+				CB28CEE52C6926B400266944 /* README.md */,
 				4FC5121C2C5E5585006ED790 /* iosApp */,
 				4FC5122D2C5E5586006ED790 /* iosAppTests */,
 				4FC512372C5E5586006ED790 /* iosAppUITests */,
@@ -321,6 +323,7 @@
 			children = (
 				CB5CA3982C5FD7290025F771 /* ISnippetsResponse.swift */,
 				CB5CA39A2C5FD75F0025F771 /* SnippetsResponse.swift */,
+				CB1F19172C68FF35006DE5EC /* GeocoderResponse.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -485,7 +488,7 @@
 			files = (
 				4FC512252C5E5586006ED790 /* Preview Assets.xcassets in Resources */,
 				CBFD7EEB2C65633D00CEC0BC /* .gitignore in Resources */,
-				CBFD7EED2C65634D00CEC0BC /* README.md in Resources */,
+				CB28CEE62C6926B400266944 /* README.md in Resources */,
 				4FC512222C5E5586006ED790 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -636,6 +639,7 @@
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
 				CBFD7EEF2C65723100CEC0BC /* CameraListener.swift in Sources */,
+				CB1F19182C68FF35006DE5EC /* GeocoderResponse.swift in Sources */,
 				CBFD7EE12C655CC100CEC0BC /* BottomSheetView.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,
 				CB5CA3962C5FCCAA0025F771 /* GetSnippetsRequestModel.swift in Sources */,
