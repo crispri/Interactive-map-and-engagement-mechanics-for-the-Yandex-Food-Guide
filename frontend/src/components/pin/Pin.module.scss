@@ -1,7 +1,72 @@
-.wrapper{
+.wrapperr{
 	width: 32px;
 	height: 32px;
 	background-color: black;
 	border-radius: 8px;
 	padding: 6px;
+}
+.default{
+	height: 16px;
+	width: 16px;
+	border-radius: 6px;
+	background-color: white;
+	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	&__wrapper{
+		width: 13px;
+		height: 13px;
+		border: 1px solid black;
+		border-radius: 7px;
+		background-color: white;
+	}
+}
+.normis {
+	background-color: white;
+	border-radius: 12px;
+	height: 32px;
+	padding: 9px 8px;
+	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.12), 0 0 1px 0 rgba(0, 0, 0, 0.15);
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	position: relative;
+	transform: translate(-50%, -115%);
+	&__text{
+		font-weight: 500;
+		font-size: 13px;
+		max-width: 110px;
+		min-width: 17px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		line-height: 13px;
+	}
+	&__icon{
+		width: 14px;
+		height: 14px;
+		transform: translateY(-1px);
+	}
+	&__rating{
+		font-weight: 400;
+		font-size: 13px;
+	}
+	&__corner{
+		position: absolute;
+		bottom: -7px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	&__bookmark{
+		background-color: white;
+		width: 12px;
+		height: 12px;
+		box-sizing: content-box;
+		position: absolute;
+		right: -7%;
+		top: -20%;
+		padding: 4px 5px;
+		border-radius: 6px;
+	}
 }
