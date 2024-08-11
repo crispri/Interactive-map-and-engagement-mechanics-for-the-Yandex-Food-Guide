@@ -1,38 +1,40 @@
 import './RestaurantCard.css'
 import restaurantImage from '../../assets/restaurant_example.png'
-import snippetFavourite from '../../assets/snippet_favourite.svg'
+import snippetFavourite from '../../assets/snippet_unfavourite.svg'
 
-const RestaurantCard = ({ cardInfo, setId, sheetRef }) => {
+const RestaurantCard = ({ restaurantInfo, setId, sheetRef }) => {
 
   function handleClick() {
-    setId(cardInfo.id);
+    setId(restaurantInfo.id);
     sheetRef.current.snapTo(({ maxHeight }) => maxHeight);
+  }
+
+  function favouriteClick() {
+
   }
 
   return (
     <div className='card' onClick={handleClick}>
       <div className='image-with-favourite' onClick={handleClick}>
-        <img className="fav_button" src={snippetFavourite} alt="Favourite" onClick={handleClick} />
+        <img className="fav_button" src={snippetFavourite} alt="Favourite" onClick={favouriteClick} />
         <img className="snippet" src={restaurantImage} alt="Restaurant" />
       </div>
       <div className="content">
         <div className='title-rating'>
-          <div className="title">{cardInfo.title}</div>
+          <div className="title">{restaurantInfo.name}</div>
           <div className="rating" onClick={handleClick}>
             <span className="star">★</span>
-            <span>4.8</span>
+            <span>{restaurantInfo.rating}</span>
           </div>
         </div>
         <div className="info">
-          <span className="info-item">{cardInfo.openUntil}</span>
+          <span className="info-item">Until: {restaurantInfo.close_time}</span>
           <span className="info-separator">·</span>
-          <span className="info-item">Медведково</span>
-          <span className="info-separator">·</span>
-          <span className="info-item">9 мин на машине</span>
+          <span className="info-item">{restaurantInfo.address}</span>
         </div>
-        <div className="description">{cardInfo.description}</div>
+        <div className="description">{restaurantInfo.description}</div>
         <div className="tags">
-          {cardInfo.tags.map((tag, index) => (
+          {restaurantInfo.tags.map((tag, index) => (
             <div key={index} className="tag">{tag}</div>
           ))}
         </div>

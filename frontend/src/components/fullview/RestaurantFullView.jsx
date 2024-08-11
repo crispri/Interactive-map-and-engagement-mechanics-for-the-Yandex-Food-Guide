@@ -1,35 +1,56 @@
 import styles from './RestaurantFullView.module.scss'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getRestaurantById } from '../../lib/restaurantByIdSlice.js'
+import { useParams } from 'react-router-dom'
+import { truncateString, formatTime } from '../../lib/utils.js'
 
-const RestaurantFullView = ({ id, setId, sheetRef }) => {
+function map(el) {
+  return {
+    id: el.id,
+    name: el.name,
+    description: truncateString(el.description, 200),
+    address: el.address,
+    is_approved: el.is_approved,
+    rating: Number(el.rating).toFixed(2),
+    price_lower_bound: el.price_lower_bound,
+    price_upper_bound: el.price_upper_bound,
+    tags: el.tags,
+    // close_time: formatTime(el.close_time),
+    is_favorite: el.is_favourite
+  }
+}
+
+const RestaurantFullView = ({ setId, sheetRef }) => {
 
     const dispatch = useDispatch();
+    const {restId} = useParams()
+
+    const restaurant = map(useSelector((state) => state.restaurantByIdSlice.restaurant))
 
     useEffect(() => {
         console.log('Full view of restaurant');
-        dispatch(getRestaurantById({id}))
+        dispatch(getRestaurantById(restId))
         .then((response) => {
           console.log('Restaurant data:', response);
         })
         .catch((error) => {
           console.error('Error fetching restaurant:', error);
         });
-      });
+      }, []);
 
       return (
         <div className={styles.container}>
           <div className={styles.header}>
             <button className={styles.backButton}>←</button>
-            <div className={styles.title}>Мэлт</div>
+            <div className={styles.title}>{restaurant.name}</div>
             <div className={styles.actions}>
               <button className={styles.shareButton}>Share</button>
             </div>
           </div>
           <div className={styles.rating}>
             <span className={styles.star}>★</span>
-            <span className={styles.score}>5.0</span>
+            <span className={styles.score}>{restaurant.rating}</span>
             <span className={styles.reviews}>82 оценки</span>
           </div>
           <div className={styles.images}>

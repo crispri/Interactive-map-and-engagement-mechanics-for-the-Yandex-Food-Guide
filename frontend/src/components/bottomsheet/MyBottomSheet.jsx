@@ -4,7 +4,7 @@ import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
 import SheetContent from '../sheetcontent/SheetContent';
 import RestaurantFullView from '../fullview/RestaurantFullView';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 const cardInfos = [
 {
@@ -27,9 +27,8 @@ const cardInfos = [
 }
 ];
 
-const MyBottomSheet = () => {
+const MyBottomSheet = ({sheetRef, content}) => {
 
-  const sheetRef = useRef()
   const [id, setId] = useState(-1);
 
   let options = {
@@ -37,10 +36,7 @@ const MyBottomSheet = () => {
     rootMargin: "0px",
     threshold: 0.8,
   };
-
-  console.log(sheetRef.current);
   // let observer = new IntersectionObserver(callback, options);
-
 
   return (
     <>
@@ -50,17 +46,18 @@ const MyBottomSheet = () => {
         blocking={false}
         defaultSnap={({ maxHeight }) => maxHeight * 0.05}
         snapPoints={({ maxHeight }) => [
-          maxHeight / 3 * 2,
+          maxHeight * 0.4,
           maxHeight * 0.05,
           maxHeight
         ]}
       >
-        <img src={sample} alt="sample" style={{width: '100%', height: '100%'}}/>
+        {/* <img src={sample} alt="sample" style={{width: '100%', height: '100%'}}/>
         {id !== -1 ? (
           <RestaurantFullView id={id} setId={setId} sheetRef={sheetRef}> </RestaurantFullView>
         ) : 
           <SheetContent cardInfos={cardInfos} setId={setId} sheetRef={sheetRef}></SheetContent>
-        };
+        }; */}
+        {content}
       </BottomSheet >
     </>
   )
