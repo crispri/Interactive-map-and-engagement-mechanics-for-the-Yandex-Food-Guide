@@ -1,6 +1,6 @@
 #include "selections.hpp"
-#include "../../../../lib/error_response_builder.hpp"
-#include "../../../../models/selection.hpp"
+#include <lib/error_response_builder.hpp>
+#include <models/selection.hpp>
 
 #include <fmt/format.h>
 
@@ -13,15 +13,16 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
+#include <service/SelectionService.hpp>
 namespace service {
 
 namespace {
 
-class Selections final : public userver::server::handlers::HttpHandlerBase {
+class SelectionController final : public userver::server::handlers::HttpHandlerBase {
  public:
   static constexpr std::string_view kName = "handler-selections";
 
-    Selections(
+    SelectionController(
         const userver::components::ComponentConfig& config,
         const userver::components::ComponentContext& component_context
     ) : 
@@ -30,10 +31,9 @@ class Selections final : public userver::server::handlers::HttpHandlerBase {
         config,
         component_context
     ),
-    pg_cluster_(
-      component_context
-        .FindComponent<userver::components::Postgres>("postgres-db-1")
-        .GetCluster()
+    selection_service_(
+        component_context
+        .FindComponent<SelectionService>()
     )
     {}
 
@@ -42,6 +42,17 @@ class Selections final : public userver::server::handlers::HttpHandlerBase {
         userver::server::request::RequestContext&
     ) const override 
     {
+      request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Origin"), "*" );
+      request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Headers"), "Content-Type, Authorization, Origin, X-Requested-With, Accept" );
+      request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Credentials"), "true" );
+
+      if ( request.GetMethod() == userver::server::http::HttpMethod::kOptions ) {
+            request.GetHttpResponse().SetHeader( std::string_view("Access-Control-Allow-Methods"),
+                                                 "GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,PATCH" );
+            request.GetHttpResponse().SetStatus( userver::server::http::HttpStatus::kOk );
+            return "";
+      }
+
       ErrorResponseBuilder errorBuilder(request);
 
       if (!request.HasHeader("Authorization")) {
@@ -51,27 +62,30 @@ class Selections final : public userver::server::handlers::HttpHandlerBase {
         );
       }
       
-      TSelection selection;
-
-      selection.id = 1;
-      selection.description = "описание";
-      selection.is_public = true;
-      selection.name = "lady`s breakfasts";
-    
-
-      userver::formats::json::ValueBuilder responseJSON{selection};
-      return userver::formats::json::ToPrettyString(responseJSON.ExtractValue(),
-                                                  {' ', 4});
-
+     
+      auto selections = selection_service_.GetAll();
+        userver::formats::json::ValueBuilder responseJSON;
+        responseJSON["items"].Resize(0);
+        for (auto& selection : selections) {
+            responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{selection});
+        }
+      
+        return userver::formats::json::ToPrettyString(
+            responseJSON.ExtractValue(),
+            {' ', 4}
+        );
     }
 
-  userver::storages::postgres::ClusterPtr pg_cluster_;
-};
+    
+    SelectionService& selection_service_;
+    };
+    
+}   // namespace 
 
-}  // namespace
+
 
 void AppendSelections(userver::components::ComponentList& component_list) {
-  component_list.Append<Selections>();
+  component_list.Append<SelectionController>();
 }
 
 }  // namespace service
