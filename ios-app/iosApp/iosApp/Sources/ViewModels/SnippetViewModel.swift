@@ -10,8 +10,9 @@ import Foundation
 @MainActor
 final class SnippetViewModel: ObservableObject {
     @Published var userLocaitonTitle = "<Здесь будет адрес>"
-    @Published var snippets = SnippetDTO.mockData
-    @Published var collections = SelectionDTO.mockData
+    @Published var snippets = [SnippetDTO]()
+    @Published var collections = [SelectionDTO]()
+    @Published var selectedCollection: SelectionDTO? = nil
     
     var mapManager = MapManager()
     private let networkManager = NetworkManager()
@@ -53,14 +54,30 @@ final class SnippetViewModel: ObservableObject {
                 print(error)
             }
         }
+        Task {
+            do {
+                collections = try await loadSelections()
+            } catch {
+                print(error)
+            }
+        }
     }
     
     func eventCenterCamera(to option: MapManager.CameraTargetOption) {
         mapManager.centerCamera(to: option)
     }
     
-    public func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
+    func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
         let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner)
         return data
+    }
+    
+    func loadSelections() async throws -> [SelectionDTO] {
+        let data = try await networkManager.fetchSelections()
+        return data
+    }
+    
+    func fetchSelectionSnippets(id: String) {
+        
     }
 }

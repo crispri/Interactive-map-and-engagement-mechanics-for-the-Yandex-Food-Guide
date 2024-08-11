@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		49CB9296A4D47EB392F1B553 /* Pods_iosApp_iosAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9676E586B79D78349CE364A /* Pods_iosApp_iosAppUITests.framework */; };
 		4F69DC832C678BD00026828E /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 4F69DC822C678BD00026828E /* BottomSheet */; };
+		4F6ECDD42C68E54600E8B5BE /* ISelectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6ECDD32C68E54600E8B5BE /* ISelectionsResponse.swift */; };
+		4F6ECDD62C68E56600E8B5BE /* SelectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6ECDD52C68E56600E8B5BE /* SelectionsResponse.swift */; };
 		4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */; };
 		4F9DCAE92C5E6C4200B39252 /* YandexMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */; };
 		4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAED2C5E754A00B39252 /* DetailsView.swift */; };
@@ -67,6 +69,8 @@
 /* Begin PBXFileReference section */
 		0CE29E8AFACB873B7D675F44 /* Pods-iosApp-iosAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp-iosAppUITests.release.xcconfig"; path = "Target Support Files/Pods-iosApp-iosAppUITests/Pods-iosApp-iosAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2EB3BAEFB0B97B1C7BE0A91C /* Pods-iosApp-iosAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp-iosAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-iosApp-iosAppUITests/Pods-iosApp-iosAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4F6ECDD32C68E54600E8B5BE /* ISelectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISelectionsResponse.swift; sourceTree = "<group>"; };
+		4F6ECDD52C68E56600E8B5BE /* SelectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionsResponse.swift; sourceTree = "<group>"; };
 		4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapView.swift; sourceTree = "<group>"; };
 		4F9DCAEC2C5E73F900B39252 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -310,6 +314,8 @@
 			children = (
 				CB5CA3982C5FD7290025F771 /* ISnippetsResponse.swift */,
 				CB5CA39A2C5FD75F0025F771 /* SnippetsResponse.swift */,
+				4F6ECDD32C68E54600E8B5BE /* ISelectionsResponse.swift */,
+				4F6ECDD52C68E56600E8B5BE /* SelectionsResponse.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -620,6 +626,7 @@
 				CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */,
 				CB5CA3902C5FB60B0025F771 /* Configuration.swift in Sources */,
 				CBFD7ED12C655C6F00CEC0BC /* SnippetDTO.swift in Sources */,
+				4F6ECDD42C68E54600E8B5BE /* ISelectionsResponse.swift in Sources */,
 				CBFD7ED22C655C6F00CEC0BC /* SelectionDTO.swift in Sources */,
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
@@ -627,6 +634,7 @@
 				CBFD7EE12C655CC100CEC0BC /* BottomSheetView.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,
 				CB5CA3962C5FCCAA0025F771 /* GetSnippetsRequestModel.swift in Sources */,
+				4F6ECDD62C68E56600E8B5BE /* SelectionsResponse.swift in Sources */,
 				CBFD7ED42C655C8600CEC0BC /* Color+hex.swift in Sources */,
 				CB5CA3992C5FD7290025F771 /* ISnippetsResponse.swift in Sources */,
 				4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */,
@@ -794,7 +802,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = UGU4YXN2T7;
+				DEVELOPMENT_TEAM = 2H4VAW9HQQ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -830,7 +838,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = UGU4YXN2T7;
+				DEVELOPMENT_TEAM = 2H4VAW9HQQ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

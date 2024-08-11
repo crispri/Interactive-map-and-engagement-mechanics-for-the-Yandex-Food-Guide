@@ -10,24 +10,71 @@ import SwiftUI
 struct SelectionView: View {
     @State var title: String
     @State var desc: String
+    @Binding var selected: Bool
+    var mainAction: (() -> Void)?
+    var bookmarkAction: (() -> Void)?
+    var infoAction: (() -> Void)?
     
     var body: some View {
-        VStack {
-            Text("**\(title)**")
-                .font(.system(size: 10.79))
-                .foregroundStyle(.white)
-            Text(desc)
-                .foregroundStyle(.white)
-                .multilineTextAlignment(.center)
-                .font(.system(size: 9.45))
+        Button {
+            mainAction?()
+        } label: {
+            HStack(alignment: .bottom) {
+                if selected {
+                    Button {
+                        bookmarkAction?()
+                    } label: {
+                        Image(systemName: "bookmark")
+                            .tint(.white)
+                    }
+                    .frame(width: 40, height: 40, alignment: .bottomLeading)
+                }
+                VStack {
+                    Text(title)
+                        .font(.system(size: 13))
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(selected ? 1 : .zero)
+                    if selected {
+                        Text(desc)
+                            .foregroundStyle(.white)
+                            .multilineTextAlignment(.center)
+                            .font(.system(size: 13))
+                    }
+                }
+                .padding(.vertical, 8)
+                .padding(.horizontal, selected ? 0 : 8)
+                if selected {
+                    Button {
+                        infoAction?()
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .tint(.white)
+                    }
+                    .frame(width: 40, height: 40, alignment: .bottomTrailing)
+                }
+            }
+            .background {
+                Image("Selection")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(
+                        width: selected ? UIScreen.main.bounds.width - 100 : 145.73,
+                        height: selected ? 80 : 60.05
+                    )
+            }
+            .frame(
+                width: selected ? UIScreen.main.bounds.width - 100 : 145.73,
+                height: selected ? 80 : 60.05
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 16.19))
+            .animation(.default, value: selected)
         }
-        .padding(15)
-        .background(Image("Selection"))
-        .frame(width: 145.73, height: 60.05)
-        .clipShape(RoundedRectangle(cornerRadius: 16.19))
     }
 }
 
 #Preview {
-    SelectionView(title: "Завтраки вне дома", desc: "Куда сходить · Места")
+    SelectionScrollView()
+        .environmentObject(SnippetViewModel())
 }

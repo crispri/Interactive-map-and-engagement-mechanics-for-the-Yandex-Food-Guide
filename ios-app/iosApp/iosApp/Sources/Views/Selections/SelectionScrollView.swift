@@ -8,23 +8,49 @@
 import SwiftUI
 
 struct SelectionScrollView: View {
-    @EnvironmentObject var viemModel: SnippetViewModel
+    @EnvironmentObject var viewModel: SnippetViewModel
     
     var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack {
-                PersonalSelectionView()
-                ForEach(viemModel.collections) { collection in
-                    SelectionView(title: collection.name, desc: collection.description)
-                        .onTapGesture {
-                            // TODO:
-                            print(collection.name)
+        ScrollViewReader { reader in
+            ScrollView(.horizontal) {
+                LazyHStack(alignment: .bottom) {
+                    ForEach(viewModel.collections.indices, id: \.self) { index in
+                        SelectionView(
+                            title: viewModel.collections[index].name,
+                            desc: viewModel.collections[index].description,
+                            selected: Binding(
+                                get: {
+                                    if let selectedCollection = viewModel.selectedCollection,
+                                       selectedCollection == viewModel.collections[index] {
+                                        return true
+                                    }
+                                    return false
+                                },
+                                set: { _ in }
+                            )
+                        ) {
+                            if let selectedCollection = viewModel.selectedCollection,
+                               selectedCollection == viewModel.collections[index] {
+                                viewModel.selectedCollection = nil
+                            } else {
+                                viewModel.selectedCollection = viewModel.collections[index]
+                                reader.scrollTo(index, anchor: .center)
+                                viewModel.fetchSelectionSnippets(id: viewModel.selectedCollection?.id ?? "")
+                            }
+                        } bookmarkAction: {
+                            // TODO: add bookmarkAction.
+                        } infoAction: {
+                            // TODO: add bookmarkAction.
                         }
+                        .id(index)
+                    }
                 }
+                .padding(.horizontal)
+                .animation(.default, value:  viewModel.selectedCollection)
             }
-            .padding(.horizontal)
+            .scrollIndicators(.hidden)
+            .frame(height: 100)
         }
-        .scrollIndicators(.hidden)
     }
 }
 
