@@ -12,10 +12,20 @@
 #include <handlers/guide/v1/ml/ml_rate.hpp>
 #include <handlers/guide/v1/restaurants/restaurants.hpp>
 #include <handlers/guide/v1/restaurant_by_id/restaurant_by_id.hpp>
+#include <handlers/guide/v1/selections/selections.hpp>
+#include <handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp>
 #include <service/RestaurantService.hpp>
+#include <service/SelectionService.hpp>
 #include <service/MLService.hpp>
 
 
+<<<<<<< backend/pg_service_template/src/main.cpp
+=======
+
+
+
+
+>>>>>>> backend/pg_service_template/src/main.cpp
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
                             .Append<userver::server::handlers::Ping>()
@@ -25,12 +35,19 @@ int main(int argc, char* argv[]) {
                             .Append<userver::components::Postgres>("postgres-db-1")
                             .Append<userver::clients::dns::Component>();
 
+
   service::AppendRestaurantController(component_list);
-  service::AppendMLSort(component_list);
-  service::AppendRestaurantService(component_list);
   service::AppendRestaurantByIdController(component_list);
+  service::AppendMLSort(component_list);
+  service:: AppendSelections(component_list);
+  service::AppendReccomendationsBySelectionId(component_list);
+
+
+  service::AppendRestaurantService(component_list);
+  service::AppendSelectionService(component_list);
   service::AppendMLService(component_list);
   service::AppendMLRate(component_list);
+
 
 
   return userver::utils::DaemonMain(argc, argv, component_list);

@@ -50,3 +50,9 @@ fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
 
     }
 }
+
+
+
+// [4, 7, 9, 2, 6, 1, 3]
+// [1->4, 7, 9]
+
