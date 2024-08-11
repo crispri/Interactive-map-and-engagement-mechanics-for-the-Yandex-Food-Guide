@@ -29,5 +29,4 @@ void AppendSelectionService(
     userver::components::ComponentList& component_list
 );
 
-
 } // namespace service

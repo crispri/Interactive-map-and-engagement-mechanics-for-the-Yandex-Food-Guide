@@ -20,11 +20,6 @@ public:
     std::vector<TRestaurant> GetById(const boost::uuids::uuid& id) override;
 };
 
-/*
- * в main кладем кладем конкретную реализацию.
- *
- */
-
 
 
 } // service

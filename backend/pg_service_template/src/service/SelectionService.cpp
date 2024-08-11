@@ -40,5 +40,4 @@ void AppendSelectionService(userver::components::ComponentList& component_list) 
     component_list.Append<SelectionService>();
 }
 
-
 } // namespace service

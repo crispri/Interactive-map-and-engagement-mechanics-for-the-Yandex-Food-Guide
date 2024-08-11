@@ -75,11 +75,11 @@ components_manager:
             task_processor: main-task-processor
         handler-selections:
             path: /guide/v1/selections
-            method: POST
+            method: GET
             task_processor: main-task-processor 
         handler-recs-by-selection-id:
             path: /guide/v1/selections/{id}
-            method: POST
+            method: GET
             task_processor: main-task-processor       
 
 

@@ -38,10 +38,13 @@ int main(int argc, char* argv[]) {
   service::AppendMLSort(component_list);
   service:: AppendSelections(component_list);
   service::AppendReccomendationsBySelectionId(component_list);
+<<<<<<< HEAD
 
   service::AppendRestaurantService(component_list);
   service::AppendSelectionService(component_list);
   service::AppendMLService(component_list);
 
+=======
+>>>>>>> selections
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

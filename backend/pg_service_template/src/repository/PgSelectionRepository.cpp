@@ -24,8 +24,7 @@ std::vector<TRestaurant> PgSelectionRepository::GetById(const boost::uuids::uuid
         R"(SELECT r.* FROM )" + kRestaurantsTableName_ + R"( r )"+
         R"(JOIN )" + kConnectionTableName_ + R"( cr ON r.id = cr.place_id WHERE cr.selection_id = $1;)",
         id
-    );
-    
+    );   
    return restaurants.AsContainer<std::vector<TRestaurant>>(userver::storages::postgres::kRowTag);
 }
 
