@@ -120,7 +120,7 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
-                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
+                    BottomSheetContent(uiState.isLoading, uiState.restaurantsOnMap, navToRestaurant)
                 }
             },
             sheetContainerColor = Color.White
@@ -218,14 +218,14 @@ fun MainScreen(
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
-                CollectionCarousel(uiState.recommendations)
+            CollectionCarousel(uiState.recommendations)
         }
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .offset(y = (-160).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
-        ){
+        ) {
             AnimatedVisibility(
                 visible = offsetState.floatValue > 800.0f,
                 enter = fadeIn() + expandVertically(),
@@ -489,12 +489,17 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 
 @Composable
 fun BottomSheetContent(
+    isLoading: Boolean,
     restaurants: List<Restaurant>,
     navToRestaurant: () -> Unit,
 ) {
-    LazyColumn {
-        items(restaurants) { item ->
-            BigCard(item, navToRestaurant)
+    if (isLoading) {
+        CircularProgressBar()
+    } else {
+        LazyColumn {
+            items(restaurants) { item ->
+                BigCard(item, navToRestaurant)
+            }
         }
     }
 }
