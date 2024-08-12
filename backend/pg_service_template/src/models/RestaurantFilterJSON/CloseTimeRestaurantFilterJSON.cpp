@@ -1,4 +1,4 @@
-#include "OpenTimeRestaurantFilterJSON.hpp"
+#include "CloseTimeRestaurantFilterJSON.hpp"
 
 #include <string>
 #include <regex>
@@ -8,11 +8,12 @@
 #include <userver/utils/time_of_day.hpp>
 #include <userver/formats/parse/time_of_day.hpp>
 
+
 namespace service {
 
 
-    const std::string OpenTimeRestaurantFilterJSON::kFieldName_ = "open_time";
-    const std::unordered_map<std::string, std::string> OpenTimeRestaurantFilterJSON::kCorrectOperators_ = {
+    const std::string CloseTimeRestaurantFilterJSON::kFieldName_ = "close_time";
+    const std::unordered_map<std::string, std::string> CloseTimeRestaurantFilterJSON::kCorrectOperators_ = {
             {"lt", "<"},
             {"gt", ">"},
             {"ge", ">="},
@@ -20,7 +21,7 @@ namespace service {
             {"eq", "="},
     };
 
-    std::variant<std::string, ErrorDescriprion> OpenTimeRestaurantFilterJSON::BuildSQLFilter(
+    std::variant<std::string, ErrorDescriprion> CloseTimeRestaurantFilterJSON::BuildSQLFilter(
             userver::storages::postgres::ParameterStore& params,
             const userver::formats::json::Value& JSON
     )
@@ -32,12 +33,10 @@ namespace service {
         if (!kCorrectOperators_.count(op)) {
             return ErrorDescriprion::kInvalidOperator;
         }
-
         const std::regex time_regex(R"(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9])");
         if (!std::regex_match(JSON["value"][0].As<std::string>(), time_regex)) {
             return ErrorDescriprion::kInvalidValueType;
         }
-
         params.PushBack(JSON["value"][0].As< userver::utils::datetime::TimeOfDay<std::chrono::seconds> >());
         return fmt::format(" {} {} ${} ", kFieldName_, kCorrectOperators_.at(op), params.Size());
     }

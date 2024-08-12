@@ -22,7 +22,8 @@
 #include <models/RestaurantFilterJSON/RatingRestaurantFilterJSON.hpp>
 #include <models/RestaurantFilterJSON/PriceLBRestaurantFilterJSON.hpp>
 #include <models/RestaurantFilterJSON/PriceUBRestaurantFilterJSON.hpp>
-//#include <models/RestaurantFilterJSON/OpenTimeRestaurantFilterJSON.hpp>
+#include <models/RestaurantFilterJSON/OpenTimeRestaurantFilterJSON.hpp>
+#include <models/RestaurantFilterJSON/CloseTimeRestaurantFilterJSON.hpp>
 
 namespace service {
 
@@ -99,8 +100,8 @@ public:
         userver::storages::postgres::ParameterStore filter_params;
         std::string filter_string;
 
-        if (request_body_json.HasMember("filters")) {
 
+        if (request_body_json.HasMember("filters")) {
             if (!request_body_json["filters"].IsArray()) {
                 return errorBuilder.build(
                         userver::server::http::HttpStatus::kBadRequest,
@@ -111,7 +112,6 @@ public:
             std::size_t sz = request_body_json["filters"].GetSize();
 
             for (std::size_t i = 0; i < sz; ++i) {
-
                 const auto& filter = request_body_json["filters"][i];
 
                 if (!filter.HasMember("property")) {
@@ -145,6 +145,7 @@ public:
                 const auto& property_name = filter["property"].As<std::string>();
 
                 if (!StringRestaurantFilterMapping_.count(property_name)) {
+                    LOG_ERROR() << property_name;
                     return errorBuilder.build(
                             userver::server::http::HttpStatus::kBadRequest,
                             ErrorDescriprion::kInvalidPropertyName
@@ -203,7 +204,8 @@ const std::unordered_map<
     {"rating", std::make_shared<RatingRestaurantFilterJSON>()},
     {"price_lower_bound", std::make_shared<PriceLBRestaurantFilterJSON>()},
     {"price_upper_bound", std::make_shared<PriceUBRestaurantFilterJSON>()},
-//    {"open_time", std::make_shared<OpenTimeRestaurantFilterJSON>()}
+    {"open_time", std::make_shared<OpenTimeRestaurantFilterJSON>()},
+    {"close_time", std::make_shared<CloseTimeRestaurantFilterJSON>()}
 };
 
 }  // namespace
