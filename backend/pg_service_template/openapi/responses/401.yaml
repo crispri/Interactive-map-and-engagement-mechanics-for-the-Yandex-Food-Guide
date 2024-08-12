@@ -2,4 +2,4 @@ description: "Пользователь не авторизован"
 content:
     application/json:
         schema:
-            $ref: "../schemas/index.yaml#/Error"
+            $ref: "../openapi.yaml#/components/schemas/Error"

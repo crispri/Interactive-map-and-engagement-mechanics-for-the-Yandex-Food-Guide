@@ -11,16 +11,16 @@ post:
 
                         lower_left_corner:
                             description: "Координаты левого нижнего угла"
-                            $ref: "../schemas/index.yaml#/Coordinates"
+                            $ref: "../openapi.yaml#/components/schemas/Coordinates"
 
                         top_right_corner:
                             description: "Координаты правого верхнего угла"
-                            $ref: "../schemas/index.yaml#/Coordinates"
+                            $ref: "../openapi.yaml#/components/schemas/Coordinates"
 
                         filters:
                             type: array
                             items:
-                                $ref: "../schemas/index.yaml#/RestaurantFilter"
+                                $ref: "../openapi.yaml#/components/schemas/RestaurantFilter"
 
                     required:
                         -   lower_left_corner
@@ -43,7 +43,7 @@ post:
                             items:
                                 type: array
                                 items:
-                                    $ref: "../schemas/index.yaml#/Restaurant"
+                                    $ref: "../openapi.yaml#/components/schemas/Restaurant"
 
         400:
             $ref: "../responses/400.yaml"

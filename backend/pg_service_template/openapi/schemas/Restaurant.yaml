@@ -5,7 +5,7 @@ properties:
         format: uuid
 
     coordinates:
-        $ref: "./index.yaml#/Coordinates"
+        $ref: "../openapi.yaml#/components/schemas/Coordinates"
 
     name:
         type: string

@@ -8,6 +8,7 @@ servers:
     -   url: http://51.250.39.97:8080/guide/v1/
 
 components:
+
     schemas:
         Error:
             $ref: "./schemas/Error.yaml"
@@ -23,8 +24,11 @@ components:
 
         Selection:
             $ref: "./schemas/Selection.yaml"
+
+
     parameters:
-        $ref: "./params/index.yaml"
+        PathUUID:
+            $ref: "./params/PathUUID.yaml"
 
     securitySchemes:
         UserTicketAuth:

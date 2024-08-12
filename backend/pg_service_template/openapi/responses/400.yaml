@@ -2,4 +2,4 @@ description: "Неверные параметры"
 content:
     application/json:
         schema:
-            $ref: "../schemas/index.yaml#/Error"
+            $ref: "../openapi.yaml#/components/schemas/Error"
