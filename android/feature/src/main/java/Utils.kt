@@ -1,8 +1,24 @@
+import android.graphics.Bitmap
+import android.util.Log
+import android.view.View
 import com.yandex.mapkit.geometry.Point
 import model.Recommendation
 import model.Restaurant
 
+
 object Utils {
+    fun createBitmapFromView(view: View): Bitmap {
+        Log.d("View", view.toString())
+        Log.d("ViewWidth", view.width.toString())
+        Log.d("ViewHeight", view.height.toString())
+
+        if (view.width <= 0 || view.height <= 0) {
+            throw IllegalArgumentException("Width and height must be greater than 0")
+        }
+        return Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+
+    }
+
     val places = arrayListOf(
         Point(55.736863, 37.596052),
         Point(55.734252, 37.588973),

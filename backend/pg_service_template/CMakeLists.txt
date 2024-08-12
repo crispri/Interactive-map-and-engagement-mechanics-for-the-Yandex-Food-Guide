@@ -49,6 +49,7 @@ add_library(${PROJECT_NAME}_objs OBJECT
         src/models/TSelection.cpp
     src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp
     src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.cpp
+
     src/lib/time_parser.hpp
     src/lib/time_parser.cpp
     src/repository/PgRestaurantRepository.hpp
@@ -56,6 +57,17 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/repository/IRestaurantRepository.hpp
     src/service/RestaurantService.hpp
     src/service/RestaurantService.cpp
+    src/service/SelectionService.hpp
+    src/service/SelectionService.cpp
+    src/repository/PgSelectionRepository.hpp
+    src/repository/PgSelectionRepository.cpp
+    src/repository/ISelectionRepository.hpp
+    src/models/selection.cpp
+    src/models/selection.hpp
+    src/handlers/guide/v1/selections/selections.hpp
+    src/handlers/guide/v1/selections/selections.cpp
+    src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.hpp
+    src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.cpp    
     src/service/MLService.hpp
     src/service/MLService.cpp
         src/models/RestaurantFilterJSON/IRestaurantFilterJSON.hpp

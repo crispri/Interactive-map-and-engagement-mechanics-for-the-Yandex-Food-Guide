@@ -1,0 +1,112 @@
+.container {
+    background-color: #1c1c1e;
+    color: #ffffff;
+    padding: 16px;
+    border-radius: 16px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  
+    .backButton, .shareButton {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 24px;
+    }
+  
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+  
+  .rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  
+    .star {
+      font-size: 24px;
+      color: #f5a623;
+      margin-right: 8px;
+    }
+  
+    .score {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+  
+    .reviews {
+      font-size: 16px;
+      color: #8e8e93;
+    }
+  }
+  
+  .images {
+    display: flex;
+    margin-bottom: 16px;
+  
+    .mainImage {
+      width: 60%;
+      margin-right: 8px;
+      border-radius: 12px;
+    }
+  
+    .sideImages {
+      display: flex;
+      flex-direction: column;
+  
+      img {
+        width: 100%;
+        border-radius: 12px;
+        margin-bottom: 8px;
+  
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+  
+  .info {
+    margin-bottom: 16px;
+  
+    .tags {
+      display: flex;
+      margin-bottom: 8px;
+  
+      .tag {
+        background-color: #2c2c2e;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        margin-right: 8px;
+      }
+    }
+  
+    .description {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #d1d1d6;
+    }
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: space-around;
+  
+    .actionButton {
+      background-color: #2c2c2e;
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+  

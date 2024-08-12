@@ -1,9 +1,12 @@
 package ui
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,11 +18,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,22 +43,28 @@ fun CardWithImageAndText(
     text: String,
     description: String,
     onInfoClick: () -> Unit,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
+
     Card(
-        modifier = Modifier.clip(RoundedCornerShape(20.dp))
+        modifier = modifier
+            .clip(RoundedCornerShape(20.dp))
+            .clickable { onClick() }
+            .animateContentSize()
     ) {
         Box(
             modifier = Modifier
-                .width(216.dp)
-                .height(90.dp)
-
+                .fillMaxSize()
         ) {
 
             Image(
                 painter = imagePainter,
                 contentDescription = "Фон",
-                modifier = Modifier.wrapContentSize(unbounded = true, align = Alignment.Center)
+                modifier = Modifier.fillMaxSize(), // Заменили на fillMaxSize
+                contentScale = ContentScale.Crop
+                /*                modifier = Modifier.wrapContentSize(unbounded = true, align = Alignment.Center)*/
             )
 
             Column(
@@ -78,7 +92,8 @@ fun CardWithImageAndText(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .align(Alignment.CenterHorizontally).padding(start = 18.dp, end = 18.dp),
+                        .align(Alignment.CenterHorizontally)
+                        .padding(start = 18.dp, end = 18.dp),
                     textAlign = TextAlign.Center,
                     lineHeight = 15.sp,
                 )
@@ -123,6 +138,7 @@ fun CardWithImageAndTextPreview() {
         "Kalabasa ",
         "Куда сходить чтобы вкусно поесть даже очень вкусно прям вау",
         {},
-        {}
+        {},
+        onClick = {}
     )
 }

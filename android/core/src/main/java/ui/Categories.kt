@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,7 +42,7 @@ fun CategoriesButton() {
         IconButton(
             onClick = { /*TODO*/ },
             colors = IconButtonColors(
-                Color.LightGray,
+                Color(0xFFE2E2E2),
                 Color.Black,
                 Color.LightGray,
                 Color.LightGray
@@ -48,7 +50,7 @@ fun CategoriesButton() {
             modifier = Modifier
                 /*                .padding(vertical = 4.dp)*/
                 .clip(RoundedCornerShape(16.dp))
-                .height(32.dp),
+                .height(38.dp),
             content = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_slot),
@@ -69,15 +71,15 @@ fun CategoriesButton() {
 fun CategoryButtonCard(text: String, clickOnCategory: () -> Unit) {
     TextButton(
         onClick = clickOnCategory,
-        colors = ButtonColors(Color.LightGray, Color.Black, Color.LightGray, Color.LightGray),
+        colors = ButtonColors(Color(0xFFE2E2E2), Color.Black, Color.LightGray, Color.LightGray),
         modifier = Modifier
             .padding(horizontal = 4.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .height(32.dp),
+            .clip(RoundedCornerShape(10.dp))
+            .height(38.dp),
     ) {
         BasicText(
             text = text,
-            style = androidx.compose.ui.text.TextStyle(fontSize = 11.sp)
+            style = androidx.compose.ui.text.TextStyle(fontSize = 11.sp, fontWeight = FontWeight.W400)
         )
     }
 }
