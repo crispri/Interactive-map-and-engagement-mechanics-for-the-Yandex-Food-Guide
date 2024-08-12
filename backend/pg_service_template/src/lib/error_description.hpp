@@ -10,7 +10,16 @@ enum class ErrorDescriprion {
     kTokenNotSpecified,
     kInvalidSelectionId,
     kListNotSpecified,
-    kRestaurantNotFound
+    kRestaurantNotFound,
+    kOperatorNotSpecified,
+    kValueNotSpecified,
+    kInvalidValueArraySize,
+    kValueIsNotArray,
+    kInvalidOperator,
+    kPropertyNotSpecified,
+    kInvalidPropertyName,
+    kInvalidValueType,
+    kFiltersIsNotArray,
 };
 
 extern const std::unordered_map<ErrorDescriprion, std::string> errorMapping;

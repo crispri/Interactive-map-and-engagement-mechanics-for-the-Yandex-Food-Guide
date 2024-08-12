@@ -6,6 +6,21 @@ servers:
     -   url: http://51.250.39.97:8080/
 components:
     schemas:
+        restaurant-filter:
+            type: object
+            properties:
+                property:
+                    type: string
+                value:
+                    type: array
+                    description: Список параметров любого типа (int, string, time и прочее)
+                    items:
+                        type: string
+                operator:
+                    type: string
+                    enum: [
+                        "lt", "gt", "le", "ge", "in", "notin", "eq", "neq"
+                    ]
         coordinates:
             type: object
             properties:
@@ -43,6 +58,12 @@ components:
                     type: integer
                 price_upper_bound:
                     type: integer
+                open_time:
+                    type: string
+                    format: time
+                close_time:
+                    type: string
+                    format: time
                 tags:
                     type: array
                     items:
@@ -73,7 +94,8 @@ components:
                 description:
                     type: string
                 is_public:
-                    type: short    
+                    description: 2 байта тег
+                    type: integer
             required:
                 - id
                 - name
@@ -106,6 +128,11 @@ paths:
                                     $ref: "#/components/schemas/coordinates"
                                 max_count:
                                     type: integer
+                                filters:
+                                    type: array
+                                    items:
+                                        $ref: '#/components/schemas/restaurant-filter'
+                                    
                             required:
                                 - coordinates
             security:
@@ -238,5 +265,77 @@ paths:
                     description: unauthorized
 
 
+    /guide/v1/restaurants/{id}:
+        get:
+            description: Get restaurant by id
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: uuid of the user to get.
+                  schema:
+                    type: string
+                    format: uuid
+            security:
+                -   UserTicketAuth: [ ]
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/restaurant'
+                '400':
+                    description: invalid input parameters
+                '401':
+                    description: unauthorized
 
-   
+
+    /guide/v1/selections:
+        get:
+            summary: Получение всех подборок
+            description: Возвращает список всех подборок.
+            responses:
+                '200':
+                    description: Успешное получение списка подборок.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/selection'
+                '500':
+                    description: Внутренняя ошибка сервера.
+    /guide/v1/selections/{id}:
+         get:
+            summary: Получить список всех заведений в подборке
+            description: Возвращает список всех заведений, относящихся к заданной подборке
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+                  description: Идентификатор подборки в формате UUID
+            responses:
+                '200':
+                    description: Успешное получение списка подборок.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/restaurant'
+                '400':
+                    description: Неверный запрос
+                '404':
+                    description: Подборка не найдена
+                '500':
+                    description: Внутренняя ошибка сервера
