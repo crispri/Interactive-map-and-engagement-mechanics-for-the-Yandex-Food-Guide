@@ -18,8 +18,11 @@
 
 #include <service/RestaurantService.hpp>
 
-#include <models/RestaurantFilterJSON//IRestaurantFilterJSON.hpp>
+#include <models/RestaurantFilterJSON/IRestaurantFilterJSON.hpp>
 #include <models/RestaurantFilterJSON/RatingRestaurantFilterJSON.hpp>
+#include <models/RestaurantFilterJSON/PriceLBRestaurantFilterJSON.hpp>
+#include <models/RestaurantFilterJSON/PriceUBRestaurantFilterJSON.hpp>
+//#include <models/RestaurantFilterJSON/OpenTimeRestaurantFilterJSON.hpp>
 
 namespace service {
 
@@ -163,9 +166,6 @@ public:
                 }
                 filter_string += std::get<std::string>(result);
                 filter_string += " AND ";
-//                if (i != sz - 1) {
-//
-//                }
              }
         }
 
@@ -201,6 +201,9 @@ const std::unordered_map<
         std::string, std::shared_ptr<IRestaurantFilterJSON>
 > RestaurantController::StringRestaurantFilterMapping_ = {
     {"rating", std::make_shared<RatingRestaurantFilterJSON>()},
+    {"price_lower_bound", std::make_shared<PriceLBRestaurantFilterJSON>()},
+    {"price_upper_bound", std::make_shared<PriceUBRestaurantFilterJSON>()},
+//    {"open_time", std::make_shared<OpenTimeRestaurantFilterJSON>()}
 };
 
 }  // namespace

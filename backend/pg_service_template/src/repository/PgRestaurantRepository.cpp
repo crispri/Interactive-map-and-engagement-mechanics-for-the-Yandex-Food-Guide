@@ -42,8 +42,6 @@ std::vector<TRestaurant> PgRestaurantRepository::GetByFilter(const TRestaurantFi
             fmt::format(" lat BETWEEN ${} AND ${} ", filter.filter_params.Size() - 3, filter.filter_params.Size() - 2) +
             fmt::format(" AND lon BETWEEN ${} AND ${};", filter.filter_params.Size() - 1, filter.filter_params.Size());
 
-    LOG_ERROR() << "QUERY = ." << query << ".";
-
     const auto& restaurants = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
         query,
