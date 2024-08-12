@@ -9,7 +9,20 @@ servers:
 
 components:
     schemas:
-        $ref: "./schemas/index.yaml"
+        Error:
+            $ref: "./schemas/Error.yaml"
+
+        Coordinates:
+            $ref: "./schemas/Coordinates.yaml"
+
+        Restaurant:
+            $ref: "./schemas/Restaurant.yaml"
+
+        RestaurantFilter:
+            $ref: "./schemas/RestaurantFilter.yaml"
+
+        Selection:
+            $ref: "./schemas/Selection.yaml"
     parameters:
         $ref: "./params/index.yaml"
 

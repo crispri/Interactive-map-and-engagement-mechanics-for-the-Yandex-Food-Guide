@@ -12,4 +12,3 @@ RestaurantFilter:
 
 Selection:
     $ref: "./Selection.yaml"
-
