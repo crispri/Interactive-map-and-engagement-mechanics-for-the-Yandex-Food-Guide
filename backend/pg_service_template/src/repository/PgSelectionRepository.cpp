@@ -1,5 +1,5 @@
 #include "PgSelectionRepository.hpp"
-#include "models/restaurant.hpp"
+#include <models/TRestaurant.hpp>
 
 namespace service {
 

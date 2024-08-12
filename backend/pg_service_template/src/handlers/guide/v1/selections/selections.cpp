@@ -1,7 +1,6 @@
 #include "selections.hpp"
-#include <TSelection.hpp>
+#include <models/TSelection.hpp>
 #include <lib/error_response_builder.hpp>
-#include <models/selection.hpp>
 
 #include <fmt/format.h>
 

@@ -2,9 +2,8 @@
 
 #include <userver/storages/postgres/component.hpp>
 #include <userver/components/component.hpp>
-#include "models/restaurant.hpp"
-#include "models/selection.hpp"
-#include "service/SelectionService.hpp"
+#include <models/TRestaurant.hpp>
+#include <models/TSelection.hpp>
 
 namespace service {
 
