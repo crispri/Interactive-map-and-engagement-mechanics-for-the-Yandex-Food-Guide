@@ -1,0 +1,5 @@
+description: "Неверные параметры"
+content:
+    application/json:
+        schema:
+            $ref: "../schemas/index.yaml#/Error"

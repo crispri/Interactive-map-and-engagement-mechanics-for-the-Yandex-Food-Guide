@@ -1,0 +1,15 @@
+Error:
+    $ref: "./Error.yaml"
+
+Coordinates:
+    $ref: "./Coordinates.yaml"
+
+Restaurant:
+    $ref: "./Restaurant.yaml"
+
+RestaurantFilter:
+    $ref: "./RestaurantFilter.yaml"
+
+Selection:
+    $ref: "./Selection.yaml"
+

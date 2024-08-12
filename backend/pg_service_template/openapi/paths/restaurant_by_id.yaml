@@ -1,0 +1,20 @@
+get:
+    description: "Получение ресторана по ID"
+
+    parameters:
+        -   $ref: "../params/PathUUID.yaml"
+
+    security:
+        -   UserTicketAuth: [ ]
+
+    responses:
+        200:
+            description: "OK"
+            content:
+                application/json:
+                    schema:
+                        $ref: "../schemas/Restaurant.yaml"
+        400:
+            $ref: "../responses/400.yaml"
+        401:
+            $ref: "../responses/401.yaml"

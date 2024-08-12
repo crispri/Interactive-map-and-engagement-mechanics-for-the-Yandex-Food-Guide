@@ -1,0 +1,2 @@
+PathUUID:
+    $ref: "./PathUUID.yaml"

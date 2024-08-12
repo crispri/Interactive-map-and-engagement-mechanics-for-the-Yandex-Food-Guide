@@ -1,0 +1,34 @@
+openapi: "3.0.2"
+
+info:
+    title: "API для Yandex Guide"
+    version: "1.0"
+
+servers:
+    -   url: http://51.250.39.97:8080/guide/v1/
+
+components:
+    schemas:
+        $ref: "./schemas/index.yaml"
+    parameters:
+        $ref: "./params/index.yaml"
+
+    securitySchemes:
+        UserTicketAuth:
+            type: apiKey
+            in: header
+            name: Authorization
+
+
+
+paths:
+    /restaurants:
+        $ref: "./paths/restaurants.yaml"
+    /restaurant/{id}:
+        $ref: "./paths/restaurant_by_id.yaml"
+    /selections:
+        $ref: "./paths/selections.yaml"
+    /selection/{id}:
+        $ref: "./paths/selection_by_id.yaml"
+    /ml:
+        $ref: "./paths/ml.yaml"

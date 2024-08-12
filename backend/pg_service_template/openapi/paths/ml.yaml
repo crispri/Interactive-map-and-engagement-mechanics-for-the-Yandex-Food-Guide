@@ -1,0 +1,38 @@
+post:
+    description: "Приоритезация заведений через ML"
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    type: object
+                    properties:
+                        restaurant_ids:
+                            description: "Список ID"
+                            type: array
+                            items:
+                                type: integer
+
+                    required:
+                        - restaurant_ids
+
+    security:
+        - UserTicketAuth: [ ]
+
+    responses:
+        200:
+            description: "OK"
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            restaurant_ids:
+                                type: array
+                                items:
+                                    type: integer
+
+        400:
+            $ref: "../responses/400.yaml"
+        401:
+            $ref: "../responses/401.yaml"
