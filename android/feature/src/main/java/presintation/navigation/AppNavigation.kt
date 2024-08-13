@@ -6,18 +6,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
 import presintation.homeScreen.HomeScreen
+import presintation.mapScreen.CustomMapView
 import presintation.mapScreen.MainScreen
 import presintation.mapScreen.MainViewModel
 import presintation.restaurantScreen.RestaurantScreen
+import presintation.restaurantScreen.RestaurantViewModel
 
 @Composable
-fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
+fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -29,6 +33,7 @@ fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
                 actions.onMapScreen
             )
         }
+
 
         composable(AppDestination.MAP_SCREEN) {
             val mainViewModel: MainViewModel = hiltViewModel()
@@ -44,8 +49,14 @@ fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
             )
         }
 
-        composable(AppDestination.RESTAURANT_SCREEN) {
-            RestaurantScreen(navToBack = actions.onBack)
+        composable(route = "${AppDestination.RESTAURANT_SCREEN}/{itemId}",
+            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
+        )
+        { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
+            val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+            val uiState by restaurantViewModel.uiState.collectAsState()
+            RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send, uiState = uiState)
         }
 
     }

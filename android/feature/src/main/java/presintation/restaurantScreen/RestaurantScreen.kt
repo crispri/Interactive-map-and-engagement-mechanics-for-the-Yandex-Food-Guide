@@ -47,10 +47,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.feature.R
 import presintation.mapScreen.Carousel
+import presintation.mapScreen.MainUiState
 import ui.AboutPlaceCard
+import ui.GetRestaurantInfo
 import ui.ImageCarousel
 import ui.PlaceCard
 import ui.PlaceWidgetCard
+import ui.RestaurantScreenEvent
 import ui.TopCard
 import kotlin.math.roundToInt
 
@@ -74,13 +77,19 @@ val listImages = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(
-    navToBack: () -> Unit
+    navToBack: () -> Unit,
+    restaurantId: String,
+    send: (RestaurantScreenEvent) -> Unit,
+    uiState: RestaurantUiState,
 ) {
 
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWeight = configuration.screenWidthDp.dp
 
+    LaunchedEffect(restaurantId) {
+        send(GetRestaurantInfo(restaurantId))
+    }
 
     val bottomSheetState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberSaveable(
@@ -133,7 +142,7 @@ fun RestaurantScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     ImageCarousel(listImages = listImages)
                     Spacer(modifier = Modifier.height(4.dp))
-                    AboutPlaceCard(true)
+                    AboutPlaceCard(true, text = uiState.currentRestaurant?.description ?: "", )
                     Spacer(modifier = Modifier.height(16.dp))
                     ImageCarousel(listImages = listImages)
                 }

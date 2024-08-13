@@ -79,7 +79,6 @@ class RestaurantRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-
     override fun updateTask(
         item: Restaurant,
         revision: Int,

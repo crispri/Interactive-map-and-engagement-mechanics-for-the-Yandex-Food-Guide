@@ -81,7 +81,7 @@ import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
 import custom_bottom_sheet.BottomSheetState
-import model.Event
+import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.Recommendation
 import model.Restaurant
@@ -99,11 +99,11 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
-    navToRestaurant: () -> Unit,
+    navToRestaurant: (String) -> Unit,
     uiState: MainUiState,
     navToBack: () -> Unit,
-    send: (Event) -> Unit,
-    mapView: MapView,
+    send: (MainScreenEvent) -> Unit,
+    mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
 
@@ -186,7 +186,6 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
-//                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
                         state = lazyListState,
                         flingBehavior = snapBehavior,
@@ -208,7 +207,7 @@ fun MainScreen(
                                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
                                     .fillMaxWidth()
                                     .background(Color.White)
-                                    .clickable { navToRestaurant() }
+                                    .clickable { navToRestaurant(restaurant.id) }
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
@@ -395,6 +394,7 @@ fun MainScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(90.dp)
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
@@ -491,21 +491,18 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 }
 
 
-
-
-
 @Composable
 fun BottomSheetContent(
     isLoading: Boolean,
     restaurants: List<Restaurant>,
-    navToRestaurant: () -> Unit,
+    navToRestaurant: (id: String) -> Unit,
 ) {
     if (isLoading) {
         CircularProgressBar()
     } else {
         LazyColumn {
             items(restaurants) { item ->
-                BigCard(item, navToRestaurant)
+                BigCard(item) { navToRestaurant(item.id) }
             }
         }
     }

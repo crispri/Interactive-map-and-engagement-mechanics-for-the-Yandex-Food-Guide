@@ -20,6 +20,7 @@ interface RestaurantRepository {
         maxCount: Int
     ): Flow<NetworkState<List<Restaurant>>>
 
+
     fun updateTask(
         task: Restaurant,
         revision: Int,
