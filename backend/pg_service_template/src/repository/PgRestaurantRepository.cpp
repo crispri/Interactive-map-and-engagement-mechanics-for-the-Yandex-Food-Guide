@@ -50,4 +50,5 @@ std::vector<TRestaurant> PgRestaurantRepository::GetByFilter(const TRestaurantFi
     return restaurants.AsContainer<std::vector<TRestaurant>>(userver::storages::postgres::kRowTag);
 }
 
+
 } // service

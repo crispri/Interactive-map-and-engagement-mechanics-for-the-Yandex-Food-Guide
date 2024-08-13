@@ -4,7 +4,7 @@
 #include <string>
 
 #include <boost/uuid/uuid_io.hpp>
-#include <models/Trestaurant.hpp>
+#include <models/TRestaurant.hpp>
 #include <models/TRestaurantFilter.hpp>
 
 
