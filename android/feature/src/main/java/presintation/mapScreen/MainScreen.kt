@@ -207,7 +207,7 @@ fun MainScreen(
                                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
                                     .fillMaxWidth()
                                     .background(Color.White)
-                                    .clickable { navToRestaurant() }
+                                    .clickable { navToRestaurant(restaurant.id) }
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
@@ -495,14 +495,14 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 fun BottomSheetContent(
     isLoading: Boolean,
     restaurants: List<Restaurant>,
-    navToRestaurant: () -> Unit,
+    navToRestaurant: (id: String) -> Unit,
 ) {
     if (isLoading) {
         CircularProgressBar()
     } else {
         LazyColumn {
             items(restaurants) { item ->
-                BigCard(item, navToRestaurant(item.id))
+                BigCard(item) { navToRestaurant(item.id) }
             }
         }
     }
