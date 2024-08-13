@@ -10,6 +10,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import com.example.feature.R
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
@@ -21,6 +22,7 @@ import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
 import model.MainScreenEvent
 import model.UpdateItemsOnMap
+import pins.CustomPinView
 
 
 @Composable
@@ -43,8 +45,13 @@ fun MapScreen(
     val restaurantMarkerImageProviderNormal = remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
 
     //Maxi
+    val pinView: CustomPinView = CustomPinView(context = mapView.context)
+
+    pinView.setTitle("Хороший бар")
+    pinView.setRating("4.9")
+    pinView.setDescription("кофе от 300Р")
     val restaurantMarkerMaxi =
-        remember { createBitmapFromView(mapView.context) }
+        remember { createBitmapFromView(pinView) }
     val restaurantMarkerImageProviderMaxi = remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
 
     // curLocation

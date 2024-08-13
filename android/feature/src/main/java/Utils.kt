@@ -18,11 +18,13 @@ import ui.SuperPinCard
 
 
 object Utils {
-    fun createBitmapFromView(context: Context) : Bitmap{
+    fun createBitmapFromView(view: View) : Bitmap{
 
-        val view =  TextView(context)
+        /*val view =  TextView(context)
         view.text = "My text"
-        view.textSize = 20F
+        view.textSize = 20F*/
+
+
 
         view.forceLayout()
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
