@@ -23,7 +23,7 @@ interface YandexMapEatApi {
         @Body requestBody: RequestBody,
     ): RestaurantListResponseForJson
 
-    @GET("guide/v1/restaurant/{id}")
+    @GET("guide/v1/restaurants/{id}")
     suspend fun getRestaurantById(
         @Header("Authorization") token: String,
         @Header("Accept") accept: String = "application/json",

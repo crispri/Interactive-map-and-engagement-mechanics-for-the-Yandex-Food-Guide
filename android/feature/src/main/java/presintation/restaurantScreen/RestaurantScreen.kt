@@ -54,6 +54,7 @@ import ui.PlaceCard
 import ui.PlaceWidgetCard
 import ui.RestaurantScreenEvent
 import ui.TopCard
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 
@@ -82,8 +83,9 @@ fun RestaurantScreen(
     uiState: RestaurantUiState,
     navToBack: () -> Unit
 ) {
-
-    send(GetRestaurantInfo(restaurantId))
+    LaunchedEffect(Unit) {
+        send(GetRestaurantInfo(restaurantId))
+    }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWeight = configuration.screenWidthDp.dp
