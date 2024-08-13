@@ -22,12 +22,11 @@ final class SnippetViewModel: ObservableObject {
     }
     
     func eventOnAppear() {
+        eventPlaceUser()
         eventCenterCamera(to: .user)
-        mapManager.placeUser()
         eventOnGesture()
     }
     
-    @MainActor
     func eventOnGesture() {
         fetchSnippets()
         fetchSelections()
@@ -35,6 +34,10 @@ final class SnippetViewModel: ObservableObject {
     
     func eventCenterCamera(to option: MapManager.CameraTargetOption) {
         mapManager.centerCamera(to: option)
+    }
+    
+    func eventPlaceUser() {
+        mapManager.placeUser()
     }
     
     // MARK: tasks for fetching snippets and collections.

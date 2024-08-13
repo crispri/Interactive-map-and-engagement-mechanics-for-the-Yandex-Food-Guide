@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		49CB9296A4D47EB392F1B553 /* Pods_iosApp_iosAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9676E586B79D78349CE364A /* Pods_iosApp_iosAppUITests.framework */; };
+		4F13FDCB2C6B659D00EB8D8C /* GrabberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCA2C6B659D00EB8D8C /* GrabberView.swift */; };
+		4F13FDCD2C6B675100EB8D8C /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCC2C6B675100EB8D8C /* RoundedCorner.swift */; };
+		4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCE2C6B696700EB8D8C /* HeaderView.swift */; };
 		4F69DC832C678BD00026828E /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 4F69DC822C678BD00026828E /* BottomSheet */; };
 		4F6ECDD42C68E54600E8B5BE /* ISelectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6ECDD32C68E54600E8B5BE /* ISelectionsResponse.swift */; };
 		4F6ECDD62C68E56600E8B5BE /* SelectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6ECDD52C68E56600E8B5BE /* SelectionsResponse.swift */; };
@@ -70,6 +73,9 @@
 /* Begin PBXFileReference section */
 		0CE29E8AFACB873B7D675F44 /* Pods-iosApp-iosAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp-iosAppUITests.release.xcconfig"; path = "Target Support Files/Pods-iosApp-iosAppUITests/Pods-iosApp-iosAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2EB3BAEFB0B97B1C7BE0A91C /* Pods-iosApp-iosAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp-iosAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-iosApp-iosAppUITests/Pods-iosApp-iosAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4F13FDCA2C6B659D00EB8D8C /* GrabberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrabberView.swift; sourceTree = "<group>"; };
+		4F13FDCC2C6B675100EB8D8C /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
+		4F13FDCE2C6B696700EB8D8C /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		4F6ECDD32C68E54600E8B5BE /* ISelectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISelectionsResponse.swift; sourceTree = "<group>"; };
 		4F6ECDD52C68E56600E8B5BE /* SelectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionsResponse.swift; sourceTree = "<group>"; };
 		4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
@@ -149,6 +155,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F13FDC72C6B5E8400EB8D8C /* Guide */ = {
+			isa = PBXGroup;
+			children = (
+				4FC5121F2C5E5585006ED790 /* GuideView.swift */,
+			);
+			path = Guide;
+			sourceTree = "<group>";
+		};
+		4F13FDC82C6B5E9500EB8D8C /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				4F9DCAED2C5E754A00B39252 /* DetailsView.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		4F13FDC92C6B5EA400EB8D8C /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
 		4F9DCAE52C5E6AF800B39252 /* MapManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +252,7 @@
 		4FC512512C5E5F0F006ED790 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				4F9DCAE52C5E6AF800B39252 /* MapManager */,
 				CB5CA38E2C5FB5CD0025F771 /* Network */,
 				4FC512522C5E5F16006ED790 /* Extensions */,
 				4FC512212C5E5586006ED790 /* Assets.xcassets */,
@@ -259,11 +290,12 @@
 		4FC512552C5E5F16006ED790 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CBFD7EE92C6561AB00CEC0BC /* PageManager */,
+				4F13FDC92C6B5EA400EB8D8C /* Map */,
+				4F13FDC82C6B5E9500EB8D8C /* Details */,
+				4F13FDC72C6B5E8400EB8D8C /* Guide */,
 				6E6A20B52C68B5A80029ABCC /* Pins */,
 				6E3E42A62C6768420049111C /* RestaurantDetail */,
-				4FC5121F2C5E5585006ED790 /* GuideView.swift */,
-				4F9DCAED2C5E754A00B39252 /* DetailsView.swift */,
-				4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */,
 				CBFD7EDC2C655CC100CEC0BC /* BottomSheet */,
 				CBFD7EE82C65616D00CEC0BC /* Selections */,
 			);
@@ -276,8 +308,6 @@
 				4FC512532C5E5F16006ED790 /* Models */,
 				4FC512542C5E5F16006ED790 /* ViewModels */,
 				4FC512552C5E5F16006ED790 /* Views */,
-				CBFD7EE92C6561AB00CEC0BC /* PageManager */,
-				4F9DCAE52C5E6AF800B39252 /* MapManager */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -338,6 +368,9 @@
 				CBFD7ED92C655CC100CEC0BC /* FilterView.swift */,
 				CBFD7EDA2C655CC100CEC0BC /* SnippetCell.swift */,
 				CBFD7EDD2C655CC100CEC0BC /* ImageRestWithPC.swift */,
+				4F13FDCA2C6B659D00EB8D8C /* GrabberView.swift */,
+				4F13FDCC2C6B675100EB8D8C /* RoundedCorner.swift */,
+				4F13FDCE2C6B696700EB8D8C /* HeaderView.swift */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -627,7 +660,9 @@
 				6E3E42A52C665DDA0049111C /* RestaurantView.swift in Sources */,
 				4FC512202C5E5585006ED790 /* GuideView.swift in Sources */,
 				CB5CA39B2C5FD75F0025F771 /* SnippetsResponse.swift in Sources */,
+				4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */,
 				CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */,
+				4F13FDCD2C6B675100EB8D8C /* RoundedCorner.swift in Sources */,
 				CBFD7ED62C655C9700CEC0BC /* SnippetViewModel.swift in Sources */,
 				CB5CA3922C5FB6560025F771 /* NetworkManager.swift in Sources */,
 				CBFD7EE52C655CC100CEC0BC /* ImageRestWithPC.swift in Sources */,
@@ -639,6 +674,7 @@
 				CB5CA3902C5FB60B0025F771 /* Configuration.swift in Sources */,
 				CBFD7ED12C655C6F00CEC0BC /* SnippetDTO.swift in Sources */,
 				4F6ECDD42C68E54600E8B5BE /* ISelectionsResponse.swift in Sources */,
+				4F13FDCB2C6B659D00EB8D8C /* GrabberView.swift in Sources */,
 				CBFD7ED22C655C6F00CEC0BC /* SelectionDTO.swift in Sources */,
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
