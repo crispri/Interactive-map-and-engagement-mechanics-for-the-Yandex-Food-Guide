@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 import model.Restaurant
 import network.util.NetworkState
 import repository.RestaurantRepositoryImpl
+import ui.GetRestaurantInfo
+import ui.RestaurantScreenEvent
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,22 +59,14 @@ class RestaurantViewModel @Inject constructor(
                             }
 
                             is NetworkState.Success -> {
-//                            val index = state.data.indexOfFirst { it.id == restaurantId }
                                 Log.d("NetworkSuccess", "")
                                 _uiState.update {
                                     it.copy(
-                                        isLoading = false,
-                                        currentRestaurant = state.data,
                                     )
                                 }
                             }
 
                             is NetworkState.Loading -> {
-                                _uiState.update {
-                                    it.copy(
-                                        isLoading = true,
-                                    )
-                                }
                             }
 
                             else -> {}
@@ -80,14 +74,5 @@ class RestaurantViewModel @Inject constructor(
                     }
             }
         }
-    }
 
 }
-
-
-abstract class RestaurantScreenEvent {}
-
-class GetRestaurantInfo(
-    val restaurantId: String
-) : RestaurantScreenEvent()
-

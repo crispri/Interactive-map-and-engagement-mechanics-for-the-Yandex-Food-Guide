@@ -1,7 +1,6 @@
 package presintation.navigation
 
 import androidx.navigation.NavController
-import java.util.UUID
 
 class AppActions(navController: NavController) {
     val onBack: () -> Unit = {

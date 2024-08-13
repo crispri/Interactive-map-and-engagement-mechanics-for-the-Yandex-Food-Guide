@@ -1,13 +1,18 @@
 package model
 
+import com.yandex.mapkit.geometry.Point
 
-//новый файл
-//смена ui state экрана
+abstract class MainScreenEvent {}
 
 class SaveInCollectionEvent(
     val restaurantId: String
-) : Event()
+) : MainScreenEvent()
 
-class NavigateToLocationEvent : Event()
+class NavigateToLocationEvent : MainScreenEvent()
 
-class CancelCentering : Event()
+class CancelCentering : MainScreenEvent()
+
+class UpdateItemsOnMap(
+    val lowerLeft: Point,
+    val topRight: Point,
+) : MainScreenEvent()

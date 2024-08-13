@@ -26,6 +26,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,7 +46,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.feature.R
-import model.Event
 import presintation.mapScreen.Carousel
 import ui.AboutPlaceCard
 import ui.ImageCarousel
@@ -53,6 +53,7 @@ import ui.PlaceCard
 import ui.PlaceWidgetCard
 import ui.TopCard
 import kotlin.math.roundToInt
+
 
 
 //моки:)
@@ -74,6 +75,8 @@ val listImages = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(
+//    restaurantId: String,
+//    send: (RestaurantScreenEvent) -> Unit,
     uiState: RestaurantUiState,
     //send: (Event) -> Unit,
     navToBack: () -> Unit
@@ -108,7 +111,7 @@ fun RestaurantScreen(
         snapshotFlow { bottomSheetState.bottomSheetState.requireOffset() }
             .collect { offset ->
                 offsetState.floatValue = offset
-                if (!isRequired) {
+                if (!isRequired){
                     sheetHeight = offsetState.floatValue
                     isRequired = true
                 }
@@ -194,17 +197,17 @@ fun RestaurantScreen(
             visible = offsetState.floatValue > sheetHeight - 200f,
             enter = fadeIn(),
             exit = fadeOut()
-        ) {
+        ){
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp, top = 40.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            ){
                 FloatingActionButton(
                     modifier = Modifier.size(40.dp),
                     containerColor = Color.White,
-                    onClick = { navToBack() },
+                    onClick = {navToBack()},
                     shape = CircleShape,
                 ) {
                     Image(
@@ -231,17 +234,17 @@ fun RestaurantScreen(
         }
 
 
-        if (isTopCardVisible) {
+        if (isTopCardVisible){
             Box(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .fillMaxWidth()
-            ) {
+            ){
                 AnimatedVisibility(
                     visible = offsetState.floatValue < sheetHeight - 200f,
                     enter = fadeIn(),
                     exit = fadeOut()
-                ) {
+                ){
                     TopCard(navToBack = navToBack)
                 }
             }
