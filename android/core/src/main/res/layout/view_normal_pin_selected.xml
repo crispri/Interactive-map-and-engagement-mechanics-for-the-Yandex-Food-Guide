@@ -9,32 +9,14 @@
 
     <!-- Background and content container -->
     <FrameLayout
-        android:layout_width="130dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_pin_background"
         android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true"
-            android:outlineProvider="background">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#9747FF"
-                android:scaleType="centerCrop" />
-        </FrameLayout>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/rounded_corners"
+            android:background="@drawable/rounded_corners_selected"
             android:orientation="vertical"
             android:padding="4dp">
 
@@ -43,12 +25,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:ellipsize="end"
                 android:maxWidth="80dp"
                 android:maxLines="1"
                 android:text="Хорошрasdsaasda"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,8 +44,9 @@
                 android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
                 android:src="@drawable/ic_star"
+                android:tint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/titleTextView"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,22 +56,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
 
-                android:layout_marginTop="2dp"
                 android:text="4.9"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/descriptionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="кофе от 300Р"
-                android:textColor="#000000"
-                android:textSize="10sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 

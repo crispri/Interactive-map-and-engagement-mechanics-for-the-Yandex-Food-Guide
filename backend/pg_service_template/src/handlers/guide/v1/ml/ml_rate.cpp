@@ -1,14 +1,16 @@
 #include "ml_sort.hpp"
 #include <lib/error_response_builder.hpp>
+#include <models/TCoordinates.hpp>
 #include <models/TRestaurant.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 #include <fmt/format.h>
 
 #include <algorithm>
-#include <userver/formats/parse/common_containers.hpp>
-#include <userver/formats/serialize/common_containers.hpp>
 #include <userver/components/component.hpp>
 #include <userver/formats/common/type.hpp>
+#include <userver/formats/parse/common_containers.hpp>
+#include <userver/formats/serialize/common_containers.hpp>
 #include <userver/formats/json/serialize.hpp>
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
@@ -17,8 +19,10 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
-#include <service/MLService.hpp>
 #include <boost/uuid/string_generator.hpp>
+
+#include <service/MLService.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace service {
 
@@ -26,7 +30,7 @@ namespace service {
 
         class MLSort final : public userver::server::handlers::HttpHandlerBase {
         public:
-            static constexpr std::string_view kName = "handler-ml_sort";
+            static constexpr std::string_view kName = "handler-ml_rate";
 
             MLSort(const userver::components::ComponentConfig &config,
                    const userver::components::ComponentContext &component_context)
@@ -49,6 +53,9 @@ namespace service {
                             ErrorDescriprion::kTokenNotSpecified);
                 }
 
+                boost::uuids::string_generator gen;
+                auto session_id = gen(request.GetHeader("Authorization"));
+
                 /*
                 - Проверка авторизации пользователя.
                 */
@@ -63,35 +70,38 @@ namespace service {
                                               ErrorDescriprion::kListNotSpecified);
                 }
 
-                boost::uuids::string_generator gen;
+                auto user_id = ml_service_.GetUserIdByAuthToken(session_id);
+
                 std::vector<boost::uuids::uuid> restaurant_ids;
 
-                for (const auto &id: request_body_json["restaurant_ids"].As<std::vector<std::string>>()) {
+                for (const auto& id : request_body_json["restaurant_ids"].As<std::vector<std::string>>()) {
                     restaurant_ids.push_back(gen(id));
                 }
 
 
-                service::MLService::MLSort(restaurant_ids);
+                auto scores = service::MLService::SetScore(user_id, restaurant_ids);
+
 
                 userver::formats::json::ValueBuilder responseJSON;
 
-                responseJSON["restaurant_ids"].Resize(0);
+                responseJSON["scores"].Resize(0);
 
-                for (auto restaurant_id: restaurant_ids) {
-                    responseJSON["restaurant_ids"].PushBack(
-                            userver::formats::json::ValueBuilder{boost::uuids::to_string(restaurant_id)});
+                for (auto &[restaurant_id, score]: scores) {
+                    userver::formats::json::ValueBuilder builder;
+                    builder["restaurant_id"] = boost::uuids::to_string(restaurant_id);
+                    builder["score"] = score;
+                    responseJSON["scores"].PushBack(builder.ExtractValue());
                 }
                 return userver::formats::json::ToPrettyString(responseJSON.ExtractValue(),
                                                               {' ', 4});
             }
-
 
             MLService &ml_service_;
         };
 
     }  // namespace
 
-    void AppendMLSort(userver::components::ComponentList &component_list) {
+    void AppendMLRate(userver::components::ComponentList &component_list) {
         component_list.Append<MLSort>();
     }
 

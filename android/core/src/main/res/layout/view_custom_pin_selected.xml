@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginTop="50dp"
-            android:background="@drawable/rounded_corners"
+            android:background="@drawable/rounded_corners_selected"
             android:orientation="vertical"
             android:padding="4dp">
 
@@ -47,7 +47,7 @@
                 android:maxWidth="80dp"
                 android:maxLines="1"
                 android:text="Хорошрasdsaasda"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -60,6 +60,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
                 android:src="@drawable/ic_star"
+                android:tint="@android:color/white"
                 app:layout_constraintStart_toEndOf="@+id/titleTextView"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,7 +72,7 @@
 
                 android:layout_marginTop="2dp"
                 android:text="4.9"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="10sp"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -81,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="кофе от 300Р"
-                android:textColor="#000000"
+                android:textColor="@android:color/white"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView" />

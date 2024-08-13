@@ -31,6 +31,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/guide/v1/restaurants/restaurants.cpp
     src/handlers/guide/v1/ml/ml_sort.hpp
     src/handlers/guide/v1/ml/ml_sort.cpp
+    src/handlers/guide/v1/ml/ml_rate.hpp
+    src/handlers/guide/v1/ml/ml_rate.cpp
     src/handlers/guide/v1/restaurant_by_id/restaurant_by_id.cpp
     src/handlers/guide/v1/restaurant_by_id/restaurant_by_id.hpp
         src/models/TCoordinates.hpp
@@ -55,6 +57,9 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/repository/PgRestaurantRepository.hpp
     src/repository/PgRestaurantRepository.cpp
     src/repository/IRestaurantRepository.hpp
+    src/repository/PgMLRepository.hpp
+    src/repository/PgMLRepository.cpp
+    src/repository/IMLRepository.hpp
     src/service/RestaurantService.hpp
     src/service/RestaurantService.cpp
     src/service/SelectionService.hpp

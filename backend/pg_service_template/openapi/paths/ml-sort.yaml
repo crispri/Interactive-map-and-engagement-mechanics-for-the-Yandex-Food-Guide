@@ -11,7 +11,8 @@ post:
                             description: "Список ID"
                             type: array
                             items:
-                                type: integer
+                                type: string
+                                format: uuid
 
                     required:
                         - restaurant_ids
@@ -30,7 +31,8 @@ post:
                             restaurant_ids:
                                 type: array
                                 items:
-                                    type: integer
+                                    type: string
+                                    format: uuid
 
         400:
             $ref: "../responses/400.yaml"

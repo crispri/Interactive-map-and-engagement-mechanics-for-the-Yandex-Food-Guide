@@ -1,0 +1,7 @@
+type: object
+properties:
+  restaurant_id:
+    type: string
+    format: uuid
+  score:
+    type: integer

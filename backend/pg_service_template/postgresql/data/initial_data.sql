@@ -17,8 +17,10 @@ CREATE TABLE IF NOT EXISTS guide.places (
     address TEXT NOT NULL,
     tags SMALLINT[],
     is_favorite BOOLEAN NOT NULL,
+    score INTEGER,
     CHECK (rating >= 1.0 AND rating <= 5.0),
-    CHECK (price_lower_bound > 0 AND price_lower_bound <= price_upper_bound)
+    CHECK (price_lower_bound > 0 AND price_lower_bound <= price_upper_bound),
+    CHECK (score >= 0)
 );
 
 
@@ -50,8 +52,43 @@ CREATE TABLE IF NOT EXISTS guide.visibility (
     -- foreign key(selection_id) REFERENCES guide.selections(id)
 );
 
+CREATE TABLE IF NOT EXISTS guide.auth (
+    user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    session_id UUID NOT NULL DEFAULT uuid_generate_v4()
+);
+
+INSERT INTO guide.auth(user_id, session_id) VALUES
+    ('f1eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', '6fa459ea-ee8a-3ca4-894e-db77e160355e');
+
+
 INSERT INTO guide.users(id, name, password) VALUES
-('f1eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'John', '1234');
+    ('f1eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'John', '1234');
+
+
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Рестораны возсле Яндекса', 'Вкусно', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Пиццерии возсле Яндекса', 'Быстро', 1)
+ON CONFLICT DO NOTHING;
+
+
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
+ON CONFLICT DO NOTHING;
+
+
 
 INSERT INTO guide.places(
     id,
@@ -173,29 +210,6 @@ INSERT INTO guide.places(
     (uuid_generate_v4(), 55.745092, 37.614442, 'Oriental Café', 'Café with a focus on Middle Eastern cuisine and vibrant decor.', TRUE, 4.4, 1400, 6000, '11:00:00', '22:00:00', 'Luzhniki St, 14', ARRAY[1, 8], TRUE),
     (uuid_generate_v4(), 55.751042, 37.615273, 'Almond Garden', 'Cafe offering a selection of pastries and light meals with a focus on quality ingredients.', TRUE, 4.3, 1200, 5000, '10:00:00', '21:00:00', 'Novoslobodskaya St, 5', ARRAY[2, 6], TRUE),
     (uuid_generate_v4(), 55.743915, 37.627150, 'Riverside Grill', 'Grill house located by the river offering a relaxed dining experience and scenic views.', TRUE, 4.5, 2000, 10000, '12:00:00', '23:00:00', 'Moscow Center, 9', ARRAY[3, 7], TRUE);
-
-
-INSERT INTO guide.selections(id, name, description, is_public)
-VALUES('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Рестораны возсле Яндекса', 'Вкусно', 1)
-ON CONFLICT DO NOTHING;
-
-INSERT INTO guide.selections(id, name, description, is_public)
-VALUES('e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Пиццерии возсле Яндекса', 'Быстро', 1)
-ON CONFLICT DO NOTHING;
-
-
-
-INSERT INTO guide.places_selections(place_id, selection_id)
-VALUES('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO guide.places_selections(place_id, selection_id)
-VALUES('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO guide.places_selections(place_id, selection_id)
-VALUES('c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
-ON CONFLICT DO NOTHING;
 
 
 INSERT INTO guide.places (id, lat, lon, name, description, approved, rating, price_lower_bound, price_upper_bound, open_time, close_time, address, tags, is_favorite) VALUES
