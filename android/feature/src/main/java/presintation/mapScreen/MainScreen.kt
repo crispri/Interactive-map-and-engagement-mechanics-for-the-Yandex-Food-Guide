@@ -10,6 +10,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +34,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -53,19 +58,29 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
+import custom_bottom_sheet.BottomSheetState
 import model.Event
 import model.NavigateToLocationEvent
 import model.Recommendation
@@ -77,6 +92,8 @@ import kotlinx.coroutines.launch
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
+import ui.TextCard
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -94,18 +111,51 @@ fun MainScreen(
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
 
+    val density = LocalDensity.current
+
+    val isExpandedAtOffset = remember { mutableStateOf(false) }
+
+    val itemHeight = remember { mutableStateOf(0.dp) }
+
+    val listState = rememberLazyListState()
+
+    val coroutineScope = rememberCoroutineScope()
+
     val sheetState = rememberBottomSheetState(
         initialValue = SheetValue.Hidden,
         defineValues = {
             SheetValue.Hidden at height(100.dp)
-            SheetValue.PartiallyExpanded at offset(percent = 60)
-            SheetValue.Expanded at contentHeight
+            if (itemHeight.value == 0.dp) {
+                SheetValue.PartiallyExpanded at offset(percent = 60)
+            } else {
+                SheetValue.PartiallyExpanded at height(itemHeight.value + 100.dp)
+            }
+            if (isExpandedAtOffset.value) {
+                if (itemHeight.value == 0.dp) {
+                    SheetValue.Expanded at offset(percent = 60)
+                } else {
+                    SheetValue.Expanded at height(itemHeight.value + 100.dp)
+                }
+            } else {
+                SheetValue.Expanded at contentHeight
+            }
         }
     )
+
+    LaunchedEffect(isExpandedAtOffset.value) {
+        sheetState.refreshValues()
+    }
+
+    LaunchedEffect(itemHeight.value) {
+        sheetState.refreshValues()
+    }
 
     val bottomSheetState = custom_bottom_sheet.rememberBottomSheetScaffoldState(
         sheetState = sheetState
     )
+
+    val lazyListState = rememberLazyListState()
+    val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
 
     LaunchedEffect(bottomSheetState.sheetState) {
         snapshotFlow { bottomSheetState.sheetState.requireOffset() }
@@ -114,7 +164,16 @@ fun MainScreen(
             }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .pointerInput(Unit) {
+            detectTapGestures(
+                onPress = {
+                    isExpandedAtOffset.value = false
+                }
+            )
+        },
+    ) {
         custom_bottom_sheet.BottomSheetScaffold(
             scaffoldState = bottomSheetState,
             sheetContent = {
@@ -123,10 +182,126 @@ fun MainScreen(
                         .fillMaxWidth()
                         .heightIn(max = screenHeight - 240.dp, min = 80.dp)
                         .background(Color.White)
+
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
-                    BottomSheetContent(uiState.isLoading, uiState.restaurantsOnMap, navToRestaurant)
+//                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
+                    LazyColumn(
+                        state = lazyListState,
+                        flingBehavior = snapBehavior,
+                        modifier = Modifier
+                            .pointerInput(Unit) {
+                        detectTapGestures(
+                            onPress = {
+                                if (sheetState.currentValue != SheetValue.Expanded){
+                                    isExpandedAtOffset.value = true
+                                    Log.d("tap111", "Палец поставлен на экран контент")
+                                }
+                            }
+                        )
+                    })  {
+                        itemsIndexed(uiState.restaurantsOnMap) { index, restaurant ->
+
+                            Card(
+                                modifier = Modifier
+                                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                                    .fillMaxWidth()
+                                    .background(Color.White)
+                                    .clickable { navToRestaurant() }
+                                    .onGloballyPositioned { coordinates ->
+                                        val heightInPx = coordinates.size.height
+                                        itemHeight.value = with(density) { heightInPx.toDp() }
+                                    }
+                                    .pointerInput(Unit) {
+                                        detectTapGestures(
+                                            onPress = {
+                                                if (sheetState.currentValue != SheetValue.Expanded) {
+                                                    isExpandedAtOffset.value = true
+                                                    Log.d(
+                                                        "tap111",
+                                                        "Палец поставлен на экран контент"
+                                                    )
+                                                }
+                                            }
+                                        )
+                                    },
+                                shape = RoundedCornerShape(16.dp),
+                                colors = CardDefaults.cardColors(Color.White)
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
+                                        contentDescription = "Фото места",
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(200.dp)
+                                            .clip(RoundedCornerShape(16.dp))
+                                    )
+
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = 9.5.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text(
+                                            text = restaurant.name,
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Row {
+                                            Icon(
+                                                painter = painterResource(id = com.example.core.R.drawable.ic_raiting),
+                                                modifier = Modifier.height(24.dp),
+                                                contentDescription = "Оценка"
+                                            )
+                                            Text(
+                                                text = DecimalFormat("#.#").format(restaurant.rating).toString(),
+                                                fontSize = 16.sp,
+                                                fontWeight = FontWeight.Bold,
+                                            )
+                                        }
+                                    }
+
+                                    Text(
+                                        text = restaurant.address,
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.padding(top = 1.5.dp)
+                                    )
+
+                                    Text(
+                                        text = restaurant.description,
+                                        fontSize = 14.sp,
+                                        color = Color.Gray,
+                                        modifier = Modifier.padding(top = 8.dp),
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        lineHeight = 15.sp,
+                                    )
+
+                                    val itemsList = listOf(
+                                        "Музыка громче",
+                                        "Завтраки",
+                                        "Винотека",
+                                        "Европейская",
+                                        "Коктели",
+                                        "Можно с собакой",
+                                        "Веранда"
+                                    )
+                                    LazyRow(
+                                        modifier = Modifier.padding(top = 8.dp)
+                                    ) {
+                                        items(itemsList) { item ->
+                                            TextCard(text = item)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             },
             sheetContainerColor = Color.White
@@ -371,6 +546,7 @@ fun Carousel() {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
+                /* .height(50.dp)*/
                 .background(Color.White)
         ) {
             items(itemsList) { item ->
@@ -380,4 +556,5 @@ fun Carousel() {
         }
     }
 }
+
 
