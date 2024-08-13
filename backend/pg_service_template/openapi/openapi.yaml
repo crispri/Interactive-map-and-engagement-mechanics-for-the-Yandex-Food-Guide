@@ -25,6 +25,9 @@ components:
         Selection:
             $ref: "./schemas/Selection.yaml"
 
+        Scores:
+            $ref: "./schemas/Scores.yaml"
+
 
     parameters:
         PathUUID:
@@ -47,5 +50,7 @@ paths:
         $ref: "./paths/selections.yaml"
     /selection/{id}:
         $ref: "./paths/selection_by_id.yaml"
-    /ml:
-        $ref: "./paths/ml.yaml"
+    /ml-sort:
+        $ref: "./paths/ml-sort.yaml"
+    /ml-rate:
+        $ref: "./paths/ml-rate.yaml"

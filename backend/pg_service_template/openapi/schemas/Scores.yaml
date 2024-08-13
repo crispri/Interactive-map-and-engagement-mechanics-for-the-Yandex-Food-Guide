@@ -1,0 +1,6 @@
+type: object
+properties:
+  restaurant_id:
+    type: integer
+  score:
+    type: integer
