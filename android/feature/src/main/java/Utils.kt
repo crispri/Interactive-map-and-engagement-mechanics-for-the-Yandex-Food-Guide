@@ -1,7 +1,11 @@
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.Paint
 import android.graphics.Picture
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.TextView
 import androidx.compose.runtime.remember
@@ -18,6 +22,26 @@ import ui.SuperPinCard
 
 
 object Utils {
+
+    fun invertColors(bitmap: Bitmap): Bitmap {
+        val invertedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
+        val canvas = Canvas(invertedBitmap)
+        val paint = Paint()
+
+        val colorMatrix = ColorMatrix()
+        colorMatrix.set(floatArrayOf(
+            -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
+            0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
+            0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f
+        ))
+        paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
+
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
+        return invertedBitmap
+    }
+
+
     fun createBitmapFromView(view: View) : Bitmap{
 
         /*val view =  TextView(context)
