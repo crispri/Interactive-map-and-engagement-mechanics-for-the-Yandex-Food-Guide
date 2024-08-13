@@ -29,7 +29,7 @@ struct DetailsView: View {
                     headerContent: { HeaderView() },
                     mainContent: { BottomSheetView()  }
                 )
-                .enableAppleScrollBehavior(true)
+                .enableAppleScrollBehavior(false)
                 .showDragIndicator(false)
                 .customBackground(
                     VStack(spacing: 0) {

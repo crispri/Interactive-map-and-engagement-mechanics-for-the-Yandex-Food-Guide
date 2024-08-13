@@ -12,24 +12,19 @@ struct BottomSheetView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
     
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(viewModel.snippets, id: \.self) { snippet in
-                SnippetCell(restaurant: snippet)
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(viewModel.snippets, id: \.self) { snippet in
+                    SnippetCell(restaurant: snippet)
+                }
             }
+            .padding(.bottom)
+            .animation(.easeInOut, value: viewModel.snippets)
+            .scrollTargetLayout()
+            .background(
+                Color.white
+            )
         }
-        .animation(.easeInOut, value: viewModel.snippets)
-        .background(
-            Color.white
-        )
-//        GeometryReader { geometry in
-//            ScrollView {
-//                
-//            }
-//            .frame(height: UIScreen.main.bounds.height * 0.7)
-//            .scrollTargetBehavior(.viewAligned)
-//            .background(
-//                Color.white
-//            )
-//        }
+        .scrollTargetBehavior(.viewAligned)
     }
 }
