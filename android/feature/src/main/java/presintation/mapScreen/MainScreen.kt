@@ -99,7 +99,7 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
-    navToRestaurant: (String) -> Unit,
+    navToRestaurant: () -> Unit,
     uiState: MainUiState,
     navToBack: () -> Unit,
     send: (MainScreenEvent) -> Unit,
@@ -186,6 +186,7 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
+//                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
                         state = lazyListState,
                         flingBehavior = snapBehavior,
@@ -207,14 +208,24 @@ fun MainScreen(
                                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
                                     .fillMaxWidth()
                                     .background(Color.White)
-                                    .clickable { navToRestaurant(restaurant.id) }
+                                    .clickable {
+                                        Log.d("ClickOnCard", restaurant.id)
+                                        navToRestaurant(restaurant.id) }
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
                                     }
                                     .pointerInput(Unit) {
                                         detectTapGestures(
+                                            onLongPress = {
+                                                Log.d("LongClickOnCard", restaurant.id)
+                                                navToRestaurant(restaurant.id)
+                                            },
                                             onPress = {
+                                                if (isExpandedAtOffset.value) {
+                                                    Log.d("ClickOnCard", restaurant.id)
+                                                    navToRestaurant(restaurant.id)
+                                                }
                                                 if (sheetState.currentValue != SheetValue.Expanded) {
                                                     isExpandedAtOffset.value = true
                                                     Log.d(
@@ -258,7 +269,8 @@ fun MainScreen(
                                                 contentDescription = "Оценка"
                                             )
                                             Text(
-                                                text = DecimalFormat("#.#").format(restaurant.rating).toString(),
+                                                text = DecimalFormat("#.#").format(restaurant.rating)
+                                                    .toString(),
                                                 fontSize = 16.sp,
                                                 fontWeight = FontWeight.Bold,
                                             )
@@ -394,7 +406,6 @@ fun MainScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(90.dp)
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
@@ -491,18 +502,21 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 }
 
 
+
+
+
 @Composable
 fun BottomSheetContent(
     isLoading: Boolean,
     restaurants: List<Restaurant>,
-    navToRestaurant: (id: String) -> Unit,
+    navToRestaurant: () -> Unit,
 ) {
     if (isLoading) {
         CircularProgressBar()
     } else {
         LazyColumn {
             items(restaurants) { item ->
-                BigCard(item) { navToRestaurant(item.id) }
+                BigCard(item, navToRestaurant)
             }
         }
     }

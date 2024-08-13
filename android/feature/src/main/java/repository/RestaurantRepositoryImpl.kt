@@ -79,6 +79,38 @@ class RestaurantRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
+    override fun getRestaurantById(
+        token: String,
+        id: String,
+    ): Flow<NetworkState<Restaurant>> = flow {
+        Log.d("SourceGetItemLoading", "start")
+        emit(NetworkState.Loading)
+        Log.d("SourceGetItemLoading", "end")
+
+        try {
+            val bearToken = token.toToken()
+            Log.d("Token", bearToken)
+
+            val response = api.getRestaurantById(
+                bearToken,
+                id =id,
+            )
+            Log.d(
+                "SourceGet", response.name
+            )
+
+            emit(
+                NetworkState.Success(
+                    response.toModel(),
+                    0,
+                )
+            )
+        } catch (e: Exception) {
+            Log.d("SourceGetException", "${e.message}")
+            emit(NetworkState.Failure(e))
+        }
+    }.flowOn(Dispatchers.IO)
+
     override fun updateTask(
         item: Restaurant,
         revision: Int,

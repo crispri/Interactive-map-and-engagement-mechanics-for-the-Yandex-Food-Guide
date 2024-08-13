@@ -21,7 +21,7 @@ import presintation.restaurantScreen.RestaurantScreen
 import presintation.restaurantScreen.RestaurantViewModel
 
 @Composable
-fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
+fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -33,7 +33,6 @@ fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
                 actions.onMapScreen
             )
         }
-
 
         composable(AppDestination.MAP_SCREEN) {
             val mainViewModel: MainViewModel = hiltViewModel()
@@ -49,16 +48,23 @@ fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
             )
         }
 
-        composable(route = "${AppDestination.RESTAURANT_SCREEN}/{itemId}",
-            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
-        )
-        { backStackEntry ->
-            val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
+
+        composable("${AppDestination.RESTAURANT_SCREEN}/{itemId}") {backStackEntry ->
             val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+            val itemId = backStackEntry.arguments?.getString("itemId")
             val uiState by restaurantViewModel.uiState.collectAsState()
-            RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send, uiState = uiState)
+            RestaurantScreen(uiState = uiState, navToBack = actions.onBack)
         }
 
+//        composable(route = "${AppDestination.RESTAURANT_SCREEN}/{itemId}",
+//            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
+//         )
+//         { backStackEntry ->
+//             val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
+//             val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+//             val uiState by restaurantViewModel.uiState.collectAsState()
+//             RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send, uiState = uiState)
+//         }
     }
 }
 

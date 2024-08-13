@@ -11,8 +11,7 @@ class AppActions(navController: NavController) {
         navController.navigate(AppDestination.MAP_SCREEN)
     }
 
-    val onRestaurantScreen: (String?) -> Unit = { itemId ->
-        // navController.navigate("${AppDestination.ADD_TODO_LIST}/${itemId}")() -> Unit = {
+    val onRestaurantScreen: (String) -> Unit = { itemId ->
         navController.navigate("${AppDestination.RESTAURANT_SCREEN}/${itemId}")
     }
 
