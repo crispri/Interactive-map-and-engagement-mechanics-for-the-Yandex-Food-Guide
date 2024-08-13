@@ -44,11 +44,11 @@ components:
 paths:
     /restaurants:
         $ref: "./paths/restaurants.yaml"
-    /restaurant/{id}:
+    /restaurants/{id}:
         $ref: "./paths/restaurant_by_id.yaml"
     /selections:
         $ref: "./paths/selections.yaml"
-    /selection/{id}:
+    /selections/{id}:
         $ref: "./paths/selection_by_id.yaml"
     /ml-sort:
         $ref: "./paths/ml-sort.yaml"
