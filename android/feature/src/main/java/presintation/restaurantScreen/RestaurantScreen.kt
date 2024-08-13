@@ -47,7 +47,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.feature.R
 import presintation.mapScreen.Carousel
-import presintation.mapScreen.MainUiState
 import ui.AboutPlaceCard
 import ui.GetRestaurantInfo
 import ui.ImageCarousel
@@ -55,12 +54,14 @@ import ui.PlaceCard
 import ui.PlaceWidgetCard
 import ui.RestaurantScreenEvent
 import ui.TopCard
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 
 
 //моки:)
-val description = "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
+val description =
+    "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
 
 val listImages = listOf(
     R.drawable.hardcode_picture_of_cafe,
@@ -77,19 +78,18 @@ val listImages = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(
-    navToBack: () -> Unit,
-    restaurantId: String,
+    restaurantId: String?,
     send: (RestaurantScreenEvent) -> Unit,
     uiState: RestaurantUiState,
+    navToBack: () -> Unit
 ) {
-
+    LaunchedEffect(Unit) {
+        send(GetRestaurantInfo(restaurantId))
+    }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWeight = configuration.screenWidthDp.dp
 
-    LaunchedEffect(restaurantId) {
-        send(GetRestaurantInfo(restaurantId))
-    }
 
     val bottomSheetState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberSaveable(
@@ -142,7 +142,7 @@ fun RestaurantScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     ImageCarousel(listImages = listImages)
                     Spacer(modifier = Modifier.height(4.dp))
-                    AboutPlaceCard(true, text = uiState.currentRestaurant?.description ?: "", )
+                    AboutPlaceCard(true, uiState.currentRestaurant?.description)
                     Spacer(modifier = Modifier.height(16.dp))
                     ImageCarousel(listImages = listImages)
                 }
@@ -180,8 +180,11 @@ fun RestaurantScreen(
                 visible = offsetState.floatValue > sheetHeight - 200f,
                 enter = fadeIn(),
                 exit = fadeOut()
-            ){
-                PlaceWidgetCard()
+            ) {
+                PlaceWidgetCard(
+                    name = uiState.currentRestaurant?.name,
+                    note = uiState.currentRestaurant?.rating
+                )
             }
         }
 

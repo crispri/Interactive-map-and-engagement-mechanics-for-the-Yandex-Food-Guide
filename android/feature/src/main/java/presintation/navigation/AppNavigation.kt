@@ -1,16 +1,15 @@
 package presintation.navigation
 
+import Utils
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
 import presintation.homeScreen.HomeScreen
@@ -34,7 +33,6 @@ fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
             )
         }
 
-
         composable(AppDestination.MAP_SCREEN) {
             val mainViewModel: MainViewModel = hiltViewModel()
             val uiState by mainViewModel.uiState.collectAsState()
@@ -49,16 +47,23 @@ fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
             )
         }
 
-        composable(route = "${AppDestination.RESTAURANT_SCREEN}/{itemId}",
-            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
-        )
-        { backStackEntry ->
-            val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
+
+        composable("${AppDestination.RESTAURANT_SCREEN}/{itemId}") {backStackEntry ->
             val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+            val itemId = backStackEntry.arguments?.getString("itemId")
             val uiState by restaurantViewModel.uiState.collectAsState()
-            RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send, uiState = uiState)
+            RestaurantScreen(uiState = uiState, restaurantId = itemId, send = restaurantViewModel::send, navToBack = actions.onBack)
         }
 
+//        composable(route = "${AppDestination.RESTAURANT_SCREEN}/{itemId}",
+//            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
+//         )
+//         { backStackEntry ->
+//             val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
+//             val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+//             val uiState by restaurantViewModel.uiState.collectAsState()
+//             RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send, uiState = uiState)
+//         }
     }
 }
 

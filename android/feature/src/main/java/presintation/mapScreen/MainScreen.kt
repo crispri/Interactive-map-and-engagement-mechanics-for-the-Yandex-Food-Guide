@@ -3,7 +3,6 @@ package presintation.mapScreen
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -12,7 +11,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,18 +56,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -80,15 +72,12 @@ import androidx.compose.ui.unit.sp
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
-import custom_bottom_sheet.BottomSheetState
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
@@ -186,6 +175,7 @@ fun MainScreen(
                 ) {
                     Carousel()
                     Spacer(modifier = Modifier.height(16.dp))
+//                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
                         state = lazyListState,
                         flingBehavior = snapBehavior,
@@ -207,14 +197,24 @@ fun MainScreen(
                                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
                                     .fillMaxWidth()
                                     .background(Color.White)
-                                    .clickable { navToRestaurant(restaurant.id) }
+                                    .clickable {
+                                        Log.d("ClickOnCard", restaurant.id)
+                                        navToRestaurant(restaurant.id) }
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
                                     }
                                     .pointerInput(Unit) {
                                         detectTapGestures(
+                                            onLongPress = {
+                                                Log.d("LongClickOnCard", restaurant.id)
+                                                navToRestaurant(restaurant.id)
+                                            },
                                             onPress = {
+                                                if (isExpandedAtOffset.value) {
+                                                    Log.d("ClickOnCard", restaurant.id)
+                                                    navToRestaurant(restaurant.id)
+                                                }
                                                 if (sheetState.currentValue != SheetValue.Expanded) {
                                                     isExpandedAtOffset.value = true
                                                     Log.d(
@@ -258,7 +258,8 @@ fun MainScreen(
                                                 contentDescription = "Оценка"
                                             )
                                             Text(
-                                                text = DecimalFormat("#.#").format(restaurant.rating).toString(),
+                                                text = DecimalFormat("#.#").format(restaurant.rating)
+                                                    .toString(),
                                                 fontSize = 16.sp,
                                                 fontWeight = FontWeight.Bold,
                                             )
@@ -394,7 +395,6 @@ fun MainScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(90.dp)
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
@@ -491,18 +491,21 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 }
 
 
+
+
+
 @Composable
 fun BottomSheetContent(
     isLoading: Boolean,
     restaurants: List<Restaurant>,
-    navToRestaurant: (id: String) -> Unit,
+    navToRestaurant: () -> Unit,
 ) {
     if (isLoading) {
         CircularProgressBar()
     } else {
         LazyColumn {
             items(restaurants) { item ->
-                BigCard(item) { navToRestaurant(item.id) }
+                BigCard(item, navToRestaurant)
             }
         }
     }

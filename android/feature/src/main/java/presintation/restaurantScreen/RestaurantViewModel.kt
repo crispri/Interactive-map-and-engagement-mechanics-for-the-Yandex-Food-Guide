@@ -28,36 +28,55 @@ class RestaurantViewModel @Inject constructor(
         when (event) {
             is GetRestaurantInfo -> {
                 getRestaurantById(event.restaurantId)
+                Log.d("SendGetRestaurant",event.restaurantId.toString())
             }
         }
     }
 
-    fun getRestaurantById(restaurantId: String){
-        viewModelScope.launch {
-            repository.getRestaurants("Asd", lowerLeftLat = 55.0, lowerLeftLon = 37.0, topRightLat = 56.0, topRightLon =  38.0, maxCount = 0)
-                .collect { state ->
-                    when (state) {
-                        is NetworkState.Failure -> {
-                            Utils.restaurants[0]
-                        }
-
-                        is NetworkState.Success -> {
-                            val index = state.data.indexOfFirst { it.id == restaurantId }
-                            Log.d("NetworkSuccess", "")
-                            _uiState.update {
-                                it.copy(
-                                    currentRestaurant = state.data[index],
-                                )
+    private fun getRestaurantById(restaurantId: String?) {
+        if (restaurantId == null) {
+            _uiState.update {
+                it.copy(
+                    currentRestaurant = Utils.restaurants[0]
+                )
+            }
+        } else {
+            viewModelScope.launch {
+                repository.getRestaurantById("Asd", restaurantId)
+                    .collect { state ->
+                        when (state) {
+                            is NetworkState.Failure -> {
+                                _uiState.update {
+                                    it.copy(
+                                        errorMessage = state.cause.message,
+                                        isLoading = false,
+                                        currentRestaurant = Utils.restaurants[0]
+                                    )
+                                }
                             }
+
+                            is NetworkState.Success -> {
+                                Log.d("NetworkSuccess", "")
+                                _uiState.update {
+                                    it.copy(
+                                        currentRestaurant = state.data,
+                                        isLoading = false,
+                                    )
+                                }
+                            }
+
+                            is NetworkState.Loading -> {
+                                _uiState.update {
+                                    it.copy(
+                                        isLoading = true,
+                                    )
+                                }
+                            }
+
+                            else -> {}
                         }
-
-                        is NetworkState.Loading -> {
-
-                        }
-
-                        else -> {}
                     }
-                }
+            }
         }
     }
 
