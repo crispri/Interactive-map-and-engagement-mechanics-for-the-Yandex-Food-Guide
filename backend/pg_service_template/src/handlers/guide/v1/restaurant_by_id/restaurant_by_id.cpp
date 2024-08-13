@@ -1,7 +1,7 @@
 #include "restaurant_by_id.hpp"
 #include <lib/error_response_builder.hpp>
-#include <models/coordinates.hpp>
-#include <models/restaurant.hpp>
+#include <models/TCoordinates.hpp>
+#include <models/TRestaurant.hpp>
 
 #include <fmt/format.h>
 

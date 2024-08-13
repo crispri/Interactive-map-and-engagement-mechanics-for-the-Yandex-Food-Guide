@@ -3,7 +3,7 @@
 #include <userver/formats/json/value_builder.hpp>
 #include <userver/utils/time_of_day.hpp>
 #include <boost/uuid/uuid.hpp>
-#include "coordinates.hpp"
+#include "TCoordinates.hpp"
 
 
 namespace service {

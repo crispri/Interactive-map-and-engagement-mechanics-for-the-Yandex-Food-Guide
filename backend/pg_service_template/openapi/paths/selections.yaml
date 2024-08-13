@@ -1,0 +1,24 @@
+get:
+    summary: "Получение всех подборок"
+    description: "Возвращает списка всех подборок"
+
+    security:
+        -   UserTicketAuth: [ ]
+
+    responses:
+        200:
+            description: "OK"
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            items:
+                                type: array
+                                items:
+                                    $ref: "../schemas/Selection.yaml"
+
+        400:
+            $ref: "../responses/400.yaml"
+        401:
+            $ref: "../responses/401.yaml"

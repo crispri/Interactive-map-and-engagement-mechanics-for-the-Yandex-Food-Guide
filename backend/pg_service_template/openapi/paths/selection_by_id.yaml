@@ -1,0 +1,28 @@
+get:
+    summary: "Получить список всех заведений в подборке"
+    description: "Возвращает список всех заведений, относящихся к заданной подборке"
+
+    parameters:
+        -   $ref: "../params/PathUUID.yaml"
+
+    security:
+        -   UserTicketAuth: [ ]
+
+    responses:
+        200:
+            description: "OK"
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            items:
+                                type: array
+                                items:
+                                    $ref: "../schemas/Restaurant.yaml"
+        400:
+            $ref: "../responses/400.yaml"
+        401:
+            $ref: "../responses/401.yaml"
+        404:
+            description: "Подборка не найдена"

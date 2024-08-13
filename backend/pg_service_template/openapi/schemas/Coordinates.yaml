@@ -1,0 +1,13 @@
+type: object
+properties:
+    lat:
+        description: "Широта"
+        type: number
+        format: double
+    lon:
+        description: "Долгота"
+        type: number
+        format: double
+required:
+    - lat
+    - lon

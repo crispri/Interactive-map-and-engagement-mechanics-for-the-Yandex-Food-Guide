@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 
-#include <models/restaurant.hpp>
-#include <models/restaurant_filter.hpp>
+#include <models/TRestaurant.hpp>
+#include <models/TRestaurantFilter.hpp>
 
 
 namespace service {
