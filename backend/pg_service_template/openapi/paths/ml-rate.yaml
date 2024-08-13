@@ -10,9 +10,9 @@ post:
             restaurant_ids:
               description: List of restaurant ids
               type: array
-              items: {
-                type: integer
-              }
+              items:
+                type: string
+                format: uuid
           required:
             - restaurant_ids
   security:

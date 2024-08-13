@@ -1,6 +1,7 @@
 type: object
 properties:
   restaurant_id:
-    type: integer
+    type: string
+    format: uuid
   score:
     type: integer

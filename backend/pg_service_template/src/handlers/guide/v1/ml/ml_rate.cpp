@@ -80,7 +80,7 @@ namespace service {
 
                 responseJSON["scores"].Resize(0);
 
-                for (auto [restaurant_id, score]: scores) {
+                for (auto &[restaurant_id, score]: scores) {
                     userver::formats::json::ValueBuilder builder;
                     builder["restaurant_id"] = restaurant_id;
                     builder["score"] = score;

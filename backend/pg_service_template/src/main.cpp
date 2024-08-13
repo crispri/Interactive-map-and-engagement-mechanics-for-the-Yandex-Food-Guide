@@ -19,13 +19,6 @@
 #include <service/MLService.hpp>
 
 
-<<<<<<< backend/pg_service_template/src/main.cpp
-=======
-
-
-
-
->>>>>>> backend/pg_service_template/src/main.cpp
 int main(int argc, char* argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
                             .Append<userver::server::handlers::Ping>()
