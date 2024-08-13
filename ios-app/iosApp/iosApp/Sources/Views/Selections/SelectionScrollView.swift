@@ -29,14 +29,8 @@ struct SelectionScrollView: View {
                                 set: { _ in }
                             )
                         ) {
-                            if let selectedCollection = viewModel.selectedCollection,
-                               selectedCollection == viewModel.collections[index] {
-                                viewModel.selectedCollection = nil
-                                viewModel.fetchSnippets()
-                            } else {
-                                viewModel.selectedCollection = viewModel.collections[index]
-                                reader.scrollTo(index, anchor: .center)
-                                viewModel.fetchSelectionSnippets(id: viewModel.selectedCollection?.id ?? "")
+                            Task {
+                                await viewModel.eventSelectionPressed(at: index, reader: reader)
                             }
                         } bookmarkAction: {
                             // TODO: add bookmarkAction.
@@ -53,9 +47,4 @@ struct SelectionScrollView: View {
             .frame(height: 100)
         }
     }
-}
-
-#Preview {
-    SelectionScrollView()
-        .environmentObject(SnippetViewModel())
 }

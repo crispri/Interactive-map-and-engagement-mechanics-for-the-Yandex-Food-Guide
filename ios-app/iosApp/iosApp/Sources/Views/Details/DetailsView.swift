@@ -23,15 +23,11 @@ struct DetailsView: View {
                     bottomSheetPosition: $sheetPosition,
                     switchablePositions: [
                         .dynamicBottom,
-                        .relative(0.7),
+                        .absolute(500),
                         .relativeTop(0.9)
                     ],
-                    headerContent: {
-                        HeaderView()
-                    },
-                    mainContent: {
-                        BottomSheetView()
-                    }
+                    headerContent: { HeaderView() },
+                    mainContent: { BottomSheetView()  }
                 )
                 .enableAppleScrollBehavior(true)
                 .showDragIndicator(false)
@@ -40,8 +36,7 @@ struct DetailsView: View {
                         Color.clear
                             .frame(height: 150)
                         Color.white
-                    }
-                        .edgesIgnoringSafeArea(.all)
+                    }.edgesIgnoringSafeArea(.all)
                 )
             VStack {
                 HStack {

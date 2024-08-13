@@ -5,7 +5,7 @@
 //  Created by Stanislav Leonchik on 04.08.2024.
 //
 
-import Foundation
+import SwiftUI
 
 @MainActor
 final class SnippetViewModel: ObservableObject {
@@ -28,8 +28,8 @@ final class SnippetViewModel: ObservableObject {
     }
     
     func eventOnGesture() {
-        fetchSnippets()
-        fetchSelections()
+        Task { await fetchSnippets() }
+        Task { await fetchSelections() }
     }
     
     func eventCenterCamera(to option: MapManager.CameraTargetOption) {
@@ -40,54 +40,54 @@ final class SnippetViewModel: ObservableObject {
         mapManager.placeUser()
     }
     
-    // MARK: tasks for fetching snippets and collections.
-    
-    func fetchSnippets() {
-        Task {
-            do {
-                let rect = mapManager.getScreenPoints()
-                let ll = rect.lowerLeftCorner
-                let tr = rect.topRightCorner
-                
-                print("Square position: \(ll.description) \(tr.description)")
-                if abs(ll.lat - tr.lat) > 0.1 {
-                    mapManager.disablePins()
-                    mapManager.cleanPins()
-                    return
-                }
-                
-                let restaurants = try await loadSnippets(
-                    lowerLeftCorner: .init(lat: ll.lat, lon: ll.lon), topRightCorner: .init(lat: tr.lat, lon: tr.lon)
-                )
-                snippets = restaurants
-                mapManager.placePins(restaurants)
-            }
-            catch {
-                print(error)
-            }
+    func eventSelectionPressed(at index: Int, reader: ScrollViewProxy) async {
+        if let selectedCollection,
+           selectedCollection == collections[index] {
+            self.selectedCollection = nil
+            await fetchSnippets()
+        } else {
+            selectedCollection = collections[index]
+            reader.scrollTo(index, anchor: .center)
+            await fetchSelectionSnippets(id: selectedCollection?.id ?? "")
+            eventCenterCamera(to: .pins)
         }
     }
     
-    func fetchSelections() {
-        Task {
-            do {
-                collections = try await loadSelections()
-            } catch {
-                print(error)
+    // MARK: Wrappers for fetching snippets and collections.
+    
+    func fetchSnippets() async {
+        do {
+            let rect = mapManager.getScreenPoints()
+            let ll = rect.lowerLeftCorner
+            let tr = rect.topRightCorner
+            
+            print("Square position: \(ll.description) \(tr.description)")
+            if abs(ll.lat - tr.lat) > 0.1 {
+                mapManager.disablePins()
+                mapManager.cleanPins()
+                return
             }
+            
+            let restaurants = try await loadSnippets(
+                lowerLeftCorner: .init(lat: ll.lat, lon: ll.lon), topRightCorner: .init(lat: tr.lat, lon: tr.lon)
+            )
+            snippets = restaurants
+            mapManager.placePins(restaurants)
         }
+        catch { print(error)  }
     }
     
-    func fetchSelectionSnippets(id: String) {
-        Task {
-            do {
-                snippets = try await loadSelectionSnippets(id: id)
-                mapManager.placePins(snippets)
-                print("🔥 \(snippets)")
-            } catch {
-                print(error)
-            }
-        }
+    func fetchSelections() async {
+        do {
+            collections = try await loadSelections()
+        } catch { print(error) }
+    }
+    
+    func fetchSelectionSnippets(id: String) async {
+        do {
+            snippets = try await loadSelectionSnippets(id: id)
+            mapManager.placePins(snippets)
+        } catch { print(error) }
     }
     
     // MARK: load data from server.

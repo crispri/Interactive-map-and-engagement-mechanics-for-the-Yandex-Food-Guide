@@ -117,6 +117,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         case .pins:
             centerMapLocation(
                 target: targetPin,
+                zoom: 12,
                 map: mapView ?? .init()
             )
         }
@@ -135,7 +136,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         )
     }
     
-    private func centerMapLocation(target location: YMKPoint?, map: YMKMapView) {
+    private func centerMapLocation(target location: YMKPoint?, zoom: Int = 16, map: YMKMapView) {
         guard let location = location else {
             print("Failed to get user location")
             return
