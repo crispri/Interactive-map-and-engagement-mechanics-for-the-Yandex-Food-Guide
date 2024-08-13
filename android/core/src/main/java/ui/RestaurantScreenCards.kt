@@ -216,7 +216,7 @@ val description = "Ресторан «William Bass» - это классичес
 @Preview
 @Composable
 fun AboutPlaceCard(isGPT: Boolean = true,
-                   text:String = description
+                   text:String? = description
 ){
     val backgroundCard = if (isGPT) Color(0xFFF6F1FF) else Color.White
     Card(
@@ -243,7 +243,7 @@ fun AboutPlaceCard(isGPT: Boolean = true,
             Text(
                 modifier = Modifier
                     .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
-                text = text,
+                text = text ?: description,
                 fontSize = 16.sp,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.W400,
@@ -256,12 +256,12 @@ fun AboutPlaceCard(isGPT: Boolean = true,
 
 @Preview
 @Composable
-fun PlaceWidgetCard(name: String = "Ян Примус", note: Float = 4.7f, comments: Int = 2022){
+fun PlaceWidgetCard(name: String? = "Ян Примус", note: Double? = 4.7, comments: Int = 2022){
     Column (
         modifier = Modifier.fillMaxSize()
     ){
         Text(
-            text = name,
+            text = name ?: "Ян Примус",
             fontSize = 36.sp,
             color = Color.White,
             fontFamily = FontFamily.SansSerif,
@@ -273,7 +273,7 @@ fun PlaceWidgetCard(name: String = "Ян Примус", note: Float = 4.7f, comm
             Row (
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ){
-                FeedbackCard(note = note, comments = comments)
+                FeedbackCard(note = note.toString(), comments = comments)
                 Column (
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ){
@@ -335,7 +335,7 @@ fun ToWebCard(){
 
 @Preview
 @Composable
-fun FeedbackCard(note: Float = 4.7f, comments: Int = 2022) {
+fun FeedbackCard(note: String? = "4.7", comments: Int = 2022) {
     Card(
         modifier = Modifier
             .size(80.dp, 110.dp),
@@ -357,7 +357,7 @@ fun FeedbackCard(note: Float = 4.7f, comments: Int = 2022) {
                 modifier = Modifier.size(24.dp, 24.dp)
             )
             Text(
-                text = note.toString(),
+                text = note ?: "4.7",
                 fontSize = 14.sp,
                 color = Color.Black,
                 fontFamily = FontFamily.SansSerif,

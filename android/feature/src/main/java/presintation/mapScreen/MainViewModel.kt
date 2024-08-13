@@ -42,6 +42,7 @@ class MainViewModel @Inject constructor(
                             // Пока не работает бек, возвращаем захардкоженные данные
                             _uiState.update {
                                 it.copy(
+                                    errorMessage = state.cause.message,
                                     isLoading = false,
                                     restaurantsOnMap = Utils.restaurants,
                                     recommendations = Utils.recommendations,

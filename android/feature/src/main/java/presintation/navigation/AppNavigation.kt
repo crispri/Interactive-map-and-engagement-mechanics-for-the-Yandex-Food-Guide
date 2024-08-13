@@ -15,6 +15,7 @@ import presintation.homeScreen.HomeScreen
 import presintation.mapScreen.MainScreen
 import presintation.mapScreen.MainViewModel
 import presintation.restaurantScreen.RestaurantScreen
+import presintation.restaurantScreen.RestaurantViewModel
 
 @Composable
 fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
@@ -44,8 +45,12 @@ fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
             )
         }
 
-        composable(AppDestination.RESTAURANT_SCREEN) {
-            RestaurantScreen(navToBack = actions.onBack)
+
+        composable("${AppDestination.RESTAURANT_SCREEN}/{itemId}") {backStackEntry ->
+            val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+            val itemId = backStackEntry.arguments?.getString("itemId")
+            val uiState by restaurantViewModel.uiState.collectAsState()
+            RestaurantScreen(uiState = uiState, navToBack = actions.onBack)
         }
 
     }

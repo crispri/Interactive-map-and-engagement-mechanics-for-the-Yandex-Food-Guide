@@ -99,7 +99,7 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
-    navToRestaurant: () -> Unit,
+    navToRestaurant: (id: String) -> Unit,
     uiState: MainUiState,
     navToBack: () -> Unit,
     send: (Event) -> Unit,
@@ -164,15 +164,16 @@ fun MainScreen(
             }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .pointerInput(Unit) {
-            detectTapGestures(
-                onPress = {
-                    isExpandedAtOffset.value = false
-                }
-            )
-        },
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onPress = {
+                        isExpandedAtOffset.value = false
+                    }
+                )
+            },
     ) {
         custom_bottom_sheet.BottomSheetScaffold(
             scaffoldState = bottomSheetState,
@@ -192,15 +193,15 @@ fun MainScreen(
                         flingBehavior = snapBehavior,
                         modifier = Modifier
                             .pointerInput(Unit) {
-                        detectTapGestures(
-                            onPress = {
-                                if (sheetState.currentValue != SheetValue.Expanded){
-                                    isExpandedAtOffset.value = true
-                                    Log.d("tap111", "Палец поставлен на экран контент")
-                                }
-                            }
-                        )
-                    })  {
+                                detectTapGestures(
+                                    onPress = {
+                                        if (sheetState.currentValue != SheetValue.Expanded) {
+                                            isExpandedAtOffset.value = true
+                                            Log.d("tap111", "Палец поставлен на экран контент")
+                                        }
+                                    }
+                                )
+                            }) {
                         itemsIndexed(uiState.restaurantsOnMap) { index, restaurant ->
 
                             Card(
@@ -208,21 +209,33 @@ fun MainScreen(
                                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
                                     .fillMaxWidth()
                                     .background(Color.White)
-                                    .clickable { navToRestaurant() }
+                                    .clickable {
+                                        Log.d("ClickOnCard", restaurant.id)
+                                        navToRestaurant(restaurant.id) }
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
                                     }
                                     .pointerInput(Unit) {
                                         detectTapGestures(
+                                            onLongPress = {
+                                                Log.d("LongClickOnCard", restaurant.id)
+                                                navToRestaurant(restaurant.id)
+                                            },
                                             onPress = {
+                                                if (isExpandedAtOffset.value) {
+                                                    Log.d("ClickOnCard", restaurant.id)
+                                                    navToRestaurant(restaurant.id)
+                                                }
                                                 if (sheetState.currentValue != SheetValue.Expanded) {
                                                     isExpandedAtOffset.value = true
                                                     Log.d(
                                                         "tap111",
                                                         "Палец поставлен на экран контент"
                                                     )
+
                                                 }
+
                                             }
                                         )
                                     },
@@ -259,7 +272,8 @@ fun MainScreen(
                                                 contentDescription = "Оценка"
                                             )
                                             Text(
-                                                text = DecimalFormat("#.#").format(restaurant.rating).toString(),
+                                                text = DecimalFormat("#.#").format(restaurant.rating)
+                                                    .toString(),
                                                 fontSize = 16.sp,
                                                 fontWeight = FontWeight.Bold,
                                             )
@@ -439,7 +453,6 @@ fun MainScreen(
 }
 
 
-
 @Composable
 fun CollectionCarousel(recommendations: List<Recommendation>) {
     var selectedCardIndex by remember { mutableIntStateOf(-1) }
@@ -448,10 +461,9 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
     val configuration = LocalConfiguration.current
     val screenWidthInt = configuration.screenWidthDp
     LaunchedEffect(selectedCardIndex) {
-        if (selectedCardIndex != -1 && selectedCardIndex != 0){
+        if (selectedCardIndex != -1 && selectedCardIndex != 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, -(screenWidthInt / 2))
-        }
-        else if (selectedCardIndex == 0){
+        } else if (selectedCardIndex == 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, 0)
         }
     }
@@ -491,9 +503,6 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 }
 
 
-
-
-
 @Composable
 fun BottomSheetContent(
     isLoading: Boolean,
@@ -524,7 +533,7 @@ fun Carousel() {
         "Веранда"
     )
 
-    Row{
+    Row {
         IconButton(
             onClick = { /*TODO*/ },
             colors = IconButtonColors(
