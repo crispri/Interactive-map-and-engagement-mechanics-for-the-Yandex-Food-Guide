@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.R
+import java.text.DecimalFormat
 
 @Composable
 fun ImageCarousel(listImages: List<Int>) {
@@ -286,7 +287,10 @@ fun PlaceWidgetCard(name: String? = "Ян Примус", note: Double? = 4.7, co
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                FeedbackCard(note = note.toString(), comments = comments)
+                FeedbackCard(
+                    note = DecimalFormat("#.#").format(note ?: 4.7).toString(),
+                    comments = comments
+                )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
