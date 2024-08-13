@@ -4,8 +4,8 @@
 #include <string>
 
 #include <boost/uuid/uuid_io.hpp>
-#include <models/restaurant.hpp>
-#include <models/restaurant_filter.hpp>
+#include <models/Trestaurant.hpp>
+#include <models/TRestaurantFilter.hpp>
 
 
 namespace service {

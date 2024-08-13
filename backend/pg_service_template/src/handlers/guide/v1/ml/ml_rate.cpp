@@ -1,7 +1,7 @@
 #include "ml_sort.hpp"
 #include <lib/error_response_builder.hpp>
-#include <models/coordinates.hpp>
-#include <models/restaurant.hpp>
+#include <models/TCoordinates.hpp>
+#include <models/TRestaurant.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
 #include <fmt/format.h>
