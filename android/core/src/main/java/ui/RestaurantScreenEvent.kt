@@ -5,5 +5,5 @@ import model.MainScreenEvent
 abstract class RestaurantScreenEvent {}
 
 class GetRestaurantInfo(
-    val restaurantId: String
+    val restaurantId: String?
 ) : RestaurantScreenEvent()
