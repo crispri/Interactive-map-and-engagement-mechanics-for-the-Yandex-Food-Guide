@@ -1,6 +1,5 @@
 package presintation.restaurantScreen
 
-
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,6 +23,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -57,9 +58,9 @@ import ui.TopCard
 import kotlin.math.roundToInt
 
 
+
 //моки:)
-val description =
-    "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
+val description = "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
 
 val listImages = listOf(
     R.drawable.hardcode_picture_of_cafe,
@@ -81,6 +82,7 @@ fun RestaurantScreen(
     send: (RestaurantScreenEvent) -> Unit,
     uiState: RestaurantUiState,
 ) {
+
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWeight = configuration.screenWidthDp.dp
@@ -90,12 +92,18 @@ fun RestaurantScreen(
     }
 
     val bottomSheetState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(
-            initialValue = SheetValue.PartiallyExpanded,
-            skipHiddenState = true,
-            confirmValueChange = { newState ->
-                newState != SheetValue.Hidden
-            })
+        bottomSheetState = rememberSaveable(
+            saver = SheetStateSaver(skipPartiallyExpanded = false, skipHiddenState = true,
+                confirmValueChange = { newState ->
+                    newState != SheetValue.Hidden
+                })
+        ) {
+            SheetState(
+                skipPartiallyExpanded = false,
+                initialValue = SheetValue.PartiallyExpanded,
+                skipHiddenState = true,
+            )
+        }
     )
 
     val offsetState = remember { mutableFloatStateOf(200f) }
@@ -107,7 +115,7 @@ fun RestaurantScreen(
         snapshotFlow { bottomSheetState.bottomSheetState.requireOffset() }
             .collect { offset ->
                 offsetState.floatValue = offset
-                if (!isRequired) {
+                if (!isRequired){
                     sheetHeight = offsetState.floatValue
                     isRequired = true
                 }
@@ -172,7 +180,7 @@ fun RestaurantScreen(
                 visible = offsetState.floatValue > sheetHeight - 200f,
                 enter = fadeIn(),
                 exit = fadeOut()
-            ) {
+            ){
                 PlaceWidgetCard()
             }
         }
@@ -190,17 +198,17 @@ fun RestaurantScreen(
             visible = offsetState.floatValue > sheetHeight - 200f,
             enter = fadeIn(),
             exit = fadeOut()
-        ) {
+        ){
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp, top = 40.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            ){
                 FloatingActionButton(
                     modifier = Modifier.size(40.dp),
                     containerColor = Color.White,
-                    onClick = { navToBack() },
+                    onClick = {navToBack()},
                     shape = CircleShape,
                 ) {
                     Image(
@@ -227,20 +235,34 @@ fun RestaurantScreen(
         }
 
 
-        if (isTopCardVisible) {
+        if (isTopCardVisible){
             Box(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .fillMaxWidth()
-            ) {
+            ){
                 AnimatedVisibility(
                     visible = offsetState.floatValue < sheetHeight - 200f,
                     enter = fadeIn(),
                     exit = fadeOut()
-                ) {
+                ){
                     TopCard(navToBack = navToBack)
                 }
             }
         }
     }
 }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+fun SheetStateSaver(
+    skipPartiallyExpanded: Boolean,
+    confirmValueChange: (SheetValue) -> Boolean,
+    skipHiddenState: Boolean,
+) = androidx.compose.runtime.saveable.Saver<SheetState, SheetValue>(
+    save = { it.currentValue },
+    restore = { savedValue ->
+        SheetState(skipPartiallyExpanded, savedValue, confirmValueChange, skipHiddenState)
+    }
+)
+

@@ -1,4 +1,4 @@
-#include "restaurant.hpp"
+#include "TRestaurant.hpp"
 #include <userver/formats/json/value_builder.hpp>
 #include <lib/time_parser.hpp>
 #include <boost/uuid/uuid_io.hpp>

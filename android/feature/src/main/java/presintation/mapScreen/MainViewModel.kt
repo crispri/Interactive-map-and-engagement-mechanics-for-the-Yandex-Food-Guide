@@ -105,13 +105,11 @@ class MainViewModel @Inject constructor(
             is SaveInCollectionEvent -> {
                 saveInCollection(event.restaurantId)
             }
-
             is NavigateToLocationEvent -> {
                 _uiState.update {
                     it.copy(centeringIsRequired = true)
                 }
             }
-
             is CancelCentering -> {
                 _uiState.update {
                     it.copy(centeringIsRequired = false)
@@ -130,7 +128,6 @@ class MainViewModel @Inject constructor(
 
         }
     }
-
 
     private fun saveInCollection(restaurantId: String) {
 
