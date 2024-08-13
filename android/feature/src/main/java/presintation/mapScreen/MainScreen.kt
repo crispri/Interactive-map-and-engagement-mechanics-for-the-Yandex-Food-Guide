@@ -78,6 +78,7 @@ import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
+import model.Filter
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard

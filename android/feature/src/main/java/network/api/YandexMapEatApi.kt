@@ -43,5 +43,12 @@ interface YandexMapEatApi {
 data class RequestBody(
     @SerializedName("lower_left_corner") val lowerLeftCorner: Coordinates,
     @SerializedName("top_right_corner") val topRightCorner: Coordinates,
-    // @SerializedName("max_count") val maxCount: Int
+    @SerializedName("filters") val filters: List<FilterForJson> = listOf()
 )
+
+data class FilterForJson(
+    @SerializedName("property") val property: String,
+    @SerializedName("value") val value: List<Double>,
+    @SerializedName("operator") val operator: String
+)
+

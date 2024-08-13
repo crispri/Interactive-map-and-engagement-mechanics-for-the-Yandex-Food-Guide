@@ -10,7 +10,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import com.example.feature.R
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
@@ -67,7 +66,7 @@ fun MapScreen(
             if (p3) {
                 val topRightPoint = mapView.mapWindow.map.visibleRegion.topRight
                 val bottomLeftPoint = mapView.mapWindow.map.visibleRegion.bottomLeft
-                send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint))
+                send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList))
                 Log.d("CameraListener", "Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
             }
         }
