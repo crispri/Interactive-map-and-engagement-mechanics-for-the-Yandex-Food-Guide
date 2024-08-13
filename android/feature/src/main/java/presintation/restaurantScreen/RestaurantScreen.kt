@@ -48,9 +48,11 @@ import androidx.compose.ui.unit.dp
 import com.example.feature.R
 import presintation.mapScreen.Carousel
 import ui.AboutPlaceCard
+import ui.GetRestaurantInfo
 import ui.ImageCarousel
 import ui.PlaceCard
 import ui.PlaceWidgetCard
+import ui.RestaurantScreenEvent
 import ui.TopCard
 import kotlin.math.roundToInt
 
@@ -75,13 +77,13 @@ val listImages = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(
-//    restaurantId: String,
-//    send: (RestaurantScreenEvent) -> Unit,
+    restaurantId: String?,
+    send: (RestaurantScreenEvent) -> Unit,
     uiState: RestaurantUiState,
-    //send: (Event) -> Unit,
     navToBack: () -> Unit
 ) {
 
+    send(GetRestaurantInfo(restaurantId))
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWeight = configuration.screenWidthDp.dp

@@ -24,26 +24,23 @@ class RestaurantViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RestaurantUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        getRestaurantById("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-    }
     fun send(event: RestaurantScreenEvent) {
         when (event) {
             is GetRestaurantInfo -> {
                 getRestaurantById(event.restaurantId)
+                Log.d("SendGetRestaurant",event.restaurantId.toString())
             }
         }
     }
 
-    fun getRestaurantById(restaurantId: String?) {
+    private fun getRestaurantById(restaurantId: String?) {
         if (restaurantId == null) {
             _uiState.update {
                 it.copy(
                     currentRestaurant = Utils.restaurants[0]
                 )
             }
-        }
-        else {
+        } else {
             viewModelScope.launch {
                 repository.getRestaurantById("Asd", restaurantId)
                     .collect { state ->
@@ -62,11 +59,18 @@ class RestaurantViewModel @Inject constructor(
                                 Log.d("NetworkSuccess", "")
                                 _uiState.update {
                                     it.copy(
+                                        currentRestaurant = state.data,
+                                        isLoading = false,
                                     )
                                 }
                             }
 
                             is NetworkState.Loading -> {
+                                _uiState.update {
+                                    it.copy(
+                                        isLoading = true,
+                                    )
+                                }
                             }
 
                             else -> {}
@@ -74,5 +78,6 @@ class RestaurantViewModel @Inject constructor(
                     }
             }
         }
+    }
 
 }
