@@ -16,15 +16,15 @@ namespace service {
         MLService(const userver::components::ComponentConfig &config,
                   const userver::components::ComponentContext &context);
 
-        static void MLSort(std::vector<int> &restaurant_ids);
+        static void MLSort(std::vector<boost::uuids::uuid> &restaurant_ids);
 
-        static std::vector<std::pair<int, int>> SetScore(
-                boost::uuids::uuid &user_id, std::vector<int> &restaurant_ids);
+        static std::vector<std::pair<boost::uuids::uuid, int>> SetScore(
+                boost::uuids::uuid &user_id, std::vector<boost::uuids::uuid> &restaurant_ids);
 
         boost::uuids::uuid GetUserIdByAuthToken(const boost::uuids::uuid& session_id);
 
     private:
-        static uint32_t GetHash(boost::uuids::uuid &user_id, int &restaurant_id);
+        static uint32_t GetHash(boost::uuids::uuid &user_id, boost::uuids::uuid &restaurant_id);
 
     };
 

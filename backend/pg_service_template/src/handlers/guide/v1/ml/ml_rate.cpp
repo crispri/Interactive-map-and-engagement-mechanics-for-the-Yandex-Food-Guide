@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <userver/components/component.hpp>
 #include <userver/formats/common/type.hpp>
+#include <userver/formats/parse/common_containers.hpp>
+#include <userver/formats/serialize/common_containers.hpp>
 #include <userver/formats/json/serialize.hpp>
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
@@ -70,8 +72,12 @@ namespace service {
 
                 auto user_id = ml_service_.GetUserIdByAuthToken(session_id);
 
-                auto restaurant_ids =
-                        request_body_json["restaurant_ids"].As<std::vector<int>>();
+                std::vector<boost::uuids::uuid> restaurant_ids;
+
+                for (const auto& id : request_body_json["restaurant_ids"].As<std::vector<std::string>>()) {
+                    restaurant_ids.push_back(gen(id));
+                }
+
 
                 auto scores = service::MLService::SetScore(user_id, restaurant_ids);
 
@@ -82,7 +88,7 @@ namespace service {
 
                 for (auto &[restaurant_id, score]: scores) {
                     userver::formats::json::ValueBuilder builder;
-                    builder["restaurant_id"] = restaurant_id;
+                    builder["restaurant_id"] = boost::uuids::to_string(restaurant_id);
                     builder["score"] = score;
                     responseJSON["scores"].PushBack(builder.ExtractValue());
                 }

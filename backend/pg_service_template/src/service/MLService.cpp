@@ -22,21 +22,21 @@ MLService::MLService(const userver::components::ComponentConfig& config,
       )
 {}
 
-void MLService::MLSort(std::vector<int>& restaurant_ids) {
+void MLService::MLSort(std::vector<boost::uuids::uuid>& restaurant_ids) {
     std::random_device rd;
     std::mt19937 g(rd());
 
     std::shuffle(restaurant_ids.begin(), restaurant_ids.end(), g);
 }
 
-uint32_t MLService::GetHash(boost::uuids::uuid &user_id, int &restaurant_id) {
-    std::string united = boost::uuids::to_string(user_id) + std::to_string(restaurant_id);
+uint32_t MLService::GetHash(boost::uuids::uuid &user_id, boost::uuids::uuid &restaurant_id) {
+    std::string united = boost::uuids::to_string(user_id) + boost::uuids::to_string(restaurant_id);
     return std::hash<std::string>{}(united) % 1000000;
 }
 
-std::vector<std::pair<int, int>> MLService::SetScore(
-    boost::uuids::uuid &user_id, std::vector<int>& restaurant_ids) {
-    std::vector<std::pair<int, int>> rated_ids;
+std::vector<std::pair<boost::uuids::uuid, int>> MLService::SetScore(
+    boost::uuids::uuid &user_id, std::vector<boost::uuids::uuid>& restaurant_ids) {
+    std::vector<std::pair<boost::uuids::uuid, int>> rated_ids;
 
     for (auto id : restaurant_ids) {
         rated_ids.emplace_back(id, MLService::GetHash(user_id, id));
