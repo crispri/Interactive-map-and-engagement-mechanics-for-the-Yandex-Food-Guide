@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
     // mapkit
     implementation(libs.map.kit)
 

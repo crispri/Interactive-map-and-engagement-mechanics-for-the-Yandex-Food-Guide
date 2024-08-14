@@ -20,12 +20,13 @@ import com.yandex.mapkit.location.LocationStatus
 import com.yandex.mapkit.mapview.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
+import presintation.mapScreen.CustomMapView
 import presintation.navigation.AppNavigation
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private lateinit var mapView: MapView
+    private lateinit var mapView: CustomMapView
     private lateinit var locationManager: LocationManager
     private lateinit var locationListener: LocationListener
     private lateinit var mapkit: MapKit
@@ -57,6 +58,7 @@ class MainActivity : ComponentActivity() {
         locationManager = mapkit.createLocationManager()
         locationListener = object : LocationListener{
             override fun onLocationUpdated(p0: Location) {
+                Log.e("in onLocationUpdated", "${p0.position.latitude}, ${p0.position.longitude}")
                 curLocation.value = Point(p0.position.latitude, p0.position.longitude)
             }
 
@@ -80,8 +82,7 @@ class MainActivity : ComponentActivity() {
 
         val context = this
 
-        mapView = MapView(context)
-
+        mapView = CustomMapView(context)
 
         setContent {
             YandexMapEatTheme {

@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 
-#include <models/selection.hpp>
-#include <models/restaurant.hpp>
+#include <models/TSelection.hpp>
+#include <models/TRestaurant.hpp>
 
 
 

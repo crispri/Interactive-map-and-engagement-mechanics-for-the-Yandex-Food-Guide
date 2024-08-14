@@ -44,9 +44,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.R
+import java.text.DecimalFormat
 
 @Composable
-fun ImageCarousel(listImages: List<Int>){
+fun ImageCarousel(listImages: List<Int>) {
     val size = 240f
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
@@ -69,8 +70,6 @@ fun ImageCarousel(listImages: List<Int>){
 }
 
 
-
-@Preview
 @Composable
 fun OpenKitchenCard() {
     Card(
@@ -95,12 +94,12 @@ fun OpenKitchenCard() {
                     .size(40.dp)
                     .clip(CircleShape)
             )
-            Column (
+            Column(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 10.dp)
-            ){
+            ) {
                 Text(
                     text = "Редакция о месте",
                     color = Color.Black,
@@ -109,7 +108,7 @@ fun OpenKitchenCard() {
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Text(
                         text = "Открытая кухня",
                         color = Color.Gray,
@@ -130,8 +129,13 @@ fun OpenKitchenCard() {
     }
 }
 
-@Composable
 @Preview
+@Composable
+fun OpenKitchenCardPreview() {
+    OpenKitchenCard()
+}
+
+@Composable
 fun YandexGPTCard() {
     Card(
         modifier = Modifier
@@ -155,13 +159,13 @@ fun YandexGPTCard() {
                     .size(40.dp)
                     .clip(CircleShape)
             )
-            Column (
+            Column(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 10.dp)
                     .background(Color.Transparent)
-            ){
+            ) {
                 Text(
                     text = "YandexGPT о месте",
                     color = Color.Black,
@@ -170,7 +174,7 @@ fun YandexGPTCard() {
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Text(
                         text = "Создано нейросетью на основе отзывов",
                         color = Color.Gray,
@@ -191,6 +195,11 @@ fun YandexGPTCard() {
     }
 }
 
+@Preview
+@Composable
+fun YandexGPTCardPreview() {
+    YandexGPTCard()
+}
 
 @Composable
 fun ImageCard(id: Int, sizeY: Float, cardSmall: Boolean) {
@@ -211,13 +220,14 @@ fun ImageCard(id: Int, sizeY: Float, cardSmall: Boolean) {
     }
 }
 
-val description = "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
+val description =
+    "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
 
-@Preview
 @Composable
-fun AboutPlaceCard(isGPT: Boolean = true,
-                   text:String = description
-){
+fun AboutPlaceCard(
+    isGPT: Boolean = true,
+    text: String? = description
+) {
     val backgroundCard = if (isGPT) Color(0xFFF6F1FF) else Color.White
     Card(
         modifier = Modifier
@@ -225,12 +235,11 @@ fun AboutPlaceCard(isGPT: Boolean = true,
             .shadow(8.dp, shape = RoundedCornerShape(8.dp))
             .padding(top = 8.dp),
         colors = CardDefaults.cardColors(backgroundCard)
-    ){
+    ) {
         Column {
-            if (isGPT){
+            if (isGPT) {
                 YandexGPTCard()
-            }
-            else{
+            } else {
                 OpenKitchenCard()
             }
         }
@@ -239,11 +248,11 @@ fun AboutPlaceCard(isGPT: Boolean = true,
                 .padding(top = 6.dp, start = 10.dp, end = 10.dp, bottom = 20.dp)
                 .clip(RoundedCornerShape(14.dp))
                 .background(Color.White)
-        ){
+        ) {
             Text(
                 modifier = Modifier
                     .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
-                text = text,
+                text = text ?: description,
                 fontSize = 16.sp,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.W400,
@@ -256,12 +265,17 @@ fun AboutPlaceCard(isGPT: Boolean = true,
 
 @Preview
 @Composable
-fun PlaceWidgetCard(name: String = "Ян Примус", note: Float = 4.7f, comments: Int = 2022){
-    Column (
+fun AboutPlaceCardPreview() {
+    AboutPlaceCard()
+}
+
+@Composable
+fun PlaceWidgetCard(name: String? = "Ян Примус", note: Double? = 4.7, comments: Int = 2022) {
+    Column(
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         Text(
-            text = name,
+            text = name ?: "Ян Примус",
             fontSize = 36.sp,
             color = Color.White,
             fontFamily = FontFamily.SansSerif,
@@ -269,14 +283,17 @@ fun PlaceWidgetCard(name: String = "Ян Примус", note: Float = 4.7f, comm
         )
         Box(
             modifier = Modifier.padding(top = 8.dp)
-        ){
-            Row (
+        ) {
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ){
-                FeedbackCard(note = note, comments = comments)
-                Column (
+            ) {
+                FeedbackCard(
+                    note = DecimalFormat("#.#").format(note ?: 4.7).toString(),
+                    comments = comments
+                )
+                Column(
                     verticalArrangement = Arrangement.spacedBy(10.dp)
-                ){
+                ) {
                     FavouriteCard()
                     ToWebCard()
                 }
@@ -288,7 +305,12 @@ fun PlaceWidgetCard(name: String = "Ян Примус", note: Float = 4.7f, comm
 
 @Preview
 @Composable
-fun FavouriteCard(){
+fun PlaceWidgetCardPreview() {
+    PlaceWidgetCard()
+}
+
+@Composable
+fun FavouriteCard() {
     Card(
         modifier = Modifier
             .size(50.dp, 50.dp),
@@ -309,10 +331,14 @@ fun FavouriteCard(){
     }
 }
 
-
 @Preview
 @Composable
-fun ToWebCard(){
+fun FavouriteCardPreview() {
+    FavouriteCard()
+}
+
+@Composable
+fun ToWebCard() {
     Card(
         modifier = Modifier
             .size(50.dp, 50.dp),
@@ -335,19 +361,24 @@ fun ToWebCard(){
 
 @Preview
 @Composable
-fun FeedbackCard(note: Float = 4.7f, comments: Int = 2022) {
+fun ToWebCardPreview() {
+    ToWebCard()
+}
+
+@Composable
+fun FeedbackCard(note: String? = "4.7", comments: Int = 2022) {
     Card(
         modifier = Modifier
             .size(80.dp, 110.dp),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Image(
                 alignment = Alignment.Center,
                 painter = painterResource(id = R.drawable.baseline_star_24),
@@ -357,7 +388,7 @@ fun FeedbackCard(note: Float = 4.7f, comments: Int = 2022) {
                 modifier = Modifier.size(24.dp, 24.dp)
             )
             Text(
-                text = note.toString(),
+                text = note ?: "4.7",
                 fontSize = 14.sp,
                 color = Color.Black,
                 fontFamily = FontFamily.SansSerif,
@@ -366,13 +397,13 @@ fun FeedbackCard(note: Float = 4.7f, comments: Int = 2022) {
                 lineHeight = 20.sp
             )
         }
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 12.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Text(
                 text = comments.toString(),
                 fontSize = 14.sp,
@@ -398,7 +429,17 @@ fun FeedbackCard(note: Float = 4.7f, comments: Int = 2022) {
 
 @Preview
 @Composable
-fun PlaceCard(isOpenTime: String = "Закрыто до 11:00", isOpen: Boolean = false, distance: Int = 704, time: Int = 3) {
+fun FeedbackCardPreview() {
+    FeedbackCard()
+}
+
+@Composable
+fun PlaceCard(
+    isOpenTime: String = "Закрыто до 11:00",
+    isOpen: Boolean = false,
+    distance: Int = 704,
+    time: Int = 3
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -419,7 +460,7 @@ fun PlaceCard(isOpenTime: String = "Закрыто до 11:00", isOpen: Boolean 
                     contentDescription = null,
                     modifier = Modifier.size(25.dp)
                 )
-                Row{
+                Row {
                     TextWithDotSeparator(isOpenTime, isOpen, distance, time)
                 }
                 Image(
@@ -476,15 +517,25 @@ fun PlaceCard(isOpenTime: String = "Закрыто до 11:00", isOpen: Boolean 
     }
 }
 
+@Preview
 @Composable
-fun TextWithDotSeparator(isOpenTime: String = "Закрыто до 11:00", isOpen: Boolean = true, distance: Int = 704, time: Int = 3) {
+fun PlaceCardPreview() {
+    PlaceCard()
+}
+
+@Composable
+fun TextWithDotSeparator(
+    isOpenTime: String = "Закрыто до 11:00",
+    isOpen: Boolean = true,
+    distance: Int = 704,
+    time: Int = 3
+) {
     val text = buildAnnotatedString {
-        if (isOpen){
+        if (isOpen) {
             withStyle(style = SpanStyle(color = Color.Black, fontWeight = FontWeight.Normal)) {
                 append(isOpenTime)
             }
-        }
-        else{
+        } else {
             withStyle(style = SpanStyle(color = Color.Red, fontWeight = FontWeight.Normal)) {
                 append(isOpenTime)
             }
@@ -534,7 +585,9 @@ fun TopCard(name: String = "Ян Примус", navToBack: () -> Unit) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                 contentDescription = null,
-                modifier = Modifier.size(25.dp).clickable { navToBack() }
+                modifier = Modifier
+                    .size(25.dp)
+                    .clickable { navToBack() }
             )
             Text(
                 text = name,

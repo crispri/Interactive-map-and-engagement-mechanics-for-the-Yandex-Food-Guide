@@ -1,0 +1,51 @@
+post:
+    description: "Получить рекомендация по заведениям в определенной области"
+
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    type: object
+                    properties:
+
+                        lower_left_corner:
+                            description: "Координаты левого нижнего угла"
+                            $ref: "../openapi.yaml#/components/schemas/Coordinates"
+
+                        top_right_corner:
+                            description: "Координаты правого верхнего угла"
+                            $ref: "../openapi.yaml#/components/schemas/Coordinates"
+
+                        filters:
+                            type: array
+                            items:
+                                $ref: "../openapi.yaml#/components/schemas/RestaurantFilter"
+
+                    required:
+                        -   lower_left_corner
+                        -   top_right_corner
+
+
+    security:
+        -   UserTicketAuth: [ ]
+
+
+    responses:
+
+        200:
+            description: "OK"
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            items:
+                                type: array
+                                items:
+                                    $ref: "../openapi.yaml#/components/schemas/Restaurant"
+
+        400:
+            $ref: "../responses/400.yaml"
+        401:
+            $ref: "../responses/401.yaml"

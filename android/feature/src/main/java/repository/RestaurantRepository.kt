@@ -1,6 +1,7 @@
 package repository
 
 import kotlinx.coroutines.flow.Flow
+import model.Filter
 import model.Recommendation
 import model.Restaurant
 import network.util.NetworkState
@@ -17,8 +18,13 @@ interface RestaurantRepository {
         lowerLeftLon: Double,
         topRightLat: Double,
         topRightLon: Double,
-        maxCount: Int
+        filterList: List<Filter>,
     ): Flow<NetworkState<List<Restaurant>>>
+
+    fun getRestaurantById(
+        token: String,
+        id: String,
+    ): Flow<NetworkState<Restaurant>>
 
     fun updateTask(
         task: Restaurant,
@@ -26,5 +32,7 @@ interface RestaurantRepository {
         token: String,
         login: String
     ): Flow<NetworkState<Restaurant>>
+
+
 }
 

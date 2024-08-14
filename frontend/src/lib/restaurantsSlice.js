@@ -21,7 +21,7 @@ export const getRestaurants = createAsyncThunk(
 				const data = await response.json();
 				return data;
 			} else {
-			return response.status;
+				return response.status;
 			}
 		} catch (error) {
 			return error
@@ -114,23 +114,27 @@ const restaurantsSlice = createSlice({
 			  is_favorite: false,
 			}
 		  ],
-		  restaurants: []
+		restaurants: [],
+		unfocused_restaurants: {},
+		current_pin: {
+
+		}
 	},
 	reducers: {
-		// fetchMockData: (state, action) => {
-		// 	state.restaurants = state.mock_restaurants.map(el => ({
-		// 		...mock_restaurants,
-		// 		coordinates: [el.coordinates.lon, el.coordinates.lat]
-		// 	}))
-		// }
+		setCurrentPin: (state, action) => {
+			state.current_pin = action.payload
+		}
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getRestaurants.fulfilled, (state, action) => {
 				state.restaurants = action.payload.items
+				// state.restaurants.forEach(el => {
+				// 	state.unfocused_restaurants[el.id] = false
+				// })
 			})
 	}
 })
 
-
+export const { setCurrentPin } = restaurantsSlice.actions
 export default restaurantsSlice.reducer

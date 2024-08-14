@@ -7,17 +7,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import model.Coordinates
+import model.Filter
 import model.Recommendation
 import model.Restaurant
+import network.api.FilterForJson
 import network.api.RequestBody
 import network.api.YandexMapEatApi
 import network.dto.request.RestaurantItemRequestForJson
 import network.dto.response.RestaurantItemForJson
 import network.util.NetworkState
 import network.util.forJson
+import network.util.toJson
 import network.util.toModel
 import network.util.toToken
-import model.Coordinates
 import javax.inject.Inject
 
 
@@ -37,8 +40,8 @@ class RestaurantRepositoryImpl @Inject constructor(
         topRightLat: Double,
         topRightLon: Double,
         lowerLeftLat: Double,
-        maxCount: Int
-    ): Flow<NetworkState<List<Restaurant>>> = flow {
+        filterList: List<Filter>,
+        ): Flow<NetworkState<List<Restaurant>>> = flow {
         Log.d("SourceGetLoading", "start")
         emit(NetworkState.Loading)
         Log.d("SourceGetLoading", "end")
@@ -58,7 +61,7 @@ class RestaurantRepositoryImpl @Inject constructor(
                         lat = topRightLat,
                         lon = topRightLon,
                     ),
-                    // maxCount,
+                    filters = filterList.map(Filter::toJson),
                 )
             )
             Log.d(
@@ -79,6 +82,37 @@ class RestaurantRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
+    override fun getRestaurantById(
+        token: String,
+        id: String,
+    ): Flow<NetworkState<Restaurant>> = flow {
+        Log.d("SourceGetItemLoading", "start")
+        emit(NetworkState.Loading)
+        Log.d("SourceGetItemLoading", "end")
+
+        try {
+            val bearToken = token.toToken()
+            Log.d("Token", bearToken)
+
+            val response = api.getRestaurantById(
+                bearToken,
+                id =id,
+            )
+            Log.d(
+                "SourceGet", response.name
+            )
+
+            emit(
+                NetworkState.Success(
+                    response.toModel(),
+                    0,
+                )
+            )
+        } catch (e: Exception) {
+            Log.d("SourceGetException", "${e.message}")
+            emit(NetworkState.Failure(e))
+        }
+    }.flowOn(Dispatchers.IO)
 
     override fun updateTask(
         item: Restaurant,

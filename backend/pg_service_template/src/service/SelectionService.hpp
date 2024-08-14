@@ -3,7 +3,7 @@
 #include <repository/PgSelectionRepository.hpp>
 #include <userver/components/component_list.hpp>
 #include <userver/components/component_base.hpp>
-#include "models/restaurant.hpp"
+#include <models/TRestaurant.hpp>
 
 namespace service {
 

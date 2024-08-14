@@ -37,7 +37,10 @@ fun BigCard(restaurant: Restaurant, navToRestaurant: () -> Unit) {
             .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth()
             .background(Color.White)
-            .clickable {navToRestaurant()},
+            .clickable {
+
+                navToRestaurant()
+               },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {

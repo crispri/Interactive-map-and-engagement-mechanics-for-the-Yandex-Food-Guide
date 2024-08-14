@@ -1,5 +1,6 @@
 package presintation.navigation
 
+import Utils
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -12,12 +13,14 @@ import androidx.navigation.compose.rememberNavController
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.mapview.MapView
 import presintation.homeScreen.HomeScreen
+import presintation.mapScreen.CustomMapView
 import presintation.mapScreen.MainScreen
 import presintation.mapScreen.MainViewModel
 import presintation.restaurantScreen.RestaurantScreen
+import presintation.restaurantScreen.RestaurantViewModel
 
 @Composable
-fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
+fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
@@ -44,9 +47,28 @@ fun AppNavigation(mapView: MapView, curLocation: MutableState<Point?>) {
             )
         }
 
-        composable(AppDestination.RESTAURANT_SCREEN) {
-            RestaurantScreen(navToBack = actions.onBack)
+
+        composable("${AppDestination.RESTAURANT_SCREEN}/{itemId}") {backStackEntry ->
+            val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+            val itemId = backStackEntry.arguments?.getString("itemId")
+            val uiState by restaurantViewModel.uiState.collectAsState()
+            RestaurantScreen(uiState = uiState, restaurantId = itemId, send = restaurantViewModel::send, navToBack = actions.onBack)
         }
 
+//        composable(route = "${AppDestination.RESTAURANT_SCREEN}/{itemId}",
+//            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
+//         )
+//         { backStackEntry ->
+//             val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
+//             val restaurantViewModel: RestaurantViewModel = hiltViewModel()
+//             val uiState by restaurantViewModel.uiState.collectAsState()
+//             RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send, uiState = uiState)
+//         }
     }
 }
+
+
+
+// [4, 7, 9, 2, 6, 1, 3]
+// [1->4, 7, 9]
+

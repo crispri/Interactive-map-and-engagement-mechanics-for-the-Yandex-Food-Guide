@@ -69,8 +69,13 @@ components_manager:
             method: POST,OPTIONS
             task_processor: main-task-processor
 
-        handler-ml:
-            path: /guide/v1/ml
+        handler-ml_sort:
+            path: /guide/v1/ml_sort
+            method: POST
+            task_processor: main-task-processor
+
+        handler-ml_rate:
+            path: /guide/v1/ml_rate
             method: POST
             task_processor: main-task-processor
         handler-selections:

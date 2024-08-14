@@ -1,7 +1,7 @@
 .wrapperr{
 	width: 32px;
 	height: 32px;
-	background-color: black;
+	background-color: #21201F;
 	border-radius: 8px;
 	padding: 6px;
 }
@@ -17,7 +17,7 @@
 	&__wrapper{
 		width: 13px;
 		height: 13px;
-		border: 1px solid black;
+		border: 1px solid #21201F;
 		border-radius: 7px;
 		background-color: white;
 	}
@@ -33,6 +33,12 @@
 	align-items: center;
 	position: relative;
 	transform: translate(-50%, -115%);
+	transition: all 0.3s ease;
+	&__focused{
+		background-color: #21201F;
+		color: white;
+		transition: all 0.3s ease;
+	}
 	&__text{
 		font-weight: 500;
 		font-size: 13px;
@@ -64,9 +70,13 @@
 		height: 12px;
 		box-sizing: content-box;
 		position: absolute;
-		right: -7%;
-		top: -20%;
+		right: -5%;
+		top: -30%;
 		padding: 4px 5px;
 		border-radius: 6px;
+		transition: all 0.3s ease;
+		&__focused{
+			background-color: #21201F;
+		}
 	}
 }
