@@ -3,7 +3,6 @@ import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
 import SheetContent from '../sheetcontent/SheetContent';
-import RestaurantFullView from '../fullview/RestaurantFullView';
 import { useState } from 'react';
 
 const cardInfos = [

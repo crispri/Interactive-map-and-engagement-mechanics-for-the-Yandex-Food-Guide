@@ -21,7 +21,7 @@ function map(el) {
   }
 }
 
-const RestaurantFullView = ({ setId, sheetRef }) => {
+const RestaurantFullView = ({ sheetRef }) => {
 
     const dispatch = useDispatch();
     const {restId} = useParams()
@@ -29,6 +29,7 @@ const RestaurantFullView = ({ setId, sheetRef }) => {
     const restaurant = map(useSelector((state) => state.restaurantByIdSlice.restaurant))
 
     useEffect(() => {
+        sheetRef.current.snapTo(({ maxHeight }) => maxHeight);
         console.log('Full view of restaurant');
         dispatch(getRestaurantById(restId))
         .then((response) => {

@@ -3,7 +3,7 @@ import RestaurantCard from '../card/RestaurantCard.jsx'
 import { useSelector } from 'react-redux'
 import { truncateString, formatTime } from '../../lib/utils.js'
 
-const SheetContent = ({setId, sheetRef}) => {
+const SheetContent = ({}) => {
 
   const restaurants = useSelector((state) => state.restaurantsSlice.restaurants).map(el => ({
     id: el.id,
@@ -22,7 +22,7 @@ const SheetContent = ({setId, sheetRef}) => {
     <>
       {restaurants.map((restaurantInfo, index) => (
         <div key={index}>
-          <RestaurantCard restaurantInfo={restaurantInfo} setId={setId} sheetRef={sheetRef}/>
+          <RestaurantCard restaurantInfo={restaurantInfo}/>
         </div>
       ))
       }

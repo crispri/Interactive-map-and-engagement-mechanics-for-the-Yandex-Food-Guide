@@ -40,11 +40,11 @@ function App() {
       children: [
         {
           index: true,
-          element: <SheetContent cardInfos={restaurants} sheetRef={sheetRef}></SheetContent>
+          element: <SheetContent></SheetContent>
         },
         {
           path: ':restId',
-          element: <RestaurantFullView id={restId} sheetRef={sheetRef}></RestaurantFullView>
+          element: <RestaurantFullView sheetRef={sheetRef}></RestaurantFullView>
         },
         {
           path: 'map/:restId',

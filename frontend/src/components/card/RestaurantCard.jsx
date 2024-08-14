@@ -1,12 +1,16 @@
+import { useNavigate } from 'react-router-dom';
 import './RestaurantCard.css'
 import restaurantImage from '../../assets/restaurant_example.png'
 import snippetFavourite from '../../assets/snippet_unfavourite.svg'
 
-const RestaurantCard = ({ restaurantInfo, setId, sheetRef }) => {
+const RestaurantCard = ({ restaurantInfo }) => {
+
+  const navigateTo = useNavigate();
 
   function handleClick() {
-    setId(restaurantInfo.id);
-    sheetRef.current.snapTo(({ maxHeight }) => maxHeight);
+    navigateTo("/restaurants/" + restaurantInfo.id);
+    // setId(restaurantInfo.id);
+    // sheetRef.current.snapTo(({ maxHeight }) => maxHeight);
   }
 
   function favouriteClick() {
