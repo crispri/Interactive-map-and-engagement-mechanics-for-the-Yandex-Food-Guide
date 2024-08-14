@@ -17,10 +17,8 @@ CREATE TABLE IF NOT EXISTS guide.places (
     address TEXT NOT NULL,
     tags SMALLINT[],
     is_favorite BOOLEAN NOT NULL,
-    score INTEGER,
     CHECK (rating >= 1.0 AND rating <= 5.0),
-    CHECK (price_lower_bound > 0 AND price_lower_bound <= price_upper_bound),
-    CHECK (score >= 0)
+    CHECK (price_lower_bound > 0 AND price_lower_bound <= price_upper_bound)
 );
 
 
@@ -51,44 +49,18 @@ CREATE TABLE IF NOT EXISTS guide.visibility (
     -- foreign key(user_id) REFERENCES guide.users(id),
     -- foreign key(selection_id) REFERENCES guide.selections(id)
 );
-
 CREATE TABLE IF NOT EXISTS guide.auth (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    session_id UUID NOT NULL DEFAULT uuid_generate_v4()
+    session_id UUID NOT NULL DEFAULT uuid_generate_v4(),
+    started_at TIMESTAMPTZ NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL
 );
 
-INSERT INTO guide.auth(user_id, session_id) VALUES
-    ('f1eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', '6fa459ea-ee8a-3ca4-894e-db77e160355e');
-
+INSERT INTO guide.auth(user_id, session_id, started_at, expires_at) VALUES
+    ('61846daf-3303-465e-ab7f-4af27d3e8f41', '5142cece-b22e-4a4f-adf9-990949d053ff','2024-08-10 14:30:45+03', '2024-09-10 22:30:45+03');
 
 INSERT INTO guide.users(id, name, password) VALUES
-    ('f1eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'John', '1234');
-
-
-
-INSERT INTO guide.selections(id, name, description, is_public)
-VALUES('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Рестораны возсле Яндекса', 'Вкусно', 1)
-ON CONFLICT DO NOTHING;
-
-INSERT INTO guide.selections(id, name, description, is_public)
-VALUES('e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Пиццерии возсле Яндекса', 'Быстро', 1)
-ON CONFLICT DO NOTHING;
-
-
-
-INSERT INTO guide.places_selections(place_id, selection_id)
-VALUES('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO guide.places_selections(place_id, selection_id)
-VALUES('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO guide.places_selections(place_id, selection_id)
-VALUES('c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
-ON CONFLICT DO NOTHING;
-
-
+('61846daf-3303-465e-ab7f-4af27d3e8f41', 'John', '1234');
 
 INSERT INTO guide.places(
     id,
@@ -209,7 +181,140 @@ INSERT INTO guide.places(
     (uuid_generate_v4(), 55.752657, 37.626891, 'Steakhouse 42', 'High-end steakhouse known for its premium cuts and refined atmosphere.', TRUE, 4.6, 2500, 15000, '12:00:00', '23:00:00', 'Gorky St, 8', ARRAY[3, 7], TRUE),
     (uuid_generate_v4(), 55.745092, 37.614442, 'Oriental Café', 'Café with a focus on Middle Eastern cuisine and vibrant decor.', TRUE, 4.4, 1400, 6000, '11:00:00', '22:00:00', 'Luzhniki St, 14', ARRAY[1, 8], TRUE),
     (uuid_generate_v4(), 55.751042, 37.615273, 'Almond Garden', 'Cafe offering a selection of pastries and light meals with a focus on quality ingredients.', TRUE, 4.3, 1200, 5000, '10:00:00', '21:00:00', 'Novoslobodskaya St, 5', ARRAY[2, 6], TRUE),
-    (uuid_generate_v4(), 55.743915, 37.627150, 'Riverside Grill', 'Grill house located by the river offering a relaxed dining experience and scenic views.', TRUE, 4.5, 2000, 10000, '12:00:00', '23:00:00', 'Moscow Center, 9', ARRAY[3, 7], TRUE);
+    (uuid_generate_v4(), 55.743915, 37.627150, 'Riverside Grill', 'Grill house located by the river offering a relaxed dining experience and scenic views.', TRUE, 4.5, 2000, 10000, '12:00:00', '23:00:00', 'Moscow Center, 9', ARRAY[3, 7], TRUE),
+    ('5794d6b8-931a-492c-a08b-9cf0aba52bcc', 55.738570, 37.581200, 'Кооператив Чёрный', 'Уютная кофейня с авторскими напитками и минималистичным интерьером.', TRUE, 4.9, 300, 800, '08:00', '20:00', 'ул. Тимура Фрунзе, 24', ARRAY [6, 7], FALSE),
+    ('41a4a248-21c4-4eb0-8a01-6deeb7207b92', 55.734710, 37.590420, 'Coffee Bean', 'Известная сеть кофеен с большим выбором кофе и десертов.', TRUE, 4.7, 400, 900, '07:00', '21:00', 'ул. Остоженка, 31', ARRAY [6, 7], FALSE),
+    ('71a12089-32ec-4f3d-a872-c740291524ff', 55.739800, 37.599520, 'Breakfast Café', 'Заведение с европейской кухней, специализирующееся на завтраках.', TRUE, 4.8, 500, 1500, '08:00', '13:00', 'ул. Б. Никитская, 10', ARRAY [8, 9], FALSE),
+    ('e0f1e615-ab7f-49a3-9594-27907a91ffd1', 55.732180, 37.592770, 'Кафе Pushkin', 'Легендарное кафе с утонченным интерьером и европейским меню.', TRUE, 4.9, 2000, 4000, '08:00', '14:00', 'Тверской б-р, 26', ARRAY [8, 9], FALSE),
+    ('245e864e-f264-4222-aca7-416899098386', 55.735500, 37.602180, 'Домашний Очаг', 'Уютное кафе с домашней кухней, особенно популярное на завтрак.', TRUE, 4.7, 400, 1200, '09:00', '12:00', 'ул. Остоженка, 38', ARRAY [8, 10], FALSE),
+    ('6c7584cc-1933-4183-95a9-6b90f54fb10e', 55.737190, 37.583890, 'Теплый Дом', 'Кафе с домашними блюдами и теплыми напитками.', TRUE, 4.6, 300, 1100, '09:00', '11:00', 'ул. Арбат, 15', ARRAY [8, 10], FALSE),
+    ('7e4adcef-25f4-4bcc-ba3c-a743fa8d78a7', 55.733300, 37.591620, 'Трапезная', 'Столовая с недорогими блюдами и обедами.', TRUE, 4.5, 200, 500, '10:00', '15:00', 'ул. Пятницкая, 30', ARRAY [11, 12], FALSE),
+    ('97b3f9cc-93af-4c27-9429-03d476dc38db', 55.736470, 37.598370, 'Гастроном', 'Небольшая столовая с домашней атмосферой.', TRUE, 4.4, 250, 600, '10:00', '15:00', 'ул. Зубовский б-р, 20', ARRAY [11, 12], FALSE),
+    ('444785cf-fbbf-4c3a-8f5b-5a5a04b9010a', 55.737400, 37.584920, 'Синяя Птица', 'Ресторан с деловыми обедами и хорошим выбором блюд.', TRUE, 4.8, 800, 1600, '12:00', '15:00', 'ул. Сретенка, 8', ARRAY [13, 14], FALSE),
+    ('c91f4b3c-62bd-46c1-88e7-99490ece2f16', 55.739200, 37.592880, 'Lunch Spot', 'Небольшое кафе, предлагающее вкусные и недорогие бизнес-ланчи.', TRUE, 4.6, 600, 1200, '12:00', '14:00', 'ул. Покровка, 20', ARRAY [13, 14], FALSE),
+    ('8f722a53-dc95-4f5a-a3b6-295523da336f', 55.734300, 37.598150, 'Сладкая Жизнь', 'Кондитерская с большим ассортиментом тортов, пирожных и других сладостей.', TRUE, 4.9, 500, 1500, '09:00', '19:00', 'ул. Волхонка, 14', ARRAY [15, 16], FALSE),
+    ('69e97576-2e38-4093-aacb-5dd4fdbd7b61', 55.736900, 37.601450, 'Patisserie de Paris', 'Французская кондитерская с изысканными десертами.', TRUE, 4.8, 700, 1800, '08:00', '20:00', 'ул. Арбат, 35', ARRAY [15, 16], FALSE),
+    ('d4e9a369-a302-4bed-b23a-e5ce66a88d23', 55.739110, 37.595370, 'Чайхона №1', 'Чайная с восточным колоритом, уютными диванами и разнообразными сортами чая.', TRUE, 4.7, 500, 1300, '11:00', '23:00', 'ул. Остоженка, 21', ARRAY [17, 18], FALSE),
+    ('4bcc8cb7-1073-48e8-b8e6-4e7ed208de78', 55.738900, 37.589740, 'АндерСон', 'Кафе для детей с разнообразным меню и игровыми зонами.', TRUE, 4.9, 600, 1500, '09:00', '20:00', 'ул. Льва Толстого, 20', ARRAY [19, 20], FALSE),
+    ('01b98306-abc1-4719-9bf3-cf23534af95f', 55.735300, 37.591120, 'Волшебный Замок', 'Детское кафе с тематическими декорациями и веселыми мероприятиями.', TRUE, 4.8, 500, 1400, '10:00', '19:00', 'ул. Пятницкая, 22', ARRAY [19, 20], FALSE);
+
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Рестораны возсле Яндекса', 'Вкусно', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Пиццерии возсле Яндекса', 'Быстро', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('d387e611-05a1-4505-8bf8-9d1486a00f83', 'Кофейни возсе Яндекса', 'Красивый интерьер', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75', 'Завтраки', 'Европейская кухня', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('4f06e661-7fed-4713-81c1-9df4ac2d17dd', 'Завтраки', 'Домашняя кухня', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('85474fba-294c-40ba-9be3-6d0607b71d15', 'Столовые возле Яндекса', 'Недорого', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('74ba4bb4-5eec-4ba0-8675-161a5dc7e90b', 'Бизнес ланчи', 'Вкусно', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('9097a7bf-26e0-4099-960a-818713c500f2', 'Кондитерские возле Яндекса', 'Богатый ассортимент', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('2822cbc7-7b0d-41fb-81a7-ad3f901ca9e5', 'Чайные возсле Яндекса', 'Уютная атмосфера', 1)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.selections(id, name, description, is_public)
+VALUES('65609266-5ddb-4496-9638-32011aabf730', 'Детские кафе', 'Вкусно', 1)
+ON CONFLICT DO NOTHING;
+
+
+
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'd0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
+ON CONFLICT DO NOTHING;
+
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('5794d6b8-931a-492c-a08b-9cf0aba52bcc', 'd387e611-05a1-4505-8bf8-9d1486a00f83')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('41a4a248-21c4-4eb0-8a01-6deeb7207b92', 'd387e611-05a1-4505-8bf8-9d1486a00f83')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('71a12089-32ec-4f3d-a872-c740291524ff', '91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('e0f1e615-ab7f-49a3-9594-27907a91ffd1', '91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('245e864e-f264-4222-aca7-416899098386', '4f06e661-7fed-4713-81c1-9df4ac2d17dd')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('6c7584cc-1933-4183-95a9-6b90f54fb10e', '4f06e661-7fed-4713-81c1-9df4ac2d17dd')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('7e4adcef-25f4-4bcc-ba3c-a743fa8d78a7', '85474fba-294c-40ba-9be3-6d0607b71d15')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('97b3f9cc-93af-4c27-9429-03d476dc38db', '85474fba-294c-40ba-9be3-6d0607b71d15')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('444785cf-fbbf-4c3a-8f5b-5a5a04b9010a', '74ba4bb4-5eec-4ba0-8675-161a5dc7e90b')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('c91f4b3c-62bd-46c1-88e7-99490ece2f16', '74ba4bb4-5eec-4ba0-8675-161a5dc7e90b')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('8f722a53-dc95-4f5a-a3b6-295523da336f', '9097a7bf-26e0-4099-960a-818713c500f2')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('69e97576-2e38-4093-aacb-5dd4fdbd7b61', '9097a7bf-26e0-4099-960a-818713c500f2')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('d4e9a369-a302-4bed-b23a-e5ce66a88d23', '2822cbc7-7b0d-41fb-81a7-ad3f901ca9e5')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('4bcc8cb7-1073-48e8-b8e6-4e7ed208de78', '65609266-5ddb-4496-9638-32011aabf730')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO guide.places_selections(place_id, selection_id)
+VALUES('01b98306-abc1-4719-9bf3-cf23534af95f', '65609266-5ddb-4496-9638-32011aabf730')
+ON CONFLICT DO NOTHING;
+
 
 
 INSERT INTO guide.places (id, lat, lon, name, description, approved, rating, price_lower_bound, price_upper_bound, open_time, close_time, address, tags, is_favorite) VALUES
