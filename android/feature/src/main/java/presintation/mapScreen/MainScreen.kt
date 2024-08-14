@@ -208,15 +208,11 @@ fun MainScreen(
                                     }
                                     .pointerInput(Unit) {
                                         detectTapGestures(
-                                            onLongPress = {
+                                            onTap = {
                                                 Log.d("LongClickOnCard", restaurant.id)
                                                 navToRestaurant(restaurant.id)
                                             },
                                             onPress = {
-                                                if (isExpandedAtOffset.value) {
-                                                    Log.d("ClickOnCard", restaurant.id)
-                                                    navToRestaurant(restaurant.id)
-                                                }
                                                 if (sheetState.currentValue != SheetValue.Expanded) {
                                                     isExpandedAtOffset.value = true
                                                     Log.d(
