@@ -85,7 +85,7 @@ fun MapScreen(
             if (actionIsFinished) {
                 val topRightPoint = mapView.mapWindow.map.visibleRegion.topRight
                 val bottomLeftPoint = mapView.mapWindow.map.visibleRegion.bottomLeft
-                send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint))
+                send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList))
                 Log.d("CameraListener", "Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
             }
         }

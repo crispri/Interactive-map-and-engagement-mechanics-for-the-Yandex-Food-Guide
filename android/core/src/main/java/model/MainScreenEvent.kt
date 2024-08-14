@@ -19,5 +19,5 @@ class CancelCentering : MainScreenEvent()
 class UpdateItemsOnMap(
     val lowerLeft: Point,
     val topRight: Point,
+    val filterList: List<Filter>,
 ) : MainScreenEvent()
-

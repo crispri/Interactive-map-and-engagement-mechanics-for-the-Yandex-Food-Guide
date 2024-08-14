@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import model.CancelCentering
+import model.Filter
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.SaveInCollectionEvent
@@ -29,24 +30,31 @@ class MainViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        fetchRestaurants(_uiState.value.lowerLeft, _uiState.value.topRight)
+        fetchRestaurants(
+            _uiState.value.lowerLeft,
+            _uiState.value.topRight,
+            _uiState.value.filterList
+        )
     }
 
-    private fun fetchRestaurants(lowerLeft : Point, topRight: Point) {
+    private fun fetchRestaurants(lowerLeft: Point, topRight: Point, filterList: List<Filter>) {
         viewModelScope.launch {
-            Log.e("in fetchRestaurants", "${lowerLeft.latitude}, ${lowerLeft.longitude}, ${topRight.latitude}, ${topRight.longitude}, ")
+            Log.e(
+                "in fetchRestaurants",
+                "${lowerLeft.latitude}, ${lowerLeft.longitude}, ${topRight.latitude}, ${topRight.longitude}, "
+            )
             repository.getRestaurants(
                 "Asd",
                 lowerLeftLat = lowerLeft.latitude,
                 lowerLeftLon = lowerLeft.longitude,
                 topRightLat = topRight.latitude,
                 topRightLon = topRight.longitude,
-                maxCount = 0
+                filterList = filterList
             )
-            .collect { state ->
-                when (state) {
-                    is NetworkState.Failure -> {
-                        Log.d("NetworkException", "NetworkFailure")
+                .collect { state ->
+                    when (state) {
+                        is NetworkState.Failure -> {
+                            Log.d("NetworkException", "NetworkFailure")
 
                             // Пока не работает бек, возвращаем захардкоженные данные
                             _uiState.update {
@@ -107,11 +115,13 @@ class MainViewModel @Inject constructor(
             is SaveInCollectionEvent -> {
                 saveInCollection(event.restaurantId)
             }
+
             is NavigateToLocationEvent -> {
                 _uiState.update {
                     it.copy(centeringIsRequired = true)
                 }
             }
+
             is CancelCentering -> {
                 _uiState.update {
                     it.copy(centeringIsRequired = false)
@@ -124,11 +134,7 @@ class MainViewModel @Inject constructor(
             }*/
 
             is UpdateItemsOnMap -> {
-                fetchRestaurants(event.lowerLeft, event.topRight)
-            }
-
-            is SelectItem -> {
-                _uiState.update { it.copy(selectedItemId = event.itemId) }
+                fetchRestaurants(event.lowerLeft, event.topRight, event.filterList)
             }
 
 

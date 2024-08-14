@@ -4,6 +4,8 @@ import com.yandex.mapkit.geometry.Point
 import model.Restaurant
 import network.dto.response.RestaurantItemForJson
 import model.Coordinates
+import model.Filter
+import network.api.FilterForJson
 
 fun Restaurant.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     id,
@@ -35,6 +37,14 @@ fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
     closeTime,
     isFavorite,
     tags,
+)
+
+fun Filter.toJson() : FilterForJson = FilterForJson(
+    property, value, operator
+)
+
+fun FilterForJson.toModel() : Filter = Filter(
+    property, value, operator
 )
 
 fun String.toToken(): String = "Bearer $this"
