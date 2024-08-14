@@ -8,7 +8,11 @@ class SaveInCollectionEvent(
     val restaurantId: String
 ) : MainScreenEvent()
 
-class SelectItem(
+class SelectItemFromMap(
+    val itemId: String
+) : MainScreenEvent()
+
+class SelectItemFromBottomSheet(
     val itemId: String
 ) : MainScreenEvent()
 

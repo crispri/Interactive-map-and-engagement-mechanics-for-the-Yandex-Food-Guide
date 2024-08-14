@@ -1,12 +1,12 @@
 package presintation.mapScreen
 
 import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,8 +44,8 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -71,15 +71,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.mapview.MapView
+import custom_bottom_sheet.rememberBottomSheetState
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
-import custom_bottom_sheet.rememberBottomSheetState
-import model.SelectItem
-import model.Filter
+import model.SelectItemFromBottomSheet
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
@@ -155,15 +153,16 @@ fun MainScreen(
             }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .pointerInput(Unit) {
-            detectTapGestures(
-                onPress = {
-                    isExpandedAtOffset.value = false
-                }
-            )
-        },
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onPress = {
+                        isExpandedAtOffset.value = false
+                    }
+                )
+            },
     ) {
         custom_bottom_sheet.BottomSheetScaffold(
             scaffoldState = bottomSheetState,
@@ -183,17 +182,17 @@ fun MainScreen(
                         flingBehavior = snapBehavior,
                         modifier = Modifier
                             .pointerInput(Unit) {
-                        detectTapGestures(
-                            onPress = {
-                                if (sheetState.currentValue != SheetValue.Expanded){
-                                    isExpandedAtOffset.value = true
-                                    Log.d("tap111", "Палец поставлен на экран контент")
-                                }
-                            }
-                        )
-                    })  {
+                                detectTapGestures(
+                                    onPress = {
+                                        if (sheetState.currentValue != SheetValue.Expanded) {
+                                            isExpandedAtOffset.value = true
+                                            Log.d("tap111", "Палец поставлен на экран контент")
+                                        }
+                                    }
+                                )
+                            }) {
                         itemsIndexed(uiState.restaurantsOnMap) { index, restaurant ->
-                            send(SelectItem(restaurant.id))
+                            send(SelectItemFromBottomSheet(restaurant.id))
                             Card(
                                 modifier = Modifier
                                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
@@ -201,7 +200,8 @@ fun MainScreen(
                                     .background(Color.White)
                                     .clickable {
                                         Log.d("ClickOnCard", restaurant.id)
-                                        navToRestaurant(restaurant.id) }
+                                        navToRestaurant(restaurant.id)
+                                    }
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
@@ -441,7 +441,6 @@ fun MainScreen(
 }
 
 
-
 @Composable
 fun CollectionCarousel(recommendations: List<Recommendation>) {
     var selectedCardIndex by remember { mutableIntStateOf(-1) }
@@ -450,10 +449,9 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
     val configuration = LocalConfiguration.current
     val screenWidthInt = configuration.screenWidthDp
     LaunchedEffect(selectedCardIndex) {
-        if (selectedCardIndex != -1 && selectedCardIndex != 0){
+        if (selectedCardIndex != -1 && selectedCardIndex != 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, -(screenWidthInt / 2))
-        }
-        else if (selectedCardIndex == 0){
+        } else if (selectedCardIndex == 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, 0)
         }
     }
@@ -493,9 +491,6 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 }
 
 
-
-
-
 @Composable
 fun BottomSheetContent(
     isLoading: Boolean,
@@ -526,7 +521,7 @@ fun Carousel() {
         "Веранда"
     )
 
-    Row{
+    Row {
         IconButton(
             onClick = { /*TODO*/ },
             colors = IconButtonColors(
