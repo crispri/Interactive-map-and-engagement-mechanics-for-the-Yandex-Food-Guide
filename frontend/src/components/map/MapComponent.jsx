@@ -11,6 +11,7 @@ import { setCurrentPin } from '../../lib/restaurantsSlice'
 
 import useOutsideClick from '../../lib/useOutsideClick'
 import {YMapsContext} from '../../contexts/YMapsContext'
+import { useNavigate } from 'react-router-dom'
 
 const MapComponent = ({sheetRef}) => {
   const { 
@@ -36,6 +37,7 @@ const MapComponent = ({sheetRef}) => {
   });
 
   const [currentPolygon, setCurrentPolygon] = React.useState(location.bounds);
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const updateHandler = (obj) => {
     setCurrentPolygon(obj.location.bounds)
@@ -52,13 +54,14 @@ const MapComponent = ({sheetRef}) => {
   const current_pin = useSelector((state) => state.restaurantsSlice.current_pin)
 
   const setFocus = (pin) => {
-    // console.log(pin);
+    console.log(pin);
     dispatch(setCurrentPin(pin))
     setLocation(loco => ({
       center: [pin.coordinates[0], pin.coordinates[1]],
       duration: 300,
     }))
-    sheetRef.current.snapTo(({ maxHeight }) => maxHeight * 0.4);
+    navigate(`map/${pin.id}`)
+    sheetRef.current.snapTo(({ maxHeight }) => maxHeight * 0.45);
   }
 
   const onOutsideClick = useOutsideClick(() => {
@@ -82,7 +85,7 @@ const MapComponent = ({sheetRef}) => {
 
  return (
  <>
-  <div style={{width: '100%', height: '100%'}}>
+  <div style={{width: '100%', height: '100%', paddingBottom: '40px'}}>
     <YMap location={location} showScaleInCopyrights={true} ref={(x) => (map = x)}>
       <YMapDefaultSchemeLayer />
       <YMapDefaultFeaturesLayer/>
@@ -109,7 +112,6 @@ const MapComponent = ({sheetRef}) => {
       </YMapControls>
     </YMap>    
   </div>
-  <MyBottomSheet />
  </>
  )
 }
