@@ -17,6 +17,4 @@ data class RestaurantUiState(
         "Можно с собакой",
         "Веранда"
     ),
-
-
-    )
+)

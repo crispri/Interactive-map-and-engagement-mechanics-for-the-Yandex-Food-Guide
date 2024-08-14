@@ -8,6 +8,10 @@ class SaveInCollectionEvent(
     val restaurantId: String
 ) : MainScreenEvent()
 
+class SelectItem(
+    val itemId: String
+) : MainScreenEvent()
+
 class NavigateToLocationEvent : MainScreenEvent()
 
 class CancelCentering : MainScreenEvent()
@@ -16,3 +20,4 @@ class UpdateItemsOnMap(
     val lowerLeft: Point,
     val topRight: Point,
 ) : MainScreenEvent()
+

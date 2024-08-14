@@ -2,6 +2,9 @@ package presintation.mapScreen
 
 import Utils.createBitmapFromVector
 import Utils.createBitmapFromView
+import Utils.createNormalPin
+import Utils.createSuperPin
+import Utils.createSuperSelectedPin
 import Utils.invertColors
 import android.graphics.Bitmap
 import android.util.Log
@@ -39,28 +42,35 @@ fun MapScreen(
     val restaurantMarkerImageProviderMini = remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
 
 
-    //Mini - highlighted
+    //Mini - Selected
     var invertedBitmap = remember { restaurantMarkerMini }
     if(restaurantMarkerMini != null) invertedBitmap = invertColors(restaurantMarkerMini)
-    val restaurantMarkerImageProviderMiniHighlighted = remember { ImageProvider.fromBitmap(invertedBitmap) }
+    val restaurantMarkerImageProviderMiniSelected = remember { ImageProvider.fromBitmap(invertedBitmap) }
 
 
     //Normal - general
-    val restaurantMarkerNormal = remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
+    //val restaurantMarkerNormal = remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
+    val normalView = remember { createNormalPin(mapView.context) }
+    val restaurantMarkerNormal = remember { createBitmapFromView(normalView) }
     val restaurantMarkerImageProviderNormal = remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
 
-    //Normal - highlighted
-    var invertedBitmapNormal = remember { restaurantMarkerNormal }
-    if(restaurantMarkerNormal != null) invertedBitmapNormal = invertColors(restaurantMarkerNormal)
-    val restaurantMarkerImageProviderNormalHighlighted = remember { ImageProvider.fromBitmap(invertedBitmapNormal) }
+
+    //Normal - Selected
+    val invertedBitmapNormal = invertColors(restaurantMarkerNormal)
+    val restaurantMarkerImageProviderNormalSelected = remember { ImageProvider.fromBitmap(invertedBitmapNormal) }
+
 
     //Maxi - general
-    val pinView = remember { CustomPinView(context = mapView.context) }
-    pinView.setTitle("Хороший бар")
-    pinView.setRating("4.9")
-    pinView.setDescription("кофе от 300Р")
-    val restaurantMarkerMaxi = remember { createBitmapFromView(pinView) }
+    val superView = remember { createSuperPin(mapView.context) }
+    val restaurantMarkerMaxi = remember { createBitmapFromView(superView) }
     val restaurantMarkerImageProviderMaxi = remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
+
+
+    //Maxi - Selected
+    val superViewSelected = remember { createSuperSelectedPin(mapView.context) }
+    val restaurantMarkerMaxiSelected = remember { createBitmapFromView(superViewSelected) }
+    val restaurantMarkerImageProviderMaxiSelected = remember { ImageProvider.fromBitmap(restaurantMarkerMaxiSelected) }
+
 
     // curLocation
     val curLocationMarker = remember {
@@ -114,13 +124,25 @@ fun MapScreen(
             val currentPin =
                 if ( index < uiState.restaurantsOnMap.size - 8) {
                     //restaurantMarkerImageProviderMini
-                    restaurantMarkerImageProviderMiniHighlighted
+                    if(uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemId){
+                        restaurantMarkerImageProviderMiniSelected
+                    } else {
+                        restaurantMarkerImageProviderMini
+                    }
                 } else
                     if (index < uiState.restaurantsOnMap.size - 4) {
-                        //restaurantMarkerImageProviderNormal
-                        restaurantMarkerImageProviderNormalHighlighted
+                        if(uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemId){
+                            restaurantMarkerImageProviderNormalSelected
+                        } else{
+                            restaurantMarkerImageProviderNormal
+                        }
                     } else {
-                        restaurantMarkerImageProviderMaxi
+                        if(uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemId){
+                            restaurantMarkerImageProviderMaxiSelected
+                        } else{
+                            restaurantMarkerImageProviderMaxi
+                        }
+
                     }
 
             mapObjectCollection.addPlacemark().apply {

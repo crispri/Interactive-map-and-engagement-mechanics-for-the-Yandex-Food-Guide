@@ -78,6 +78,7 @@ import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
+import model.SelectItem
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
@@ -191,6 +192,9 @@ fun MainScreen(
                         )
                     })  {
                         itemsIndexed(uiState.restaurantsOnMap) { index, restaurant ->
+                            send(SelectItem(restaurant.id))
+                            Log.e("in itemsIndexed", restaurant.id)
+                            Log.e("uiState", "${uiState.selectedItemId}")
 
                             Card(
                                 modifier = Modifier

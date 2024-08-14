@@ -18,10 +18,52 @@ import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import model.Recommendation
 import model.Restaurant
+import pins.CustomPinView
+import pins.CustomPinViewSelected
+import pins.NormalPinView
 import ui.SuperPinCard
 
 
 object Utils {
+
+    fun createSuperPin(
+        context: Context,
+        tittle: String = "Хороший бар",
+        raiting: Double = 4.9,
+        description: String = "кофе от 300Р"
+    ): View {
+        val pinView = CustomPinView(context = context)
+        pinView.setTitle(tittle)
+        pinView.setRating(raiting.toString())
+        pinView.setDescription(description)
+
+        return pinView
+    }
+
+    fun createSuperSelectedPin(
+        context: Context,
+        tittle: String = "Хороший бар",
+        raiting: Double = 4.9,
+        description: String = "кофе от 300Р"
+    ): View {
+        val pinView = CustomPinViewSelected(context = context)
+        pinView.setTitle(tittle)
+        pinView.setRating(raiting.toString())
+        pinView.setDescription(description)
+
+        return pinView
+    }
+
+    fun createNormalPin(
+        context: Context,
+        tittle: String = "Нормальный бар",
+        raiting: Double = 4.8,
+    ): View {
+        val pinView = NormalPinView(context = context)
+        pinView.setTitle(tittle)
+        pinView.setRating(raiting.toString())
+        return pinView
+    }
 
     fun invertColors(bitmap: Bitmap): Bitmap {
         val invertedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
@@ -29,12 +71,14 @@ object Utils {
         val paint = Paint()
 
         val colorMatrix = ColorMatrix()
-        colorMatrix.set(floatArrayOf(
-            -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
-            0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
-            0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
-            0.0f, 0.0f, 0.0f, 1.0f, 0.0f
-        ))
+        colorMatrix.set(
+            floatArrayOf(
+                -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
+                0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
+                0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
+                0.0f, 0.0f, 0.0f, 1.0f, 0.0f
+            )
+        )
         paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
 
         canvas.drawBitmap(bitmap, 0f, 0f, paint)
@@ -42,14 +86,7 @@ object Utils {
     }
 
 
-    fun createBitmapFromView(view: View) : Bitmap{
-
-        /*val view =  TextView(context)
-        view.text = "My text"
-        view.textSize = 20F*/
-
-
-
+    fun createBitmapFromView(view: View): Bitmap {
         view.forceLayout()
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());

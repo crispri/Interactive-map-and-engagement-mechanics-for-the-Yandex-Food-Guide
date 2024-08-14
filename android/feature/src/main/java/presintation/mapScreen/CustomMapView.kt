@@ -8,6 +8,8 @@ import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.CameraUpdateReason
 import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.VisibleRegion
 import com.yandex.mapkit.mapview.MapView
 
@@ -19,13 +21,12 @@ class CustomMapView @JvmOverloads constructor(
 
     private var onCameraPositionChangeFinishedListener: ((CameraPosition) -> Unit)? = null
     private val cameraListeners: MutableSet<CameraListener> = mutableSetOf()
-    private var visibleRegion : VisibleRegion? = null
+    private val tapListeners: MutableSet<MapObjectTapListener> = mutableSetOf()
 
 
     fun addCameraListener(cameraListener: CameraListener){
         cameraListeners.add(cameraListener)
         mapWindow.map.addCameraListener(cameraListener)
-
     }
 
     fun getVisibleRegionCoordinates(listener: (CameraPosition) -> Unit) {

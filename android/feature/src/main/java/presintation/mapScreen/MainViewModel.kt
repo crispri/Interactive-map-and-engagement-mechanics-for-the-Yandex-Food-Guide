@@ -14,6 +14,7 @@ import model.CancelCentering
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.SaveInCollectionEvent
+import model.SelectItem
 import model.UpdateItemsOnMap
 import network.util.NetworkState
 import repository.RestaurantRepositoryImpl
@@ -124,6 +125,10 @@ class MainViewModel @Inject constructor(
 
             is UpdateItemsOnMap -> {
                 fetchRestaurants(event.lowerLeft, event.topRight)
+            }
+
+            is SelectItem -> {
+                _uiState.update { it.copy(selectedItemId = event.itemId) }
             }
 
 
