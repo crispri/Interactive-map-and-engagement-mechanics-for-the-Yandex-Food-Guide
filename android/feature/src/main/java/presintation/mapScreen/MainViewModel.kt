@@ -15,6 +15,8 @@ import model.Filter
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.SaveInCollectionEvent
+import model.SelectItemFromBottomSheet
+import model.SelectItemFromMap
 import model.UpdateItemsOnMap
 import network.util.NetworkState
 import repository.RestaurantRepositoryImpl
@@ -126,15 +128,20 @@ class MainViewModel @Inject constructor(
                     it.copy(centeringIsRequired = false)
                 }
             }
-            /*is ChangeDeviceLocation -> {
-                _uiState.update {
-                    it.copy( currentDeviceLocation = event.curLocation)
-                }
-            }*/
 
             is UpdateItemsOnMap -> {
                 fetchRestaurants(event.lowerLeft, event.topRight, event.filterList)
             }
+
+            is SelectItemFromMap -> {
+                _uiState.update { it.copy(selectedItemFromMapId = event.itemId, selectedItemFromBottomSheetId = null) }
+            }
+
+            is SelectItemFromBottomSheet -> {
+                _uiState.update { it.copy(selectedItemFromBottomSheetId = event.itemId, selectedItemFromMapId = null) }
+            }
+
+
         }
     }
 

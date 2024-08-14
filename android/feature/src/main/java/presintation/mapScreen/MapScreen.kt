@@ -2,7 +2,13 @@ package presintation.mapScreen
 
 import Utils.createBitmapFromVector
 import Utils.createBitmapFromView
+import Utils.createNormalPin
+import Utils.createSuperPin
+import Utils.createSuperSelectedPin
+import Utils.invertColors
+import android.graphics.Color
 import android.util.Log
+import android.view.View
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,16 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.feature.R
 import com.yandex.mapkit.Animation
-import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
 import model.MainScreenEvent
+import model.SelectItemFromMap
 import model.UpdateItemsOnMap
-import pins.CustomPinView
 
 
 @Composable
@@ -33,25 +39,50 @@ fun MapScreen(
 ) {
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
 
-    //Mini
-    val restaurantMarkerMini =
-        remember { createBitmapFromVector(com.example.core.R.drawable.ic_mini_pin, context = mapView.context) }
-    val restaurantMarkerImageProviderMini = remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
+    //Mini - general
+    val restaurantMarkerMini = remember {
+        createBitmapFromVector(
+            com.example.core.R.drawable.ic_mini_pin,
+            context = mapView.context
+        )
+    }
+    val restaurantMarkerImageProviderMini =
+        remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
 
-    //Normal
-    val restaurantMarkerNormal =
-        remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
-    val restaurantMarkerImageProviderNormal = remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
 
-    //Maxi
-    val pinView: CustomPinView = CustomPinView(context = mapView.context)
+    //Mini - Selected
+    var invertedBitmap = remember { restaurantMarkerMini }
+    if (restaurantMarkerMini != null) invertedBitmap = invertColors(restaurantMarkerMini)
+    val restaurantMarkerImageProviderMiniSelected =
+        remember { ImageProvider.fromBitmap(invertedBitmap) }
 
-    pinView.setTitle("Хороший бар")
-    pinView.setRating("4.9")
-    pinView.setDescription("кофе от 300Р")
-    val restaurantMarkerMaxi =
-        remember { createBitmapFromView(pinView) }
-    val restaurantMarkerImageProviderMaxi = remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
+
+    //Normal - general
+    val normalView = remember { createNormalPin(mapView.context) }
+    val restaurantMarkerNormal = remember { createBitmapFromView(normalView) }
+    val restaurantMarkerImageProviderNormal =
+        remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
+
+
+    //Normal - Selected
+    val invertedBitmapNormal = invertColors(restaurantMarkerNormal)
+    val restaurantMarkerImageProviderNormalSelected =
+        remember { ImageProvider.fromBitmap(invertedBitmapNormal) }
+
+
+    //Maxi - general
+    val superView = remember { createSuperPin(mapView.context) }
+    val restaurantMarkerMaxi = remember { createBitmapFromView(superView) }
+    val restaurantMarkerImageProviderMaxi =
+        remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
+
+
+    //Maxi - Selected
+    val superViewSelected = remember { createSuperSelectedPin(mapView.context) }
+    val restaurantMarkerMaxiSelected = remember { createBitmapFromView(superViewSelected) }
+    val restaurantMarkerImageProviderMaxiSelected =
+        remember { ImageProvider.fromBitmap(restaurantMarkerMaxiSelected) }
+
 
     // curLocation
     val curLocationMarker = remember {
@@ -59,11 +90,21 @@ fun MapScreen(
     }
     val curLocationMarkerImageProvider = remember { ImageProvider.fromBitmap(curLocationMarker) }
 
-    val cameraCallback = remember{ Map.CameraCallback {} }
+    val cameraCallback = remember { Map.CameraCallback {} }
+
+    val tapListener = remember {
+        MapObjectTapListener { mapObject, _ ->
+            send(SelectItemFromMap(mapObject.userData.toString()))
+            true
+        }
+    }
 
     LaunchedEffect(Unit) {
-        val cameraListener = CameraListener { p0, p1, p2, p3 ->
-            if (p3) {
+
+        //mapView.mapWindow.map.isNightModeEnabled = true // Включаем ночной режим
+
+        val cameraListener = CameraListener { _, _, _, actionIsFinished ->
+            if (actionIsFinished) {
                 val topRightPoint = mapView.mapWindow.map.visibleRegion.topRight
                 val bottomLeftPoint = mapView.mapWindow.map.visibleRegion.bottomLeft
                 send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList))
@@ -73,7 +114,6 @@ fun MapScreen(
         mapView.addCameraListener(cameraListener)
 
         mapObjectCollection.addPlacemark().apply {
-            //geometry = Point(55.733415, 37.590042)
             geometry = curLocation.value ?: Point(55.733415, 37.590042)
             setIcon(curLocationMarkerImageProvider)
         }
@@ -95,56 +135,53 @@ fun MapScreen(
             )
         }
 
-        /*if(curLocation != uiState.currentDeviceLocation && uiState.currentDeviceLocation != null){
-            send(ChangeDeviceLocation(curLocation))
-        }*/
-
-
-        /*if(curLocation.value != null){
-            send(ChangeDeviceLocation(curLocation.value!!))
-        }*/
-
         if (uiState.centeringIsRequired && curLocation.value != null) {
             moveToStartLocation(curLocation.value!!, uiState.zoomValue)
             send(CancelCentering())
         }
 
-        val mapKit = MapKitFactory.getInstance()
-
         mapObjectCollection.clear()
 
-        /*uiState.restaurantsOnMap.forEach {
-            mapObjectCollection.addPlacemark().apply {
-                geometry = it.coordinates
-                setIcon(restaurantMarkerImageProvider)
-            }
-        }*/
-
         uiState.restaurantsOnMap.reversed().forEachIndexed { index, restaurant ->
-            Log.e("uiState.restaurantsOnMap.reversed().forEachIndexed", "index = $index")
+            val selected = uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId
             val currentPin =
-                if ( index < uiState.restaurantsOnMap.size - 8) {
-                    Log.e("uiState.restaurantsOnMap.reversed().forEachIndexed", "Mini")
-                    restaurantMarkerImageProviderMini
+                if (index < uiState.restaurantsOnMap.size - 8) {
+                    if (selected) {
+                        restaurantMarkerImageProviderMiniSelected
+                    } else {
+                        restaurantMarkerImageProviderMini
+                    }
                 } else
                     if (index < uiState.restaurantsOnMap.size - 4) {
-                        Log.e("uiState.restaurantsOnMap.reversed().forEachIndexed", "Normal")
-                        restaurantMarkerImageProviderNormal
+                        if(selected){
+                            restaurantMarkerImageProviderNormalSelected
+                        } else {
+                            restaurantMarkerImageProviderNormal
+                        }
                     } else {
-                        Log.e("uiState.restaurantsOnMap.reversed().forEachIndexed", "Maxi")
-                        restaurantMarkerImageProviderMaxi
+                        if (selected) {
+                            restaurantMarkerImageProviderMaxiSelected
+                        } else {
+                            restaurantMarkerImageProviderMaxi
+                        }
+
                     }
 
-            mapObjectCollection.addPlacemark().apply {
+            val placemark = mapObjectCollection.addPlacemark().apply {
                 geometry = restaurant.coordinates
                 setIcon(currentPin)
             }
-        }
+            placemark.userData = restaurant.id
+            placemark.addTapListener(tapListener)
 
+            mapView.addTabListener(tapListener)
+            mapView.addCustomPlaceMark(placemark)
+        }
 
         mapObjectCollection.addPlacemark().apply {
             geometry = curLocation.value ?: Point(55.733415, 37.590042)
             setIcon(curLocationMarkerImageProvider)
         }
+
     }
 }
