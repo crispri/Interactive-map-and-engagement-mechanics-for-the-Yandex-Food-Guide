@@ -24,6 +24,7 @@
 #include <models/RestaurantFilterJSON/PriceUBRestaurantFilterJSON.hpp>
 #include <models/RestaurantFilterJSON/OpenTimeRestaurantFilterJSON.hpp>
 #include <models/RestaurantFilterJSON/CloseTimeRestaurantFilterJSON.hpp>
+#include <models/RestaurantFilterJSON/SelectionRestaurantFilterJSON.hpp>
 
 namespace service {
 
@@ -205,7 +206,8 @@ const std::unordered_map<
     {"price_lower_bound", std::make_shared<PriceLBRestaurantFilterJSON>()},
     {"price_upper_bound", std::make_shared<PriceUBRestaurantFilterJSON>()},
     {"open_time", std::make_shared<OpenTimeRestaurantFilterJSON>()},
-    {"close_time", std::make_shared<CloseTimeRestaurantFilterJSON>()}
+    {"close_time", std::make_shared<CloseTimeRestaurantFilterJSON>()},
+    {"selection_id", std::make_shared<SelectionRestaurantFilterJSON>()}
 };
 
 }  // namespace
