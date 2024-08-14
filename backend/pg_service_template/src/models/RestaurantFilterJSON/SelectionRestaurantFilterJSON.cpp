@@ -27,11 +27,7 @@ namespace service {
         if (!kCorrectOperators_.count(op)) {
             return ErrorDescriprion::kInvalidOperator;
         }
-        if (!JSON["value"].IsArray()) {
-            return ErrorDescriprion::kValueIsNotArray;
-        }
         const std::regex uuid_regex(R"(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$)");
-
         for (const auto& uuid : JSON["value"]) {
             if (!std::regex_match(uuid.As<std::string>(), uuid_regex)) {
                 return ErrorDescriprion::kInvalidValueType;

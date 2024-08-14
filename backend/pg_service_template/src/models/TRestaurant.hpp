@@ -20,7 +20,7 @@ struct TRestaurant {
     userver::utils::datetime::TimeOfDay<std::chrono::seconds> open_time;
     userver::utils::datetime::TimeOfDay<std::chrono::seconds> close_time;
     std::string address;
-    std::optional<std::vector<short>> tags;
+    std::optional<std::vector<std::string>> tags;
     bool is_favorite;
 
     std::tuple<
@@ -36,7 +36,7 @@ struct TRestaurant {
         userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
         userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
         std::string&,
-        std::optional<std::vector<short>>&,
+        std::optional<std::vector<std::string>>&,
         bool&
     > Introspect();
 };

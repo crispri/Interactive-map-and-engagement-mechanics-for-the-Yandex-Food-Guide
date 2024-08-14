@@ -48,7 +48,7 @@ std::tuple<
     userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
     userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
     std::string&,
-    std::optional<std::vector<short>>&,
+    std::optional<std::vector<std::string>>&,
     bool&
     > TRestaurant::Introspect()
 {
