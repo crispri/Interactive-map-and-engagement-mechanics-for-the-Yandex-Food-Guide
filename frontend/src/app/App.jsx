@@ -21,6 +21,7 @@ function App() {
   const sheetRef = useRef()
   const current_pin = useSelector((state) => state.restaurantsSlice.current_pin)
   const restaurants = useSelector((state) => state.restaurantsSlice.restaurants)
+  // console.log(current_pin, restaurants.filter(el => el.name === current_pin?.name));
   const {restId} = useParams()
 
   const router = createBrowserRouter([
@@ -48,14 +49,10 @@ function App() {
         },
         {
           path: 'map/:restId',
-          element:  <img src={sample} alt="sample" style={{width: '100%', height: '100%'}}/>
+          element:  <RestaurantCard restaurantInfo={current_pin}/>
         },
       ]
     },
-    {
-      path: "/bottomsheet",
-      element: <MyBottomSheet />
-    }
   ]);
 
   return (
