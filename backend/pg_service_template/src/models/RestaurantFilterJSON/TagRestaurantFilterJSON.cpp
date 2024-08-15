@@ -24,7 +24,8 @@ namespace service {
             "Бар",
             "Семейный ужин с детьми",
             "В тренде",
-            "Ресторан"
+            "Ресторан",
+            "Открытая кухня"
     };
 
     std::variant<std::string, ErrorDescriprion> TagRestaurantFilterJSON::BuildSQLFilter(
