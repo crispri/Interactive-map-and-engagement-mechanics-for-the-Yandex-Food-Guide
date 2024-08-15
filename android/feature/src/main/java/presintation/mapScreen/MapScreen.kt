@@ -22,6 +22,7 @@ import model.CancelCentering
 import model.MainScreenEvent
 import model.UpdateItemsOnMap
 import pins.CustomPinView
+import pins.NormalPinView
 
 
 @Composable
@@ -35,23 +36,37 @@ fun MapScreen(
 
     //Mini
     val restaurantMarkerMini =
-        remember { createBitmapFromVector(com.example.core.R.drawable.ic_mini_pin, context = mapView.context) }
-    val restaurantMarkerImageProviderMini = remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
+        remember {
+            createBitmapFromVector(
+                com.example.core.R.drawable.ic_mini_pin,
+                context = mapView.context
+            )
+        }
+    val restaurantMarkerImageProviderMini =
+        remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
 
     //Normal
+    val pinViewN: NormalPinView = NormalPinView(context = mapView.context)
+
+    pinViewN.setTitle("Хороший бар")
+    pinViewN.setRating("4.9")
     val restaurantMarkerNormal =
-        remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
-    val restaurantMarkerImageProviderNormal = remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
+        remember { createBitmapFromView(pinViewN, com.example.core.R.color.grey, 32f, 0f, 0f) }
+    // remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
+    val restaurantMarkerImageProviderNormal =
+        remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
 
     //Maxi
     val pinView: CustomPinView = CustomPinView(context = mapView.context)
-
+    pinView.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
+    Log.d("imageReady", "Ready")
     pinView.setTitle("Хороший бар")
     pinView.setRating("4.9")
     pinView.setDescription("кофе от 300Р")
     val restaurantMarkerMaxi =
-        remember { createBitmapFromView(pinView) }
-    val restaurantMarkerImageProviderMaxi = remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
+        remember { createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f) }
+    val restaurantMarkerImageProviderMaxi =
+        remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
 
     // curLocation
     val curLocationMarker = remember {
@@ -59,7 +74,7 @@ fun MapScreen(
     }
     val curLocationMarkerImageProvider = remember { ImageProvider.fromBitmap(curLocationMarker) }
 
-    val cameraCallback = remember{ Map.CameraCallback {} }
+    val cameraCallback = remember { Map.CameraCallback {} }
 
     LaunchedEffect(Unit) {
         val cameraListener = CameraListener { p0, p1, p2, p3 ->
@@ -121,9 +136,10 @@ fun MapScreen(
         }*/
 
         uiState.restaurantsOnMap.reversed().forEachIndexed { index, restaurant ->
+
             Log.e("uiState.restaurantsOnMap.reversed().forEachIndexed", "index = $index")
             val currentPin =
-                if ( index < uiState.restaurantsOnMap.size - 8) {
+                if (index < uiState.restaurantsOnMap.size - 8) {
                     Log.e("uiState.restaurantsOnMap.reversed().forEachIndexed", "Mini")
                     restaurantMarkerImageProviderMini
                 } else

@@ -1,13 +1,18 @@
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.Picture
+import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import com.example.feature.R
@@ -18,20 +23,54 @@ import ui.SuperPinCard
 
 
 object Utils {
-    fun createBitmapFromView(view: View) : Bitmap{
 
-        /*val view =  TextView(context)
-        view.text = "My text"
-        view.textSize = 20F*/
+    fun createBitmapFromView(
+        view: View,
+        shadowColor: Int,
+        shadowRadius: Float,
+        dx: Float,
+        dy: Float
+    ): Bitmap {
+        // Создаем bitmap из view
+        val originalBitmap = createBitmapFromViewForShadow(view)
 
+        // Создаем bitmap с добавлением тени
+        val shadowBitmap = Bitmap.createBitmap(
+            originalBitmap.width + (shadowRadius * 2).toInt(),
+            originalBitmap.height + (shadowRadius * 2).toInt(),
+            Bitmap.Config.ARGB_8888
+        )
 
+        val canvas = Canvas(shadowBitmap)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-        view.forceLayout()
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        return view.drawToBitmap()
+        // Добавляем тень
+        paint.setShadowLayer(shadowRadius, dx, dy, shadowColor)
 
+        // Рисуем элемент, у которого будет тень
+        canvas.drawRoundRect(
+            0f, 0f,
+            originalBitmap.width.toFloat(),
+            originalBitmap.height.dp.value - 21.dp.value,
+            40.dp.value,
+            40.dp.value,
+            paint,
+        )
+
+        // Рисуем исходный bitmap поверх тени
+        canvas.drawBitmap(originalBitmap, 0f, 0f, null)
+
+        return shadowBitmap
     }
+
+    private fun createBitmapFromViewForShadow(view: View): Bitmap {
+        view.forceLayout()
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+
+        return view.drawToBitmap()
+    }
+
 
     fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
         val drawable = ContextCompat.getDrawable(context, art) ?: return null

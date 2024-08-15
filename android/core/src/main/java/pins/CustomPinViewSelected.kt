@@ -24,7 +24,7 @@ class CustomPinViewSelected @JvmOverloads constructor(
         inflate(context, R.layout.view_custom_pin_selected, this)
 
         // Get references to the views
-        imageView = findViewById(R.id.imageView)
+        imageView = findViewById(R.id.ivPictureOfPlace)
         titleTextView = findViewById(R.id.titleTextView)
         ratingTextView = findViewById(R.id.ratingTextView)
         descriptionTextView = findViewById(R.id.descriptionTextView)

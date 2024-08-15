@@ -71,14 +71,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.mapview.MapView
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
-import model.Filter
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard

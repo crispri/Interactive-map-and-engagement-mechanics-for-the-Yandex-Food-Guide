@@ -71,5 +71,6 @@
         android:layout_height="8dp"
         android:layout_gravity="top|center_horizontal"
         android:scaleType="centerCrop"
-        android:src="@drawable/bottom_center" />
+        android:src="@drawable/bottom_center"
+        android:tint="@color/black"/>
 </LinearLayout>
