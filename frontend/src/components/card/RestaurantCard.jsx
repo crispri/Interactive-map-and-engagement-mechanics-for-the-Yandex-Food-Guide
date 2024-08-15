@@ -28,7 +28,7 @@ const RestaurantCard = ({ restaurantInfo }) => {
           <div className="title">{restaurantInfo?.name}</div>
           <div className="rating" onClick={handleClick}>
             <span className="star">★</span>
-            <span>{restaurantInfo?.rating?.toFixed(1)}</span>
+            <span>{Number(restaurantInfo?.rating).toFixed(1)}</span>
           </div>
         </div>
         <div className="info">

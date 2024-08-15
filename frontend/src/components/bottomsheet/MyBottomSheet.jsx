@@ -28,8 +28,6 @@ const cardInfos = [
 
 const MyBottomSheet = ({sheetRef, content}) => {
 
-  const [id, setId] = useState(-1);
-
   let options = {
     root: document.querySelector("#key"),
     rootMargin: "0px",
