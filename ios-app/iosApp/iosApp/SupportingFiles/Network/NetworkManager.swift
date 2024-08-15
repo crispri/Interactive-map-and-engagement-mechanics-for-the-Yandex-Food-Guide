@@ -86,4 +86,38 @@ final class NetworkManager {
         
         return data.items
     }
+
+    public func fetchAddress(loc: Point) async throws -> Data {
+        var components = URLComponents(string: "\(Configuration.geocoderURL)")!
+
+        components.queryItems = [
+            URLQueryItem(name: "apikey", value: "\(Configuration.geocoderKey)"),
+            URLQueryItem(name: "geocode", value: "\(loc.lat),\(loc.lon)"),
+            URLQueryItem(name: "lang", value: "ru_RU"),
+            URLQueryItem(name: "sco", value: "latlong"),
+            URLQueryItem(name: "kind", value: "house"),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "results", value: "1")
+        ]
+        
+        guard let url = components.url else {
+            throw URLError(.badURL)
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkingError.serverError(statucCode: httpResponse.statusCode)
+        }
+        
+        return data
+    }
 }
