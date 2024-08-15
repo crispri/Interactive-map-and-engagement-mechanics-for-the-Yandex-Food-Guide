@@ -13,7 +13,7 @@ class SelectItemFromMap(
 ) : MainScreenEvent()
 
 class SelectItemFromBottomSheet(
-    val itemId: String
+    val itemId: String?
 ) : MainScreenEvent()
 
 class NavigateToLocationEvent : MainScreenEvent()

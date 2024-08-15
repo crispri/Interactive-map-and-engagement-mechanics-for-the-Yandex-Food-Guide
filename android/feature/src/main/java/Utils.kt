@@ -26,6 +26,12 @@ import ui.SuperPinCard
 
 object Utils {
 
+    enum class PlacemarkUserData{
+        MINI,
+        NORMAL,
+        LARGE
+    }
+
     fun createSuperPin(
         context: Context,
         tittle: String = "Хороший бар",

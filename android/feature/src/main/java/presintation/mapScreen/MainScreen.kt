@@ -106,6 +106,8 @@ fun MainScreen(
 
     val itemHeight = remember { mutableStateOf(0.dp) }
 
+    val isMapSelected = remember { mutableStateOf(false) }
+
     val listState = rememberLazyListState()
 
     val coroutineScope = rememberCoroutineScope()
@@ -145,6 +147,19 @@ fun MainScreen(
 
     val lazyListState = rememberLazyListState()
     val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
+
+    /*LaunchedEffect(uiState.selectedItemFromMapId) {
+        uiState.selectedItemFromMapId?.let { selectedId ->
+            val index = uiState.restaurantsOnMap.indexOfFirst { it.id == selectedId }
+            if (index != -1) {
+                isMapSelected.value = true
+                lazyListState.scrollToItem(index)
+                sheetState.animateTo(SheetValue.PartiallyExpanded)
+
+            }
+        }
+    }
+*/
 
     LaunchedEffect(bottomSheetState.sheetState) {
         snapshotFlow { bottomSheetState.sheetState.requireOffset() }
@@ -191,8 +206,36 @@ fun MainScreen(
                                     }
                                 )
                             }) {
-                        itemsIndexed(uiState.restaurantsOnMap) { index, restaurant ->
-                            send(SelectItemFromBottomSheet(restaurant.id))
+                        val list = mutableStateOf(uiState.restaurantsOnMap)
+                        if(uiState.selectedItemFromMapId != null){
+                            val index = uiState.restaurantsOnMap.indexOfFirst { it.id == uiState.selectedItemFromMapId }
+                            if(index != -1){
+                                list.value = listOf(uiState.restaurantsOnMap[index])
+                            } else{
+                                Log.e("selectedItemFromMapId", "not found with id = selectedItemFromMapId")
+                            }
+
+                        }
+                        itemsIndexed(list.value) { index, restaurant ->
+                            //if (sheetState.currentValue == SheetValue.PartiallyExpanded && !isMapSelected.value && uiState.selectedItemFromMapId == null) {
+                            Log.e(
+                                "SelectItemFromBottomSheet",
+                                "real index = ${index}"
+                            )
+                            if (sheetState.currentValue == SheetValue.PartiallyExpanded && uiState.selectedItemFromMapId == null) {
+                                send(SelectItemFromBottomSheet(restaurant.id))
+                                Log.e(
+                                    "SelectItemFromBottomSheet",
+                                    "sended idex = ${index}"
+                                )
+                            }
+                            //if (sheetState.currentValue == SheetValue.Hidden && !isMapSelected.value && uiState.selectedItemFromMapId == null) {
+                            if (sheetState.currentValue == SheetValue.Hidden && uiState.selectedItemFromMapId == null) {
+                                send(SelectItemFromBottomSheet(null))
+                            }
+
+                            isMapSelected.value = false
+
                             Card(
                                 modifier = Modifier
                                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
