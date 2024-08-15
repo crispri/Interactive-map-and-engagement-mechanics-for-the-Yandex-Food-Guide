@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 import YandexMapsMobile
+import SwiftUI
 
 final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     let mapView = YMKMapView(frame: CGRect.zero)
@@ -115,8 +116,12 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                 map: mapView ?? .init()
             )
         case .pins:
+            let centerCity = YMKPoint(
+                latitude: 55.749956,
+                longitude:  37.615812
+            )
             centerMapLocation(
-                target: targetPin,
+                target: centerCity,
                 zoom: 12,
                 map: mapView ?? .init()
             )
@@ -136,14 +141,14 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         )
     }
     
-    private func centerMapLocation(target location: YMKPoint?, zoom: Int = 16, map: YMKMapView) {
+    private func centerMapLocation(target location: YMKPoint?, zoom: Float = 16, map: YMKMapView) {
         guard let location = location else {
             print("Failed to get user location")
             return
         }
         
         map.mapWindow.map.move(
-            with: YMKCameraPosition(target: location, zoom: 16, azimuth: 0, tilt: 0),
+            with: YMKCameraPosition(target: location, zoom: zoom, azimuth: 0, tilt: 0),
             animation: YMKAnimation(type: YMKAnimationType.smooth, duration: 0.5)
         )
     }
