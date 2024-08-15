@@ -1,5 +1,5 @@
 import App from './app/App.jsx'
-import React, { createContext } from 'react'
+import React, { Suspense, createContext } from 'react'
 import ReactDOM from 'react-dom'
 
 import { Provider } from 'react-redux';
@@ -26,9 +26,11 @@ const mapsControls = reactify.module(await ymaps3.import('@yandex/ymaps3-control
 window.map = null;
 
 ReactDOM.render(
-	<Provider store={store}>
-		<YMapsContext.Provider value={{...maps, ...mapsControls}}>
-			<App/>
-		</YMapsContext.Provider>
-	</Provider>
+	<Suspense fallback={null}>
+		<Provider store={store}>
+			<YMapsContext.Provider value={{...maps, ...mapsControls}}>
+				<App/>
+			</YMapsContext.Provider>
+		</Provider>
+	</Suspense>
 , document.getElementById('root'));
