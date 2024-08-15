@@ -10,13 +10,13 @@ struct TSelection {
     boost::uuids::uuid id;
     std::string name;
     std::string description;
-    short is_public;   
+    bool is_collection;
 
     std::tuple<
         boost::uuids::uuid&,
         std::string&,
         std::string&,
-        short&
+            bool&
     > Introspect();
 };
 

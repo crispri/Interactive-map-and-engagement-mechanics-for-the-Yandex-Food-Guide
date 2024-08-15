@@ -3,7 +3,6 @@ import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
 import SheetContent from '../sheetcontent/SheetContent';
-import RestaurantFullView from '../fullview/RestaurantFullView';
 import { useState } from 'react';
 
 const cardInfos = [
@@ -29,8 +28,6 @@ const cardInfos = [
 
 const MyBottomSheet = ({sheetRef, content}) => {
 
-  const [id, setId] = useState(-1);
-
   let options = {
     root: document.querySelector("#key"),
     rootMargin: "0px",
@@ -46,18 +43,14 @@ const MyBottomSheet = ({sheetRef, content}) => {
         blocking={false}
         defaultSnap={({ maxHeight }) => maxHeight * 0.05}
         snapPoints={({ maxHeight }) => [
-          maxHeight * 0.4,
+          maxHeight * 0.45,
           maxHeight * 0.05,
           maxHeight
         ]}
       >
-        {/* <img src={sample} alt="sample" style={{width: '100%', height: '100%'}}/>
-        {id !== -1 ? (
-          <RestaurantFullView id={id} setId={setId} sheetRef={sheetRef}> </RestaurantFullView>
-        ) : 
-          <SheetContent cardInfos={cardInfos} setId={setId} sheetRef={sheetRef}></SheetContent>
-        }; */}
+        <div className="bottomsheet">
         {content}
+        </div>
       </BottomSheet >
     </>
   )

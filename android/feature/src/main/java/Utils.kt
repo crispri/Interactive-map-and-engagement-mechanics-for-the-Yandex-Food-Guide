@@ -19,6 +19,9 @@ import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import model.Recommendation
 import model.Restaurant
+import pins.CustomPinView
+import pins.CustomPinViewSelected
+import pins.NormalPinView
 import ui.SuperPinCard
 
 

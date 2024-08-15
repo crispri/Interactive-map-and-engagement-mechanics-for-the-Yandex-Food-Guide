@@ -8,6 +8,14 @@ class SaveInCollectionEvent(
     val restaurantId: String
 ) : MainScreenEvent()
 
+class SelectItemFromMap(
+    val itemId: String
+) : MainScreenEvent()
+
+class SelectItemFromBottomSheet(
+    val itemId: String
+) : MainScreenEvent()
+
 class NavigateToLocationEvent : MainScreenEvent()
 
 class CancelCentering : MainScreenEvent()

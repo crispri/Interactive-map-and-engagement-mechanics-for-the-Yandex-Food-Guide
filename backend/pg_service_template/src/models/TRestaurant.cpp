@@ -22,7 +22,6 @@ userver::formats::json::Value Serialize(
     item["rating"] = restaurant.rating;
     item["price_lower_bound"] = restaurant.price_lower_bound;
     item["price_upper_bound"] = restaurant.price_upper_bound;
-    item["is_favorite"] = restaurant.is_favorite;
     item["open_time"] = TimeParser::Parse(restaurant.open_time);
     item["close_time"] = TimeParser::Parse(restaurant.close_time);
     item["tags"].Resize(0);
@@ -48,8 +47,7 @@ std::tuple<
     userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
     userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
     std::string&,
-    std::optional<std::vector<short>>&,
-    bool&
+    std::optional<std::vector<std::string>>&
     > TRestaurant::Introspect()
 {
     return std::tie(
@@ -65,9 +63,8 @@ std::tuple<
           open_time,
           close_time,
           address,
-          tags,
-          is_favorite
-    );
+          tags
+  );
 }
 
 } // namespace service

@@ -3,9 +3,9 @@ import RestaurantCard from '../card/RestaurantCard.jsx'
 import { useSelector } from 'react-redux'
 import { truncateString, formatTime } from '../../lib/utils.js'
 
-const SheetContent = ({setId, sheetRef}) => {
+const SheetContent = ({ restaurants }) => {
 
-  const restaurants = useSelector((state) => state.restaurantsSlice.restaurants).map(el => ({
+  restaurants = restaurants.map(el => ({
     id: el.id,
     name: el.name,
     description: truncateString(el.description, 200),
@@ -19,14 +19,14 @@ const SheetContent = ({setId, sheetRef}) => {
     is_favorite: el.is_favourite
   }))
   return (
-    <>
-      {restaurants.map((restaurantInfo, index) => (
-        <div key={index}>
-          <RestaurantCard restaurantInfo={restaurantInfo} setId={setId} sheetRef={sheetRef}/>
+    <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+      {restaurants.map((restaurantInfo) => (
+        <div key={restaurantInfo.id}>
+          <RestaurantCard restaurantInfo={restaurantInfo}/>
         </div>
       ))
       }
-    </>
+    </div>
   )
 }
 
