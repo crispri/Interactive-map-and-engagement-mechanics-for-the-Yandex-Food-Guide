@@ -13,7 +13,7 @@ userver::formats::json::Value Serialize(
     item["id"] = boost::uuids::to_string(selection.id);
     item["name"] = selection.name;
     item["description"] = selection.description;
-    item["is_public"] = selection.is_public;
+    item["is_collection"] = selection.is_collection;
    
     return item.ExtractValue();
 }
@@ -22,14 +22,14 @@ std::tuple<
     boost::uuids::uuid&,
     std::string&,
     std::string&,
-    short&
+        bool&
     > TSelection::Introspect()
 {
     return std::tie(
           id,
           name,
           description,
-          is_public
+          is_collection
     );
 }
 
