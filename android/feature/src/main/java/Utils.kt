@@ -1,17 +1,18 @@
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Picture
-import android.graphics.drawable.Drawable
+import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import com.example.feature.R
@@ -26,73 +27,53 @@ import ui.SuperPinCard
 
 object Utils {
 
-    fun createSuperPin(
-        context: Context,
-        tittle: String = "Хороший бар",
-        raiting: Double = 4.9,
-        description: String = "кофе от 300Р"
-    ): View {
-        val pinView = CustomPinView(context = context)
-        pinView.setTitle(tittle)
-        pinView.setRating(raiting.toString())
-        pinView.setDescription(description)
+    fun createBitmapFromView(
+        view: View,
+        shadowColor: Int,
+        shadowRadius: Float,
+        dx: Float,
+        dy: Float
+    ): Bitmap {
+        // Создаем bitmap из view
+        val originalBitmap = createBitmapFromViewForShadow(view)
 
-        return pinView
-    }
-
-    fun createSuperSelectedPin(
-        context: Context,
-        tittle: String = "Хороший бар",
-        raiting: Double = 4.9,
-        description: String = "кофе от 300Р"
-    ): View {
-        val pinView = CustomPinViewSelected(context = context)
-        pinView.setTitle(tittle)
-        pinView.setRating(raiting.toString())
-        pinView.setDescription(description)
-
-        return pinView
-    }
-
-    fun createNormalPin(
-        context: Context,
-        tittle: String = "Нормальный бар",
-        raiting: Double = 4.8,
-    ): View {
-        val pinView = NormalPinView(context = context)
-        pinView.setTitle(tittle)
-        pinView.setRating(raiting.toString())
-        return pinView
-    }
-
-    fun invertColors(bitmap: Bitmap): Bitmap {
-        val invertedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
-        val canvas = Canvas(invertedBitmap)
-        val paint = Paint()
-
-        val colorMatrix = ColorMatrix()
-        colorMatrix.set(
-            floatArrayOf(
-                -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
-                0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
-                0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
-                0.0f, 0.0f, 0.0f, 1.0f, 0.0f
-            )
+        // Создаем bitmap с добавлением тени
+        val shadowBitmap = Bitmap.createBitmap(
+            originalBitmap.width + (shadowRadius * 2).toInt(),
+            originalBitmap.height + (shadowRadius * 2).toInt(),
+            Bitmap.Config.ARGB_8888
         )
-        paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
 
-        canvas.drawBitmap(bitmap, 0f, 0f, paint)
-        return invertedBitmap
+        val canvas = Canvas(shadowBitmap)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        // Добавляем тень
+        paint.setShadowLayer(shadowRadius, dx, dy, shadowColor)
+
+        // Рисуем элемент, у которого будет тень
+        canvas.drawRoundRect(
+            0f, 0f,
+            originalBitmap.width.toFloat(),
+            originalBitmap.height.dp.value - 21.dp.value,
+            40.dp.value,
+            40.dp.value,
+            paint,
+        )
+
+        // Рисуем исходный bitmap поверх тени
+        canvas.drawBitmap(originalBitmap, 0f, 0f, null)
+
+        return shadowBitmap
     }
 
-
-    fun createBitmapFromView(view: View): Bitmap {
+    private fun createBitmapFromViewForShadow(view: View): Bitmap {
         view.forceLayout()
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        return view.drawToBitmap()
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
 
+        return view.drawToBitmap()
     }
+
 
     fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
         val drawable = ContextCompat.getDrawable(context, art) ?: return null

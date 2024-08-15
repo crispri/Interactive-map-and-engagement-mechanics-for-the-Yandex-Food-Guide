@@ -28,6 +28,8 @@ import model.CancelCentering
 import model.MainScreenEvent
 import model.SelectItemFromMap
 import model.UpdateItemsOnMap
+import pins.CustomPinView
+import pins.NormalPinView
 
 
 @Composable
@@ -39,50 +41,39 @@ fun MapScreen(
 ) {
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
 
-    //Mini - general
-    val restaurantMarkerMini = remember {
-        createBitmapFromVector(
-            com.example.core.R.drawable.ic_mini_pin,
-            context = mapView.context
-        )
-    }
+    //Mini
+    val restaurantMarkerMini =
+        remember {
+            createBitmapFromVector(
+                com.example.core.R.drawable.ic_mini_pin,
+                context = mapView.context
+            )
+        }
     val restaurantMarkerImageProviderMini =
         remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
 
+    //Normal
+    val pinViewN: NormalPinView = NormalPinView(context = mapView.context)
 
-    //Mini - Selected
-    var invertedBitmap = remember { restaurantMarkerMini }
-    if (restaurantMarkerMini != null) invertedBitmap = invertColors(restaurantMarkerMini)
-    val restaurantMarkerImageProviderMiniSelected =
-        remember { ImageProvider.fromBitmap(invertedBitmap) }
-
-
-    //Normal - general
-    val normalView = remember { createNormalPin(mapView.context) }
-    val restaurantMarkerNormal = remember { createBitmapFromView(normalView) }
+    pinViewN.setTitle("Хороший бар")
+    pinViewN.setRating("4.9")
+    val restaurantMarkerNormal =
+        remember { createBitmapFromView(pinViewN, com.example.core.R.color.grey, 32f, 0f, 0f) }
+    // remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
     val restaurantMarkerImageProviderNormal =
         remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
 
-
-    //Normal - Selected
-    val invertedBitmapNormal = invertColors(restaurantMarkerNormal)
-    val restaurantMarkerImageProviderNormalSelected =
-        remember { ImageProvider.fromBitmap(invertedBitmapNormal) }
-
-
-    //Maxi - general
-    val superView = remember { createSuperPin(mapView.context) }
-    val restaurantMarkerMaxi = remember { createBitmapFromView(superView) }
+    //Maxi
+    val pinView: CustomPinView = CustomPinView(context = mapView.context)
+    pinView.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
+    Log.d("imageReady", "Ready")
+    pinView.setTitle("Хороший бар")
+    pinView.setRating("4.9")
+    pinView.setDescription("кофе от 300Р")
+    val restaurantMarkerMaxi =
+        remember { createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f) }
     val restaurantMarkerImageProviderMaxi =
         remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
-
-
-    //Maxi - Selected
-    val superViewSelected = remember { createSuperSelectedPin(mapView.context) }
-    val restaurantMarkerMaxiSelected = remember { createBitmapFromView(superViewSelected) }
-    val restaurantMarkerImageProviderMaxiSelected =
-        remember { ImageProvider.fromBitmap(restaurantMarkerMaxiSelected) }
-
 
     // curLocation
     val curLocationMarker = remember {

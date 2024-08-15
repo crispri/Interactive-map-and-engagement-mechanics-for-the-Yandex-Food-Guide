@@ -51,8 +51,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation("com.github.bumptech.glide:glide:4.14.2") // Замените на актуальную версию
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
+    implementation(libs.androidx.cardview)
+    implementation(libs.coil)
     // mapkit
     implementation(libs.map.kit)
 

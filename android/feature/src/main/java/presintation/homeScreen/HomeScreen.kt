@@ -1,5 +1,6 @@
 package presintation.homeScreen
 
+import android.widget.FrameLayout.inflate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +21,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.feature.R
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import pins.CustomPinView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,12 +40,6 @@ fun HomeScreen(
         topBar = {
             TopAppBar(
                 title = {
-//                    Text(
-//                        text = "Автозаводская 23Б, к2",
-//                        color = Color.Gray,
-//                        fontSize = 13.sp,
-//                        // modifier = Modifier.align(Alignment.CenterHorizontally)
-//                    )
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.Bottom,
@@ -61,10 +59,6 @@ fun HomeScreen(
                             colorFilter = ColorFilter.tint(Color.Black)
                         )
                     }
-//                    Text(
-//                        text =
-//                        "Ваше местоположение >",
-//                    )
                 },
                 actions = {
                     IconButton(onClick = navToMap,
@@ -89,16 +83,6 @@ fun HomeScreen(
                     contentDescription = "Хардкод домашний экран",
                     modifier = Modifier.fillMaxSize()
                 )
-//                Image(
-//                    painter = painterResource(id = R.drawable.ic_hardcode_map),
-//                    contentDescription = "",
-//                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).align(Alignment.Start)
-//                )
-//                Image(
-//                    painter = painterResource(id = R.drawable.ic_hardcode_q),
-//                    contentDescription = "",
-//                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).align(Alignment.Start)
-//                )
             }
 
         }
