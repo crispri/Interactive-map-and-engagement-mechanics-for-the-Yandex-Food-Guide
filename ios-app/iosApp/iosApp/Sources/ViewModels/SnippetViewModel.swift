@@ -10,6 +10,8 @@ import CoreLocation
 
 @MainActor
 final class SnippetViewModel: ObservableObject {
+    private let MAX_POLIGON_WIDTH = 0.20
+    
     @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = SnippetDTO.mockData
     @Published var collections = SelectionDTO.mockData
@@ -49,7 +51,7 @@ final class SnippetViewModel: ObservableObject {
                 let tr = rect.topRightCorner
                 
                 print("Square position: \(ll.description) \(tr.description)")
-                if abs(ll.lat - tr.lat) > 0.1 {
+                if abs(ll.lat - tr.lat) > MAX_POLIGON_WIDTH {
                     mapManager.disablePins()
                     mapManager.cleanPins()
                     return
@@ -97,7 +99,7 @@ final class SnippetViewModel: ObservableObject {
             let tr = rect.topRightCorner
             
             print("Square position: \(ll.description) \(tr.description)")
-            if abs(ll.lat - tr.lat) > 0.1 {
+            if abs(ll.lat - tr.lat) > MAX_POLIGON_WIDTH {
                 mapManager.disablePins()
                 mapManager.cleanPins()
                 return
