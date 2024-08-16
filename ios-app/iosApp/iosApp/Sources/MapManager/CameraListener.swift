@@ -11,7 +11,7 @@ import YandexMapsMobile
 final class CameraListener: NSObject, YMKMapCameraListener {
     var delegate: MapManager?
     private var lastRequestTime: Date?
-    private let throttleInterval: TimeInterval = 2.0
+    private let throttleInterval: TimeInterval = 1.0
 
     func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateReason: YMKCameraUpdateReason, finished: Bool) {
         guard let delegate else {

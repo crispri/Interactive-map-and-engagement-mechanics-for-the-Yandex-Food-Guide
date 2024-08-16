@@ -7,11 +7,6 @@
 
 import Foundation
 
-struct Coordinates: Codable, Hashable {
-    let lat: Double
-    let lon: Double
-}
-
 struct SnippetDTO: Codable, Hashable {
     let id: String
     let coordinates: Coordinates
@@ -22,10 +17,10 @@ struct SnippetDTO: Codable, Hashable {
     let rating: Double
     let priceLowerBound: Int
     let priceUpperBound: Int
-    let isFavorite: Bool
     let openTime: String
     let closeTime: String
-    let tags: [Int]
+    let tags: [String]
+    let isFavorite: Bool
     
     init(
         id: String = UUID().uuidString,
@@ -37,10 +32,10 @@ struct SnippetDTO: Codable, Hashable {
         rating: Double = 0.0,
         priceLowerBound: Int = 0,
         priceUpperBound: Int = 0,
-        isFavorite: Bool = true,
         openTime: String = "",
         closeTime: String = "",
-        tags: [Int] = []
+        tags: [String] = [],
+        isFavorite: Bool = true
     ) {
         self.id = id
         self.coordinates = coordinates
@@ -51,10 +46,10 @@ struct SnippetDTO: Codable, Hashable {
         self.rating = rating
         self.priceLowerBound = priceLowerBound
         self.priceUpperBound = priceUpperBound
-        self.isFavorite = isFavorite
         self.openTime = openTime
         self.closeTime = closeTime
         self.tags = tags
+        self.isFavorite = isFavorite
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -62,9 +57,9 @@ struct SnippetDTO: Codable, Hashable {
         case isApproved = "is_approved"
         case priceLowerBound = "price_lower_bound"
         case priceUpperBound = "price_upper_bound"
-        case isFavorite = "is_favorite"
         case openTime = "open_time"
         case closeTime = "close_time"
+        case isFavorite = "is_favorite"
     }
 }
 

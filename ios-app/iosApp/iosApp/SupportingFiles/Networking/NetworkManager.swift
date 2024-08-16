@@ -8,10 +8,10 @@
 import Foundation
 
 final class NetworkManager {
-    private let baseURL = URL(string: Configuration.baseURL)
-    private let token = Configuration.token
+    private let baseURL = URL(string: Api.baseURL)
+    private let token = Api.token
     
-    func makeRequest(path: String, method: String, requestModel: Codable) throws -> URLRequest {
+    func makeRequest(path: String, method: String) throws -> URLRequest {
         guard let url = URL(string: path, relativeTo: baseURL) else {
             throw URLError(.badURL)
         }
@@ -20,6 +20,12 @@ final class NetworkManager {
         request.httpMethod = method
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+          
+        return request
+    }
+    
+    func makeRequest(path: String, method: String, with requestModel: Codable) throws -> URLRequest {
+        var request = try makeRequest(path: path, method: method)
         
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
@@ -47,9 +53,9 @@ final class NetworkManager {
     
     public func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
         let request = try makeRequest(
-            path: "restaurants",
-            method: "POST",
-            requestModel: GetSnippetsRequestModel(
+            path: Api.restaurants.path,
+            method: HTTPMethod.post.rawValue,
+            with: SnippetsRequest(
                 lowerLeftCorner: lowerLeftCorner,
                 topRightCorner: topRightCorner,
                 maxCount: 0
@@ -61,11 +67,44 @@ final class NetworkManager {
         return data.items
     }
     
+    public func fetchSnippet(snippetID: String) async throws -> SnippetDTO {
+        let request = try makeRequest(
+            path: Api.restaurant(id: snippetID).path,
+            method: HTTPMethod.get.rawValue
+        )
+        
+        let data: SnippetDTO = try await performRequest(request: request)
+        
+        return data
+    }
+    
+    public func fetchSelections() async throws -> [SelectionDTO] {
+        let request = try makeRequest(
+            path: Api.selections.path,
+            method: HTTPMethod.get.rawValue
+        )
+        
+        let data: SelectionsResponse = try await performRequest(request: request)
+        
+        return data.items
+    }
+    
+    public func fetchSelection(selectionID: String) async throws -> [SnippetDTO] {
+        let request = try makeRequest(
+            path: Api.selection(id: selectionID).path,
+            method: HTTPMethod.get.rawValue
+        )
+        
+        let data: SnippetsResponse = try await performRequest(request: request)
+        
+        return data.items
+    }
+    
     public func fetchAddress(loc: Point) async throws -> Data {
-        var components = URLComponents(string: "\(Configuration.geocoderURL)")!
+        var components = URLComponents(string: "\(Api.geocoderURL)")!
 
         components.queryItems = [
-            URLQueryItem(name: "apikey", value: "\(Configuration.geocoderKey)"),
+            URLQueryItem(name: "apikey", value: "\(Api.geocoderKey)"),
             URLQueryItem(name: "geocode", value: "\(loc.lat),\(loc.lon)"),
             URLQueryItem(name: "lang", value: "ru_RU"),
             URLQueryItem(name: "sco", value: "latlong"),

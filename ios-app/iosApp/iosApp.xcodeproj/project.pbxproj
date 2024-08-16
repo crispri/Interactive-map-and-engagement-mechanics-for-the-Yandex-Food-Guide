@@ -28,12 +28,18 @@
 		CB28CEE62C6926B400266944 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CB28CEE52C6926B400266944 /* README.md */; };
 		CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */; };
 		CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */; };
-		CB5CA3902C5FB60B0025F771 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA38F2C5FB60B0025F771 /* Configuration.swift */; };
+		CB5CA3902C5FB60B0025F771 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA38F2C5FB60B0025F771 /* Api.swift */; };
 		CB5CA3922C5FB6560025F771 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3912C5FB6560025F771 /* NetworkManager.swift */; };
 		CB5CA3942C5FB9BC0025F771 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */; };
-		CB5CA3962C5FCCAA0025F771 /* GetSnippetsRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3952C5FCCAA0025F771 /* GetSnippetsRequestModel.swift */; };
+		CB5CA3962C5FCCAA0025F771 /* SnippetsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3952C5FCCAA0025F771 /* SnippetsRequest.swift */; };
 		CB5CA3992C5FD7290025F771 /* ISnippetsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3982C5FD7290025F771 /* ISnippetsResponse.swift */; };
 		CB5CA39B2C5FD75F0025F771 /* SnippetsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA39A2C5FD75F0025F771 /* SnippetsResponse.swift */; };
+		CBBDC6AB2C6ECF95007EB943 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */; };
+		CBBDC6AD2C6ECFBB007EB943 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AC2C6ECFBB007EB943 /* Point.swift */; };
+		CBBDC6AF2C6ED018007EB943 /* Printable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AE2C6ED018007EB943 /* Printable.swift */; };
+		CBBDC6B22C6ED646007EB943 /* ISelectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6B12C6ED646007EB943 /* ISelectionsResponse.swift */; };
+		CBBDC6B42C6ED695007EB943 /* SelectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6B32C6ED695007EB943 /* SelectionsResponse.swift */; };
+		CBBDC6B72C6EDE7E007EB943 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6B62C6EDE7E007EB943 /* HTTPMethod.swift */; };
 		CBFD7ED12C655C6F00CEC0BC /* SnippetDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD7ECF2C655C6F00CEC0BC /* SnippetDTO.swift */; };
 		CBFD7ED22C655C6F00CEC0BC /* SelectionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD7ED02C655C6F00CEC0BC /* SelectionDTO.swift */; };
 		CBFD7ED42C655C8600CEC0BC /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD7ED32C655C8600CEC0BC /* Color+hex.swift */; };
@@ -96,12 +102,18 @@
 		CB28CEE52C6926B400266944 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalSelectionView.swift; sourceTree = "<group>"; };
 		CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionScrollView.swift; sourceTree = "<group>"; };
-		CB5CA38F2C5FB60B0025F771 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		CB5CA38F2C5FB60B0025F771 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		CB5CA3912C5FB6560025F771 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
-		CB5CA3952C5FCCAA0025F771 /* GetSnippetsRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSnippetsRequestModel.swift; sourceTree = "<group>"; };
+		CB5CA3952C5FCCAA0025F771 /* SnippetsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsRequest.swift; sourceTree = "<group>"; };
 		CB5CA3982C5FD7290025F771 /* ISnippetsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISnippetsResponse.swift; sourceTree = "<group>"; };
 		CB5CA39A2C5FD75F0025F771 /* SnippetsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsResponse.swift; sourceTree = "<group>"; };
+		CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
+		CBBDC6AC2C6ECFBB007EB943 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		CBBDC6AE2C6ED018007EB943 /* Printable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Printable.swift; sourceTree = "<group>"; };
+		CBBDC6B12C6ED646007EB943 /* ISelectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISelectionsResponse.swift; sourceTree = "<group>"; };
+		CBBDC6B32C6ED695007EB943 /* SelectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionsResponse.swift; sourceTree = "<group>"; };
+		CBBDC6B62C6EDE7E007EB943 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		CBFD7ECF2C655C6F00CEC0BC /* SnippetDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnippetDTO.swift; sourceTree = "<group>"; };
 		CBFD7ED02C655C6F00CEC0BC /* SelectionDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionDTO.swift; sourceTree = "<group>"; };
 		CBFD7ED32C655C8600CEC0BC /* Color+hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Color+hex.swift"; path = "iosApp/Sources/Extensions/Color+hex.swift"; sourceTree = SOURCE_ROOT; };
@@ -220,7 +232,8 @@
 		4FC512512C5E5F0F006ED790 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				CB5CA38E2C5FB5CD0025F771 /* Network */,
+				CBBDC6AE2C6ED018007EB943 /* Printable.swift */,
+				CB5CA38E2C5FB5CD0025F771 /* Networking */,
 				4FC512522C5E5F16006ED790 /* Extensions */,
 				4FC512212C5E5586006ED790 /* Assets.xcassets */,
 			);
@@ -241,7 +254,8 @@
 			children = (
 				CBFD7ECF2C655C6F00CEC0BC /* SnippetDTO.swift */,
 				CBFD7ED02C655C6F00CEC0BC /* SelectionDTO.swift */,
-				CB5CA3952C5FCCAA0025F771 /* GetSnippetsRequestModel.swift */,
+				CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */,
+				CBBDC6AC2C6ECFBB007EB943 /* Point.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -307,25 +321,45 @@
 			path = Pins;
 			sourceTree = "<group>";
 		};
-		CB5CA38E2C5FB5CD0025F771 /* Network */ = {
+		CB5CA38E2C5FB5CD0025F771 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				CBBDC6B52C6EDE5D007EB943 /* Service */,
+				CBBDC6B02C6ED031007EB943 /* Request */,
 				CB5CA3972C5FD7100025F771 /* Response */,
-				CB5CA38F2C5FB60B0025F771 /* Configuration.swift */,
+				CB5CA38F2C5FB60B0025F771 /* Api.swift */,
 				CB5CA3912C5FB6560025F771 /* NetworkManager.swift */,
 				CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */,
 			);
-			path = Network;
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		CB5CA3972C5FD7100025F771 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				CB1F19172C68FF35006DE5EC /* GeocoderResponse.swift */,
 				CB5CA3982C5FD7290025F771 /* ISnippetsResponse.swift */,
 				CB5CA39A2C5FD75F0025F771 /* SnippetsResponse.swift */,
-				CB1F19172C68FF35006DE5EC /* GeocoderResponse.swift */,
+				CBBDC6B12C6ED646007EB943 /* ISelectionsResponse.swift */,
+				CBBDC6B32C6ED695007EB943 /* SelectionsResponse.swift */,
 			);
 			path = Response;
+			sourceTree = "<group>";
+		};
+		CBBDC6B02C6ED031007EB943 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				CB5CA3952C5FCCAA0025F771 /* SnippetsRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		CBBDC6B52C6EDE5D007EB943 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				CBBDC6B62C6EDE7E007EB943 /* HTTPMethod.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		CBFD7EDC2C655CC100CEC0BC /* BottomSheet */ = {
@@ -617,6 +651,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBBDC6AD2C6ECFBB007EB943 /* Point.swift in Sources */,
 				CBFD7EE22C655CC100CEC0BC /* FilterView.swift in Sources */,
 				4F9DCAE92C5E6C4200B39252 /* YandexMapView.swift in Sources */,
 				CBFD7EE32C655CC100CEC0BC /* SnippetCell.swift in Sources */,
@@ -625,7 +660,11 @@
 				4FC512202C5E5585006ED790 /* GuideView.swift in Sources */,
 				CB5CA39B2C5FD75F0025F771 /* SnippetsResponse.swift in Sources */,
 				CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */,
+				CBBDC6B22C6ED646007EB943 /* ISelectionsResponse.swift in Sources */,
 				CBFD7ED62C655C9700CEC0BC /* SnippetViewModel.swift in Sources */,
+				CBBDC6AB2C6ECF95007EB943 /* Coordinates.swift in Sources */,
+				CBBDC6AF2C6ED018007EB943 /* Printable.swift in Sources */,
+				CBBDC6B42C6ED695007EB943 /* SelectionsResponse.swift in Sources */,
 				CB5CA3922C5FB6560025F771 /* NetworkManager.swift in Sources */,
 				CBFD7EE52C655CC100CEC0BC /* ImageRestWithPC.swift in Sources */,
 				CBFD7EE42C655CC100CEC0BC /* SelectionView.swift in Sources */,
@@ -633,8 +672,9 @@
 				CBFD7EE72C655CC100CEC0BC /* PageViewController.swift in Sources */,
 				6E3E42A82C6768800049111C /* BottomRestView.swift in Sources */,
 				CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */,
-				CB5CA3902C5FB60B0025F771 /* Configuration.swift in Sources */,
+				CB5CA3902C5FB60B0025F771 /* Api.swift in Sources */,
 				CBFD7ED12C655C6F00CEC0BC /* SnippetDTO.swift in Sources */,
+				CBBDC6B72C6EDE7E007EB943 /* HTTPMethod.swift in Sources */,
 				CBFD7ED22C655C6F00CEC0BC /* SelectionDTO.swift in Sources */,
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
@@ -642,7 +682,7 @@
 				CB1F19182C68FF35006DE5EC /* GeocoderResponse.swift in Sources */,
 				CBFD7EE12C655CC100CEC0BC /* BottomSheetView.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,
-				CB5CA3962C5FCCAA0025F771 /* GetSnippetsRequestModel.swift in Sources */,
+				CB5CA3962C5FCCAA0025F771 /* SnippetsRequest.swift in Sources */,
 				CBFD7ED42C655C8600CEC0BC /* Color+hex.swift in Sources */,
 				CB5CA3992C5FD7290025F771 /* ISnippetsResponse.swift in Sources */,
 				4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */,
