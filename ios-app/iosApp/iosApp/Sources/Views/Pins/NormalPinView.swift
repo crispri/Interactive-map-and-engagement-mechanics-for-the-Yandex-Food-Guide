@@ -1,17 +1,17 @@
 //
-//  BigPinView.swift
+//  NormalPinView.swift
 //  iosApp
 //
-//  Created by Христина Буянова on 11.08.2024.
+//  Created by Христина Буянова on 16.08.2024.
 //
 
 import Foundation
 import UIKit
 
-final class BigPinView: UIView {
+final class NormalPinView: UIView {
 
     var isSelected = true
-    var isFavorit = false
+    var isFavorit = true
     var model: SnippetDTO? {
         didSet {
 //            imageRest.image = UIImage(named: model?. "1rest")
@@ -24,7 +24,7 @@ final class BigPinView: UIView {
 
     private lazy var squareView: UIView = {
         let view = UIView()
-        view.frame = .init(x: 0, y: 50, width: 160, height: 43)
+        view.frame = .init(x: 0, y: 9, width: 159, height: 30)
         view.layer.cornerRadius = 12
         return view
     }()
@@ -38,41 +38,22 @@ final class BigPinView: UIView {
 
     private lazy var triangle: UIImageView = {
         let triangle = UIImageView()
-        triangle.frame = .init(x: 68, y: 93, width: 24, height: 8)
+        triangle.frame = .init(x: 68, y: 39, width: 24, height: 8)
         return triangle
-    }()
-
-    private lazy var imageRest: UIImageView = {
-        let image = UIImageView()
-        image.frame = .init(x: 0, y: 0, width: 160, height: 60)
-        image.clipsToBounds = true
-        image.image = UIImage(named: "1rest")
-        image.layer.cornerRadius = 12
-        image.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        return image
     }()
 
     private lazy var nameRest: UILabel = {
         let label = UILabel()
-        label.frame = .init(x: 8, y: 8, width: 113, height: 14)
+        label.frame = .init(x: 8, y: 8, width: 110, height: 14)
         label.font = .systemFont(ofSize: 13)
         label.text = "Название ресторана"
         label.numberOfLines = 1
         return label
     }()
 
-    private lazy var descriptionRest: UILabel = {
-        let label = UILabel()
-        label.frame = .init(x: 8, y: 23, width: 144, height: 12)
-        label.font = .systemFont(ofSize: 11)
-        label.numberOfLines = 1
-        label.text = "кофе от 300р"
-        return label
-    }()
-
     private lazy var star: UIImageView = {
         let image = UIImageView()
-        image.frame = .init(x: 121, y: 8, width: 11, height: 12)
+        image.frame = .init(x: 121, y: 8, width: 11, height: 11)
         image.image = UIImage(systemName: "star.fill")
         return image
     }()
@@ -112,7 +93,6 @@ final class BigPinView: UIView {
             triangle.image = UIImage(named: "BottomCenter_black")
             star.tintColor = .white
             nameRest.textColor = .white
-            descriptionRest.textColor = .white
             raiting.textColor = .white
             favoriteView.backgroundColor = .black
             bookmark.tintColor = .white
@@ -121,7 +101,6 @@ final class BigPinView: UIView {
             triangle.image = UIImage(named: "BottomCenter_white")
             star.tintColor = .black
             nameRest.textColor = .black
-            descriptionRest.textColor = .black
             raiting.textColor = .black
             favoriteView.backgroundColor = .white
             bookmark.tintColor = .black
@@ -129,11 +108,9 @@ final class BigPinView: UIView {
     }
 
     private func setupViews() {
-        addSubview(imageRest)
         addSubview(squareView)
         addSubview(triangle)
         squareView.addSubview(nameRest)
-        squareView.addSubview(descriptionRest)
         squareView.addSubview(star)
         squareView.addSubview(raiting)
 
@@ -144,7 +121,6 @@ final class BigPinView: UIView {
     }
 }
 
-
 #Preview {
-    BigPinView()
+    NormalPinView()
 }
