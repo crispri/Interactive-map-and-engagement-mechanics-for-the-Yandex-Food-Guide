@@ -77,6 +77,9 @@ import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
+import model.CollectionOfPlace
+import model.Filter
+import model.UpdateItemsOnMap
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
@@ -279,19 +282,10 @@ fun MainScreen(
                                         lineHeight = 15.sp,
                                     )
 
-                                    val itemsList = listOf(
-                                        "Музыка громче",
-                                        "Завтраки",
-                                        "Винотека",
-                                        "Европейская",
-                                        "Коктели",
-                                        "Можно с собакой",
-                                        "Веранда"
-                                    )
                                     LazyRow(
                                         modifier = Modifier.padding(top = 8.dp)
                                     ) {
-                                        items(itemsList) { item ->
+                                        items(restaurant.tags) { item ->
                                             TextCard(text = item)
                                         }
                                     }
@@ -395,7 +389,7 @@ fun MainScreen(
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
-            CollectionCarousel(uiState.recommendations)
+            CollectionCarousel(uiState.recommendations, uiState, send)
         }
         Column(
             modifier = Modifier
@@ -437,7 +431,11 @@ fun MainScreen(
 
 
 @Composable
-fun CollectionCarousel(recommendations: List<Recommendation>) {
+fun CollectionCarousel(
+    recommendations: List<CollectionOfPlace>,
+    uiState: MainUiState,
+    send: (MainScreenEvent) -> Unit
+) {
     var selectedCardIndex by remember { mutableIntStateOf(-1) }
     val lazyListState = rememberLazyListState()
 
@@ -469,12 +467,22 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 
             CardWithImageAndText(
                 painterResource(id = com.example.core.R.drawable.photo1),
-                text = item.title,
+                text = item.name,
                 description = item.description,
                 {},
                 {},
                 onClick = {
-                    selectedCardIndex = if (isSelected) -1 else index
+                    val filterList = uiState.filterList
+                    filterList.removeAll { it.property == "selection_id"}
+                     if (isSelected){
+                         selectedCardIndex = -1
+                    } else {
+                         selectedCardIndex = index
+                         filterList.add(Filter("selection_id", listOf(item.id), "in"))
+                    }
+
+                    Log.d("okFilter", filterList.toString())
+                    send(UpdateItemsOnMap(uiState.lowerLeft, uiState.topRight, filterList = filterList))
                 },
                 modifier = Modifier
                     .width(cardWidth)

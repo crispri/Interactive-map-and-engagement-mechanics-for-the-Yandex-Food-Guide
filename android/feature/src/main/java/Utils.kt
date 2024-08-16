@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
-import model.Recommendation
+import model.CollectionOfPlace
 import model.Restaurant
 import pins.CustomPinView
 import pins.CustomPinViewSelected
@@ -88,22 +88,31 @@ object Utils {
         return bitmap
     }
 
+
     val recommendations = listOf(
-        Recommendation(
+        CollectionOfPlace(
+            "",
             "Собрали для вас",
-            "Рекоммендации от наших экспертов"
+            "Рекоммендации от наших экспертов",
+            1,
         ),
-        Recommendation(
+        CollectionOfPlace(
+            "",
             "Завтраки вне дома",
-            "Куда сходить  Места"
+            "Куда сходить  Места",
+            0
         ),
-        Recommendation(
+        CollectionOfPlace(
+            "",
             "Пиво и футбол",
-            "Куда сходить  Места"
+            "Куда сходить  Места",
+            1,
         ),
-        Recommendation(
+        CollectionOfPlace(
+            "",
             "Где перекусить спортсмену",
-            "Куда сходить  Места"
+            "Куда сходить  Места",
+            0
         )
 
     )

@@ -97,19 +97,10 @@ fun BigCard(restaurant: Restaurant, navToRestaurant: () -> Unit) {
                 lineHeight = 15.sp,
             )
 
-            val itemsList = listOf(
-                "Музыка громче",
-                "Завтраки",
-                "Винотека",
-                "Европейская",
-                "Коктели",
-                "Можно с собакой",
-                "Веранда"
-            )
             LazyRow(
                 modifier = Modifier.padding(top = 8.dp)
             ) {
-                items(itemsList) { item ->
+                items(restaurant.tags) { item ->
                     TextCard(text = item)
                 }
             }
