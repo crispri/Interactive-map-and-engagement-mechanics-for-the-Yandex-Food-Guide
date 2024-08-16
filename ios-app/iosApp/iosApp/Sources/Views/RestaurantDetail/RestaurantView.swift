@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct RestaurantView: View {
-    var tags = ["Итальянская", "Европейская"]
+    @Environment(\.dismiss) var dismiss
+    @State var nameRest: String
+    @State var rating: Double
+    @State var isFavorite: Bool
+    @State var tags: [String]
 
     var body: some View {
         ScrollView(.vertical) {
@@ -54,8 +58,6 @@ struct RestaurantView: View {
                         .background(.white)
                         .clipShape(.rect(cornerRadius: 16))
                         .padding([.leading, .trailing, .bottom], 16)
-//                        .clipShape(.rect(cornerRadius: 16))
-//                        .frame(height: 100)
                 }
                 .padding(.horizontal)
                 .background(Color.chatGPT)
@@ -70,7 +72,7 @@ struct RestaurantView: View {
 
         HStack {
             Button {
-                // TODO: add action.
+                dismiss()
             } label: {
                 Image(systemName: "arrow.left.circle.fill")
                     .resizable()
@@ -93,7 +95,7 @@ struct RestaurantView: View {
 
 //    имя ресторана
     private func NameRest() -> some View {
-        Text("Мэлт")
+        Text(nameRest)
             .foregroundStyle(.white)
             .bold()
             .font(.system(size: 30))
@@ -106,7 +108,7 @@ struct RestaurantView: View {
                 .resizable()
                 .frame(width: 24, height: 24)
                 .padding(.top, 4)
-            Text("5.0")
+            Text(String(format: "%.1f" , rating))
                 .font(.system(size: 22))
                 .bold()
             Spacer()
@@ -144,12 +146,11 @@ struct RestaurantView: View {
         Button(action: {
             // TODO: add action.
         }, label: {
-            Image(systemName: "bookmark")
+            Image(systemName: isFavorite ? "bookmark.fill" : "bookmark")
                 .frame(width: 45, height: 45)
                 .foregroundStyle(.black)
                 .background(.white)
                 .opacity(0.9)
-//                .cornerRadius(15)
                 .clipShape(.rect(cornerRadius: 16))
         })
     }
@@ -210,7 +211,7 @@ struct RestaurantView: View {
                 HStack {
                     Text("сгенерировано нейросетью на основе отзывов")
                         .lineLimit(1)
-                        .font(.system(size: 12))
+                        .font(.system(size: 11))
                     Image(systemName: "chevron.right")
                 }
                 .foregroundStyle(.gray)
@@ -219,14 +220,11 @@ struct RestaurantView: View {
     }
 
     private func ComentYGPT() -> some View {
-        Text("Коктейль-бар Мэлт - это стильное и уютное метсто, где вы можете насладиться вкусной едой и напитками. Здесь вы можете попробовать лучши коктейли в городе")
+        Text("\(nameRest) - это стильное и уютное метсто, где вы можете насладиться вкусной едой и напитками. Здесь вы можете попробовать лучши коктейли в городе")
             .font(.system(size: 14))
     }
 }
 
-
-
-
 #Preview {
-    RestaurantView()
+    RestaurantView(nameRest: "МЭЛТ", rating: 5.0, isFavorite: false, tags: ["Итальянская", "Европейская"])
 }
