@@ -34,6 +34,7 @@ class MainViewModel @Inject constructor(
             _uiState.value.topRight,
             _uiState.value.filterList
         )
+        fetchCollections()
     }
 
     private fun fetchRestaurants(lowerLeft: Point, topRight: Point, filterList: List<Filter>) {
@@ -61,7 +62,6 @@ class MainViewModel @Inject constructor(
                                     errorMessage = state.cause.message,
                                     isLoading = false,
                                     restaurantsOnMap = Utils.restaurants,
-                                    recommendations = Utils.recommendations,
                                     listOfRestaurant = Utils.restaurants,
                                 )
                             }
@@ -73,7 +73,6 @@ class MainViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     restaurantsOnMap = state.data,
-                                    recommendations = Utils.recommendations,
                                     listOfRestaurant = state.data,
                                 )
                             }
@@ -87,7 +86,50 @@ class MainViewModel @Inject constructor(
                             }
                         }
 
-                        else -> {}
+                    }
+                }
+        }
+    }
+
+    private fun fetchCollections() {
+        viewModelScope.launch {
+            Log.e(
+                "in fetchRestaurants", ""
+            )
+            repository.getCollections(
+                "Asd",
+            )
+                .collect { state ->
+                    when (state) {
+                        is NetworkState.Failure -> {
+                            Log.d("NetworkException", "NetworkFailure")
+
+                            _uiState.update {
+                                it.copy(
+                                    errorMessage = state.cause.message,
+                                    isLoading = false,
+                                    recommendations = Utils.recommendations,
+                                )
+                            }
+                        }
+
+                        is NetworkState.Success -> {
+                            Log.d("NetworkSuccess", "")
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    recommendations = state.data,
+                                )
+                            }
+                        }
+
+                        is NetworkState.Loading -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = true
+                                )
+                            }
+                        }
                     }
                 }
 

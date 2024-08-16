@@ -77,6 +77,9 @@ import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
+import model.CollectionOfPlace
+import model.Filter
+import model.UpdateItemsOnMap
 import ui.BigCard
 import ui.CardWithImageAndText
 import ui.CategoryButtonCard
@@ -152,15 +155,16 @@ fun MainScreen(
             }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .pointerInput(Unit) {
-            detectTapGestures(
-                onPress = {
-                    isExpandedAtOffset.value = false
-                }
-            )
-        },
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onPress = {
+                        isExpandedAtOffset.value = false
+                    }
+                )
+            },
     ) {
         custom_bottom_sheet.BottomSheetScaffold(
             scaffoldState = bottomSheetState,
@@ -180,15 +184,15 @@ fun MainScreen(
                         flingBehavior = snapBehavior,
                         modifier = Modifier
                             .pointerInput(Unit) {
-                        detectTapGestures(
-                            onPress = {
-                                if (sheetState.currentValue != SheetValue.Expanded){
-                                    isExpandedAtOffset.value = true
-                                    Log.d("tap111", "Палец поставлен на экран контент")
-                                }
-                            }
-                        )
-                    })  {
+                                detectTapGestures(
+                                    onPress = {
+                                        if (sheetState.currentValue != SheetValue.Expanded) {
+                                            isExpandedAtOffset.value = true
+                                            Log.d("tap111", "Палец поставлен на экран контент")
+                                        }
+                                    }
+                                )
+                            }) {
                         itemsIndexed(uiState.restaurantsOnMap) { index, restaurant ->
 
                             Card(
@@ -198,7 +202,8 @@ fun MainScreen(
                                     .background(Color.White)
                                     .clickable {
                                         Log.d("ClickOnCard", restaurant.id)
-                                        navToRestaurant(restaurant.id) }
+                                        navToRestaurant(restaurant.id)
+                                    }
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
@@ -281,19 +286,10 @@ fun MainScreen(
                                         lineHeight = 15.sp,
                                     )
 
-                                    val itemsList = listOf(
-                                        "Музыка громче",
-                                        "Завтраки",
-                                        "Винотека",
-                                        "Европейская",
-                                        "Коктели",
-                                        "Можно с собакой",
-                                        "Веранда"
-                                    )
                                     LazyRow(
                                         modifier = Modifier.padding(top = 8.dp)
                                     ) {
-                                        items(itemsList) { item ->
+                                        items(restaurant.tags) { item ->
                                             TextCard(text = item)
                                         }
                                     }
@@ -397,7 +393,7 @@ fun MainScreen(
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
-            CollectionCarousel(uiState.recommendations)
+            CollectionCarousel(uiState.recommendations, uiState, send)
         }
         Column(
             modifier = Modifier
@@ -438,19 +434,21 @@ fun MainScreen(
 }
 
 
-
 @Composable
-fun CollectionCarousel(recommendations: List<Recommendation>) {
+fun CollectionCarousel(
+    recommendations: List<CollectionOfPlace>,
+    uiState: MainUiState,
+    send: (MainScreenEvent) -> Unit
+) {
     var selectedCardIndex by remember { mutableIntStateOf(-1) }
     val lazyListState = rememberLazyListState()
 
     val configuration = LocalConfiguration.current
     val screenWidthInt = configuration.screenWidthDp
     LaunchedEffect(selectedCardIndex) {
-        if (selectedCardIndex != -1 && selectedCardIndex != 0){
+        if (selectedCardIndex != -1 && selectedCardIndex != 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, -(screenWidthInt / 2))
-        }
-        else if (selectedCardIndex == 0){
+        } else if (selectedCardIndex == 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, 0)
         }
     }
@@ -473,12 +471,22 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
 
             CardWithImageAndText(
                 painterResource(id = com.example.core.R.drawable.photo1),
-                text = item.title,
+                text = item.name,
                 description = item.description,
                 {},
                 {},
                 onClick = {
-                    selectedCardIndex = if (isSelected) -1 else index
+                    val filterList = uiState.filterList
+                    filterList.removeAll { it.property == "selection_id"}
+                     if (isSelected){
+                         selectedCardIndex = -1
+                    } else {
+                         selectedCardIndex = index
+                         filterList.add(Filter("selection_id", listOf(item.id), "in"))
+                    }
+
+                    Log.d("okFilter", filterList.toString())
+                    send(UpdateItemsOnMap(uiState.lowerLeft, uiState.topRight, filterList = filterList))
                 },
                 modifier = Modifier
                     .width(cardWidth)
@@ -488,9 +496,6 @@ fun CollectionCarousel(recommendations: List<Recommendation>) {
         }
     }
 }
-
-
-
 
 
 @Composable
@@ -523,7 +528,7 @@ fun Carousel() {
         "Веранда"
     )
 
-    Row{
+    Row {
         IconButton(
             onClick = { /*TODO*/ },
             colors = IconButtonColors(
