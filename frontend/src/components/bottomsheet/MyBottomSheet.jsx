@@ -28,13 +28,6 @@ const cardInfos = [
 
 const MyBottomSheet = ({sheetRef, content}) => {
 
-  let options = {
-    root: document.querySelector("#key"),
-    rootMargin: "0px",
-    threshold: 0.8,
-  };
-  // let observer = new IntersectionObserver(callback, options);
-
   return (
     <>
       <BottomSheet 
