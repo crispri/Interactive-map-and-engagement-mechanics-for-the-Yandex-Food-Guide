@@ -11,7 +11,7 @@ final class NetworkManager {
     private let baseURL = URL(string: Api.baseURL)
     private let token = Api.token
     
-    func makeRequest(path: String, method: String) throws -> URLRequest {
+    private func makeRequest(path: String, method: String) throws -> URLRequest {
         guard let url = URL(string: path, relativeTo: baseURL) else {
             throw URLError(.badURL)
         }
@@ -24,18 +24,20 @@ final class NetworkManager {
         return request
     }
     
-    func makeRequest(path: String, method: String, with requestModel: Codable) throws -> URLRequest {
+    private func makeRequest(path: String, method: String, with requestModel: Encodable?) throws -> URLRequest {
         var request = try makeRequest(path: path, method: method)
         
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        let jsonData = try encoder.encode(requestModel)
-        request.httpBody = jsonData
+        if let requestModel {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let jsonData = try encoder.encode(requestModel)
+            request.httpBody = jsonData
+        }
           
         return request
     }
     
-    func performRequest<T: Decodable>(request: URLRequest) async throws -> T {
+    private func performRequest<T: Decodable>(request: URLRequest) async throws -> T {
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -51,7 +53,7 @@ final class NetworkManager {
         return decodedResponse
     }
     
-    public func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
+    func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
         let request = try makeRequest(
             path: Api.restaurants.path,
             method: HTTPMethod.post.rawValue,
@@ -67,9 +69,9 @@ final class NetworkManager {
         return data.items
     }
     
-    public func fetchSnippet(snippetID: String) async throws -> SnippetDTO {
+    func fetchSnippet(id: String) async throws -> SnippetDTO {
         let request = try makeRequest(
-            path: Api.restaurant(id: snippetID).path,
+            path: Api.restaurant(id: id).path,
             method: HTTPMethod.get.rawValue
         )
         
@@ -78,7 +80,7 @@ final class NetworkManager {
         return data
     }
     
-    public func fetchSelections() async throws -> [SelectionDTO] {
+    func fetchSelections() async throws -> [SelectionDTO] {
         let request = try makeRequest(
             path: Api.selections.path,
             method: HTTPMethod.get.rawValue
@@ -88,10 +90,10 @@ final class NetworkManager {
         
         return data.items
     }
-    
-    public func fetchSelection(selectionID: String) async throws -> [SnippetDTO] {
+
+    func fetchSelectionSnippets(id: String) async throws -> [SnippetDTO] {
         let request = try makeRequest(
-            path: Api.selection(id: selectionID).path,
+            path: Api.selection(id: id).path,
             method: HTTPMethod.get.rawValue
         )
         
@@ -99,8 +101,8 @@ final class NetworkManager {
         
         return data.items
     }
-    
-    public func fetchAddress(loc: Point) async throws -> Data {
+
+    func fetchAddress(loc: Point) async throws -> Data {
         var components = URLComponents(string: "\(Api.geocoderURL)")!
 
         components.queryItems = [

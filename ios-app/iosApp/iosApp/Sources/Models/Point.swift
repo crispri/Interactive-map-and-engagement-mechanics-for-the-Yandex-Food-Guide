@@ -8,10 +8,10 @@
 import Foundation
 
 struct Point: Codable, Printable {
-    var description: String {
-        return "\(String(format: "%.1f", lat)) \(String(format: "%.1f", lon))"
-    }
-    
     let lat: Double
     let lon: Double
+    
+    var description: String {
+        return "\(String(format: "%.2f", lat)) \(String(format: "%.2f", lon))"
+    }
 }

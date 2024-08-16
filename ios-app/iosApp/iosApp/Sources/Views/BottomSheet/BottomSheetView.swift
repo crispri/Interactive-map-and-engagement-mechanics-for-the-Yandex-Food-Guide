@@ -6,28 +6,25 @@
 //
 
 import SwiftUI
+import BottomSheet
 
 struct BottomSheetView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
     
     var body: some View {
-        VStack {
-            FilterView()
-                .padding(.top, 16)
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(viewModel.snippets, id: \.self) { snippet in
-                        SnippetCell(restaurant: snippet)
-                    }
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(viewModel.snippets, id: \.self) { snippet in
+                    SnippetCell(restaurant: snippet)
                 }
-                .scrollTargetLayout()
             }
-            .scrollTargetBehavior(.viewAligned)
+            .padding(.bottom)
+            .animation(.easeInOut, value: viewModel.snippets)
+            .scrollTargetLayout()
+            .background(
+                Color.white
+            )
         }
+        .scrollTargetBehavior(.viewAligned)
     }
-}
-
-#Preview {
-    DetailsView()
-        .environmentObject(SnippetViewModel())
 }
