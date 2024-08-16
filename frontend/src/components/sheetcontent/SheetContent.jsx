@@ -1,7 +1,11 @@
 import './SheetContent.css'
+import {useEffect, useState} from 'react';
+import useDebounce from '../../lib/useDebounce';
 import RestaurantCard from '../card/RestaurantCard.jsx'
 import { useInView } from "react-intersection-observer";
 import { truncateString, formatTime } from '../../lib/utils.js'
+import { setCurrentPin } from '../../lib/restaurantsSlice';
+import { useDispatch } from 'react-redux';
 
 const SheetContent = ({ restaurants }) => {
   
@@ -18,6 +22,14 @@ const SheetContent = ({ restaurants }) => {
     close_time: formatTime(el.close_time),
     is_favorite: el.is_favourite
   }))
+  // const dispatch = useDispatch()
+  // const [currentRest, setCurrentRest] = useState(null);
+  // const debouncedValue = useDebounce(currentRest, 300);
+  
+
+  // useEffect(() => {
+  //   dispatch(setCurrentPin(debouncedValue))
+  // }, [debouncedValue])
 
   return (
     <div style={{
@@ -36,6 +48,7 @@ const SheetContent = ({ restaurants }) => {
       
         if (inView) {
           console.log(`Restaurant in view: ${restaurantInfo.id}`);
+          // setCurrentRest(restaurantInfo)
         }
       
       return (
