@@ -11,14 +11,14 @@ import UIKit
 final class BigPinView: UIView {
 
     var isSelected = true
-    var isFavorit = false
+//    var isFavorit = true
     var model: SnippetDTO? {
         didSet {
 //            imageRest.image = UIImage(named: model?. "1rest")
             nameRest.text = model?.name ?? "Название ресторана"
 //            descriptionRest.text = model?.description ?? "Название ресторана"
             raiting.text = String(format: "%.1f" , model?.rating ?? "5.0")
-            isFavorit = model?.isFavorite ?? false
+//            var isFavorit = model?.isFavorite ?? false
         }
     }
 
@@ -56,7 +56,7 @@ final class BigPinView: UIView {
         let label = UILabel()
         label.frame = .init(x: 8, y: 8, width: 113, height: 14)
         label.font = .systemFont(ofSize: 13)
-        label.text = "Название ресторана"
+//        label.text = "Название ресторана"
         label.numberOfLines = 1
         return label
     }()
@@ -89,7 +89,7 @@ final class BigPinView: UIView {
         let label = UILabel()
         label.frame = .init(x: 132, y: 8, width: 20, height: 12)
         label.font = .systemFont(ofSize: 11)
-        label.text = "4.9"
+//        label.text = "4.9"
         return label
     }()
 
@@ -137,7 +137,7 @@ final class BigPinView: UIView {
         squareView.addSubview(star)
         squareView.addSubview(raiting)
 
-        if isFavorit {
+        if model?.isFavorite ?? false {
             squareView.addSubview(favoriteView)
             favoriteView.addSubview(bookmark)
         }
