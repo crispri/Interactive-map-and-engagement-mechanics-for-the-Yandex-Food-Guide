@@ -45,7 +45,7 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
 
   const onOutsideClick = useOutsideClick(() => {
     navigate(`/restaurants`)
-    sheetRef.current.snapTo(({ maxHeight }) =>  maxHeight * 0.05);
+    // sheetRef.current.snapTo(({ maxHeight }) =>  maxHeight * 0.05);
     dispatch(setCurrentPin(null))
   })
 
@@ -71,10 +71,9 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
       <YMapListener 
         onUpdate={updateHandler}
       />
-      <YMapControls position="left">
+      <YMapControls position="right">
           {/* Add the geolocation control to the map */}
           <YMapGeolocationControl/>
-          <YMapZoomControl/>
       </YMapControls>
     </YMap>    
   </div>

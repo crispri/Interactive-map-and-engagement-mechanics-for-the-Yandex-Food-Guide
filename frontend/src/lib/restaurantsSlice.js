@@ -29,6 +29,58 @@ export const getRestaurants = createAsyncThunk(
 	}
 )
 
+export const getSelections = createAsyncThunk(
+	'restaurants/getSelections',
+	async () => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/selections`,
+				{
+					method: "GET",
+					headers: {
+					  "Content-Type": "application/json;charset=utf-8",
+					  "Authorization": "token",
+					},
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
+export const getSelection = createAsyncThunk(
+	'restaurants/getSelection',
+	async (selectionId) => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/selections/${selectionId}`,
+				{
+					method: "GET",
+					headers: {
+					  "Content-Type": "application/json;charset=utf-8",
+					  "Authorization": "token",
+					},
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
 const restaurantsSlice = createSlice({
 	name: 'restaurants',
 	initialState: {
@@ -116,9 +168,8 @@ const restaurantsSlice = createSlice({
 		  ],
 		restaurants: [],
 		unfocused_restaurants: {},
-		current_pin: {
-
-		}
+		current_pin: {},
+		selections: []
 	},
 	reducers: {
 		setCurrentPin: (state, action) => {
@@ -132,6 +183,10 @@ const restaurantsSlice = createSlice({
 				// state.restaurants.forEach(el => {
 				// 	state.unfocused_restaurants[el.id] = false
 				// })
+			})
+			.addCase(getSelections.fulfilled, (state, action) => {
+				state.selections = action.payload.items
+				console.log(state.selections);
 			})
 	}
 })

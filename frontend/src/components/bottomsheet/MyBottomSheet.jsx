@@ -3,7 +3,10 @@ import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
 import SheetContent from '../sheetcontent/SheetContent';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getSelections } from '../../lib/restaurantsSlice';
+import SelectionsList from '../selection/SelectionsList';
 
 const cardInfos = [
 {
@@ -27,6 +30,11 @@ const cardInfos = [
 ];
 
 const MyBottomSheet = ({sheetRef, content}) => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getSelections())
+  }, [])
 
   let options = {
     root: document.querySelector("#key"),
@@ -36,23 +44,23 @@ const MyBottomSheet = ({sheetRef, content}) => {
   // let observer = new IntersectionObserver(callback, options);
 
   return (
-    <>
-      <BottomSheet 
-        ref={sheetRef}
-        open={true}
-        blocking={false}
-        defaultSnap={({ maxHeight }) => maxHeight * 0.05}
-        snapPoints={({ maxHeight }) => [
-          maxHeight * 0.45,
-          maxHeight * 0.05,
-          maxHeight
-        ]}
-      >
-        <div className="bottomsheet">
+    <BottomSheet 
+      ref={sheetRef}
+      open={true}
+      blocking={false}
+      defaultSnap={({ maxHeight }) => maxHeight * 0.05}
+      snapPoints={({ maxHeight }) => [
+        maxHeight * 0.45,
+        maxHeight * 0.05,
+        maxHeight
+      ]}
+      // sibling={<SelectionsList/>}
+      header={<SelectionsList/>}
+    >
+      <div className="bottomsheet">
         {content}
-        </div>
-      </BottomSheet >
-    </>
+      </div>
+    </BottomSheet >
   )
 }
 
