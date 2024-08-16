@@ -48,7 +48,7 @@ const MyBottomSheet = ({sheetRef, content}) => {
         maxHeight
       ]}
       // sibling={<SelectionsList/>}
-      header={<SelectionsList/>}
+      // header={<SelectionsList/>}
     >
       <div className="bottomsheet">
         {content}
