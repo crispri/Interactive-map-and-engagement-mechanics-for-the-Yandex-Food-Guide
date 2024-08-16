@@ -10,6 +10,8 @@ import UIKit
 
 final class BigPinView: UIView {
 
+    var isSelected = true
+    var isFavorit = false
     var model: SnippetDTO? {
         didSet {
 //            imageRest.image = UIImage(named: model?. "1rest")
@@ -20,77 +22,74 @@ final class BigPinView: UIView {
         }
     }
 
-    var isSelected = false
-    var isFavorit = false
-
     private lazy var squareView: UIView = {
         let view = UIView()
+        view.frame = .init(x: 0, y: 50, width: 160, height: 43)
         view.layer.cornerRadius = 12
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private lazy var favoriteView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 12
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.frame = .init(x: 148, y: -9, width: 18, height: 18)
+        view.layer.cornerRadius = 6
         return view
     }()
 
     private lazy var triangle: UIImageView = {
         let triangle = UIImageView()
-        triangle.translatesAutoresizingMaskIntoConstraints = false
+        triangle.frame = .init(x: 68, y: 93, width: 24, height: 8)
         return triangle
     }()
 
     private lazy var imageRest: UIImageView = {
         let image = UIImageView()
+        image.frame = .init(x: 0, y: 0, width: 160, height: 60)
+        image.clipsToBounds = true
         image.image = UIImage(named: "1rest")
         image.layer.cornerRadius = 12
         image.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        image.clipsToBounds = true
-        image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
 
     private lazy var nameRest: UILabel = {
         let label = UILabel()
+        label.frame = .init(x: 8, y: 8, width: 113, height: 14)
         label.font = .systemFont(ofSize: 13)
         label.text = "Название ресторана"
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
         return label
     }()
 
     private lazy var descriptionRest: UILabel = {
         let label = UILabel()
+        label.frame = .init(x: 8, y: 23, width: 144, height: 12)
         label.font = .systemFont(ofSize: 11)
         label.numberOfLines = 1
         label.text = "кофе от 300р"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private lazy var star: UIImageView = {
         let image = UIImageView()
+        image.frame = .init(x: 121, y: 8, width: 11, height: 12)
         image.image = UIImage(systemName: "star.fill")
-        image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
 
     private lazy var bookmark: UIImageView = {
         let image = UIImageView()
+        image.frame = .init(x: 6, y: 6, width: 8, height: 8)
         image.image = UIImage(systemName: "bookmark.fill")
-        image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
 
 
     private lazy var raiting: UILabel = {
         let label = UILabel()
+        label.frame = .init(x: 132, y: 8, width: 20, height: 12)
         label.font = .systemFont(ofSize: 11)
         label.text = "4.9"
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
@@ -98,10 +97,8 @@ final class BigPinView: UIView {
 //    MARK: init
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .gray
         setupViews()
         background()
-        setupLayout()
     }
 
     required init?(coder: NSCoder) {
@@ -140,52 +137,10 @@ final class BigPinView: UIView {
         squareView.addSubview(star)
         squareView.addSubview(raiting)
 
-        if ((model?.isFavorite) != nil) {
-            addSubview(favoriteView)
+        if isFavorit {
+            squareView.addSubview(favoriteView)
             favoriteView.addSubview(bookmark)
         }
-    }
-
-    private func setupLayout() {
-        NSLayoutConstraint.activate([
-            imageRest.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageRest.centerYAnchor.constraint(equalTo: centerYAnchor),
-            imageRest.widthAnchor.constraint(equalToConstant: 160),
-            imageRest.heightAnchor.constraint(equalToConstant: 60),
-
-            squareView.centerXAnchor.constraint(equalTo: imageRest.centerXAnchor),
-            squareView.topAnchor.constraint(equalTo: imageRest.topAnchor, constant: 50),
-            squareView.widthAnchor.constraint(equalToConstant: 160),
-            squareView.heightAnchor.constraint(equalToConstant: 43),
-
-            triangle.topAnchor.constraint(equalTo: squareView.bottomAnchor),
-            triangle.centerXAnchor.constraint(equalTo: squareView.centerXAnchor),
-
-            nameRest.topAnchor.constraint(equalTo: squareView.topAnchor, constant: 8),
-            nameRest.leadingAnchor.constraint(equalTo: squareView.leadingAnchor, constant: 8),
-            nameRest.widthAnchor.constraint(equalToConstant: 113),
-
-            descriptionRest.bottomAnchor.constraint(equalTo: squareView.bottomAnchor, constant: -8),
-            descriptionRest.leadingAnchor.constraint(equalTo: squareView.leadingAnchor, constant: 8),
-
-            star.topAnchor.constraint(equalTo: squareView.topAnchor, constant: 8),
-            star.widthAnchor.constraint(equalToConstant: 12),
-            star.heightAnchor.constraint(equalToConstant: 12),
-            star.leadingAnchor.constraint(equalTo: nameRest.trailingAnchor),
-
-            raiting.leadingAnchor.constraint(equalTo: star.trailingAnchor),
-            raiting.topAnchor.constraint(equalTo: squareView.topAnchor, constant: 8),
-
-            favoriteView.widthAnchor.constraint(equalToConstant: 18),
-            favoriteView.heightAnchor.constraint(equalToConstant: 18),
-            favoriteView.topAnchor.constraint(equalTo: squareView.topAnchor, constant: -9),
-            favoriteView.trailingAnchor.constraint(equalTo: squareView.trailingAnchor, constant: -9),
-
-            bookmark.widthAnchor.constraint(equalToConstant: 12),
-            bookmark.heightAnchor.constraint(equalToConstant: 12),
-            bookmark.centerXAnchor.constraint(equalTo: favoriteView.centerXAnchor),
-            bookmark.centerYAnchor.constraint(equalTo: favoriteView.centerYAnchor)
-        ])
     }
 }
 
