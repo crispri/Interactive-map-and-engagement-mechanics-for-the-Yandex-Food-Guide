@@ -21,6 +21,7 @@ struct TRestaurant {
     userver::utils::datetime::TimeOfDay<std::chrono::seconds> close_time;
     std::string address;
     std::optional<std::vector<std::string>> tags;
+    bool in_collection;
 
     std::tuple<
         boost::uuids::uuid&,

@@ -35,6 +35,14 @@ std::vector<TRestaurant> PgRestaurantRepository::GetByFilter(const TRestaurantFi
     filter.filter_params.PushBack(filter.lower_left_corner.lon);
     filter.filter_params.PushBack(filter.top_right_corner.lon);
 
+    const auto& restaurants_in_collection = pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"( SELECT place_id FROM guide.places_selections )"
+        R"( WHERE selection_id IN )"
+        R"( (SELECT id FROM guide.selections WHERE owner_id = $1); )",
+        user_id
+    ).AsContainer< std::set<boost::uuids::uuid> >();
+
     const std::string& query =
             R"(SELECT * FROM )" + kTableName_ +
             R"( WHERE )" +
@@ -47,7 +55,12 @@ std::vector<TRestaurant> PgRestaurantRepository::GetByFilter(const TRestaurantFi
         query,
         filter.filter_params
     );
-    return restaurants.AsContainer<std::vector<TRestaurant>>(userver::storages::postgres::kRowTag);
+
+    auto result = restaurants.AsContainer<std::vector<TRestaurant>>(userver::storages::postgres::kRowTag);
+    for (auto& restaurant : result) {
+        restaurant.in_collection = restaurants_in_collection.count(restaurant.id);
+    }
+    return result;
 }
 
 

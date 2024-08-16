@@ -9,7 +9,9 @@ properties:
             "price_lower_bound",
             "price_upper_bound",
             "open_time",
-            "close_time"
+            "close_time",
+            "tags",
+            "collection_id"
         ]
         description: "Поле, на которое хотим наложить фильтр."
 

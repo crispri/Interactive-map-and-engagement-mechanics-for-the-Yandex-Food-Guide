@@ -30,6 +30,7 @@ userver::formats::json::Value Serialize(
             item["tags"].PushBack(userver::formats::json::ValueBuilder{tag});
         }
     }
+    item["in_collection"] = restaurant.in_collection;
 
     return item.ExtractValue();
 }
