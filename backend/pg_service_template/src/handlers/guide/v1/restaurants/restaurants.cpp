@@ -97,8 +97,6 @@ public:
             );
         }
 
-
-
         userver::storages::postgres::ParameterStore filter_params;
         std::string filter_string;
 
@@ -181,7 +179,10 @@ public:
             filter_string
         );
 
-        auto restaurants = restaurant_service_.GetByFilter(filters);
+        boost::uuids::string_generator gen;
+        auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+
+        auto restaurants = restaurant_service_.GetByFilter(filters, user_id);
         userver::formats::json::ValueBuilder responseJSON;
         responseJSON["items"].Resize(0);
         for (auto& restaurant : restaurants) {

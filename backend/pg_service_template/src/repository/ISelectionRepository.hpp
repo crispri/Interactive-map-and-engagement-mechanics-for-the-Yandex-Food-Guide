@@ -11,8 +11,8 @@
 namespace service {
 
 struct ISelectionRepository  {
-    virtual std::vector<TSelection> GetAll() = 0;
-    virtual std::vector<TRestaurant> GetById(const boost::uuids::uuid&) = 0;
+    virtual std::vector<TSelection> GetAll(const boost::uuids::uuid& user_id) = 0;
+    virtual std::vector<TRestaurant> GetById(const boost::uuids::uuid& selection_id, const boost::uuids::uuid& user_id) = 0;
     virtual ~ISelectionRepository() = default;
 };
 

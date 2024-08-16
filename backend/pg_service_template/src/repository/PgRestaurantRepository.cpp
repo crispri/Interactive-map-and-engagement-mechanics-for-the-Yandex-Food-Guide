@@ -8,7 +8,7 @@ PgRestaurantRepository::PgRestaurantRepository(const userver::storages::postgres
     kTableName_("guide.places")
     {}
 
-std::vector<TRestaurant> PgRestaurantRepository::GetAll() {
+std::vector<TRestaurant> PgRestaurantRepository::GetAll(const boost::uuids::uuid& user_id) {
     const auto& restaurants = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
         R"(SELECT * FROM )" + kTableName_ + ';'
@@ -16,12 +16,12 @@ std::vector<TRestaurant> PgRestaurantRepository::GetAll() {
     return restaurants.AsContainer<std::vector<TRestaurant>>(userver::storages::postgres::kRowTag);
 }
 
-std::optional<TRestaurant> PgRestaurantRepository::GetById(const boost::uuids::uuid& id) {
+std::optional<TRestaurant> PgRestaurantRepository::GetById(const boost::uuids::uuid& restaurant_id, const boost::uuids::uuid& user_id) {
     const auto& restaurant = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
         R"(SELECT * FROM )" + kTableName_ +
         R"( WHERE id = $1;)",
-        id
+        restaurant_id
     );
     if (restaurant.IsEmpty()) {
         return std::nullopt;
@@ -29,7 +29,7 @@ std::optional<TRestaurant> PgRestaurantRepository::GetById(const boost::uuids::u
     return restaurant[0].As<TRestaurant>(userver::storages::postgres::kRowTag);
 }
 
-std::vector<TRestaurant> PgRestaurantRepository::GetByFilter(const TRestaurantFilter& filter) {
+std::vector<TRestaurant> PgRestaurantRepository::GetByFilter(const TRestaurantFilter& filter, const boost::uuids::uuid& user_id) {
     filter.filter_params.PushBack(filter.lower_left_corner.lat);
     filter.filter_params.PushBack(filter.top_right_corner.lat);
     filter.filter_params.PushBack(filter.lower_left_corner.lon);

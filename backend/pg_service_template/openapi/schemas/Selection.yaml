@@ -9,10 +9,6 @@ properties:
     description:
         type: string
 
-    is_public:
-        description: "Enum размером в 2 байта"
-        type: integer
-
 required:
     - id
     - name

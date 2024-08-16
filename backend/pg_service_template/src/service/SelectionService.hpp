@@ -19,8 +19,8 @@ public:
         const userver::components::ComponentContext &context
     );
 
-    std::vector<TSelection> GetAll();
-    std::vector<TRestaurant> GetById(const boost::uuids::uuid& id);
+    std::vector<TSelection> GetAll(const boost::uuids::uuid& user_id);
+    std::vector<TRestaurant> GetById(const boost::uuids::uuid& selection_id, const boost::uuids::uuid& user_id);
     
 };
 

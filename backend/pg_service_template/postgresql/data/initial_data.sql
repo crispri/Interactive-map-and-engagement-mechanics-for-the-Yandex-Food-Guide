@@ -21,18 +21,18 @@ CREATE TABLE IF NOT EXISTS guide.places (
 );
 
 
-CREATE TABLE IF NOT EXISTS guide.selections (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name TEXT NOT NULL,
-    description TEXT NOT NULL,
-    is_collection BOOLEAN NOT NULL
-);
-
-
 CREATE TABLE IF NOT EXISTS guide.users (
    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
    name TEXT NOT NULL,
    password TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS guide.selections (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    owner_id UUID,
+    FOREIGN KEY(owner_id) REFERENCES guide.users(id)
 );
 
 CREATE TABLE IF NOT EXISTS guide.places_selections (
@@ -42,12 +42,12 @@ CREATE TABLE IF NOT EXISTS guide.places_selections (
    FOREIGN KEY(selection_id) REFERENCES guide.selections(id)
 );
 
-CREATE TABLE IF NOT EXISTS guide.visibility (
-    selection_id UUID NOT NULL,
-    user_id UUID NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES guide.users(id),
-    FOREIGN KEY(selection_id) REFERENCES guide.selections(id)
-);
+-- CREATE TABLE IF NOT EXISTS guide.visibility (
+--     selection_id UUID NOT NULL,
+--     user_id UUID NOT NULL,
+--     FOREIGN KEY(user_id) REFERENCES guide.users(id),
+--     FOREIGN KEY(selection_id) REFERENCES guide.selections(id)
+-- );
 
 CREATE TABLE IF NOT EXISTS guide.auth (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -57,10 +57,10 @@ CREATE TABLE IF NOT EXISTS guide.auth (
 );
 
 INSERT INTO guide.auth(user_id, session_id, started_at, expires_at) VALUES
-    ('61846daf-3303-465e-ab7f-4af27d3e8f41', '5142cece-b22e-4a4f-adf9-990949d053ff','2024-08-10 14:30:45+03', '2024-09-10 22:30:45+03');
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', '5142cece-b22e-4a4f-adf9-990949d053ff','2024-08-10 14:30:45+03', '2024-09-10 22:30:45+03');
 
 INSERT INTO guide.users(id, name, password) VALUES
-('61846daf-3303-465e-ab7f-4af27d3e8f41', 'John', '1234');
+('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'John', '1234');
 
 INSERT INTO guide.places(
             id,
@@ -203,29 +203,29 @@ INSERT INTO guide.selections(
              id,
              name,
              description,
-             is_collection
+             owner_id
 )
 VALUES
-    ('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Рестораны возсле Яндекса', 'Вкусно', FALSE),
-    ('e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Пиццерии возсле Яндекса', 'Быстро', FALSE),
-    ('d387e611-05a1-4505-8bf8-9d1486a00f83', 'Кофейни возсе Яндекса', 'Красивый интерьер', FALSE),
-    ('91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75', 'Завтраки', 'Европейская кухня', TRUE),
-    ('4f06e661-7fed-4713-81c1-9df4ac2d17dd', 'Завтраки', 'Домашняя кухня', TRUE),
-    ('85474fba-294c-40ba-9be3-6d0607b71d15', 'Столовые возле Яндекса', 'Недорого', FALSE),
-    ('74ba4bb4-5eec-4ba0-8675-161a5dc7e90b', 'Бизнес ланчи', 'Вкусно', FALSE),
-    ('9097a7bf-26e0-4099-960a-818713c500f2', 'Кондитерские возле Яндекса', 'Богатый ассортимент', FALSE),
-    ('2822cbc7-7b0d-41fb-81a7-ad3f901ca9e5', 'Чайные возсле Яндекса', 'Уютная атмосфера', FALSE),
-    ('65609266-5ddb-4496-9638-32011aabf730', 'Детские кафе', 'Вкусно', FALSE)
+    ('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Рестораны возсле Яндекса', 'Вкусно', NULL),
+    ('e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Пиццерии возсле Яндекса', 'Быстро', NULL),
+    ('d387e611-05a1-4505-8bf8-9d1486a00f83', 'Кофейни возсе Яндекса', 'Красивый интерьер', NULL),
+    ('91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75', 'Завтраки', 'Европейская кухня', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'),
+    ('4f06e661-7fed-4713-81c1-9df4ac2d17dd', 'Завтраки', 'Домашняя кухня', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'),
+    ('85474fba-294c-40ba-9be3-6d0607b71d15', 'Столовые возле Яндекса', 'Недорого', NULL),
+    ('74ba4bb4-5eec-4ba0-8675-161a5dc7e90b', 'Бизнес ланчи', 'Вкусно', NULL),
+    ('9097a7bf-26e0-4099-960a-818713c500f2', 'Кондитерские возле Яндекса', 'Богатый ассортимент', NULL),
+    ('2822cbc7-7b0d-41fb-81a7-ad3f901ca9e5', 'Чайные возсле Яндекса', 'Уютная атмосфера', NULL),
+    ('65609266-5ddb-4496-9638-32011aabf730', 'Детские кафе', 'Вкусно', NULL)
 ON CONFLICT DO NOTHING;
 
 
-INSERT INTO guide.visibility (
-      selection_id,
-      user_id
-)
-VALUES
-    ('91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75', '61846daf-3303-465e-ab7f-4af27d3e8f41'),
-    ('4f06e661-7fed-4713-81c1-9df4ac2d17dd', '61846daf-3303-465e-ab7f-4af27d3e8f41');
+-- INSERT INTO guide.visibility (
+--       selection_id,
+--       user_id
+-- )
+-- VALUES
+--     ('91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'),
+--     ('4f06e661-7fed-4713-81c1-9df4ac2d17dd', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
 
 
 INSERT INTO guide.places_selections(
