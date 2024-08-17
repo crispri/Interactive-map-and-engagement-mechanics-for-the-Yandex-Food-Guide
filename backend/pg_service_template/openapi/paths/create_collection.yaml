@@ -1,19 +1,30 @@
 post:
-    description: "Создать коллекцию"
+            description: "Создать коллекцию"
 
-    requestBody:
-        required: true
-        content:
-            application/json:
-                schema:
-                    $ref: "../openapi.yaml#/components/schemas/CollectionCreate"
-    security:
-        -   UserTicketAuth: [ ]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            # $ref: "#/components/schemas/CollectionCreate"
+                            type: object
+                            properties:
+                                name:
+                                    type: string
 
-    responses:
-        200:
-            description: "OK"
-        400:
-            $ref: "../responses/400.yaml"
-        401:
-            $ref: "../responses/401.yaml"
+                                description:
+                                    type: string
+
+                            required:
+                                - name
+                                - description
+            security:
+                -   UserTicketAuth: [ ]
+
+            responses:
+                200:
+                    description: "OK"
+                400:
+                    $ref: "../responses/400.yaml"
+                401:
+                    $ref: "../responses/401.yaml"
