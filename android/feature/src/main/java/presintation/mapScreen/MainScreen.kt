@@ -116,8 +116,6 @@ fun MainScreen(
 
     val listState = rememberLazyListState()
 
-    val coroutineScope = rememberCoroutineScope()
-
     val bottomSheetHeight = remember { mutableStateOf<Dp?>(null)}
 
 
