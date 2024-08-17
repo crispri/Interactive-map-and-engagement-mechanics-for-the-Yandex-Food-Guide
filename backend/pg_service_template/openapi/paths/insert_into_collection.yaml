@@ -9,15 +9,15 @@ put:
         content:
             application/json:
                 schema:
-                    # $ref: "../openapi.yaml#/components/schemas/InsertIntoCollection"
-                    type: object
-                    properties:
-                        restaurant_id:
-                            type: string
-                            format: uuid
-                    required:
-                        -   collection_id
-                        -   restaurant_id
+                    $ref: "../openapi.yaml#/components/schemas/InsertIntoCollection"
+                    # type: object
+                    # properties:
+                    #     restaurant_id:
+                    #         type: string
+                    #         format: uuid
+                    # required:
+                    #     -   collection_id
+                    #     -   restaurant_id
     security:
         -   UserTicketAuth: [ ]
 
