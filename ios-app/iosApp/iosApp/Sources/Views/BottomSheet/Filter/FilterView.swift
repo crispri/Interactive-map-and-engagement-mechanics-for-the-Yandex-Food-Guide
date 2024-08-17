@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct FilterView: View {
+    @Binding var isFiltersPresented: Bool
+
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
@@ -23,7 +25,7 @@ struct FilterView: View {
     
     private var firstFilterButton: some View {
         Button {
-            // TODO: add action.
+            isFiltersPresented.toggle()
         } label: {
             Image(systemName: "slider.horizontal.3")
                 .tint(.primary)
@@ -44,10 +46,13 @@ struct FilterView: View {
                 .padding(10)
                 .background(Color(hex: 0x5C5A57).opacity(0.1))
                 .clipShape(Capsule())
+                .onTapGesture {
+
+                }
         }
     }
 }
 
 #Preview {
-    FilterView()
+    FilterView(isFiltersPresented: DetailsView().$isFiltersPresented)
 }

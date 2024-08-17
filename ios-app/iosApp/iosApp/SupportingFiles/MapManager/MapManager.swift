@@ -36,7 +36,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         delegate?.onCameraMove()
     }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    nonisolated func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
             self.manager.startUpdatingLocation()
         }

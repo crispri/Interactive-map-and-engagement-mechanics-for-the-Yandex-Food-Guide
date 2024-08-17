@@ -1,5 +1,5 @@
 //
-//  SelectionsViewModel.swift
+//  SnippetViewModel.swift
 //  iosApp
 //
 //  Created by Stanislav Leonchik on 04.08.2024.
@@ -10,10 +10,14 @@ import CoreLocation
 
 @MainActor
 final class SnippetViewModel: ObservableObject {
+    private let MAX_POLIGON_WIDTH = 0.20
+    
     @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = SnippetDTO.mockData
-    @Published var collections = SelectionDTO.mockData
+    @Published var selections = SelectionDTO.mockData
     @Published var selectedCollection: SelectionDTO? = nil
+    @Published var filters: [FilterDTO] = []
+    @Published var tags: [String: Bool] = [:]
     
     var mapManager = MapManager()
     private let networkManager = NetworkManager()
@@ -40,6 +44,10 @@ final class SnippetViewModel: ObservableObject {
         onCameraMove()
     }
     
+    func eventAddTag(tag: String) {
+        tags[tag] = true
+    }
+    
     @MainActor
     func onCameraMove() {
         Task {
@@ -49,7 +57,7 @@ final class SnippetViewModel: ObservableObject {
                 let tr = rect.topRightCorner
                 
                 print("Square position: \(ll.description) \(tr.description)")
-                if abs(ll.lat - tr.lat) > 0.1 {
+                if abs(ll.lat - tr.lat) > MAX_POLIGON_WIDTH {
                     mapManager.disablePins()
                     mapManager.cleanPins()
                     return
@@ -77,18 +85,18 @@ final class SnippetViewModel: ObservableObject {
     
     func eventSelectionPressed(at index: Int, reader: ScrollViewProxy) async {
         if let selectedCollection,
-           selectedCollection == collections[index] {
+           selectedCollection == selections[index] {
             self.selectedCollection = nil
             await fetchSnippets()
         } else {
-            selectedCollection = collections[index]
+            selectedCollection = selections[index]
             reader.scrollTo(index, anchor: .center)
             await fetchSelectionSnippets(id: selectedCollection?.id ?? "")
             eventCenterCamera(to: .pins)
         }
     }
     
-    // MARK: Wrappers for fetching snippets and collections.
+    // MARK: Wrappers for fetching snippets and selections.
     
     func fetchSnippets() async {
         do {
@@ -97,7 +105,7 @@ final class SnippetViewModel: ObservableObject {
             let tr = rect.topRightCorner
             
             print("Square position: \(ll.description) \(tr.description)")
-            if abs(ll.lat - tr.lat) > 0.1 {
+            if abs(ll.lat - tr.lat) > MAX_POLIGON_WIDTH {
                 mapManager.disablePins()
                 mapManager.cleanPins()
                 return
@@ -114,7 +122,7 @@ final class SnippetViewModel: ObservableObject {
     
     func fetchSelections() async {
         do {
-            collections = try await loadSelections()
+            selections = try await loadSelections()
         } catch { print(error) }
     }
     
@@ -128,7 +136,7 @@ final class SnippetViewModel: ObservableObject {
     // MARK: load data from server.
     
     private func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
-        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner)
+        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner, filters: filters)
         return data
     }
     

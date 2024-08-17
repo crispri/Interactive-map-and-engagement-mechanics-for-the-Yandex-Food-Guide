@@ -119,7 +119,7 @@ final class NormalPinView: UIView {
         squareView.addSubview(star)
         squareView.addSubview(raiting)
 
-        if model?.isFavorite ?? false {
+        if model?.inCollection ?? false {
             squareView.addSubview(favoriteView)
             favoriteView.addSubview(bookmark)
         }

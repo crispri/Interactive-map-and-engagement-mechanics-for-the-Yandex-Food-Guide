@@ -11,7 +11,7 @@ struct RestaurantView: View {
     @Environment(\.dismiss) var dismiss
     @State var nameRest: String
     @State var rating: Double
-    @State var isFavorite: Bool
+    @State var inCollection: Bool
     @State var tags: [String]
 
     var body: some View {
@@ -146,7 +146,7 @@ struct RestaurantView: View {
         Button(action: {
             // TODO: add action.
         }, label: {
-            Image(systemName: isFavorite ? "bookmark.fill" : "bookmark")
+            Image(systemName: inCollection ? "bookmark.fill" : "bookmark")
                 .frame(width: 45, height: 45)
                 .foregroundStyle(.black)
                 .background(.white)
@@ -226,5 +226,5 @@ struct RestaurantView: View {
 }
 
 #Preview {
-    RestaurantView(nameRest: "МЭЛТ", rating: 5.0, isFavorite: false, tags: ["Итальянская", "Европейская"])
+    RestaurantView(nameRest: "МЭЛТ", rating: 5.0, inCollection: false, tags: ["Итальянская", "Европейская"])
 }
