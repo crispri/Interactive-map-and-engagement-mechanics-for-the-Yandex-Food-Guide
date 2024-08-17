@@ -17,7 +17,7 @@ struct HeaderView: View {
                 .environmentObject(viewModel)
             VStack {
                 GrabberView()
-                FilterView(isFiltersPresented: $isFiltersPresented)
+                FilterView(isFiltersPresented: $isFiltersPresented, filterCategories: $viewModel.filterCategories)
                     .padding(.bottom, 8)
             }
             .background(

@@ -9,14 +9,15 @@ import SwiftUI
 
 struct FilterView: View {
     @Binding var isFiltersPresented: Bool
+    @Binding var filterCategories: [FilterCategory]
 
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
                 firstFilterButton
-                filterButton(title: "Рядом со мной")
-                filterButton(title: "Открыто сейчас")
-                filterButton(title: "Высокий рейтинг")
+                filterButton(filter: $filterCategories[0].filters[1])
+                filterButton(filter: $filterCategories[1].filters[0])
+                filterButton(filter: $filterCategories[0].filters[0])
             }
             .padding(.horizontal)
         }
@@ -34,25 +35,29 @@ struct FilterView: View {
                 .clipShape(Circle())
         }
     }
+}
+
+struct filterButton: View {
+    @Binding var filter: Filter
     
-    @ViewBuilder
-    private func filterButton(title: String) -> some View {
+    var body: some View {
         Button {
-            // TODO: add action.
+            filter.isActive.toggle()
+            print(filter.isActive)
         } label: {
-            Text(title)
+            Text(filter.name)
                 .font(.system(size: 13, weight: .medium))
                 .tint(.primary)
+                .foregroundStyle(filter.isActive ? .white : .black)
                 .padding(10)
-                .background(Color(hex: 0x5C5A57).opacity(0.1))
+                .background(filter.isActive ? .black : Color(hex: 0x5C5A57).opacity(0.1))
                 .clipShape(Capsule())
-                .onTapGesture {
-
-                }
         }
     }
 }
 
 #Preview {
-    FilterView(isFiltersPresented: DetailsView().$isFiltersPresented)
+    FilterView(isFiltersPresented: DetailsView().$isFiltersPresented, filterCategories: Binding(get: {
+        SnippetViewModel().filterCategories
+    }, set: { _ in } ))
 }
