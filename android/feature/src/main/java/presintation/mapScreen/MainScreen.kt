@@ -67,6 +67,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,12 +75,13 @@ import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
-import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
 import model.CollectionOfPlace
 import model.Filter
+import model.RaiseCameraPosition
+import model.RecommendationIsSelected
 import model.SelectItemFromBottomSheet
 import model.UpdateItemsOnMap
 import ui.BigCard
@@ -99,7 +101,6 @@ fun MainScreen(
     mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
-
     val offsetState = remember { mutableFloatStateOf(-96f) }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -114,7 +115,12 @@ fun MainScreen(
 
     val coroutineScope = rememberCoroutineScope()
 
-    val list = mutableStateOf(uiState.restaurantsOnMap)
+    val bottomSheetHeight = remember { mutableStateOf<Dp?>(null)}
+
+
+    val list = remember {
+        mutableStateOf(uiState.restaurantsOnMap)
+    }
     val isMapSelected = remember { mutableStateOf(false) }
 
     val sheetState = rememberBottomSheetState(
@@ -207,9 +213,11 @@ fun MainScreen(
         }
 
         Log.d("lazyListState", "Current Index: ${currentIndex.value}")
+        Log.d("lazyListState", "list: ${list.value}")
         if (sheetState.currentValue == SheetValue.PartiallyExpanded
             && uiState.selectedItemFromMapId == null) {
             send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
+            send(RaiseCameraPosition(true))
             Log.e("lazyListState", "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}")
         }
     }
@@ -268,6 +276,7 @@ fun MainScreen(
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
+                                        bottomSheetHeight.value = itemHeight.value + 100.dp
                                     }
                                     .pointerInput(Unit) {
                                         detectTapGestures(
@@ -371,7 +380,7 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                MapScreen(uiState, send, mapView, curLocation)
+                MapScreen(uiState, send, mapView, curLocation, bottomSheetHeight)
             }
         }
 
@@ -509,6 +518,13 @@ fun CollectionCarousel(
 
     val configuration = LocalConfiguration.current
     val screenWidthInt = configuration.screenWidthDp
+    LaunchedEffect(selectedCardIndex) {
+        if(selectedCardIndex != -1){
+            send(RecommendationIsSelected(true))
+        } else{
+            send(RecommendationIsSelected(false))
+        }
+    }
     LaunchedEffect(selectedCardIndex) {
         if (selectedCardIndex != -1 && selectedCardIndex != 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, -(screenWidthInt / 2))

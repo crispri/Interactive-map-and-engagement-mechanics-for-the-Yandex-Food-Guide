@@ -17,6 +17,10 @@ class SelectItemFromBottomSheet(
     val itemId: String?
 ) : MainScreenEvent()
 
+class RecommendationIsSelected(
+    val isSelected: Boolean
+) : MainScreenEvent()
+
 class NavigateToLocationEvent : MainScreenEvent()
 
 class CancelCentering : MainScreenEvent()
@@ -25,6 +29,10 @@ class UpdateItemsOnMap(
     val lowerLeft: Point,
     val topRight: Point,
     val filterList: List<Filter>,
+) : MainScreenEvent()
+
+class RaiseCameraPosition(
+    val raiseRequired: Boolean
 ) : MainScreenEvent()
 
 class UpdateListOfRestaurant(

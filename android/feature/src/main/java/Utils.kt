@@ -4,17 +4,10 @@ import android.graphics.Canvas
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
-import android.graphics.RectF
-import android.graphics.drawable.Drawable
-import android.transition.Transition
 import android.view.View
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
 import com.yandex.mapkit.geometry.Point
 import model.CollectionOfPlace
 import model.Restaurant
