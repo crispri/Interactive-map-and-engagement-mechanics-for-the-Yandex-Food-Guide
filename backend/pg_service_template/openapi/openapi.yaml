@@ -65,5 +65,5 @@ paths:
         $ref: "./paths/create_collection.yaml"
 
     /collection/{id}:
-        $ref: "./paths/insert_into_collecton.yaml"
+        $ref: "./paths/insert_into_collection.yaml"
 
