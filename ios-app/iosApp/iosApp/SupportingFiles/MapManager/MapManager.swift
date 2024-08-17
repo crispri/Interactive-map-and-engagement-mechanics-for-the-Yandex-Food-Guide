@@ -43,25 +43,36 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     
     func placePins(_ pins: [SnippetDTO]) {
-        let iconStyle = YMKIconStyle()
-        let image = UIImage(named: "pin") ?? UIImage()
-        
         var cnt = 0;
         
         disablePins()
         
-        for pin in pins {
-            if var pp = placedPins[pin.id] {
+        for index in pins.indices {
+            if var pp = placedPins[pins[index].id] {
                 pp.1 = true
-                placedPins[pin.id] = pp
+                placedPins[pins[index].id] = pp
             } else {
                 let placemark = map.mapObjects.addPlacemark()
                 placemark.geometry = .init(
-                    latitude: pin.coordinates.lat,
-                    longitude: pin.coordinates.lon
+                    latitude: pins[index].coordinates.lat,
+                    longitude: pins[index].coordinates.lon
                 )
-                placemark.setIconWith(image, style: iconStyle)
-                placedPins[pin.id] = (placemark, true)
+                if index < 3 {
+                    let uiView = BigPinView(frame: .init(x: 0, y: 0, width: 172, height: 106))
+                    uiView.model = pins[index]
+                    uiView.setSelected(false)
+                    placemark.setIconWith(uiView.asImage())
+                } else if index < 6 {
+                    let uiView = NormalPinView(frame: .init(x: 0, y: 0, width: 172, height: 52))
+                    uiView.model = pins[index]
+                    uiView.setSelected(false)
+                    placemark.setIconWith(uiView.asImage())
+                } else if index < 20 {
+                    let uiView = SmallPinView(frame: .init(x: 0, y: 0, width: 7, height: 10))
+                    uiView.setSelected(false)
+                    placemark.setIconWith(uiView.asImage())
+                }
+                placedPins[pins[index].id] = (placemark, true)
                 cnt += 1
             }
         }
