@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getSelections } from '../../lib/restaurantsSlice';
 import SelectionsList from '../selection/SelectionsList';
+import HeaderFilters from '../filter/HeaderFilters';
+import { useLocation } from 'react-router-dom';
 
 const cardInfos = [
 {
@@ -29,18 +31,27 @@ const cardInfos = [
 }
 ];
 
-const MyBottomSheet = ({sheetRef, content}) => {
-  const dispatch = useDispatch()
+const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
+  const location = useLocation(); 
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getSelections())
   }, [])
+
+  const shouldShowHeader = location.pathname === '/restaurants';  
 
   return (
     <BottomSheet 
       ref={sheetRef}
       open={true}
       blocking={false}
+      header={
+        <>
+        <SelectionsList/>
+        {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+        </>
+      }
       defaultSnap={({ maxHeight }) => maxHeight * 0.05}
       snapPoints={({ maxHeight }) => [
         maxHeight * 0.45,

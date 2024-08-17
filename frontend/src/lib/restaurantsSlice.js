@@ -3,7 +3,7 @@ import { _apiUrl } from '../assets/variables'
 
 export const getRestaurants = createAsyncThunk(
 	'restaurants/getRestaurants',
-	async (coordinates) => {
+	async (body) => {
 		try {
 			const response = await fetch(
 				`${_apiUrl}/guide/v1/restaurants`,
@@ -14,7 +14,7 @@ export const getRestaurants = createAsyncThunk(
 					  "Authorization": "token",
 
 					},
-					body: JSON.stringify(coordinates),
+					body: JSON.stringify(body),
 				}
 			)
 			if (response.ok) {
@@ -36,11 +36,14 @@ export const getSelections = createAsyncThunk(
 			const response = await fetch(
 				`${_apiUrl}/guide/v1/selections`,
 				{
-					method: "GET",
+					method: "POST",
 					headers: {
 					  "Content-Type": "application/json;charset=utf-8",
 					  "Authorization": "token",
 					},
+					body: JSON.stringify({
+						"return_collections": false
+					}),
 				}
 			)
 			if (response.ok) {
@@ -99,7 +102,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 20,
 			  price_upper_bound: 50,
 			  tags: ["Русская", "Традиционная", "Современная"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "2",
@@ -115,7 +118,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 15,
 			  price_upper_bound: 35,
 			  tags: ["Грузинская", "Хинкали", "Национальная"],
-			  is_favorite: false,
+			  in_collection: false,
 			},
 			{
 			  id: "3",
@@ -131,7 +134,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 25,
 			  price_upper_bound: 60,
 			  tags: ["Итальянская", "Пицца", "Фастфуд"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "4",
@@ -147,7 +150,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 30,
 			  price_upper_bound: 70,
 			  tags: ["Французская", "Бистро", "Кофе"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "5",
@@ -163,33 +166,49 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 40,
 			  price_upper_bound: 90,
 			  tags: ["Японская", "Суши", "Морепродукты"],
-			  is_favorite: false,
+			  in_collection: false,
 			}
 		  ],
+		filters: {},
 		restaurants: [],
+		is_in_collection: false,
 		unfocused_restaurants: {},
-		current_pin: {},
-		selections: []
+		current_pin: null,
+		selections: [],
+		currentSelection: null
 	},
 	reducers: {
+		toggleIsInCollection: (state, _) => {
+			state.is_in_collection = !state.is_in_collection;
+		},
 		setCurrentPin: (state, action) => {
 			state.current_pin = action.payload
+		},
+		addFilter: (state, action) => {
+			state.filters[action.payload.key] = action.payload;
+		},
+		removeFilter: (state, action) => {
+			delete state.filters[action.payload.key];
 		}
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getRestaurants.fulfilled, (state, action) => {
-				state.restaurants = action.payload.items
+				state.restaurants = action.payload.items.map(el => {
+					return ({
+					  ...el,
+					  coordinates: [el.coordinates.lon, el.coordinates.lat],
+					})
+				  })
 				// state.restaurants.forEach(el => {
 				// 	state.unfocused_restaurants[el.id] = false
 				// })
 			})
 			.addCase(getSelections.fulfilled, (state, action) => {
 				state.selections = action.payload.items
-				console.log(state.selections);
 			})
 	}
 })
 
-export const { setCurrentPin } = restaurantsSlice.actions
+export const { setCurrentPin, addFilter, removeFilter, toggleIsInCollection } = restaurantsSlice.actions
 export default restaurantsSlice.reducer

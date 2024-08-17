@@ -1,0 +1,32 @@
+.active {
+    text-align: center;
+    border-radius: 15px;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    margin-right: 10px;
+    background-color: #e0e0e0;
+    font-weight: 600;
+    color: black;
+}
+
+.inactive {
+    text-align: center;
+    border-radius: 15px;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    margin-right: 10px;
+    background-color: black;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.filter {
+    border-radius: 15px;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    margin-right: 10px;
+    white-space: nowrap;
+    color: gray;
+    font-weight: 600;
+}
+

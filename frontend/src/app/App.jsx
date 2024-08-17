@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 // import SheetContent from "../components/sheetcontent/SheetContent.jsx";
 import RestaurantFullView from "../components/fullview/RestaurantFullView.jsx";
 import sample from '../assets/sample.jpeg'
+import FiltersFullView from "../components/filter/FiltersFullView.jsx";
 
 const SheetContent = lazy(() => import('../components/sheetcontent/SheetContent.jsx'))
  
@@ -28,6 +29,7 @@ function App() {
   const sheetRef = useRef()
   const current_pin = useSelector((state) => state.restaurantsSlice.current_pin)
   const restaurants = useSelector((state) => state.restaurantsSlice.restaurants)
+  const current_selection = useSelector((state) => state.restaurantsSlice.currentSelection)
   // console.log(current_pin, restaurants.filter(el => el.name === current_pin?.name));
   const {restId} = useParams()
 
@@ -49,9 +51,8 @@ function App() {
   }
   const debouncedValue = useDebounce(currentPolygon, 300);
   
-
   useEffect(() => {
-    dispatch(getRestaurants({
+    let body = {
       "lower_left_corner": {
         "lat": debouncedValue[1][1],
         "lon": debouncedValue[0][0]
@@ -60,9 +61,18 @@ function App() {
         "lat": debouncedValue[0][1],
         "lon": debouncedValue[1][0]
       },
-      "max_count": 0
-    }))
-  }, [debouncedValue])
+    }
+    if (current_selection) {
+      body["filters"] = [{
+        "property": "selection_id",
+        "operator": "in",
+        "value": [
+          current_selection
+        ]
+      }]
+    }
+    dispatch(getRestaurants(body))
+  }, [debouncedValue, current_selection])
   const router = createBrowserRouter([
     {
       path: "/",
@@ -74,7 +84,7 @@ function App() {
         <>
           <Navbar/>
           <MapComponent sheetRef={sheetRef} location={location} updateHandler={updateHandler} setLocation={setLocation}/>
-          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>}/>
+          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue}/>
         </>
       ),
       children: [
@@ -90,6 +100,10 @@ function App() {
           path: ':restId',
           element: <RestaurantFullView sheetRef={sheetRef}/>
         },
+        {
+          path: 'filters',
+          element: <FiltersFullView sheetRef={sheetRef}/>
+        }
       ]
     },
   ]);
