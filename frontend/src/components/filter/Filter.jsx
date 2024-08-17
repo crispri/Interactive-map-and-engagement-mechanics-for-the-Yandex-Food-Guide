@@ -8,24 +8,24 @@ const Filter = ({ filtersMap, debouncedValue, filter }) => {
     const dispatch = useDispatch();
 
     function addFilterHandler() {
-        dispatch(addFilter({ key: filter.name, value: filter.operator }));   
+        dispatch(addFilter({ key: filter.name, value: filter.operator }));
     }
 
     function removeFilterHandler() {
-        dispatch(removeFilter({ key: filter.name }));   
+        dispatch(removeFilter({ key: filter.name }));
     }
 
     return (
         <>
             {
-            filter.name in filtersMap && filtersMap[filter.name] != null && filtersMap ? 
-            <div className={styles.inactive} onClick={removeFilterHandler}>
-                {filter.name}
-            </div>    
-            :
-            <div className={styles.active} onClick={addFilterHandler}>
-            {filter.name}
-        </div>       
+                filter.name in filtersMap && filtersMap[filter.name] != null && filtersMap ?
+                    <div className={styles.inactive} onClick={removeFilterHandler}>
+                        {filter.name}
+                    </div>
+                    :
+                    <div className={styles.active} onClick={addFilterHandler}>
+                        {filter.name}
+                    </div>
             }
         </>
     )
