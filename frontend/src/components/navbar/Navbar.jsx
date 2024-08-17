@@ -4,9 +4,9 @@ import Button from '../button/button'
 import styles from './Navbar.module.scss'
 import Glyph from '../../assets/Glyph.svg'
 import { useDispatch, useSelector } from "react-redux";
-import bookmark from '../../assets/bookmark.svg'
-import bookmarkWhite from '../../assets/bookmark_white_edges.svg'
-import { toggleIsInCollection } from '../../lib/restaurantsSlice.js'
+import bookmarkPressed from '../../assets/bookmark_pressed.svg'
+import bookmarkUnpressed from '../../assets/bookmark_unpressed.svg'
+import { getCollections, getSelections, toggleIsInCollection } from '../../lib/restaurantsSlice.js'
 
 function Navbar() {
 
@@ -14,8 +14,13 @@ function Navbar() {
 
   const dispatch = useDispatch();
 
-  function toggleButton() {
-	dispatch(toggleIsInCollection());
+  async function toggleButton() {
+	await dispatch(toggleIsInCollection());
+	if (isInCollection === true) {
+		dispatch(getCollections());
+	} else {
+		dispatch(getSelections());
+	}
   }
 
   return (
@@ -26,9 +31,9 @@ function Navbar() {
 		<p style={{fontWeight: "500", fontSize: "16px"}}>Льва Толстого, 16</p>
 	  </div>
 	  {isInCollection ?
- 		<Button className={styles.wrapper__in_collection} icon={bookmarkWhite} onClick={toggleButton}/>
+ 		<Button className={styles.wrapper__in_collection} icon={bookmarkPressed} onClick={toggleButton}/>
 	  :
-	  	<Button className={styles.wrapper__not_in_collection} icon={bookmark} onClick={toggleButton}/>
+	  	<Button className={styles.wrapper__not_in_collection} icon={bookmarkUnpressed} onClick={toggleButton}/>
 	  }
 	 
 	</div>

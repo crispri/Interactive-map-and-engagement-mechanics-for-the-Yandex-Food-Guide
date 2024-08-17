@@ -1,6 +1,6 @@
 import styles from './SelectionsList.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { setSelection } from '../../lib/restaurantsSlice'
+import { getSelection } from '../../lib/restaurantsSlice'
 
 function SelectionsList() {
 	const selections = useSelector((state) => state.restaurantsSlice.selections)

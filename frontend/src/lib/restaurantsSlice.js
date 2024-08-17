@@ -36,11 +36,12 @@ export const getSelections = createAsyncThunk(
 			const response = await fetch(
 				`${_apiUrl}/guide/v1/selections`,
 				{
-					method: "GET",
+					method: "POST",
 					headers: {
 					  "Content-Type": "application/json;charset=utf-8",
 					  "Authorization": "token",
 					},
+					body: JSON.stringify({"return_collections": false}),
 				}
 			)
 			if (response.ok) {
@@ -61,6 +62,59 @@ export const getSelection = createAsyncThunk(
 		try {
 			const response = await fetch(
 				`${_apiUrl}/guide/v1/selections/${selectionId}`,
+				{
+					method: "GET",
+					headers: {
+					  "Content-Type": "application/json;charset=utf-8",
+					  "Authorization": "token",
+					},
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
+export const getCollections = createAsyncThunk(
+	'restaurants/getCollections',
+	async () => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/selections`,
+				{
+					method: "POST",
+					headers: {
+					  "Content-Type": "application/json;charset=utf-8",
+					  "Authorization": "token",
+					},
+					body: JSON.stringify({"return_collections": true}),
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
+export const getCollection = createAsyncThunk(
+	'restaurants/getSelection',
+	async (collectionId) => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/selections/${collectionId}`,
 				{
 					method: "GET",
 					headers: {
@@ -172,6 +226,7 @@ const restaurantsSlice = createSlice({
 		unfocused_restaurants: {},
 		current_pin: null,
 		selections: [],
+		collections: [],
 		currentSelection: null
 	},
 	reducers: {
@@ -203,6 +258,25 @@ const restaurantsSlice = createSlice({
 			})
 			.addCase(getSelections.fulfilled, (state, action) => {
 				state.selections = action.payload.items
+			})
+			.addCase(getCollections.fulfilled, (state, action) => {
+				state.collections = action.payload.items
+			})
+			.addCase(getSelection.fulfilled, (state, action) => {
+				state.restaurants = action.payload.items.map(el => {
+					return ({
+					  ...el,
+					  coordinates: [el.coordinates.lon, el.coordinates.lat],
+					})
+				  })
+			})
+			.addCase(getCollection.fulfilled, (state, action) => {
+state.restaurants = action.payload.items.map(el => {
+					return ({
+					  ...el,
+					  coordinates: [el.coordinates.lon, el.coordinates.lat],
+					})
+				  })
 			})
 	}
 })

@@ -19,9 +19,11 @@ const RestaurantCard = ({ restaurantInfo }) => {
   function favouriteClick() {
     // useEffect
     console.log('favouriteClick')
+    console.log(restaurantInfo?.pictures)
   }
 
   function unfavouriteClick() {
+    console.log(restaurantInfo?.pictures)
     console.log('unfavouriteClick')
     // useEffect
   }
@@ -36,9 +38,10 @@ const RestaurantCard = ({ restaurantInfo }) => {
         <img className="fav_button" src={snippetUnfavourite} alt="Unfavourite" onClick={unfavouriteClick} />
         }
         {
-          restaurantInfo?.images && restaurantInfo?.images?.lenngth > 0
+  
+          restaurantInfo?.pictures && restaurantInfo?.pictures?.length > 0
           ?
-          <img className="snippet" src={restaurantInfo?.images[0]} alt="Restaurant" onClick={handleClick}/>
+          <img className="snippet" src={restaurantInfo?.pictures[0]} alt="Restaurant" onClick={handleClick}/>
           :
           <img className="snippet" src={restaurantImage} alt="Restaurant" onClick={handleClick}/>
         }
