@@ -23,6 +23,8 @@ fun Restaurant.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     closeTime,
     isFavorite,
     tags,
+    inCollection,
+    pin, pictures
 )
 
 fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
@@ -39,6 +41,8 @@ fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
     closeTime,
     isFavorite,
     tags,
+    inCollection,
+    pin, pictures
 )
 
 fun CollectionItemForJson.toModel(): CollectionOfPlace = CollectionOfPlace(

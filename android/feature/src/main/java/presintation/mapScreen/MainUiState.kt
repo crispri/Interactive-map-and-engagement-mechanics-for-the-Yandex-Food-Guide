@@ -1,6 +1,7 @@
 package presintation.mapScreen
 
 import com.yandex.mapkit.geometry.Point
+import model.CollectionOfPlace
 import model.Filter
 import model.Recommendation
 import model.Restaurant
@@ -11,9 +12,13 @@ data class MainUiState(
     val selectedItemFromMapId: String? = null,
     val selectedItemFromBottomSheetId: String? = null,
 
+    val curCoordinates: Pair<Point, Point>? = null,
+    val raiseRequired: Boolean = false,
+
     val currentAddress: String = "Льва Толстого, 16",
     val restaurantsOnMap: List<Restaurant> = listOf(),
     val recommendations: List<CollectionOfPlace> = listOf(),
+    val recommendationIsSelected: Boolean = false,
     val zoomValue: Float = 16.0f,
     val centeringIsRequired: Boolean = true,
 

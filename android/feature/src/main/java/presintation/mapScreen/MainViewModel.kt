@@ -14,6 +14,8 @@ import model.CancelCentering
 import model.Filter
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
+import model.RaiseCameraPosition
+import model.RecommendationIsSelected
 import model.SaveInCollectionEvent
 import model.SelectItemFromBottomSheet
 import model.SelectItemFromMap
@@ -173,6 +175,7 @@ class MainViewModel @Inject constructor(
 
             is UpdateItemsOnMap -> {
                 fetchRestaurants(event.lowerLeft, event.topRight, event.filterList)
+                _uiState.update { it.copy(curCoordinates = Pair(event.lowerLeft, event.topRight)) }
             }
 
             is SelectItemFromMap -> {
@@ -182,6 +185,16 @@ class MainViewModel @Inject constructor(
             is SelectItemFromBottomSheet -> {
                 _uiState.update { it.copy(selectedItemFromBottomSheetId = event.itemId, selectedItemFromMapId = null) }
             }
+            is RecommendationIsSelected -> {
+                _uiState.update { it.copy(recommendationIsSelected = event.isSelected) }
+            }
+
+            is RaiseCameraPosition -> {
+                _uiState.update { it.copy(raiseRequired = event.raiseRequired) }
+            }
+
+
+
 
 
         }

@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -7,6 +8,7 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Picture
 import android.graphics.Rect
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -19,6 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.mapview.MapView
 import model.CollectionOfPlace
 import model.Restaurant
 import pins.CustomPinView
@@ -28,12 +32,6 @@ import ui.SuperPinCard
 
 
 object Utils {
-
-    enum class PlacemarkUserData{
-        MINI,
-        NORMAL,
-        LARGE
-    }
 
     fun createBitmapFromView(
         view: View,
@@ -201,6 +199,9 @@ object Utils {
             isFavorite = false,
             openTime = "",
             closeTime = "",
+            inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
         ),
         Restaurant(
             id = "",
@@ -217,7 +218,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
             id = "",
@@ -234,7 +238,9 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
         ),
         Restaurant(
             id = "",
@@ -251,7 +257,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
             id = "",
@@ -268,7 +277,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
 
         Restaurant(
@@ -286,7 +298,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
             id = "",
@@ -303,7 +318,11 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
-    )
+        )
+
 }

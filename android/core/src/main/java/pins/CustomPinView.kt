@@ -42,7 +42,6 @@ class CustomPinView @JvmOverloads constructor(
 
     }
     fun setImageWithCoil(imageUrl: String) {
-        Log.d("setImageStart", imageUrl)
 
         imageView.load(imageUrl) {
             placeholder(R.drawable.ic_mini_pin) // Плейсхолдер на время загрузки

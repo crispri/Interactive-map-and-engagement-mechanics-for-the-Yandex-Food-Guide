@@ -3,9 +3,7 @@ package presintation.mapScreen
 import Utils.createBitmapFromVector
 import Utils.createBitmapFromView
 import Utils.invertColors
-import android.graphics.Color
 import android.util.Log
-import android.view.View
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,27 +11,16 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.feature.R
 import com.yandex.mapkit.Animation
-import com.yandex.mapkit.ScreenPoint
-import com.yandex.mapkit.ScreenRect
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.CircleMapObject
-import com.yandex.mapkit.map.ClusterListener
-import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
 import com.yandex.mapkit.map.Map
-import com.yandex.mapkit.map.MapObject
-import com.yandex.mapkit.map.MapObjectCollection
-import com.yandex.mapkit.map.MapObjectDragListener
 import com.yandex.mapkit.map.MapObjectTapListener
-import com.yandex.mapkit.map.MapObjectVisitor
-import com.yandex.mapkit.map.PlacemarkMapObject
-import com.yandex.mapkit.map.PolygonMapObject
-import com.yandex.mapkit.map.PolylineMapObject
-import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
 import model.MainScreenEvent
@@ -50,8 +37,52 @@ fun MapScreen(
     uiState: MainUiState,
     send: (MainScreenEvent) -> Unit,
     mapView: CustomMapView,
-    curLocation: MutableState<Point?>
+    curLocation: MutableState<Point?>,
+    bottomSheetHeight: MutableState<Dp?>
 ) {
+
+
+    fun raiseCameraPosition(dpValue: Dp, bottomLeft: Point, topRight: Point) {
+
+        Log.e("raiseCameraPosition", "called")
+
+        val displayMetrics = mapView.context.resources.displayMetrics
+        val pixels = dpValue * displayMetrics.density
+
+        val latitudeSpan = bottomLeft.latitude - topRight.latitude
+        val longitudeSpan = topRight.longitude - bottomLeft.longitude
+
+        val latitudeOffset = pixels.value / (mapView.height / latitudeSpan)
+        val longitudeOffset = pixels.value / (mapView.width / longitudeSpan)
+
+        val newBottomLeft = Point(bottomLeft.latitude + latitudeOffset, bottomLeft.longitude + longitudeOffset)
+        val newTopRight = Point(topRight.latitude + latitudeOffset, topRight.longitude + longitudeOffset)
+
+        // Создаем новую позицию камеры с обновленными координатами
+
+        val centerLong = (newBottomLeft.longitude + newTopRight.longitude) / 2.0
+        val centerLat = (newBottomLeft.latitude + newTopRight.latitude) / 2.0
+
+        val newCameraPosition = CameraPosition(
+            Point(centerLat, centerLong), // Новая целевая точка (центр прямоугольника)
+            //mapView.mapWindow.map.cameraPosition.zoom, // Текущий масштаб
+            10.0F,
+            mapView.mapWindow.map.cameraPosition.azimuth, // Текущий угол поворота
+            mapView.mapWindow.map.cameraPosition.tilt // Текущий угол наклона
+        )
+        mapView.mapWindow.map.move(newCameraPosition)
+
+    }
+
+    LaunchedEffect(uiState.raiseRequired) {
+        if(uiState.raiseRequired && bottomSheetHeight.value != null){
+            if(bottomSheetHeight.value!! > 0.dp) {
+                raiseCameraPosition(bottomSheetHeight.value!!, uiState.lowerLeft, uiState.topRight)
+            }
+        }
+    }
+
+
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
 
     //Mini - general
@@ -95,14 +126,12 @@ fun MapScreen(
     //Maxi
     val pinView: CustomPinView = CustomPinView(context = mapView.context)
     pinView.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
-    Log.d("imageReady", "Ready")
     pinView.setTitle("Хороший бар")
     pinView.setRating("4.9")
     pinView.setDescription("кофе от 300Р")
 
     val pinViewSelected: CustomPinViewSelected = CustomPinViewSelected(context = mapView.context)
     pinViewSelected.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
-    Log.d("imageReady", "Ready")
     pinViewSelected.setTitle("Хороший бар")
     pinViewSelected.setRating("4.9")
     pinViewSelected.setDescription("кофе от 300Р")
@@ -137,6 +166,43 @@ fun MapScreen(
         }
     }
 
+    LaunchedEffect(uiState.recommendationIsSelected) {
+        if(uiState.raiseRequired && bottomSheetHeight.value != null){
+            if(bottomSheetHeight.value!! > 0.dp) {
+                raiseCameraPosition(bottomSheetHeight.value!!, uiState.lowerLeft, uiState.topRight)
+            } else if (uiState.recommendationIsSelected){
+                mapView.mapWindow.map.move(
+                    CameraPosition(Point(55.7522200, 37.6155600), 10.0F, 0.0f, 0.0f),
+                    Animation(Animation.Type.LINEAR, 0.5f),
+                    cameraCallback
+                )
+                Log.e("in LaunchedEffect", "move to Moscow called")
+            } else{
+                if(curLocation.value != null){
+                    mapView.mapWindow.map.move(
+                        CameraPosition(curLocation.value!!, uiState.zoomValue,0.0f, 0.0f),
+                        Animation(Animation.Type.LINEAR, 0.5f),
+                        cameraCallback
+                    )
+                }
+                Log.e("in LaunchedEffect", "move to curLocation called")
+            }
+        } else if (uiState.recommendationIsSelected){
+            mapView.mapWindow.map.move(
+                CameraPosition(Point(55.7522200, 37.6155600), 10.0F, 0.0f, 0.0f),
+                Animation(Animation.Type.LINEAR, 0.5f),
+                cameraCallback
+            )
+        } else{
+            if(curLocation.value != null){
+                mapView.mapWindow.map.move(
+                    CameraPosition(curLocation.value!!, uiState.zoomValue,0.0f, 0.0f),
+                    Animation(Animation.Type.LINEAR, 0.5f),
+                    cameraCallback
+                )
+            }
+        }
+    }
 
     LaunchedEffect(cur.value) {
         if (cur.value != "") {
@@ -183,7 +249,6 @@ fun MapScreen(
     )
     { mapView ->
 
-        Log.d("chastota", "message1111")
 
         fun moveToStartLocation(curLocation: Point, zoomValue: Float) {
             mapView.mapWindow.map.move(
@@ -201,10 +266,7 @@ fun MapScreen(
         }
 
 
-
         uiState.restaurantsOnMap.reversed().forEachIndexed { index, restaurant ->
-
-            Log.d("maponmap11", "1111111itemId == ${uiState.selectedItemFromMapId}")
             //val selected = uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId
             val placemark = mapObjectCollection.addPlacemark()
             placemark.userData = restaurant.id
