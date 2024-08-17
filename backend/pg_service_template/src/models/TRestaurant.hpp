@@ -39,8 +39,8 @@ struct TRestaurant {
         userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
         std::string&,
         std::optional<std::vector<std::string>>&,
-        std::optional<std::string>&,
-        std::optional<std::vector<std::string>>&,
+        std::string&,
+        std::optional<std::vector<std::string>>&
     > Introspect();
 };
 

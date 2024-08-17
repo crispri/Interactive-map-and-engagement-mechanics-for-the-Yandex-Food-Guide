@@ -31,7 +31,8 @@ std::tuple<
           id,
           name,
           description,
-          owner_id
+          owner_id,
+          picture
     );
 }
 

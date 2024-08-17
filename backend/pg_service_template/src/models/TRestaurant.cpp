@@ -32,7 +32,11 @@ userver::formats::json::Value Serialize(
     }
     item["in_collection"] = restaurant.in_collection;
     item["pin"] = restaurant.pin;
-    item["pictures"] = restaurant.pictures;
+    if (restaurant.pictures) {
+        for (const auto& picture : restaurant.pictures.value()) {
+            item["pictures"].PushBack(userver::formats::json::ValueBuilder{picture});
+        }
+    }
 
     return item.ExtractValue();
 }
@@ -52,7 +56,7 @@ std::tuple<
     std::string&,
     std::optional<std::vector<std::string>>&,
     std::string&,
-    std::optional<std::vector<std::string>>&,
+    std::optional<std::vector<std::string>>&
     > TRestaurant::Introspect()
 {
     return std::tie(
