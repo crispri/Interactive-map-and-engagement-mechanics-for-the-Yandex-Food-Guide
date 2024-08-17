@@ -64,7 +64,7 @@ struct SectionView: View {
                 ForEach(tags) {
                     TagView(
                         text: $0.text,
-                        isActive:
+                        isActive: Binding.constant(false)
                     )
                 }
             }
