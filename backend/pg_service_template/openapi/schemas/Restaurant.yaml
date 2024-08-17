@@ -44,6 +44,14 @@ properties:
 
     in_collection:
         type: boolean
+    
+    pin:
+        type: string
+    
+    pictures:
+        type: array
+        items:
+            type: string
 
 required:
     - id
@@ -59,3 +67,5 @@ required:
     - close_time
     - tags
     - is_favorite
+    - pin
+    - pictures

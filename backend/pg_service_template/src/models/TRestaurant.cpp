@@ -31,6 +31,12 @@ userver::formats::json::Value Serialize(
         }
     }
     item["in_collection"] = restaurant.in_collection;
+    item["pin"] = restaurant.pin;
+    if (restaurant.pictures) {
+        for (const auto& picture : restaurant.pictures.value()) {
+            item["pictures"].PushBack(userver::formats::json::ValueBuilder{picture});
+        }
+    }
 
     return item.ExtractValue();
 }
@@ -48,6 +54,8 @@ std::tuple<
     userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
     userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
     std::string&,
+    std::optional<std::vector<std::string>>&,
+    std::string&,
     std::optional<std::vector<std::string>>&
     > TRestaurant::Introspect()
 {
@@ -64,7 +72,9 @@ std::tuple<
           open_time,
           close_time,
           address,
-          tags
+          tags,
+          pin,
+          pictures
   );
 }
 
