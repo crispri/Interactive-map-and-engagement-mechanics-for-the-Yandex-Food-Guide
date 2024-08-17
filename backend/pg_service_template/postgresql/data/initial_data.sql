@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS guide.selections (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name TEXT NOT NULL,
     description TEXT NOT NULL,
-    picture TEXT NOT NULL,
     owner_id UUID,
+    picture TEXT NOT NULL,
     FOREIGN KEY(owner_id) REFERENCES guide.users(id)
 );
 
