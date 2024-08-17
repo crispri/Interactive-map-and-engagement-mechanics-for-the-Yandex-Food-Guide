@@ -14,7 +14,7 @@ post:
                     properties:
                         return_collections:
                             description: "Если TRUE, то вернет только коллекции пользователя. Иначе - просто подборки"
-                            type: bool
+                            type: boolean
                     required:
                         -   return_collections
 

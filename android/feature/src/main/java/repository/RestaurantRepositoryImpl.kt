@@ -14,6 +14,7 @@ import model.Recommendation
 import model.Restaurant
 import network.api.FilterForJson
 import network.api.RequestBody
+import network.api.RequestBodyCollection
 import network.api.YandexMapEatApi
 import network.dto.request.RestaurantItemRequestForJson
 import network.dto.response.CollectionItemForJson
@@ -120,6 +121,7 @@ class RestaurantRepositoryImpl @Inject constructor(
 
             val response = api.getCollections(
                 bearToken,
+                requestBody = RequestBodyCollection(false)
             )
 
             Log.d(
