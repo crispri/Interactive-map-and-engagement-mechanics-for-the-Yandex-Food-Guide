@@ -480,7 +480,7 @@ fun MainFilters(
                     send,
                     image = painterFood
                 )
-                val painterHigh = painterResource(id = R.drawable.ic_raiting)
+                val painterHigh = painterResource(id = R.drawable.food)
                 CategoryImageFilterButtonCard(
                     uiState = uiState,
                     text = "Высокий рейтинг",
