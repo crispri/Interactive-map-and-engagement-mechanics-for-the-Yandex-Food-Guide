@@ -168,7 +168,7 @@ const restaurantsSlice = createSlice({
 		  ],
 		restaurants: [],
 		unfocused_restaurants: {},
-		current_pin: {},
+		current_pin: null,
 		selections: []
 	},
 	reducers: {
@@ -179,14 +179,18 @@ const restaurantsSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(getRestaurants.fulfilled, (state, action) => {
-				state.restaurants = action.payload.items
+				state.restaurants = action.payload.items.map(el => {
+					return ({
+					  ...el,
+					  coordinates: [el.coordinates.lon, el.coordinates.lat],
+					})
+				  })
 				// state.restaurants.forEach(el => {
 				// 	state.unfocused_restaurants[el.id] = false
 				// })
 			})
 			.addCase(getSelections.fulfilled, (state, action) => {
 				state.selections = action.payload.items
-				console.log(state.selections);
 			})
 	}
 })
