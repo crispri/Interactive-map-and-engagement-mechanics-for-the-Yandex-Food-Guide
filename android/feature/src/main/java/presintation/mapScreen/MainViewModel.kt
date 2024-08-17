@@ -183,8 +183,25 @@ class MainViewModel @Inject constructor(
                 _uiState.update { it.copy(selectedItemFromBottomSheetId = event.itemId, selectedItemFromMapId = null) }
             }
 
-
+            is SelectFilter -> {
+                selectFilter(event.isAdding, event.filter)
+            }
         }
+    }
+
+    private fun selectFilter(isAdding : Boolean, filter: Filter){
+        val newList : MutableList<Filter> = _uiState.value.filterList
+        if (isAdding){
+            Log.d("selectFilter", "isAdding ${filter.property}")
+            val newFilter = filter.copy(isSelected = true)
+            newList.add(newFilter)
+            _uiState.value.filterMap[filter.property] = true
+        } else{
+            Log.d("selectFilter", "remove ${filter.property}")
+            newList.remove(filter)
+            _uiState.value.filterMap[filter.property] = false
+        }
+        _uiState.update { it.copy(filterList = newList) }
     }
 
     private fun saveInCollection(restaurantId: String) {
