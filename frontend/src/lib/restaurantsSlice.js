@@ -3,7 +3,7 @@ import { _apiUrl } from '../assets/variables'
 
 export const getRestaurants = createAsyncThunk(
 	'restaurants/getRestaurants',
-	async (coordinates) => {
+	async (body) => {
 		try {
 			const response = await fetch(
 				`${_apiUrl}/guide/v1/restaurants`,
@@ -14,7 +14,7 @@ export const getRestaurants = createAsyncThunk(
 					  "Authorization": "token",
 
 					},
-					body: JSON.stringify(coordinates),
+					body: JSON.stringify(body),
 				}
 			)
 			if (response.ok) {
@@ -36,11 +36,14 @@ export const getSelections = createAsyncThunk(
 			const response = await fetch(
 				`${_apiUrl}/guide/v1/selections`,
 				{
-					method: "GET",
+					method: "POST",
 					headers: {
 					  "Content-Type": "application/json;charset=utf-8",
 					  "Authorization": "token",
 					},
+					body: JSON.stringify({
+						"return_collections": false
+					}),
 				}
 			)
 			if (response.ok) {
