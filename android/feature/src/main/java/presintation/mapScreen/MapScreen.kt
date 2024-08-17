@@ -3,9 +3,8 @@ package presintation.mapScreen
 import Utils.createBitmapFromVector
 import Utils.createBitmapFromView
 import Utils.invertColors
-import android.graphics.Color
+import android.graphics.Bitmap
 import android.util.Log
-import android.view.View
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,42 +42,65 @@ fun MapScreen(
 
     //Mini
     //Mini - general
-    val restaurantMarkerMini = remember {
-        createBitmapFromVector(
-            com.example.core.R.drawable.ic_mini_pin,
-            context = mapView.context
-        )
-    }
-    val restaurantMarkerImageProviderMini =
-        remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
-
+    val restaurantMarkerMini = createMiniMarker(mapView)
+    val restaurantMarkerImageProviderMiniSelected = createMiniMarkerSelected(restaurantMarkerMini)
+    val restaurantMarkerImageProviderMini = ImageProvider.fromBitmap(restaurantMarkerMini)
+//    val restaurantMarkerMini = remember {
+//        createBitmapFromVector(
+//            com.example.core.R.drawable.ic_mini_pin,
+//            context = mapView.context
+//        )
+//    }
+//    val restaurantMarkerImageProviderMini =
+//        remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
+//
 
     //Mini - Selected
-    var invertedBitmap = remember { restaurantMarkerMini }
-    if (restaurantMarkerMini != null) invertedBitmap = invertColors(restaurantMarkerMini)
-    val restaurantMarkerImageProviderMiniSelected =
-        remember { ImageProvider.fromBitmap(invertedBitmap) }
+
+//    var invertedBitmap = remember { restaurantMarkerMini }
+//    if (restaurantMarkerMini != null) invertedBitmap = invertColors(restaurantMarkerMini)
+//    val restaurantMarkerImageProviderMiniSelected =
+//        remember { ImageProvider.fromBitmap(invertedBitmap) }
 
 
     //Normal
-    val pinViewN: NormalPinView = NormalPinView(context = mapView.context)
-    val pinViewNSelected: NormalPinViewSelected = NormalPinViewSelected(context = mapView.context)
+    val (restaurantMarkerImageProviderNormal, restaurantMarkerImageProviderNormalSelected) = createNormalMarkers(mapView, title = "Хороший бар", rating = "4.9")
 
-    pinViewN.setTitle("Хороший бар")
-    pinViewN.setRating("4.9")
-    pinViewNSelected.setTitle("Хороший бар")
-    pinViewNSelected.setRating("4.9")
-    val restaurantMarkerNormal =
-        remember { createBitmapFromView(pinViewN, com.example.core.R.color.grey, 32f, 0f, 0f) }
-
-    val restaurantMarkerNormalSelected =
-        remember { createBitmapFromView(pinViewNSelected, com.example.core.R.color.grey, 32f, 0f, 0f) }
-    // remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
-    val restaurantMarkerImageProviderNormal =
-        remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
-
-    val restaurantMarkerImageProviderNormalSelected =
-        remember { ImageProvider.fromBitmap(restaurantMarkerNormalSelected) }
+//    val pinViewN: NormalPinView = NormalPinView(context = mapView.context)
+//    val pinViewNSelected: NormalPinViewSelected = NormalPinViewSelected(context = mapView.context)
+//
+//
+//    pinViewN.setTitle("Хороший бар")
+//    pinViewN.setRating("4.9")
+//    pinViewNSelected.setTitle("Хороший бар")
+//    pinViewNSelected.setRating("4.9")
+//    val restaurantMarkerNormal =
+//        remember {
+//            createBitmapFromView(
+//                pinViewN,
+//                com.example.core.R.color.grey,
+//                32f,
+//                0f,
+//                0f
+//            )
+//        }
+//
+//    val restaurantMarkerNormalSelected =
+//        remember {
+//            createBitmapFromView(
+//                pinViewNSelected,
+//                com.example.core.R.color.grey,
+//                32f,
+//                0f,
+//                0f
+//            )
+//        }
+//    // remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
+//    val restaurantMarkerImageProviderNormal =
+//        remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
+//
+//    val restaurantMarkerImageProviderNormalSelected =
+//        remember { ImageProvider.fromBitmap(restaurantMarkerNormalSelected) }
 
     //Maxi
     val pinView: CustomPinView = CustomPinView(context = mapView.context)
@@ -97,12 +119,28 @@ fun MapScreen(
 
 
     val restaurantMarkerMaxi =
-        remember { createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f) }
+        remember {
+            createBitmapFromView(
+                pinView,
+                com.example.core.R.color.grey,
+                16f,
+                0f,
+                0f
+            )
+        }
     val restaurantMarkerImageProviderMaxi =
         remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
 
     val restaurantMarkerMaxiSelected =
-        remember { createBitmapFromView(pinViewSelected, com.example.core.R.color.grey, 16f, 0f, 0f) }
+        remember {
+            createBitmapFromView(
+                pinViewSelected,
+                com.example.core.R.color.grey,
+                16f,
+                0f,
+                0f
+            )
+        }
     val restaurantMarkerImageProviderMaxiSelected =
         remember { ImageProvider.fromBitmap(restaurantMarkerMaxiSelected) }
 
@@ -194,7 +232,30 @@ fun MapScreen(
             //val selected = uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId
             val placemark = mapObjectCollection.addPlacemark()
             placemark.userData = restaurant.id
-
+//            var currentPin = restaurantMarkerImageProviderMini
+//            if (index < uiState.restaurantsOnMap.size - 6) {
+//                if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
+//                    currentPin = restaurantMarkerImageProviderMiniSelected
+//                } else {
+//                    currentPin = restaurantMarkerImageProviderMini
+//                }
+//            }
+//            else{
+//                if (index < uiState.restaurantsOnMap.size - 3) {
+//                    if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
+//                        restaurantMarkerImageProviderNormalSelected
+//                    } else {
+//                        restaurantMarkerImageProviderNormal
+//                    }
+//                } else {
+//                    if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
+//                        restaurantMarkerImageProviderMaxiSelected
+//                    } else {
+//                        restaurantMarkerImageProviderMaxi
+//                    }
+//                }
+//
+//            }
             val currentPin =
                 if (index < uiState.restaurantsOnMap.size - 6) {
                     if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
@@ -246,4 +307,100 @@ fun MapScreen(
         Log.d("chastota", "message2222")
 
     }
+}
+
+// Функция для создания мини-маркера
+@Composable
+fun createMiniMarker(mapView: CustomMapView): Bitmap? {
+    val restaurantMarkerMini = remember {
+        createBitmapFromVector(
+            com.example.core.R.drawable.ic_mini_pin,
+            context = mapView.context
+        )
+    }
+    return restaurantMarkerMini
+}
+
+// Функция для создания выбранного мини-маркера
+@Composable
+fun createMiniMarkerSelected(restaurantMarkerMini: Bitmap?): ImageProvider {
+    val invertedBitmap = restaurantMarkerMini?.let { invertColors(it) }
+    return ImageProvider.fromBitmap(invertedBitmap ?: restaurantMarkerMini)
+}
+
+// Функция для создания нормальных маркеров
+@Composable
+fun createNormalMarkers(mapView: CustomMapView, title: String, rating: String): Pair<ImageProvider, ImageProvider> {
+    val pinViewN = NormalPinView(context = mapView.context).apply {
+        setTitle(title)
+        setRating(rating)
+    }
+
+    val pinViewNSelected = NormalPinViewSelected(context = mapView.context).apply {
+        setTitle(title)
+        setRating(rating)
+    }
+
+    val restaurantMarkerNormal = remember {
+        createBitmapFromView(
+            pinViewN,
+            com.example.core.R.color.grey,
+            32f,
+            0f,
+            0f
+        )
+    }
+
+    val restaurantMarkerNormalSelected = remember {
+        createBitmapFromView(
+            pinViewNSelected,
+            com.example.core.R.color.grey,
+            32f,
+            0f,
+            0f
+        )
+    }
+
+    return Pair(
+        ImageProvider.fromBitmap(restaurantMarkerNormal),
+        ImageProvider.fromBitmap(restaurantMarkerNormalSelected)
+    )
+}
+// Функция для создания больших маркеров
+@Composable
+fun createSuperMarkers(mapView: CustomMapView, image: String, title: String, rating: String): Pair<ImageProvider, ImageProvider> {
+    val pinViewN = CustomPinView(context = mapView.context).apply {
+        setTitle(title)
+        setRating(rating)
+    }
+
+    val pinViewNSelected = NormalPinViewSelected(context = mapView.context).apply {
+        setTitle(title)
+        setRating(rating)
+    }
+
+    val restaurantMarkerNormal = remember {
+        createBitmapFromView(
+            pinViewN,
+            com.example.core.R.color.grey,
+            32f,
+            0f,
+            0f
+        )
+    }
+
+    val restaurantMarkerNormalSelected = remember {
+        createBitmapFromView(
+            pinViewNSelected,
+            com.example.core.R.color.grey,
+            32f,
+            0f,
+            0f
+        )
+    }
+
+    return Pair(
+        ImageProvider.fromBitmap(restaurantMarkerNormal),
+        ImageProvider.fromBitmap(restaurantMarkerNormalSelected)
+    )
 }
