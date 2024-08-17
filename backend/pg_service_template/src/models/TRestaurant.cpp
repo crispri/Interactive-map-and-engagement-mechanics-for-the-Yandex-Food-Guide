@@ -31,6 +31,8 @@ userver::formats::json::Value Serialize(
         }
     }
     item["in_collection"] = restaurant.in_collection;
+    item["pin"] = restaurant.pin;
+    item["pictures"] = restaurant.pictures;
 
     return item.ExtractValue();
 }
@@ -48,7 +50,9 @@ std::tuple<
     userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
     userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
     std::string&,
-    std::optional<std::vector<std::string>>&
+    std::optional<std::vector<std::string>>&,
+    std::string&,
+    std::optional<std::vector<std::string>>&,
     > TRestaurant::Introspect()
 {
     return std::tie(
@@ -64,7 +68,9 @@ std::tuple<
           open_time,
           close_time,
           address,
-          tags
+          tags,
+          pin,
+          pictures
   );
 }
 

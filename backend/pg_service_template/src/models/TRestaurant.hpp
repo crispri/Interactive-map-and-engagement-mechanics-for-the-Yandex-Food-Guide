@@ -22,6 +22,8 @@ struct TRestaurant {
     std::string address;
     std::optional<std::vector<std::string>> tags;
     bool in_collection;
+    std::string pin;
+    std::optional<std::vector<std::string>> pictures;
 
     std::tuple<
         boost::uuids::uuid&,
@@ -36,7 +38,9 @@ struct TRestaurant {
         userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
         userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
         std::string&,
-        std::optional<std::vector<std::string>>&
+        std::optional<std::vector<std::string>>&,
+        std::optional<std::string>&,
+        std::optional<std::vector<std::string>>&,
     > Introspect();
 };
 
