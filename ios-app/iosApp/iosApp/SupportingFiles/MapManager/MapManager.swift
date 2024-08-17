@@ -30,6 +30,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         manager.startUpdatingLocation()
         
         map.isRotateGesturesEnabled = false
+        map.setMapStyleWithStyle(StyleMap().styleMap)
     }
     
     func eventOnGesture() {
