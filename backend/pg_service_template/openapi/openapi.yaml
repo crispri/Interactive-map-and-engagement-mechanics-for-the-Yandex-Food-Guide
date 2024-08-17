@@ -38,7 +38,7 @@ components:
                     content:
                         application/json:
                             schema:
-                                $ref: "../openapi.yaml#/components/schemas/CollectionCreate"
+                                $ref: "#/components/schemas/CollectionCreate"
                 security:
                     -   UserTicketAuth: [ ]
 
