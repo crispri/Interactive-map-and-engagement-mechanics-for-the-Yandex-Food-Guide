@@ -29,7 +29,18 @@ components:
             $ref: "./schemas/Scores.yaml"
 
         CollectionCreate:
-            $ref: "./schemas/CollectionCreate.yaml"
+            # $ref: "./schemas/CollectionCreate.yaml"
+            type: object
+            properties:
+                name:
+                    type: string
+
+                description:
+                    type: string
+
+            required:
+                - name
+                - description
 
         InsertIntoCollection:
             $ref: "./schemas/InsertIntoCollection.yaml"
