@@ -10,7 +10,19 @@ import UIKit
 
 final class SmallPinView: UIView {
 
-    var isSelected = false
+   private var isSelected = false
+
+    private lazy var circleView: UIView = {
+        let view = UIView()
+        view.frame = .init(x: 0, y: 0, width: 7, height: 7)
+        view.layer.cornerRadius = 12
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 5.0
+        view.tintColor = .black
+        return view
+    }()
 
     private lazy var circle: UIImageView = {
         let image = UIImageView()
@@ -27,12 +39,19 @@ final class SmallPinView: UIView {
     //    MARK: init
         override init(frame: CGRect) {
             super.init(frame: frame)
-            addSubview(circle)
+            backgroundColor = .clear
+            addSubview(circleView)
+            circleView.addSubview(circle)
         }
 
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
+
+    func setSelected(_ isSelected: Bool) {
+        self.isSelected = isSelected
+        circle.image = UIImage(systemName: isSelected ? "circle.fill" : "circle")
+    }
 }
 
 #Preview {

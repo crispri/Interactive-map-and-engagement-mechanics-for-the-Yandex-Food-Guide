@@ -10,7 +10,7 @@ import UIKit
 
 final class NormalPinView: UIView {
 
-    var isSelected = true
+   private var isSelected = true
 //    var isFavorit = true
     var model: SnippetDTO? {
         didSet {
@@ -18,6 +18,7 @@ final class NormalPinView: UIView {
             nameRest.text = model?.name ?? "Название ресторана"
 //            descriptionRest.text = model?.description ?? "Название ресторана"
             raiting.text = String(format: "%.1f" , model?.rating ?? "5.0")
+            background()
         }
     }
 
@@ -25,6 +26,11 @@ final class NormalPinView: UIView {
         let view = UIView()
         view.frame = .init(x: 0, y: 9, width: 159, height: 30)
         view.layer.cornerRadius = 12
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 5)
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 5.0
+        view.tintColor = .black
         return view
     }()
 
@@ -77,8 +83,8 @@ final class NormalPinView: UIView {
 //    MARK: init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .clear
         setupViews()
-        background()
     }
 
     required init?(coder: NSCoder) {
@@ -117,6 +123,11 @@ final class NormalPinView: UIView {
             squareView.addSubview(favoriteView)
             favoriteView.addSubview(bookmark)
         }
+    }
+
+    func setSelected(_ isSelected: Bool) {
+        self.isSelected = isSelected
+        background()
     }
 }
 

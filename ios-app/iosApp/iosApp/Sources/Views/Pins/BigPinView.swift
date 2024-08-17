@@ -10,7 +10,7 @@ import UIKit
 
 final class BigPinView: UIView {
 
-    var isSelected = true
+   private var isSelected = true
 //    var isFavorit = true
     var model: SnippetDTO? {
         didSet {
@@ -19,6 +19,7 @@ final class BigPinView: UIView {
 //            descriptionRest.text = model?.description ?? "Название ресторана"
             raiting.text = String(format: "%.1f" , model?.rating ?? "5.0")
 //            var isFavorit = model?.isFavorite ?? false
+            background()
         }
     }
 
@@ -26,6 +27,11 @@ final class BigPinView: UIView {
         let view = UIView()
         view.frame = .init(x: 0, y: 50, width: 160, height: 43)
         view.layer.cornerRadius = 12
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 5)
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 5.0
+        view.tintColor = .black
         return view
     }()
 
@@ -97,6 +103,7 @@ final class BigPinView: UIView {
 //    MARK: init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .clear
         setupViews()
         background()
     }
@@ -141,6 +148,11 @@ final class BigPinView: UIView {
             squareView.addSubview(favoriteView)
             favoriteView.addSubview(bookmark)
         }
+    }
+
+    func setSelected(_ isSelected: Bool) {
+        self.isSelected = isSelected
+        background()
     }
 }
 
