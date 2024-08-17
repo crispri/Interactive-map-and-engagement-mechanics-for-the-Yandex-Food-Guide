@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS guide.places (
     close_time TIME NOT NULL,
     address TEXT NOT NULL,
     tags varchar(50)[],
-    pin TEXT NOT NULL,
-    pictures TEXT[],
+    food TEXT NOT NULL,
+    interior TEXT[],
     CHECK (rating >= 1.0 AND rating <= 5.0),
     CHECK (price_lower_bound > 0 AND price_lower_bound <= price_upper_bound)
 );
@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS guide.selections (
     description TEXT NOT NULL,
     owner_id UUID,
     picture TEXT NOT NULL,
+    link TEXT NOT NUll,
     FOREIGN KEY(owner_id) REFERENCES guide.users(id)
 );
 
@@ -79,8 +80,8 @@ INSERT INTO guide.places(
             close_time,
             address,
             tags,
-            pin,
-            pictures
+            food,
+            interior
 )
 VALUES
     ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 55.736310, 37.596820, 'Brasserie Lambic', 'Brasserie Lambic — это бельгийский ресторан, расположенный недалеко от станции метро Парк культуры Сокольнической линии. В ресторане есть два зала, один из которых предназначен для курения кальяна, а другой — для тех, кто предпочитает курить электронные сигареты.', TRUE, 4.9, 1500, 2000, '12:00', '00:00', 'Турчанинов пер., 3, стр. 5', ARRAY['Семейный ужин с детьми'], 'https://storage.yandexcloud.net/yandex-guide/restaurants/0a1f0ebc-571d-4668-b4de-853a061af990.jpg', ARRAY['https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_10.jpg','https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_5.webp']),
@@ -202,19 +203,20 @@ INSERT INTO guide.selections(
              name,
              description,
              owner_id,
-             picture
+             picture,
+             link
 )
 VALUES
-    ('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Рестораны возсле Яндекса', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/daac07a5-600f-42b2-8c8f-4d6bd2316750.jpeg'),
-    ('e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Пиццерии возсле Яндекса', 'Быстро', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/454d0939-a3a2-4967-9f7e-75e524f5273f.jpg'),
-    ('d387e611-05a1-4505-8bf8-9d1486a00f83', 'Кофейни возсе Яндекса', 'Красивый интерьер', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/efe46a35-b814-4662-85cb-829a845553a9.jpg'),
-    ('91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75', 'Завтраки', 'Европейская кухня', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'https://storage.yandexcloud.net/yandex-guide/guides/6189544b-ed44-4093-8fb4-4a40b7b37d96.jpeg'),
-    ('4f06e661-7fed-4713-81c1-9df4ac2d17dd', 'Завтраки', 'Домашняя кухня', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg'),
-    ('85474fba-294c-40ba-9be3-6d0607b71d15', 'Столовые возле Яндекса', 'Недорого', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/479d4804-d99b-4a8d-adfd-22e69ad48a0c.jpg'),
-    ('74ba4bb4-5eec-4ba0-8675-161a5dc7e90b', 'Бизнес ланчи', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/4aaec371-dbb4-4bc4-9317-31a509e18521.jpg'),
-    ('9097a7bf-26e0-4099-960a-818713c500f2', 'Кондитерские возле Яндекса', 'Богатый ассортимент', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/5f8aff6e-0f3f-41b0-92dc-8f2c52368390.jpg'),
-    ('2822cbc7-7b0d-41fb-81a7-ad3f901ca9e5', 'Чайные возсле Яндекса', 'Уютная атмосфера', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/b3051c08-7078-4a18-9c20-f4ef139c193b.jpg'),
-    ('65609266-5ddb-4496-9638-32011aabf730', 'Детские кафе', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/46ebe70d-f028-475d-8343-02e5d50462db.jpg')
+    ('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Рестораны возсле Яндекса', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/daac07a5-600f-42b2-8c8f-4d6bd2316750.jpeg', 'https://openkitchen.eda.yandex/article/places/guides/cheburek-razmerom-s-podushku-lebedi-i-meteorit-vykhodnoy-v-parke-gorkogo-s-detmi'),
+    ('e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Пиццерии возсле Яндекса', 'Быстро', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/454d0939-a3a2-4967-9f7e-75e524f5273f.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve'),
+    ('d387e611-05a1-4505-8bf8-9d1486a00f83', 'Кофейни возсе Яндекса', 'Красивый интерьер', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/efe46a35-b814-4662-85cb-829a845553a9.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-17-18-avgusta-v-moskve'),
+    ('91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75', 'Завтраки', 'Европейская кухня', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'https://storage.yandexcloud.net/yandex-guide/guides/6189544b-ed44-4093-8fb4-4a40b7b37d96.jpeg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-10-11-avgusta-v-sankt-peterburge'),
+    ('4f06e661-7fed-4713-81c1-9df4ac2d17dd', 'Завтраки', 'Домашняя кухня', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve'),
+    ('85474fba-294c-40ba-9be3-6d0607b71d15', 'Столовые возле Яндекса', 'Недорого', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/479d4804-d99b-4a8d-adfd-22e69ad48a0c.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve'),
+    ('74ba4bb4-5eec-4ba0-8675-161a5dc7e90b', 'Бизнес ланчи', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/4aaec371-dbb4-4bc4-9317-31a509e18521.jpg', 'https://openkitchen.eda.yandex/article/places/guides/the-libertines-pub-lime-cafe-dragon-i-eschyo-14-otkrytiy-leta-v-moskve'),
+    ('9097a7bf-26e0-4099-960a-818713c500f2', 'Кондитерские возле Яндекса', 'Богатый ассортимент', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/5f8aff6e-0f3f-41b0-92dc-8f2c52368390.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-10-11-avgusta-v-sankt-peterburge'),
+    ('2822cbc7-7b0d-41fb-81a7-ad3f901ca9e5', 'Чайные возсле Яндекса', 'Уютная атмосфера', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/b3051c08-7078-4a18-9c20-f4ef139c193b.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-17-18-avgusta-v-sankt-peterburge'),
+    ('65609266-5ddb-4496-9638-32011aabf730', 'Детские кафе', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/46ebe70d-f028-475d-8343-02e5d50462db.jpg', 'https://openkitchen.eda.yandex/article/places/guides/sea-signora-harvest-seno-i-eschyo-7-restorannykh-dvorov-sankt-peterburga')
 ON CONFLICT DO NOTHING;
 
 

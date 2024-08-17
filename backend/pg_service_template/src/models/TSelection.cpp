@@ -14,6 +14,7 @@ userver::formats::json::Value Serialize(
     item["name"] = selection.name;
     item["description"] = selection.description;
     item["picture"] = selection.picture;
+    item["link"] = selection.link;
 //    item["is_collection"] = selection.owner_id;
    
     return item.ExtractValue();
@@ -24,6 +25,7 @@ std::tuple<
     std::string&,
     std::string&,
     std::optional<boost::uuids::uuid>&,
+    std::string&,
     std::string&
     > TSelection::Introspect()
 {
@@ -32,7 +34,8 @@ std::tuple<
           name,
           description,
           owner_id,
-          picture
+          picture,
+          link
     );
 }
 
