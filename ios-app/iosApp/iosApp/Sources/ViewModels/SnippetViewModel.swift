@@ -13,8 +13,8 @@ final class SnippetViewModel: ObservableObject {
     private let MAX_POLIGON_WIDTH = 0.20
     
     @Published var userLocaitonTitle = "Поиск геопозиции..."
-    @Published var snippets = SnippetDTO.mockData
-    @Published var selections = SelectionDTO.mockData
+    @Published var snippets = [SnippetDTO]()
+    @Published var selections = [SelectionDTO]()
     @Published var selectedCollection: SelectionDTO? = nil
     @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
     private var filtersDTO: Array<FilterDTO> {
