@@ -12,12 +12,12 @@ final class BigPinView: UIView {
 
    private var isSelected = true
 //    var isFavorit = true
-    var model: SnippetDTO? {
+    var model: SnippetDTO {
         didSet {
 //            imageRest.image = UIImage(named: model?. "1rest")
-            nameRest.text = model?.name ?? "Название ресторана"
+            nameRest.text = model.name
 //            descriptionRest.text = model?.description ?? "Название ресторана"
-            raiting.text = String(format: "%.1f" , model?.rating ?? "5.0")
+            raiting.text = String(format: "%.1f" , model.rating)
             // isFavorit = model?.inCollection ?? false
             background()
         }
@@ -114,7 +114,8 @@ final class BigPinView: UIView {
     }()
 
 //    MARK: init
-    override init(frame: CGRect) {
+    init(frame: CGRect, model: SnippetDTO) {
+        self.model = model
         super.init(frame: frame)
         backgroundColor = .clear
         setupViews()
@@ -157,16 +158,16 @@ final class BigPinView: UIView {
         squareView.addSubview(star)
         squareView.addSubview(raiting)
 
-        if model?.inCollection ?? false {
+        if model.inCollection {
             squareView.addSubview(favoriteView)
             favoriteView.addSubview(bookmark)
         }
 
-        if model?.tags.contains("ULTIMA GUIDE") ?? false {
+        if model.tags.contains("ULTIMA GUIDE") {
             imageRest.addSubview(ultima)
         }
 
-        if model?.tags.contains("Открытая кухня") ?? false {
+        if model.tags.contains("Открытая кухня") {
             imageRest.addSubview(redaction)
         }
     }
@@ -179,5 +180,5 @@ final class BigPinView: UIView {
 
 
 #Preview {
-    BigPinView()
+    BigPinView(frame: .init(x: 0, y: 0, width: 200, height: 200), model: SnippetDTO.mockData[0])
 }
