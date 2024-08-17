@@ -40,8 +40,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -115,6 +117,8 @@ fun MainScreen(
 
     val list = mutableStateOf(uiState.restaurantsOnMap)
     val isMapSelected = remember { mutableStateOf(false) }
+    var isSheetOpen by remember{ mutableStateOf(false) }
+    val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val sheetState = rememberBottomSheetState(
         initialValue = SheetValue.Hidden,
@@ -236,7 +240,7 @@ fun MainScreen(
                         .background(Color.White)
 
                 ) {
-                    Carousel()
+                    Carousel(uiState = uiState, onFilterClick = {isSheetOpen = true}, send = send)
                     Spacer(modifier = Modifier.height(16.dp))
 //                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
@@ -364,6 +368,23 @@ fun MainScreen(
                 contentAlignment = Alignment.Center
             ) {
                 MapScreen(uiState, send, mapView, curLocation)
+            }
+        }
+
+        if (isSheetOpen){
+            ModalBottomSheet(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .heightIn(screenHeight - 150.dp)
+                    .padding(top = 50.dp),
+                sheetState = filterBottomSheetState,
+                onDismissRequest = { isSheetOpen = false},
+                scrimColor = Color.Black.copy(alpha = 0.32f),
+                dragHandle = null,
+                containerColor = Color.White
+            ) {
+                FilterBottomScreen(send, uiState)
             }
         }
 
@@ -538,7 +559,7 @@ fun CollectionCarousel(
                         selectedCardIndex = -1
                     } else {
                         selectedCardIndex = index
-                        filterList.add(Filter("selection_id", listOf(item.id), "in"))
+                        filterList.add(Filter("selection_id", listOf(item.id), "in", true))
                     }
 
                     Log.d("okFilter", filterList.toString())
@@ -573,7 +594,8 @@ fun BottomSheetContent(
 
 
 @Composable
-fun Carousel() {
+fun Carousel(uiState: MainUiState, onFilterClick: () -> Unit, send: (MainScreenEvent) -> Unit) {
+
     val itemsList = listOf(
         "Музыка громче",
         "Завтраки",
@@ -583,35 +605,34 @@ fun Carousel() {
         "Можно с собакой",
         "Веранда"
     )
-
-    Row {
-        IconButton(
-            onClick = { /*TODO*/ },
-            colors = IconButtonColors(
-                Color.LightGray,
-                Color.Black,
-                Color.LightGray,
-                Color.LightGray
-            ),
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .height(32.dp),
-            content = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_slot),
-                    contentDescription = "Фильтр"
-                )
-            }
-        )
+    Row{
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                /* .height(50.dp)*/
                 .background(Color.White)
         ) {
+            item{
+                IconButton(
+                    onClick = {onFilterClick()},
+                    colors = IconButtonColors(
+                        Color(0xFFE2E2E2),
+                        Color.Black,
+                        Color(0xFFE2E2E2),
+                        Color(0xFFE2E2E2)
+                    ),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .height(38.dp),
+                    content = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_slot),
+                            contentDescription = "Фильтр"
+                        )
+                    }
+                )
+            }
             items(itemsList) { item ->
-                CategoryButtonCard(text = item) {
-                }
+                CategoryFilterButtonCard(uiState = uiState, text = item, send = send)
             }
         }
     }

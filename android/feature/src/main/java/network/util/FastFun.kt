@@ -53,7 +53,7 @@ fun Filter.toJson() : FilterForJson = FilterForJson(
 )
 
 fun FilterForJson.toModel() : Filter = Filter(
-    property, value, operator
+    property, value, operator, true
 )
 
 fun String.toToken(): String = "Bearer $this"

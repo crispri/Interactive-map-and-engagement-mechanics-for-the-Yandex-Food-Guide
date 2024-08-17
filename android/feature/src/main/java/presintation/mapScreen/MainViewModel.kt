@@ -15,6 +15,7 @@ import model.Filter
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.SaveInCollectionEvent
+import model.SelectFilter
 import model.SelectItemFromBottomSheet
 import model.SelectItemFromMap
 import model.UpdateItemsOnMap
