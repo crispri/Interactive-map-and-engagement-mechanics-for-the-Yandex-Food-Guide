@@ -57,20 +57,38 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                     latitude: pins[index].coordinates.lat,
                     longitude: pins[index].coordinates.lon
                 )
+                let commonStyle = YMKIconStyle(
+                    anchor: CGPoint(x: 0.5, y: 1.0) as NSValue,
+                    rotationType: .none,
+                    zIndex: 0,
+                    flat: true,
+                    visible: true,
+                    scale: 1.0,
+                    tappableArea: nil
+                )
                 if index < 3 {
                     let uiView = BigPinView(frame: .init(x: 0, y: 0, width: 172, height: 106))
                     uiView.model = pins[index]
                     uiView.setSelected(false)
-                    placemark.setIconWith(uiView.asImage())
+                    placemark.setIconWith(uiView.asImage(), style: commonStyle)
                 } else if index < 6 {
                     let uiView = NormalPinView(frame: .init(x: 0, y: 0, width: 172, height: 52))
                     uiView.model = pins[index]
                     uiView.setSelected(false)
-                    placemark.setIconWith(uiView.asImage())
+                    placemark.setIconWith(uiView.asImage(), style: commonStyle)
                 } else if index < 20 {
+                    let smallStyle = YMKIconStyle(
+                        anchor: CGPoint(x: 0.5, y: 0.5) as NSValue,
+                        rotationType: .none,
+                        zIndex: 0,
+                        flat: true,
+                        visible: true,
+                        scale: 1.0,
+                        tappableArea: nil
+                    )
                     let uiView = SmallPinView(frame: .init(x: 0, y: 0, width: 7, height: 10))
                     uiView.setSelected(false)
-                    placemark.setIconWith(uiView.asImage())
+                    placemark.setIconWith(uiView.asImage(), style: smallStyle)
                 }
                 placedPins[pins[index].id] = (placemark, true)
                 cnt += 1
@@ -140,8 +158,14 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     
     func getScreenPoints() -> (lowerLeftCorner: Point, topRightCorner: Point) {
-        let lowerLeftScreenPoint = YMKScreenPoint(x: 0, y: Float(mapView?.mapWindow.height() ?? 0))
-        let topRightScreenPoint = YMKScreenPoint(x: Float(mapView?.mapWindow.width() ?? 0), y: 0)
+        let lowerLeftScreenPoint = YMKScreenPoint(
+            x: 0,
+            y: Float(mapView?.mapWindow.height() ?? 0) * 0.66
+        )
+        let topRightScreenPoint = YMKScreenPoint(
+            x: Float(mapView?.mapWindow.width() ?? 0),
+            y: Float(mapView?.mapWindow.height() ?? 0) * 0.1
+        )
         
         let lowerLeftWorldPoint = mapView?.mapWindow.screenToWorld(with: lowerLeftScreenPoint) ?? YMKPoint()
         let topRightWorldPoint = mapView?.mapWindow.screenToWorld(with: topRightScreenPoint) ?? YMKPoint()
