@@ -2,9 +2,7 @@ package presintation.mapScreen
 
 import Utils.createBitmapFromVector
 import Utils.createBitmapFromView
-import Utils.createNormalPin
-import Utils.createSuperPin
-import Utils.invertColors
+
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
@@ -43,6 +41,10 @@ class CustomMapView @JvmOverloads constructor(
 
     fun addTabListener(tapListener: MapObjectTapListener){
         tapListeners.add(tapListener)
+    }
+
+    fun removeTapListener(tapListener: MapObjectTapListener) {
+        tapListeners.remove(tapListener)
     }
 
 
