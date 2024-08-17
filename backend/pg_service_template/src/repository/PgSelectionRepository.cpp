@@ -11,14 +11,25 @@ PgSelectionRepository::PgSelectionRepository(const userver::storages::postgres::
     kConnectionTableName_("guide.places_selections")
     {}
 
-std::vector<TSelection> PgSelectionRepository::GetAll(const boost::uuids::uuid& user_id) {
+std::vector<TSelection> PgSelectionRepository::GetAll(const boost::uuids::uuid& user_id, bool return_collections) {
+
+    if (return_collections) {
+        const auto& selections = pg_cluster_->Execute(
+            userver::storages::postgres::ClusterHostType::kSlave,
+            R"(SELECT * FROM )" + kSelectionsTableName_ +
+            R"( WHERE owner_id = $1; )",
+            user_id
+        );
+        return selections.AsContainer<std::vector<TSelection>>(userver::storages::postgres::kRowTag);
+    }
+
     const auto& selections = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
         R"(SELECT * FROM )" + kSelectionsTableName_ +
-        R"( WHERE owner_id = $1 OR owner_id IS NULL; )",
-        user_id
+        R"( WHERE owner_id IS NULL; )"
     );
     return selections.AsContainer<std::vector<TSelection>>(userver::storages::postgres::kRowTag);
+    
 }
 std::vector<TRestaurant> PgSelectionRepository::GetById(const boost::uuids::uuid& selection_id, const boost::uuids::uuid& user_id) {
     const auto& restaurants = pg_cluster_->Execute(
