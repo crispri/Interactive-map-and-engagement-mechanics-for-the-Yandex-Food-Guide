@@ -86,7 +86,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                         zIndex: 0,
                         flat: true,
                         visible: true,
-                        scale: 2.0,
+                        scale: 1.5,
                         tappableArea: nil
                     )
                     let uiView = SmallPinView(
