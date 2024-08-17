@@ -1,5 +1,6 @@
 #include "restaurants.hpp"
 #include <lib/error_response_builder.hpp>
+#include <memory>
 #include <models/TCoordinates.hpp>
 #include <models/TRestaurant.hpp>
 
@@ -210,7 +211,7 @@ const std::unordered_map<
     {"open_time", std::make_shared<OpenTimeRestaurantFilterJSON>()},
     {"close_time", std::make_shared<CloseTimeRestaurantFilterJSON>()},
     {"selection_id", std::make_shared<SelectionRestaurantFilterJSON>()},
-    {"tags", std::make_shared<TagRestaurantFilterJSON>()}
+    {"tags", std::make_shared<TagRestaurantFilterJSON>()},
 };
 
 }  // namespace
