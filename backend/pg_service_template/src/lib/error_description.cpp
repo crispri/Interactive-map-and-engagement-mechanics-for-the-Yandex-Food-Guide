@@ -20,4 +20,5 @@ const std::unordered_map<ErrorDescriprion, std::string> errorMapping = {
     {ErrorDescriprion::kInvalidPropertyName, "INVALID_PROPERTY_NAME"},
     {ErrorDescriprion::kInvalidValueType, "INVALID_VALUE_TYPE"},
     {ErrorDescriprion::kFiltersIsNotArray, "FILTERS_IS_NOT_ARRAY"},
+    {ErrorDescriprion::kReturnCollectionsNotSpecified, "RETURN_COLLECTIONS_NOT_SPECIFIED"},
 };
