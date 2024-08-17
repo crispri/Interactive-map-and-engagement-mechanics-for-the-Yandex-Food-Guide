@@ -35,7 +35,6 @@ import com.yandex.mapkit.map.PolygonMapObject
 import com.yandex.mapkit.map.PolylineMapObject
 import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.runtime.image.ImageProvider
-import com.yandex.runtime.ui_view.ViewProvider
 import model.CancelCentering
 import model.MainScreenEvent
 import model.SelectItemFromMap
@@ -53,26 +52,14 @@ fun MapScreen(
 
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
 
-    /*/////////////////////////////// ниже пересечения
+    /////////////////////////////// ниже пересечения
 
-    fun updateFocusRect() {
-        val horizontalMargin = 40f
-        val verticalMargin = 60f
-        mapView.mapWindow.focusRect = ScreenRect(
-            ScreenPoint(horizontalMargin, verticalMargin),
-            ScreenPoint(
-                mapView.mapWindow.width() - horizontalMargin,
-                mapView.mapWindow.height() - verticalMargin
-            )
-        )
-    }
-
-    val CLUSTER_RADIUS = remember { 60.0 }
+    /*val CLUSTER_RADIUS = remember { 60.0 }
     val CLUSTER_MIN_ZOOM = remember { 15 }
     lateinit var clasterizedCollection: ClusterizedPlacemarkCollection
     var isShowGeometryOnMap = remember { true }
 
-    val mapWindowSizeChangedListener = remember { SizeChangedListener { _, _, _ -> updateFocusRect() } }
+    val mapWindowSizeChangedListener = remember { SizeChangedListener { _, _, _ -> updateFocusRect(mapView) } }
 
 
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
@@ -92,21 +79,9 @@ fun MapScreen(
     }
 
     val clusterListener = ClusterListener { cluster ->
-        val placemarkTypes = cluster.placemarks.map {
-            (it.userData as Pair<*, *>).second
+        for (i in cluster.placemarks.indices){
+            cluster.placemarks[i].isVisible = (i == 0)
         }
-        // Sets each cluster appearance using the custom view
-        // that shows a cluster's pins
-        cluster.appearance.setView(
-            ViewProvider(
-                ClusterView(this).apply {
-                    setData(placemarkTypes)
-                }
-            )
-        )
-        cluster.appearance.zIndex = 100f
-
-        //cluster.addClusterTapListener(clusterTapListener)
     }
 
     val geometryVisibilityVisitor = object : MapObjectVisitor {
@@ -132,10 +107,18 @@ fun MapScreen(
         override fun onClusterizedCollectionVisitEnd(p0: ClusterizedPlacemarkCollection) = Unit
     }
 
-    ///////////////////////////////////////////////////////// выше пересечения*/
+    val map = remember { mapView.mapWindow.map }
 
+    LaunchedEffect(Unit) {
+        mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
+        updateFocusRect(mapView)
+    }
 
+    val collection = remember { map.mapObjects.addCollection() }
 
+    clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)*/
+
+    ///////////////////////////////////////////////////////// выше пересечения
 
 
 
@@ -199,6 +182,16 @@ fun MapScreen(
         }
     }
 
+    /*val clusterListener = remember {
+        ClusterListener { cluster ->
+            for(item in cluster.placemarks){
+                item.isVisible = (item == cluster.placemarks[0])
+            }
+        }
+    }
+    val clusterizedCollection = remember { mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(clusterListener) }*/
+
+
     LaunchedEffect(Unit) {
 
         //mapView.mapWindow.map.isNightModeEnabled = true // Включаем ночной режим
@@ -217,6 +210,7 @@ fun MapScreen(
             geometry = curLocation.value ?: Point(55.733415, 37.590042)
             setIcon(curLocationMarkerImageProvider)
         }
+
     }
 
     AndroidView(
@@ -251,12 +245,7 @@ fun MapScreen(
             val currentPin =
                 if (index < uiState.restaurantsOnMap.size - 6) {
                     if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
-                        Log.e(
-                            "in currentPin",
-                            "uiState.selectedItemFromMapId = ${uiState.selectedItemFromMapId}, uiState.selectedItemFromBottomSheetId = ${uiState.selectedItemFromBottomSheetId}"
-                        )
                         restaurantMarkerImageProviderMiniSelected
-
                     } else {
                         restaurantMarkerImageProviderMini
                     }
@@ -273,9 +262,14 @@ fun MapScreen(
                         } else {
                             restaurantMarkerImageProviderMaxi
                         }
-
                     }
 
+            /*clasterizedCollection.addPlacemark().apply {
+                geometry = restaurant.coordinates
+                setIcon(currentPin)
+                isDraggable = true
+                setDragListener(pinDragListener)
+            }*/
 
             placemark.apply {
                 geometry = restaurant.coordinates
@@ -288,7 +282,6 @@ fun MapScreen(
 
             mapView.addCustomPlaceMark(placemark)
 
-
             ////////////////////////////////////////////
 
 
@@ -300,4 +293,16 @@ fun MapScreen(
         }
 
     }
+}
+
+fun updateFocusRect(mapView: CustomMapView) {
+    val horizontalMargin = 40f
+    val verticalMargin = 60f
+    mapView.mapWindow.focusRect = ScreenRect(
+        ScreenPoint(horizontalMargin, verticalMargin),
+        ScreenPoint(
+            mapView.mapWindow.width() - horizontalMargin,
+            mapView.mapWindow.height() - verticalMargin
+        )
+    )
 }

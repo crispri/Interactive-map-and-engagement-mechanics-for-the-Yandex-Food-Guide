@@ -218,16 +218,16 @@ fun MainScreen(
                         }
                         itemsIndexed(list.value) { index, restaurant ->
                             //if (sheetState.currentValue == SheetValue.PartiallyExpanded && !isMapSelected.value && uiState.selectedItemFromMapId == null) {
-                            Log.e(
+                            /*Log.e(
                                 "SelectItemFromBottomSheet",
                                 "real index = ${index}"
-                            )
+                            )*/
                             if (sheetState.currentValue == SheetValue.PartiallyExpanded && uiState.selectedItemFromMapId == null) {
                                 send(SelectItemFromBottomSheet(restaurant.id))
-                                Log.e(
+                                /*Log.e(
                                     "SelectItemFromBottomSheet",
                                     "sended idex = ${index}"
-                                )
+                                )*/
                             }
                             //if (sheetState.currentValue == SheetValue.Hidden && !isMapSelected.value && uiState.selectedItemFromMapId == null) {
                             if (sheetState.currentValue == SheetValue.Hidden && uiState.selectedItemFromMapId == null) {

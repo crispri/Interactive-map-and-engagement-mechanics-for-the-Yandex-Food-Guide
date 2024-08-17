@@ -7,21 +7,41 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import com.example.feature.R
 import com.example.yandexmapeat.ui.theme.YandexMapEatTheme
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.ScreenPoint
+import com.yandex.mapkit.ScreenRect
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.location.Location
 import com.yandex.mapkit.location.LocationListener
 import com.yandex.mapkit.location.LocationManager
 import com.yandex.mapkit.location.LocationStatus
+import com.yandex.mapkit.map.CircleMapObject
+import com.yandex.mapkit.map.ClusterListener
+import com.yandex.mapkit.map.ClusterTapListener
+import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
+import com.yandex.mapkit.map.MapObject
+import com.yandex.mapkit.map.MapObjectCollection
+import com.yandex.mapkit.map.MapObjectDragListener
+import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.MapObjectVisitor
+import com.yandex.mapkit.map.PlacemarkMapObject
+import com.yandex.mapkit.map.PolygonMapObject
+import com.yandex.mapkit.map.PolylineMapObject
+import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import presintation.mapScreen.CustomMapView
 import presintation.navigation.AppNavigation
+
+private const val CLUSTER_RADIUS = 60.0
+private const val CLUSTER_MIN_ZOOM = 15
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -31,6 +51,99 @@ class MainActivity : ComponentActivity() {
     private lateinit var locationListener: LocationListener
     private lateinit var mapkit: MapKit
     private var curLocation = mutableStateOf<Point?>(null)
+
+    ////////////////////
+    /*private lateinit var collection: MapObjectCollection
+    private lateinit var clasterizedCollection: ClusterizedPlacemarkCollection
+    private var isShowGeometryOnMap = true
+
+    private fun updateFocusRect() {
+        val horizontalMargin = 40f
+        val verticalMargin = 60f
+        mapView.mapWindow.focusRect = ScreenRect(
+            ScreenPoint(horizontalMargin, verticalMargin),
+            ScreenPoint(
+                mapView.mapWindow.width() - horizontalMargin,
+                mapView.mapWindow.height() - verticalMargin
+            )
+        )
+    }
+
+    private val mapWindowSizeChangedListener = SizeChangedListener { _, _, _ ->
+        updateFocusRect()
+    }
+
+    private val polylineTapListener = MapObjectTapListener { mapObject, _ ->
+        true
+    }
+
+    private val circleTapListener = MapObjectTapListener { mapObject, _ ->
+        true
+    }
+
+    private val placemarkTapListener = MapObjectTapListener { mapObject, _ ->
+        true
+    }
+
+    private val pinDragListener = object : MapObjectDragListener {
+        override fun onMapObjectDragStart(p0: MapObject) {
+        }
+
+        override fun onMapObjectDrag(p0: MapObject, p1: Point) = Unit
+
+        override fun onMapObjectDragEnd(p0: MapObject) {
+            // Updates clusters position
+            clasterizedCollection.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
+        }
+    }
+
+    private val clusterListener = ClusterListener { cluster ->
+
+        for(i in cluster.placemarks.indices){
+            cluster.placemarks[i].isVisible = (i == 0)
+        }
+
+        cluster.appearance.zIndex = 100f
+
+        cluster.addClusterTapListener(clusterTapListener)
+    }
+
+    private val clusterTapListener = ClusterTapListener {
+        true
+    }
+
+    // Iterates through map objects and update polylines, circle, and polygons visibility.
+    private val geometryVisibilityVisitor = object : MapObjectVisitor {
+        override fun onPlacemarkVisited(placemark: PlacemarkMapObject) = Unit
+
+        override fun onPolylineVisited(polyline: PolylineMapObject) {
+            polyline.isVisible = isShowGeometryOnMap
+        }
+
+        override fun onPolygonVisited(polygon: PolygonMapObject) {
+            polygon.isVisible = isShowGeometryOnMap
+        }
+
+        override fun onCircleVisited(circle: CircleMapObject) {
+            circle.isVisible = isShowGeometryOnMap
+        }
+
+        override fun onCollectionVisitStart(p0: MapObjectCollection): Boolean = true
+        override fun onCollectionVisitEnd(p0: MapObjectCollection) = Unit
+        override fun onClusterizedCollectionVisitStart(p0: ClusterizedPlacemarkCollection): Boolean =
+            true
+
+        override fun onClusterizedCollectionVisitEnd(p0: ClusterizedPlacemarkCollection) = Unit
+    }
+
+    private val singlePlacemarkTapListener = MapObjectTapListener { _, _ ->
+        true
+    }
+
+    private val animatedPlacemarkTapListener = MapObjectTapListener { _, _ ->
+        true
+    }*/
+    ////////////////////////////
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
