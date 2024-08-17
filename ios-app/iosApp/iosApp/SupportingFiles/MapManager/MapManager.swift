@@ -83,11 +83,10 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                         zIndex: 0,
                         flat: true,
                         visible: true,
-                        scale: 2.0,
+                        scale: 1.5,
                         tappableArea: nil
                     )
-                    let uiView = SmallPinView(frame: .init(x: 0, y: 0, width: 7, height: 10))
-                    uiView.setSelected(false)
+                    let uiView = SmallPinView(frame: .init(x: 0, y: 0, width: 11, height: 11), model: pins[index])
                     placemark.setIconWith(uiView.asImage(), style: smallStyle)
                 }
                 placedPins[pins[index].id] = (placemark, true)

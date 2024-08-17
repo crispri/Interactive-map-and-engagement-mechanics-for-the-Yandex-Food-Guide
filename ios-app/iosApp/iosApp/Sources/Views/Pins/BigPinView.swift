@@ -99,6 +99,19 @@ final class BigPinView: UIView {
         return label
     }()
 
+    private lazy var ultima: UIImageView = {
+        let image = UIImageView()
+        image.frame = .init(x: 4, y: 4, width: 16, height: 16)
+        image.image = UIImage(named: "ultima")
+        return image
+    }()
+
+    private lazy var redaction: UIImageView = {
+        let image = UIImageView()
+        image.frame = .init(x: 24, y: 4, width: 16, height: 16)
+        image.image = UIImage(named: "redaction")
+        return image
+    }()
 
 //    MARK: init
     override init(frame: CGRect) {
@@ -144,10 +157,17 @@ final class BigPinView: UIView {
         squareView.addSubview(star)
         squareView.addSubview(raiting)
 
-
         if model?.inCollection ?? false {
             squareView.addSubview(favoriteView)
             favoriteView.addSubview(bookmark)
+        }
+
+        if model?.tags.contains("ULTIMA GUIDE") ?? false {
+            imageRest.addSubview(ultima)
+        }
+
+        if model?.tags.contains("Открытая кухня") ?? false {
+            imageRest.addSubview(redaction)
         }
     }
 
