@@ -56,7 +56,7 @@ object Utils {
         canvas.drawRoundRect(
             0f, 0f,
             originalBitmap.width.toFloat(),
-            originalBitmap.height.dp.value - 21.dp.value,
+            originalBitmap.height.dp.value - 25.dp.value,
             40.dp.value,
             40.dp.value,
             paint,
