@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ISnippetRequest: Encodable {
+protocol ISnippetRequest: Codable {
     var lowerLeftCorner: Point { get }
     var topRightCorner: Point { get }
     var maxCount: Int64 { get }

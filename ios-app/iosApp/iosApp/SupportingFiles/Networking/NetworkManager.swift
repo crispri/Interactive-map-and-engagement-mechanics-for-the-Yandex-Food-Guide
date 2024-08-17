@@ -24,7 +24,7 @@ final class NetworkManager {
         return request
     }
     
-    private func makeRequest(path: String, method: String, with requestModel: Encodable?) throws -> URLRequest {
+    private func makeRequest(path: String, method: String, with requestModel: Codable?) throws -> URLRequest {
         var request = try makeRequest(path: path, method: method)
         
         if let requestModel {
@@ -53,7 +53,7 @@ final class NetworkManager {
         return decodedResponse
     }
     
-    func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point, filters: [FilterDTO]? = nil) async throws -> [SnippetDTO] {
+    func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point, filters: [FilterDTO]?) async throws -> [SnippetDTO] {
         let request = try makeRequest(
             path: Api.restaurants.path,
             method: HTTPMethod.post.rawValue,

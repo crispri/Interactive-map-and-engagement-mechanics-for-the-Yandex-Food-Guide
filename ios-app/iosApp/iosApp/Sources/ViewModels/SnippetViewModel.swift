@@ -16,8 +16,12 @@ final class SnippetViewModel: ObservableObject {
     @Published var snippets = SnippetDTO.mockData
     @Published var selections = SelectionDTO.mockData
     @Published var selectedCollection: SelectionDTO? = nil
-    @Published var filters: [FilterDTO] = []
-    @Published var tags: [String: Bool] = [:]
+    @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
+    private var filtersDTO: Array<FilterDTO> {
+        let activeFilters = filterCategories.flatMap { $0.filters.filter { $0.isActive }}
+        return activeFilters.flatMap(\.dtos)
+    }
+    
     
     var mapManager = MapManager()
     private let networkManager = NetworkManager()
@@ -42,10 +46,6 @@ final class SnippetViewModel: ObservableObject {
         eventCenterCamera(to: .user)
         mapManager.placeUser()
         onCameraMove()
-    }
-    
-    func eventAddTag(tag: String) {
-        tags[tag] = true
     }
     
     @MainActor
@@ -133,7 +133,7 @@ final class SnippetViewModel: ObservableObject {
     // MARK: load data from server.
     
     private func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
-        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner, filters: filters)
+        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner, filters: filtersDTO)
         return data
     }
     
