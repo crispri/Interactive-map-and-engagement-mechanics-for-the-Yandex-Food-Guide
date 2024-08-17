@@ -13,12 +13,14 @@ struct TSelection {
     std::string description;
     std::optional<boost::uuids::uuid> owner_id;
     std::string picture;
+    std::string link;
 
     std::tuple<
         boost::uuids::uuid&,
         std::string&,
         std::string&,
         std::optional<boost::uuids::uuid>&,
+        std::string&,
         std::string&
     > Introspect();
 };

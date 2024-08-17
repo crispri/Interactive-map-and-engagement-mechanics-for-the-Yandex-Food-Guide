@@ -1,5 +1,6 @@
 #include "restaurants.hpp"
 #include <lib/error_response_builder.hpp>
+#include <memory>
 #include <models/TCoordinates.hpp>
 #include <models/TRestaurant.hpp>
 
@@ -12,6 +13,7 @@
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/server/http/http_status.hpp>
 #include <userver/utils/assert.hpp>
 
 #include <boost/uuid/string_generator.hpp>
@@ -99,7 +101,10 @@ public:
 
         userver::storages::postgres::ParameterStore filter_params;
         std::string filter_string;
-
+        bool only_collections = false;
+        if (request_body_json.HasMember("only_collections")) {
+            only_collections = request_body_json["only_collections"].As<bool>();
+        }
 
         if (request_body_json.HasMember("filters")) {
             if (!request_body_json["filters"].IsArray()) {
@@ -176,7 +181,8 @@ public:
             request_body_json["lower_left_corner"].As<TCoordinates>(),
             request_body_json["top_right_corner"].As<TCoordinates>(),
             filter_params,
-            filter_string
+            filter_string,
+            only_collections
         );
 
         boost::uuids::string_generator gen;
@@ -210,7 +216,7 @@ const std::unordered_map<
     {"open_time", std::make_shared<OpenTimeRestaurantFilterJSON>()},
     {"close_time", std::make_shared<CloseTimeRestaurantFilterJSON>()},
     {"selection_id", std::make_shared<SelectionRestaurantFilterJSON>()},
-    {"tags", std::make_shared<TagRestaurantFilterJSON>()}
+    {"tags", std::make_shared<TagRestaurantFilterJSON>()},
 };
 
 }  // namespace

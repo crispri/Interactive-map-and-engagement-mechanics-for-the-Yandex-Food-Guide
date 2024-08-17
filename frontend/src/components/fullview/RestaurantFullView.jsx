@@ -56,11 +56,13 @@ const RestaurantFullView = ({ sheetRef }) => {
             <span className={styles.reviews}>82 оценки</span>
           </div>
           <div className={styles.images}>
-          { restaurant?.images?.map((image, index) => {
+          { restaurant?.pictures?.map((picture, index) => {
               if (index === 0) {
-                <img src={image} alt="Restaurant Interior 1" className={styles.mainImage} />
+                { console.log(picture) };
+                <img src={picture} alt="Restaurant Interior 1" className={styles.mainImage} />
               } else {
-                <img src={image} alt="Restaurant Interior 2" />
+                { console.log(picture) };
+                <img src={picture} alt="Restaurant Interior 2" />
               }
           })
           }
