@@ -125,20 +125,12 @@ fun MapScreen(
         remember { ImageProvider.fromBitmap(restaurantMarkerNormalSelected) }
 
     //Maxi
-    val pinView: CustomPinView = CustomPinView(context = mapView.context)
-    pinView.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
-    pinView.setTitle("Хороший бар")
-    pinView.setRating("4.9")
-    pinView.setDescription("кофе от 300Р")
-
-    //Maxi
     val pinView = remember { CustomPinView(context = mapView.context) }
     val pinViewSelected = remember { CustomPinViewSelected(context = mapView.context) }
-    val pinViewSelected: CustomPinViewSelected = CustomPinViewSelected(context = mapView.context)
-    pinViewSelected.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
     pinViewSelected.setTitle("Хороший бар")
     pinViewSelected.setRating("4.9")
     pinViewSelected.setDescription("кофе от 300Р")
+
 
     pinView.setTitle("aaaaa")
     pinView.setDescription("bbb")
