@@ -8,7 +8,9 @@
 import Foundation
 import CoreLocation
 import YandexMapsMobile
+import SwiftUI
 
+@MainActor
 final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     let mapView = YMKMapView(frame: CGRect.zero)
     private lazy var map : YMKMap = {  return mapView?.mapWindow.map ?? .init() }()
@@ -16,7 +18,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     private var targetPin: YMKPoint = .init()
     private let cameraListener = CameraListener()
     var delegate: SnippetViewModel? = nil
-    private var placedPins: Set<String> = []
+    private var placedPins: [String: (YMKPlacemarkMapObject, Bool)] = [:]
     
     override init() {
         super.init()
@@ -30,9 +32,8 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         map.isAwesomeModelsEnabled = true
     }
     
-    @MainActor 
     func eventOnGesture() {
-        delegate?.eventOnGesture()
+        delegate?.onCameraMove()
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -41,28 +42,53 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         }
     }
     
-    func placePins(_ models: [SnippetDTO]) {
+    func placePins(_ pins: [SnippetDTO]) {
         let iconStyle = YMKIconStyle()
         let image = UIImage(named: "pin") ?? UIImage()
         
-        for model in models {
-            guard !placedPins.contains(model.id) else { continue }
-            
-            let placemark = map.mapObjects.addPlacemark()
-            placemark.geometry = .init(
-                latitude: model.coordinates.lat,
-                longitude: model.coordinates.lon
-            )
-            placemark.setIconWith(image, style: iconStyle)
-            
-            placedPins.insert(model.id)
-        }
+        var cnt = 0;
         
-        guard let model = models.first else { return }
+        disablePins()
+        
+        for pin in pins {
+            if var pp = placedPins[pin.id] {
+                pp.1 = true
+                placedPins[pin.id] = pp
+            } else {
+                let placemark = map.mapObjects.addPlacemark()
+                placemark.geometry = .init(
+                    latitude: pin.coordinates.lat,
+                    longitude: pin.coordinates.lon
+                )
+                placemark.setIconWith(image, style: iconStyle)
+                placedPins[pin.id] = (placemark, true)
+                cnt += 1
+            }
+        }
+        print("\(cnt) restaurants added;")
+        
+        cleanPins()
+        
+        guard let model = pins.first else { return }
         targetPin = .init(
             latitude: model.coordinates.lat,
             longitude: model.coordinates.lon
         )
+    }
+    
+    func disablePins() {
+        for kv in placedPins {
+            placedPins[kv.key] = (kv.value.0, false)
+        }
+    }
+    
+    func cleanPins() {
+        for kv in placedPins {
+            if !kv.value.1 {
+                map.mapObjects.remove(with: kv.value.0)
+                placedPins.removeValue(forKey: kv.key)
+            }
+        }
     }
     
     func placeUser() {
@@ -90,8 +116,13 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                 map: mapView ?? .init()
             )
         case .pins:
+            let centerCity = YMKPoint(
+                latitude: 55.749956,
+                longitude:  37.615812
+            )
             centerMapLocation(
-                target: targetPin,
+                target: centerCity,
+                zoom: 12,
                 map: mapView ?? .init()
             )
         }
@@ -110,16 +141,23 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         )
     }
     
-    private func centerMapLocation(target location: YMKPoint?, map: YMKMapView) {
+    private func centerMapLocation(target location: YMKPoint?, zoom: Float = 16, map: YMKMapView) {
         guard let location = location else {
             print("Failed to get user location")
             return
         }
         
         map.mapWindow.map.move(
-            with: YMKCameraPosition(target: location, zoom: 16, azimuth: 0, tilt: 0),
+            with: YMKCameraPosition(target: location, zoom: zoom, azimuth: 0, tilt: 0),
             animation: YMKAnimation(type: YMKAnimationType.smooth, duration: 0.5)
         )
+    }
+    
+    func getUserLocation() throws -> Point {
+        guard let userLocation = manager.location else {
+            throw CLError(.locationUnknown)
+        }
+        return Point(lat: userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
     }
     
     enum CameraTargetOption {

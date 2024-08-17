@@ -12,7 +12,7 @@ struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var viewModel: SnippetViewModel
     @State private var isBottomSheetPresented = true
-    @State var sheetPosition: BottomSheetPosition = .relative(0.15)
+    @State var sheetPosition: BottomSheetPosition = .dynamicBottom
     
     var body: some View {
         ZStack {
@@ -22,20 +22,21 @@ struct DetailsView: View {
                 .bottomSheet(
                     bottomSheetPosition: $sheetPosition,
                     switchablePositions: [
-                        .relative(0.15),
-                        .relative(0.5),
-                        .relative(0.8)
+                        .dynamicBottom,
+                        .absolute(500),
+                        .relativeTop(0.9)
                     ],
-                    content: {
-                        BottomSheetView()
-                            .background(Color.white)
-                    }
+                    headerContent: { HeaderView() },
+                    mainContent: { BottomSheetView()  }
                 )
-                .enableAppleScrollBehavior(true)
-                .showDragIndicator(true)
+                .enableAppleScrollBehavior(false)
+                .showDragIndicator(false)
                 .customBackground(
-                    Color.white
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                    VStack(spacing: 0) {
+                        Color.clear
+                            .frame(height: 150)
+                        Color.white
+                    }.edgesIgnoringSafeArea(.all)
                 )
             VStack {
                 HStack {
