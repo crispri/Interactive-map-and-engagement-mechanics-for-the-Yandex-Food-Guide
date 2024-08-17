@@ -49,7 +49,7 @@ components:
 
                                 required:
                                     - name
-    - description
+                                    - description
                 security:
                     -   UserTicketAuth: [ ]
 
