@@ -22,7 +22,7 @@ const SheetContent = ({ restaurants }) => {
     price_upper_bound: el.price_upper_bound,
     tags: el.tags,
     close_time: formatTime(el.close_time),
-    is_favorite: el.is_favourite
+    in_collection: el.in_collection
   }))
   const dispatch = useDispatch()
   const [currentRest, setCurrentRest] = useState(null);
@@ -55,10 +55,6 @@ const SheetContent = ({ restaurants }) => {
                 ref={ref}
                 style={{
                   scrollSnapAlign: 'start',
-                  height: '100vh',
-                  display: 'flex',
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
                 }}
               >
                 <RestaurantCard restaurantInfo={el}/>
