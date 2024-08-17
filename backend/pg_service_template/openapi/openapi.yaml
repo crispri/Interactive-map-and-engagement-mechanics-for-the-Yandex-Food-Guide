@@ -32,15 +32,15 @@ components:
             $ref: "./schemas/CollectionCreate.yaml"
 
         InsertIntoCollection:
-            # $ref: "./schemas/InsertIntoCollection.yaml"
-            type: object
-            properties:
-                restaurant_id:
-                    type: string
-                    format: uuid
-            required:
-                -   collection_id
-                -   restaurant_id
+            $ref: "./schemas/InsertIntoCollection.yaml"
+            # type: object
+            # properties:
+            #     restaurant_id:
+            #         type: string
+            #         format: uuid
+            # required:
+            #     -   collection_id
+            #     -   restaurant_id
 
 
     parameters:
