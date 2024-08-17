@@ -16,7 +16,7 @@ final class BigPinView: UIView {
             nameRest.text = model?.name ?? "Название ресторана"
 //            descriptionRest.text = model?.description ?? "Название ресторана"
             raiting.text = String(format: "%.1f" , model?.rating ?? "5.0")
-            isFavorit = model?.isFavorite ?? false
+            isFavorit = model?.inCollection ?? false
         }
     }
 
@@ -140,7 +140,7 @@ final class BigPinView: UIView {
         squareView.addSubview(star)
         squareView.addSubview(raiting)
 
-        if ((model?.isFavorite) != nil) {
+        if ((model?.inCollection) != nil) {
             addSubview(favoriteView)
             favoriteView.addSubview(bookmark)
         }
