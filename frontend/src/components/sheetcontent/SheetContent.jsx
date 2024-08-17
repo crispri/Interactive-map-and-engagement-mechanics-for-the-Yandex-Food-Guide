@@ -22,7 +22,8 @@ const SheetContent = ({ restaurants }) => {
     price_upper_bound: el.price_upper_bound,
     tags: el.tags,
     close_time: formatTime(el.close_time),
-    in_collection: el.in_collection
+    in_collection: el.in_collection,
+    pictures: el.pictures,
   }))
   const dispatch = useDispatch()
   const [currentRest, setCurrentRest] = useState(null);
@@ -30,7 +31,6 @@ const SheetContent = ({ restaurants }) => {
 
   useEffect(() => {
     dispatch(setCurrentPin(debouncedValue))
-    // console.log('debouncedValue', debouncedValue);
   }, [debouncedValue])
 
   return (
