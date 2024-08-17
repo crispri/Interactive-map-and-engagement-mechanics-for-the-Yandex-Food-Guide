@@ -9,11 +9,12 @@ class SaveInCollectionEvent(
 ) : MainScreenEvent()
 
 class SelectItemFromMap(
-    val itemId: String
+    val itemId: String?
 ) : MainScreenEvent()
 
+
 class SelectItemFromBottomSheet(
-    val itemId: String
+    val itemId: String?
 ) : MainScreenEvent()
 
 class NavigateToLocationEvent : MainScreenEvent()
@@ -24,4 +25,8 @@ class UpdateItemsOnMap(
     val lowerLeft: Point,
     val topRight: Point,
     val filterList: List<Filter>,
+) : MainScreenEvent()
+
+class UpdateListOfRestaurant(
+    val listOfRestaurant: List<Restaurant>,
 ) : MainScreenEvent()

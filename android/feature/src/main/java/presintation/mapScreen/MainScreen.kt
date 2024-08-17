@@ -79,6 +79,7 @@ import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
 import model.CollectionOfPlace
 import model.Filter
+import model.SelectItemFromBottomSheet
 import model.UpdateItemsOnMap
 import ui.BigCard
 import ui.CardWithImageAndText
@@ -111,6 +112,9 @@ fun MainScreen(
     val listState = rememberLazyListState()
 
     val coroutineScope = rememberCoroutineScope()
+
+    val list = mutableStateOf(uiState.restaurantsOnMap)
+    val isMapSelected = remember { mutableStateOf(false) }
 
     val sheetState = rememberBottomSheetState(
         initialValue = SheetValue.Hidden,
@@ -155,6 +159,62 @@ fun MainScreen(
             }
     }
 
+    LaunchedEffect(uiState.selectedItemFromMapId) {
+        if (uiState.selectedItemFromMapId != null) {
+            sheetState.animateTo(SheetValue.PartiallyExpanded)
+        } else {
+            send(SelectItemFromBottomSheet(null))
+            sheetState.animateTo(SheetValue.Hidden)
+        }
+    }
+
+    LaunchedEffect(sheetState.currentValue) {
+        if (sheetState.currentValue == SheetValue.Hidden) {
+            send(SelectItemFromBottomSheet(null))
+        }
+    }
+
+    LaunchedEffect(uiState.selectedItemFromMapId) {
+        val selectedId = uiState.selectedItemFromMapId
+        if (selectedId != null) {
+            val index = uiState.restaurantsOnMap.indexOfFirst { it.id == selectedId }
+            if (index != -1) {
+                list.value = listOf(uiState.restaurantsOnMap[index])
+            } else {
+                Log.e(
+                    "selectedItemFromMapId",
+                    "not found with id = $selectedId"
+                )
+                list.value = uiState.restaurantsOnMap
+            }
+        } else {
+            list.value = uiState.restaurantsOnMap
+        }
+    }
+
+    val currentIndex = remember { mutableStateOf(0) }
+
+    LaunchedEffect(key1 = lazyListState.firstVisibleItemScrollOffset, key2 = sheetState.currentValue) {
+        val visibleIndex = lazyListState.firstVisibleItemIndex
+        val visibleItemOffset = lazyListState.firstVisibleItemScrollOffset
+        val itemHeightPx = itemHeight.value.value
+
+        currentIndex.value = if (visibleItemOffset > itemHeightPx / 2) {
+            visibleIndex + 1
+        } else {
+            visibleIndex
+        }
+
+        Log.d("lazyListState", "Current Index: ${currentIndex.value}")
+        if (sheetState.currentValue == SheetValue.PartiallyExpanded
+            && uiState.selectedItemFromMapId == null) {
+            send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
+            Log.e("lazyListState", "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}")
+        }
+    }
+
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -193,8 +253,8 @@ fun MainScreen(
                                     }
                                 )
                             }) {
-                        itemsIndexed(uiState.restaurantsOnMap) { index, restaurant ->
-                            send(SelectItemFromBottomSheet(restaurant.id))
+                        itemsIndexed(list.value) { index, restaurant ->
+                            isMapSelected.value = false
                             Card(
                                 modifier = Modifier
                                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
@@ -474,11 +534,11 @@ fun CollectionCarousel(
                 onClick = {
                     val filterList = uiState.filterList
                     filterList.removeAll { it.property == "selection_id"}
-                     if (isSelected){
-                         selectedCardIndex = -1
+                    if (isSelected){
+                        selectedCardIndex = -1
                     } else {
-                         selectedCardIndex = index
-                         filterList.add(Filter("selection_id", listOf(item.id), "in"))
+                        selectedCardIndex = index
+                        filterList.add(Filter("selection_id", listOf(item.id), "in"))
                     }
 
                     Log.d("okFilter", filterList.toString())

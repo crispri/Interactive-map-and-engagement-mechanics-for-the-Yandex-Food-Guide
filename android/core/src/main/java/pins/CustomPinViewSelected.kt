@@ -1,11 +1,14 @@
 package pins
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.bumptech.glide.Glide
 import com.example.core.R
 
 class CustomPinViewSelected @JvmOverloads constructor(
@@ -30,8 +33,35 @@ class CustomPinViewSelected @JvmOverloads constructor(
         descriptionTextView = findViewById(R.id.descriptionTextView)
     }
 
-    fun setImage(image: Drawable?) {
-        imageView.setImageDrawable(image)
+    fun setImageWithGlide(url: String) {
+        Glide.with(this)
+            .load(url)
+            .placeholder(R.drawable.ic_mini_pin) // Плейсхолдер на время загрузки
+            .error(R.drawable.baseline_language_24) // Изображение ошибки
+            .into(imageView) // Замените на ваш ImageView
+
+    }
+    fun setImageWithCoil(imageUrl: String) {
+        Log.d("setImageStart", imageUrl)
+
+        imageView.load(imageUrl) {
+            placeholder(R.drawable.ic_mini_pin) // Плейсхолдер на время загрузки
+            error(R.drawable.baseline_language_24) // Изображение ошибки, если не удалось загрузить
+            transformations(CircleCropTransformation()) // Скругление изображения
+            listener(
+                onStart = {
+                    Log.d("setImageLoading", "Загрузка изображения начата: $imageUrl")
+                },
+                onSuccess = { _, result ->
+                    Log.d("setImageSuccess", "Изображение загружено успешно: $imageUrl")
+                },
+                onError = { _, result ->
+                    Log.d("setImageError", "Ошибка при загрузке изображения: $imageUrl")
+                }
+            )
+        }
+
+        Log.d("setImageEnd", imageUrl)
     }
 
     fun setTitle(title: String) {
