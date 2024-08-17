@@ -29,7 +29,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
         
-        map.isAwesomeModelsEnabled = true
+        map.isRotateGesturesEnabled = false
     }
     
     func eventOnGesture() {
@@ -83,7 +83,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                         zIndex: 0,
                         flat: true,
                         visible: true,
-                        scale: 1.0,
+                        scale: 2.0,
                         tappableArea: nil
                     )
                     let uiView = SmallPinView(frame: .init(x: 0, y: 0, width: 7, height: 10))
@@ -164,7 +164,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         )
         let topRightScreenPoint = YMKScreenPoint(
             x: Float(mapView?.mapWindow.width() ?? 0),
-            y: Float(mapView?.mapWindow.height() ?? 0) * 0.1
+            y: 0
         )
         
         let lowerLeftWorldPoint = mapView?.mapWindow.screenToWorld(with: lowerLeftScreenPoint) ?? YMKPoint()
