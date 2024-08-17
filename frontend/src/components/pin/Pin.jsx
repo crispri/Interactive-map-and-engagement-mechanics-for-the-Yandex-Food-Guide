@@ -30,7 +30,7 @@ function Pin({type, item, isFocused, onClick, outsideClick}) {
 						<p className={styles.normis__rating}>{item.rating.toFixed(1)}</p>
 					</div>
 					<img src={isFocused ? bottom_center_black : bottom_center_white} alt="bottom_center" className={styles.normis__corner}/>
-					{item.is_favorite && <img src={isFocused ? bookmark_white : bookmark_black} alt="bookmark" className={`${styles.normis__bookmark} ${isFocused ? styles.normis__bookmark__focused : ''}`}/>}
+					{item.in_collection && <img src={isFocused ? bookmark_white : bookmark_black} alt="bookmark" className={`${styles.normis__bookmark} ${isFocused ? styles.normis__bookmark__focused : ''}`}/>}
 				</div>
 			)
 		case 'sexy':

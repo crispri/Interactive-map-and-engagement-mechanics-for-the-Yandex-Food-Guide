@@ -99,7 +99,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 20,
 			  price_upper_bound: 50,
 			  tags: ["Русская", "Традиционная", "Современная"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "2",
@@ -115,7 +115,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 15,
 			  price_upper_bound: 35,
 			  tags: ["Грузинская", "Хинкали", "Национальная"],
-			  is_favorite: false,
+			  in_collection: false,
 			},
 			{
 			  id: "3",
@@ -131,7 +131,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 25,
 			  price_upper_bound: 60,
 			  tags: ["Итальянская", "Пицца", "Фастфуд"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "4",
@@ -147,7 +147,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 30,
 			  price_upper_bound: 70,
 			  tags: ["Французская", "Бистро", "Кофе"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "5",
@@ -163,7 +163,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 40,
 			  price_upper_bound: 90,
 			  tags: ["Японская", "Суши", "Морепродукты"],
-			  is_favorite: false,
+			  in_collection: false,
 			}
 		  ],
 		restaurants: [],
