@@ -63,13 +63,15 @@ function App() {
       },
     }
     if (current_selection) {
-      body["filters"] = [{
+      body["filters"] = [
+        {
         "property": "selection_id",
         "operator": "in",
         "value": [
           current_selection
         ]
-      }]
+      }
+    ]
     }
     dispatch(getRestaurants(body))
   }, [debouncedValue, current_selection])

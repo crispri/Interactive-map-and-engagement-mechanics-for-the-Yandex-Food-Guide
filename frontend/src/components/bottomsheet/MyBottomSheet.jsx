@@ -49,7 +49,7 @@ const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
       header={
         <>
         <SelectionsList/>
-        {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+        {/* {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null} */}
         </>
       }
       defaultSnap={({ maxHeight }) => maxHeight * 0.05}
