@@ -7,6 +7,7 @@ import bottom_center_black from '../../assets/BottomCenter_black.svg'
 import bookmark_black from '../../assets/bookmark_black.svg'
 import star_white from '../../assets/star_white.svg'
 import bookmark_white from '../../assets/bookmark_white.svg'
+import sample_sexy from '../../assets/sample_sexy_image.png'
 
 function Pin({type, item, isFocused, onClick, outsideClick}) {
 	switch (type) {
@@ -35,8 +36,25 @@ function Pin({type, item, isFocused, onClick, outsideClick}) {
 			)
 		case 'sexy':
 			return (
-				<>
-				</>
+				<div 
+				className={`${styles.sexy__container}`} 
+				onClick={() => onClick(item)}
+				ref={outsideClick}
+				>
+					<div className={`${styles.sexy} ${isFocused ? styles.sexy__focused : ''}`}>
+						<div className={styles.sexy__wrapper}>
+							<p className={styles.normis__text}>{item.name}</p>
+							<div style={{width: 'fit-content', display: 'flex', alignItems: 'center', gap: '1px'}}>
+								<img src={isFocused ? star_white : star_black} alt="star" className={styles.normis__icon}/>
+								<p className={styles.normis__rating}>{item.rating.toFixed(1)}</p>
+							</div>
+						</div>
+						<p className={styles.sexy__descr}>sexy description</p>
+						<img src={isFocused ? bottom_center_black : bottom_center_white} alt="bottom_center" className={styles.normis__corner}/>
+						{item.in_collection && <img src={isFocused ? bookmark_white : bookmark_black} alt="bookmark" className={`${styles.normis__bookmark} ${isFocused ? styles.normis__bookmark__focused : ''}`}/>}
+					</div>
+					<img src={sample_sexy} alt="sexy_photo" className={styles.sexy_photo}/>
+				</div>
 			)
 		default:
 			return (

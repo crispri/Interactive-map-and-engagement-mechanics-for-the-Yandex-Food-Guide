@@ -171,7 +171,8 @@ const restaurantsSlice = createSlice({
 		is_in_collection: false,
 		unfocused_restaurants: {},
 		current_pin: null,
-		selections: []
+		selections: [],
+		currentSelection: null
 	},
 	reducers: {
 		toggleIsInCollection: (state, _) => {

@@ -46,7 +46,6 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
 
  useEffect(() => {
   if (current_pin) {
-    console.log(current_pin);
     setLocation(loco => ({
       center: [current_pin.coordinates[0], current_pin.coordinates[1]],
       duration: 300,
@@ -74,7 +73,7 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
       ))}
 
       <YMapListener 
-        onUpdate={updateHandler}
+        onActionEnd={updateHandler}
       />
       <YMapControls position="right">
           {/* Add the geolocation control to the map */}

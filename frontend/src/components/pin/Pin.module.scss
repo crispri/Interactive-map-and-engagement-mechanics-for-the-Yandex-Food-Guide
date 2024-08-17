@@ -80,3 +80,42 @@
 		}
 	}
 }
+.sexy{
+	background-color: white;
+	border-radius: 12px;
+	height: 46px;
+	padding: 9px 8px;
+	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.12), 0 0 1px 0 rgba(0, 0, 0, 0.15);
+	position: relative;
+	transition: all 0.3s ease;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1px;
+	z-index: 1;
+	&__container{
+		transform: translate(-50%, -115%);
+	}
+	&__descr{
+		font-size: 11px;
+		font-weight: normal;
+	}
+	&__wrapper{
+		display: flex;
+		gap: 4px;
+		align-items: center;
+	}
+	&__focused{
+		background-color: #21201F;
+		color: white;
+	}
+}
+.sexy_photo{
+	position: absolute;
+	z-index: -2;
+	border-radius: 8px;
+	transform: translate(-50%, -115%);
+	height: 60px;
+	width: 100%;
+	bottom: -37px;
+}
