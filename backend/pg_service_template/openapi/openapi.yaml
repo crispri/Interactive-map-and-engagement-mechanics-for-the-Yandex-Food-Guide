@@ -32,7 +32,7 @@ components:
             $ref: "./schemas/CollectionCreate.yaml"
 
         InsertIntoCollection:
-            $ref: "./schemas/InsertIntoCollection1.yaml"
+            $ref: "./schemas/InsertIntoCollection.yaml"
 
     parameters:
         PathUUID:
