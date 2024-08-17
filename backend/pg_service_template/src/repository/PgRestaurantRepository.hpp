@@ -14,9 +14,9 @@ class PgRestaurantRepository : public IRestaurantRepository {
 public:
     explicit PgRestaurantRepository(const userver::storages::postgres::ClusterPtr& pg_cluster);
 
-    std::vector<TRestaurant> GetAll() override;
-    std::optional<TRestaurant> GetById(const boost::uuids::uuid& id) override;
-    std::vector<TRestaurant> GetByFilter(const TRestaurantFilter& filter) override;
+    std::vector<TRestaurant> GetAll(const boost::uuids::uuid& user_id) override;
+    std::optional<TRestaurant> GetById(const boost::uuids::uuid& restaurant_id, const boost::uuids::uuid& user_id) override;
+    std::vector<TRestaurant> GetByFilter(const TRestaurantFilter& filter, const boost::uuids::uuid& user_id) override;
 };
 
 /*

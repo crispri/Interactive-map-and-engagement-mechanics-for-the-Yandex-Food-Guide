@@ -2,15 +2,15 @@ package presintation.mapScreen
 
 import Utils.createBitmapFromVector
 import Utils.createBitmapFromView
-import Utils.createNormalPin
-import Utils.createSuperPin
-import Utils.createSuperSelectedPin
 import Utils.invertColors
+import android.graphics.Color
 import android.util.Log
+import android.view.View
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -39,6 +39,10 @@ import model.CancelCentering
 import model.MainScreenEvent
 import model.SelectItemFromMap
 import model.UpdateItemsOnMap
+import pins.CustomPinView
+import pins.CustomPinViewSelected
+import pins.NormalPinView
+import pins.NormalPinViewSelected
 
 
 @Composable
@@ -48,79 +52,7 @@ fun MapScreen(
     mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
-
-
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
-
-    /////////////////////////////// ниже пересечения
-
-    /*val CLUSTER_RADIUS = remember { 60.0 }
-    val CLUSTER_MIN_ZOOM = remember { 15 }
-    lateinit var clasterizedCollection: ClusterizedPlacemarkCollection
-    var isShowGeometryOnMap = remember { true }
-
-    val mapWindowSizeChangedListener = remember { SizeChangedListener { _, _, _ -> updateFocusRect(mapView) } }
-
-
-    val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
-
-    val pinDragListener = remember {
-        object : MapObjectDragListener {
-            override fun onMapObjectDragStart(p0: MapObject) {
-            }
-
-            override fun onMapObjectDrag(p0: MapObject, p1: Point) = Unit
-
-            override fun onMapObjectDragEnd(p0: MapObject) {
-                // Updates clusters position
-                clasterizedCollection.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
-            }
-        }
-    }
-
-    val clusterListener = ClusterListener { cluster ->
-        for (i in cluster.placemarks.indices){
-            cluster.placemarks[i].isVisible = (i == 0)
-        }
-    }
-
-    val geometryVisibilityVisitor = object : MapObjectVisitor {
-        override fun onPlacemarkVisited(placemark: PlacemarkMapObject) = Unit
-
-        override fun onPolylineVisited(polyline: PolylineMapObject) {
-            polyline.isVisible = isShowGeometryOnMap
-        }
-
-        override fun onPolygonVisited(polygon: PolygonMapObject) {
-            polygon.isVisible = isShowGeometryOnMap
-        }
-
-        override fun onCircleVisited(circle: CircleMapObject) {
-            circle.isVisible = isShowGeometryOnMap
-        }
-
-        override fun onCollectionVisitStart(p0: MapObjectCollection): Boolean = true
-        override fun onCollectionVisitEnd(p0: MapObjectCollection) = Unit
-        override fun onClusterizedCollectionVisitStart(p0: ClusterizedPlacemarkCollection): Boolean =
-            true
-
-        override fun onClusterizedCollectionVisitEnd(p0: ClusterizedPlacemarkCollection) = Unit
-    }
-
-    val map = remember { mapView.mapWindow.map }
-
-    LaunchedEffect(Unit) {
-        mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
-        updateFocusRect(mapView)
-    }
-
-    val collection = remember { map.mapObjects.addCollection() }
-
-    clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)*/
-
-    ///////////////////////////////////////////////////////// выше пересечения
-
-
 
     //Mini - general
     val restaurantMarkerMini = remember {
@@ -140,32 +72,51 @@ fun MapScreen(
         remember { ImageProvider.fromBitmap(invertedBitmap) }
 
 
-    //Normal - general
-    val normalView = remember { createNormalPin(mapView.context) }
-    val restaurantMarkerNormal = remember { createBitmapFromView(normalView) }
+    //Normal
+    val pinViewN: NormalPinView = NormalPinView(context = mapView.context)
+    val pinViewNSelected: NormalPinViewSelected = NormalPinViewSelected(context = mapView.context)
+
+    pinViewN.setTitle("Хороший бар")
+    pinViewN.setRating("4.9")
+    pinViewNSelected.setTitle("Хороший бар")
+    pinViewNSelected.setRating("4.9")
+    val restaurantMarkerNormal =
+        remember { createBitmapFromView(pinViewN, com.example.core.R.color.grey, 32f, 0f, 0f) }
+
+    val restaurantMarkerNormalSelected =
+        remember { createBitmapFromView(pinViewNSelected, com.example.core.R.color.grey, 32f, 0f, 0f) }
+    // remember { createBitmapFromVector(R.drawable.restaurant_marker, context = mapView.context) }
     val restaurantMarkerImageProviderNormal =
         remember { ImageProvider.fromBitmap(restaurantMarkerNormal) }
 
-
-    //Normal - Selected
-    val invertedBitmapNormal = invertColors(restaurantMarkerNormal)
     val restaurantMarkerImageProviderNormalSelected =
-        remember { ImageProvider.fromBitmap(invertedBitmapNormal) }
+        remember { ImageProvider.fromBitmap(restaurantMarkerNormalSelected) }
+
+    //Maxi
+    val pinView: CustomPinView = CustomPinView(context = mapView.context)
+    pinView.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
+    Log.d("imageReady", "Ready")
+    pinView.setTitle("Хороший бар")
+    pinView.setRating("4.9")
+    pinView.setDescription("кофе от 300Р")
+
+    val pinViewSelected: CustomPinViewSelected = CustomPinViewSelected(context = mapView.context)
+    pinViewSelected.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
+    Log.d("imageReady", "Ready")
+    pinViewSelected.setTitle("Хороший бар")
+    pinViewSelected.setRating("4.9")
+    pinViewSelected.setDescription("кофе от 300Р")
 
 
-    //Maxi - general
-    val superView = remember { createSuperPin(mapView.context) }
-    val restaurantMarkerMaxi = remember { createBitmapFromView(superView) }
+    val restaurantMarkerMaxi =
+        remember { createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f) }
     val restaurantMarkerImageProviderMaxi =
         remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
 
-
-    //Maxi - Selected
-    val superViewSelected = remember { createSuperSelectedPin(mapView.context) }
-    val restaurantMarkerMaxiSelected = remember { createBitmapFromView(superViewSelected) }
+    val restaurantMarkerMaxiSelected =
+        remember { createBitmapFromView(pinViewSelected, com.example.core.R.color.grey, 16f, 0f, 0f) }
     val restaurantMarkerImageProviderMaxiSelected =
         remember { ImageProvider.fromBitmap(restaurantMarkerMaxiSelected) }
-
 
     // curLocation
     val curLocationMarker = remember {
@@ -175,22 +126,33 @@ fun MapScreen(
 
     val cameraCallback = remember { Map.CameraCallback {} }
 
+    // for double tap
+    val last = remember { mutableStateOf<String?>(null) }
+    val cur = remember { mutableStateOf<String?>(null) }
+
     val tapListener = remember {
         MapObjectTapListener { mapObject, _ ->
-            send(SelectItemFromMap(mapObject.userData.toString()))
-            true
+            cur.value = mapObject.userData.toString()
+            false
         }
     }
 
-    /*val clusterListener = remember {
-        ClusterListener { cluster ->
-            for(item in cluster.placemarks){
-                item.isVisible = (item == cluster.placemarks[0])
+
+    LaunchedEffect(cur.value) {
+        if (cur.value != "") {
+
+            if (last.value == cur.value) {
+                send(SelectItemFromMap(null))
+                last.value = null
+            } else {
+                send(SelectItemFromMap(cur.value))
+                last.value = cur.value
             }
+            cur.value = ""
         }
     }
-    val clusterizedCollection = remember { mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(clusterListener) }*/
 
+    // end for double tap
 
     LaunchedEffect(Unit) {
 
@@ -221,6 +183,8 @@ fun MapScreen(
     )
     { mapView ->
 
+        Log.d("chastota", "message1111")
+
         fun moveToStartLocation(curLocation: Point, zoomValue: Float) {
             mapView.mapWindow.map.move(
                 CameraPosition(curLocation, zoomValue, 0.0f, 0.0f),
@@ -229,15 +193,18 @@ fun MapScreen(
             )
         }
 
+        mapObjectCollection.clear()
+
         if (uiState.centeringIsRequired && curLocation.value != null) {
             moveToStartLocation(curLocation.value!!, uiState.zoomValue)
             send(CancelCentering())
         }
 
-        mapObjectCollection.clear()
 
 
         uiState.restaurantsOnMap.reversed().forEachIndexed { index, restaurant ->
+
+            Log.d("maponmap11", "1111111itemId == ${uiState.selectedItemFromMapId}")
             //val selected = uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId
             val placemark = mapObjectCollection.addPlacemark()
             placemark.userData = restaurant.id
@@ -275,14 +242,11 @@ fun MapScreen(
                 geometry = restaurant.coordinates
                 setIcon(currentPin)
             }
-
             placemark.addTapListener(tapListener)
 
             mapView.addTabListener(tapListener)
 
             mapView.addCustomPlaceMark(placemark)
-
-            ////////////////////////////////////////////
 
 
         }
@@ -295,7 +259,7 @@ fun MapScreen(
     }
 }
 
-fun updateFocusRect(mapView: CustomMapView) {
+/*fun updateFocusRect(mapView: CustomMapView) {
     val horizontalMargin = 40f
     val verticalMargin = 60f
     mapView.mapWindow.focusRect = ScreenRect(
@@ -305,4 +269,4 @@ fun updateFocusRect(mapView: CustomMapView) {
             mapView.mapWindow.height() - verticalMargin
         )
     )
-}
+}*/

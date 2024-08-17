@@ -29,6 +29,58 @@ export const getRestaurants = createAsyncThunk(
 	}
 )
 
+export const getSelections = createAsyncThunk(
+	'restaurants/getSelections',
+	async () => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/selections`,
+				{
+					method: "GET",
+					headers: {
+					  "Content-Type": "application/json;charset=utf-8",
+					  "Authorization": "token",
+					},
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
+export const getSelection = createAsyncThunk(
+	'restaurants/getSelection',
+	async (selectionId) => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/selections/${selectionId}`,
+				{
+					method: "GET",
+					headers: {
+					  "Content-Type": "application/json;charset=utf-8",
+					  "Authorization": "token",
+					},
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
 const restaurantsSlice = createSlice({
 	name: 'restaurants',
 	initialState: {
@@ -47,7 +99,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 20,
 			  price_upper_bound: 50,
 			  tags: ["Русская", "Традиционная", "Современная"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "2",
@@ -63,7 +115,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 15,
 			  price_upper_bound: 35,
 			  tags: ["Грузинская", "Хинкали", "Национальная"],
-			  is_favorite: false,
+			  in_collection: false,
 			},
 			{
 			  id: "3",
@@ -79,7 +131,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 25,
 			  price_upper_bound: 60,
 			  tags: ["Итальянская", "Пицца", "Фастфуд"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "4",
@@ -95,7 +147,7 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 30,
 			  price_upper_bound: 70,
 			  tags: ["Французская", "Бистро", "Кофе"],
-			  is_favorite: true,
+			  in_collection: true,
 			},
 			{
 			  id: "5",
@@ -111,14 +163,13 @@ const restaurantsSlice = createSlice({
 			  price_lower_bound: 40,
 			  price_upper_bound: 90,
 			  tags: ["Японская", "Суши", "Морепродукты"],
-			  is_favorite: false,
+			  in_collection: false,
 			}
 		  ],
 		restaurants: [],
 		unfocused_restaurants: {},
-		current_pin: {
-
-		}
+		current_pin: null,
+		selections: []
 	},
 	reducers: {
 		setCurrentPin: (state, action) => {
@@ -128,10 +179,18 @@ const restaurantsSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(getRestaurants.fulfilled, (state, action) => {
-				state.restaurants = action.payload.items
+				state.restaurants = action.payload.items.map(el => {
+					return ({
+					  ...el,
+					  coordinates: [el.coordinates.lon, el.coordinates.lat],
+					})
+				  })
 				// state.restaurants.forEach(el => {
 				// 	state.unfocused_restaurants[el.id] = false
 				// })
+			})
+			.addCase(getSelections.fulfilled, (state, action) => {
+				state.selections = action.payload.items
 			})
 	}
 })

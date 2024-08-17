@@ -42,7 +42,7 @@ properties:
         items:
             type: string
 
-    is_favorite:
+    in_collection:
         type: boolean
 
 required:

@@ -1,11 +1,13 @@
 package network.util
 
 import com.yandex.mapkit.geometry.Point
+import model.CollectionOfPlace
 import model.Restaurant
 import network.dto.response.RestaurantItemForJson
 import model.Coordinates
 import model.Filter
 import network.api.FilterForJson
+import network.dto.response.CollectionItemForJson
 
 fun Restaurant.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     id,
@@ -37,6 +39,13 @@ fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
     closeTime,
     isFavorite,
     tags,
+)
+
+fun CollectionItemForJson.toModel(): CollectionOfPlace = CollectionOfPlace(
+    id,
+    name,
+    description,
+    isPublic,
 )
 
 fun Filter.toJson() : FilterForJson = FilterForJson(

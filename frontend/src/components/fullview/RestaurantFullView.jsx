@@ -17,11 +17,11 @@ function map(el) {
     price_upper_bound: el.price_upper_bound,
     tags: el.tags,
     // close_time: formatTime(el.close_time),
-    is_favorite: el.is_favourite
+    in_collection: el.in_collection
   }
 }
 
-const RestaurantFullView = ({ setId, sheetRef }) => {
+const RestaurantFullView = ({ sheetRef }) => {
 
     const dispatch = useDispatch();
     const {restId} = useParams()
@@ -29,6 +29,7 @@ const RestaurantFullView = ({ setId, sheetRef }) => {
     const restaurant = map(useSelector((state) => state.restaurantByIdSlice.restaurant))
 
     useEffect(() => {
+        sheetRef.current.snapTo(({ maxHeight }) => maxHeight);
         console.log('Full view of restaurant');
         dispatch(getRestaurantById(restId))
         .then((response) => {

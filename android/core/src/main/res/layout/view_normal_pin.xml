@@ -1,17 +1,18 @@
 <!-- res/layout/view_custom_pin.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="2dp">
+    android:orientation="vertical">
 
     <!-- Background and content container -->
-    <FrameLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="16dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,8 +63,19 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+
+        <ImageView
+            android:id="@+id/badge"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="end|top"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_badge_white"
+            android:visibility="gone" />
+
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:layout_width="24dp"

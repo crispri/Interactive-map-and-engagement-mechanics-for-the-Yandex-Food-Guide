@@ -20,8 +20,8 @@ struct TRestaurant {
     userver::utils::datetime::TimeOfDay<std::chrono::seconds> open_time;
     userver::utils::datetime::TimeOfDay<std::chrono::seconds> close_time;
     std::string address;
-    std::optional<std::vector<short>> tags;
-    bool is_favorite;
+    std::optional<std::vector<std::string>> tags;
+    bool in_collection;
 
     std::tuple<
         boost::uuids::uuid&,
@@ -36,8 +36,7 @@ struct TRestaurant {
         userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
         userver::utils::datetime::TimeOfDay<std::chrono::seconds>&,
         std::string&,
-        std::optional<std::vector<short>>&,
-        bool&
+        std::optional<std::vector<std::string>>&
     > Introspect();
 };
 

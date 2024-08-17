@@ -1,5 +1,8 @@
 [versions]
 agp = "8.5.1"
+androidxCardview = "1.0.0"
+coil = "2.2.2"
+coilCompose = "2.0.0"
 hiltAndroidCompiler = "2.48.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -18,9 +21,12 @@ graphicsShapesAndroid = "1.0.0-rc01"
 dagger-hilt = "2.48"
 
 [libraries]
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidxCardview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationRuntimeKtx" }
 androidx-navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

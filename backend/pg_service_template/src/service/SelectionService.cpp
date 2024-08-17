@@ -25,12 +25,12 @@ SelectionService::SelectionService(
     )
 {}
 
-std::vector<TSelection> SelectionService::GetAll() {
-    return repository_->GetAll();
+std::vector<TSelection> SelectionService::GetAll(const boost::uuids::uuid& user_id) {
+    return repository_->GetAll(user_id);
 }
 
-std::vector<TRestaurant> SelectionService::GetById(const boost::uuids::uuid& id) {
-    return repository_->GetById(id);
+std::vector<TRestaurant> SelectionService::GetById(const boost::uuids::uuid& selection_id, const boost::uuids::uuid& user_id) {
+    return repository_->GetById(selection_id, user_id);
 }
 
 

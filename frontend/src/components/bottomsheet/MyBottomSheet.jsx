@@ -3,8 +3,12 @@ import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
 import SheetContent from '../sheetcontent/SheetContent';
-import RestaurantFullView from '../fullview/RestaurantFullView';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getSelections } from '../../lib/restaurantsSlice';
+import SelectionsList from '../selection/SelectionsList';
+import HeaderFilters from '../filter/HeaderFilters';
+import { useLocation } from 'react-router-dom';
 
 const cardInfos = [
 {
@@ -27,39 +31,35 @@ const cardInfos = [
 }
 ];
 
-const MyBottomSheet = ({sheetRef, content}) => {
+const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
+  const location = useLocation(); 
+  const dispatch = useDispatch();
 
-  const [id, setId] = useState(-1);
+  useEffect(() => {
+    dispatch(getSelections())
+  }, [])
 
-  let options = {
-    root: document.querySelector("#key"),
-    rootMargin: "0px",
-    threshold: 0.8,
-  };
-  // let observer = new IntersectionObserver(callback, options);
+  const shouldShowHeader = location.pathname === '/restaurants';  
 
   return (
-    <>
-      <BottomSheet 
-        ref={sheetRef}
-        open={true}
-        blocking={false}
-        defaultSnap={({ maxHeight }) => maxHeight * 0.05}
-        snapPoints={({ maxHeight }) => [
-          maxHeight * 0.4,
-          maxHeight * 0.05,
-          maxHeight
-        ]}
-      >
-        {/* <img src={sample} alt="sample" style={{width: '100%', height: '100%'}}/>
-        {id !== -1 ? (
-          <RestaurantFullView id={id} setId={setId} sheetRef={sheetRef}> </RestaurantFullView>
-        ) : 
-          <SheetContent cardInfos={cardInfos} setId={setId} sheetRef={sheetRef}></SheetContent>
-        }; */}
+    <BottomSheet 
+      ref={sheetRef}
+      open={true}
+      blocking={false}
+      header={shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+      defaultSnap={({ maxHeight }) => maxHeight * 0.05}
+      snapPoints={({ maxHeight }) => [
+        maxHeight * 0.45,
+        maxHeight * 0.05,
+        maxHeight
+      ]}
+      // sibling={<SelectionsList/>}
+      // header={<SelectionsList/>}
+    >
+      <div className="bottomsheet">
         {content}
-      </BottomSheet >
-    </>
+      </div>
+    </BottomSheet >
   )
 }
 

@@ -14,6 +14,9 @@
 #include <userver/utils/assert.hpp>
 
 #include <service/SelectionService.hpp>
+#include <boost/uuid/string_generator.hpp>
+
+
 namespace service {
 
 namespace {
@@ -61,9 +64,11 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
             ErrorDescriprion::kTokenNotSpecified
         );
       }
-      
-     
-      auto selections = selection_service_.GetAll();
+
+        boost::uuids::string_generator gen;
+        auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+
+      auto selections = selection_service_.GetAll(user_id);
         userver::formats::json::ValueBuilder responseJSON;
         responseJSON["items"].Resize(0);
         for (auto& selection : selections) {

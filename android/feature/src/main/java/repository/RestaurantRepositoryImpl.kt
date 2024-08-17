@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import model.CollectionOfPlace
 import model.Coordinates
 import model.Filter
 import model.Recommendation
@@ -15,6 +16,7 @@ import network.api.FilterForJson
 import network.api.RequestBody
 import network.api.YandexMapEatApi
 import network.dto.request.RestaurantItemRequestForJson
+import network.dto.response.CollectionItemForJson
 import network.dto.response.RestaurantItemForJson
 import network.util.NetworkState
 import network.util.forJson
@@ -28,12 +30,6 @@ class RestaurantRepositoryImpl @Inject constructor(
     private val api: YandexMapEatApi
 ) : RestaurantRepository {
 
-    override val recommendations: Flow<List<Recommendation>>
-        get() = flowOf(Utils.recommendations)
-
-    override val restaurants: Flow<List<Restaurant>>
-        get() = flowOf(Utils.restaurants)
-
     override fun getRestaurants(
         token: String,
         lowerLeftLon: Double,
@@ -41,7 +37,7 @@ class RestaurantRepositoryImpl @Inject constructor(
         topRightLon: Double,
         lowerLeftLat: Double,
         filterList: List<Filter>,
-        ): Flow<NetworkState<List<Restaurant>>> = flow {
+    ): Flow<NetworkState<List<Restaurant>>> = flow {
         Log.d("SourceGetLoading", "start")
         emit(NetworkState.Loading)
         Log.d("SourceGetLoading", "end")
@@ -52,7 +48,7 @@ class RestaurantRepositoryImpl @Inject constructor(
 
             val response = api.getRestaurants(
                 bearToken,
-                requestBody =  RequestBody(
+                requestBody = RequestBody(
                     Coordinates(
                         lon = lowerLeftLon,
                         lat = lowerLeftLat,
@@ -73,7 +69,6 @@ class RestaurantRepositoryImpl @Inject constructor(
             emit(
                 NetworkState.Success(
                     response.items.map(RestaurantItemForJson::toModel),
-                    0
                 )
             )
         } catch (e: Exception) {
@@ -96,7 +91,7 @@ class RestaurantRepositoryImpl @Inject constructor(
 
             val response = api.getRestaurantById(
                 bearToken,
-                id =id,
+                id = id,
             )
             Log.d(
                 "SourceGet", response.name
@@ -105,7 +100,6 @@ class RestaurantRepositoryImpl @Inject constructor(
             emit(
                 NetworkState.Success(
                     response.toModel(),
-                    0,
                 )
             )
         } catch (e: Exception) {
@@ -114,22 +108,33 @@ class RestaurantRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun updateTask(
-        item: Restaurant,
-        revision: Int,
+    override fun getCollections(
         token: String,
-        login: String
-    ): Flow<NetworkState<Restaurant>> = flow {
+    ): Flow<NetworkState<List<CollectionOfPlace>>> = flow {
+        Log.d("SourceGetLoading", "start")
         emit(NetworkState.Loading)
+        Log.d("SourceGetLoading", "end")
+
         try {
-            val response = api.putTask(
-                token.toToken(),
-                revision,
-                item.id,
-                RestaurantItemRequestForJson(item.forJson())
+            val bearToken = token.toToken()
+
+            val response = api.getCollections(
+                bearToken,
             )
-            emit(NetworkState.OK(response.revision))
+
+            Log.d(
+                "SourceGet", response.items.toString()
+            )
+
+            Log.d("Response", response.toString())
+            Log.d("ResponseItems", response.items.toString())
+            emit(
+                NetworkState.Success(
+                    response.items.map(CollectionItemForJson::toModel)
+                )
+            )
         } catch (e: Exception) {
+            Log.d("SourceGetException", "${e.message}")
             emit(NetworkState.Failure(e))
         }
     }.flowOn(Dispatchers.IO)

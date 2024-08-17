@@ -2,15 +2,13 @@ package network.api
 
 import com.google.gson.annotations.SerializedName
 import model.Coordinates
-import network.dto.request.RestaurantItemRequestForJson
+import network.dto.response.CollectionListResponseForJson
 import network.dto.response.RestaurantItemForJson
 import network.dto.response.RestaurantListResponseForJson
-import network.dto.response.RestaurantResponseForJson
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface YandexMapEatApi {
@@ -31,13 +29,13 @@ interface YandexMapEatApi {
         @Path("id") id: String,
     ): RestaurantItemForJson
 
-    @PUT("guide/v1/restaurants/{id}")
-    suspend fun putTask(
+    @GET("guide/v1/selections")
+    suspend fun getCollections(
         @Header("Authorization") token: String,
-        @Header("X-Last-Known-Revision") header: Int,
-        @Path("id") id: String,
-        @Body body: RestaurantItemRequestForJson
-    ): RestaurantResponseForJson
+        @Header("Accept") accept: String = "application/json",
+        @Header("Content-Type") contentType: String = "application/json",
+    ): CollectionListResponseForJson
+
 }
 
 data class RequestBody(
@@ -48,7 +46,7 @@ data class RequestBody(
 
 data class FilterForJson(
     @SerializedName("property") val property: String,
-    @SerializedName("value") val value: List<Double>,
+    @SerializedName("value") val value: List<String>,
     @SerializedName("operator") val operator: String
 )
 

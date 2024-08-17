@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -5,18 +6,20 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Picture
-import android.graphics.drawable.Drawable
+import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
-import model.Recommendation
+import model.CollectionOfPlace
 import model.Restaurant
 import pins.CustomPinView
 import pins.CustomPinViewSelected
@@ -30,6 +33,45 @@ object Utils {
         MINI,
         NORMAL,
         LARGE
+    }
+
+    fun createBitmapFromView(
+        view: View,
+        shadowColor: Int,
+        shadowRadius: Float,
+        dx: Float,
+        dy: Float
+    ): Bitmap {
+        // Создаем bitmap из view
+        val originalBitmap = createBitmapFromViewForShadow(view)
+
+        // Создаем bitmap с добавлением тени
+        val shadowBitmap = Bitmap.createBitmap(
+            originalBitmap.width + (shadowRadius * 2).toInt(),
+            originalBitmap.height + (shadowRadius * 2).toInt(),
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(shadowBitmap)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        // Добавляем тень
+        paint.setShadowLayer(shadowRadius, dx, dy, shadowColor)
+
+        // Рисуем элемент, у которого будет тень
+        canvas.drawRoundRect(
+            0f, 0f,
+            originalBitmap.width.toFloat(),
+            originalBitmap.height.dp.value - 21.dp.value,
+            40.dp.value,
+            40.dp.value,
+            paint,
+        )
+
+        // Рисуем исходный bitmap поверх тени
+        canvas.drawBitmap(originalBitmap, 0f, 0f, null)
+
+        return shadowBitmap
     }
 
     fun createSuperPin(
@@ -91,14 +133,14 @@ object Utils {
         return invertedBitmap
     }
 
-
-    fun createBitmapFromView(view: View): Bitmap {
+    private fun createBitmapFromViewForShadow(view: View): Bitmap {
         view.forceLayout()
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        return view.drawToBitmap()
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
 
+        return view.drawToBitmap()
     }
+
 
     fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
         val drawable = ContextCompat.getDrawable(context, art) ?: return null
@@ -113,22 +155,31 @@ object Utils {
         return bitmap
     }
 
+
     val recommendations = listOf(
-        Recommendation(
+        CollectionOfPlace(
+            "",
             "Собрали для вас",
-            "Рекоммендации от наших экспертов"
+            "Рекоммендации от наших экспертов",
+            1,
         ),
-        Recommendation(
+        CollectionOfPlace(
+            "",
             "Завтраки вне дома",
-            "Куда сходить  Места"
+            "Куда сходить  Места",
+            0
         ),
-        Recommendation(
+        CollectionOfPlace(
+            "",
             "Пиво и футбол",
-            "Куда сходить  Места"
+            "Куда сходить  Места",
+            1,
         ),
-        Recommendation(
+        CollectionOfPlace(
+            "",
             "Где перекусить спортсмену",
-            "Куда сходить  Места"
+            "Куда сходить  Места",
+            0
         )
 
     )
