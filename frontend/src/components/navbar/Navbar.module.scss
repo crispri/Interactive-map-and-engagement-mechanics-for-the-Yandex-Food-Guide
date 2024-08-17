@@ -12,4 +12,10 @@
 		flex-direction: column;
 		justify-content: center;
 	}
+	&__in_collection{
+		background-color: black;
+	}
+	&__not_in_collection{
+		background-color: white;
+	}
 }

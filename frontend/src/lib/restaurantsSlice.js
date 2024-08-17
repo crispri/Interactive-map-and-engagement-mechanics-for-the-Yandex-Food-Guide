@@ -166,14 +166,25 @@ const restaurantsSlice = createSlice({
 			  in_collection: false,
 			}
 		  ],
+		filters: {},
 		restaurants: [],
+		is_in_collection: false,
 		unfocused_restaurants: {},
 		current_pin: null,
 		selections: []
 	},
 	reducers: {
+		toggleIsInCollection: (state, _) => {
+			state.is_in_collection = !state.is_in_collection;
+		},
 		setCurrentPin: (state, action) => {
 			state.current_pin = action.payload
+		},
+		addFilter: (state, action) => {
+			state.filters[action.payload.key] = action.payload;
+		},
+		removeFilter: (state, action) => {
+			delete state.filters[action.payload.key];
 		}
 	},
 	extraReducers: (builder) => {
@@ -195,5 +206,5 @@ const restaurantsSlice = createSlice({
 	}
 })
 
-export const { setCurrentPin } = restaurantsSlice.actions
+export const { setCurrentPin, addFilter, removeFilter, toggleIsInCollection } = restaurantsSlice.actions
 export default restaurantsSlice.reducer

@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import restaurantsSlice from './restaurantsSlice'
 import restaurantByIdSlice from './restaurantByIdSlice'
-import filtersSlice from './filtersSlice'
+// import filtersSlice from './filtersSlice'
 
 const rootReducer = combineReducers({
   restaurantsSlice,
   restaurantByIdSlice,
-  filtersSlice,
+  // filtersSlice,
 })
 
 export const store = configureStore({
