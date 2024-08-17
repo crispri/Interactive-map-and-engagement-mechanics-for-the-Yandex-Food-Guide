@@ -22,8 +22,8 @@ struct TRestaurant {
     std::string address;
     std::optional<std::vector<std::string>> tags;
     bool in_collection;
-    std::string pin;
-    std::optional<std::vector<std::string>> pictures;
+    std::string food;
+    std::optional<std::vector<std::string>> interior;
 
     std::tuple<
         boost::uuids::uuid&,
