@@ -20,7 +20,8 @@ const RestaurantSnippet = ({}) => {
             price_upper_bound: el.price_upper_bound,
             tags: el.tags,
             close_time: formatTime(el.close_time),
-            in_collection: el.in_collection
+            in_collection: el.in_collection,
+            pictures: el.pictures,
         }))
     return (
         <>

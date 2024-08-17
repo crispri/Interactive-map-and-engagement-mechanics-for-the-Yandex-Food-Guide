@@ -1,9 +1,22 @@
-get:
+post:
     summary: "Получение всех подборок"
     description: "Возвращает списка всех подборок"
 
     security:
         -   UserTicketAuth: [ ]
+
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    type: object
+                    properties:
+                        return_collections:
+                            description: "Если TRUE, то вернет только коллекции пользователя. Иначе - просто подборки"
+                            type: boolean
+                    required:
+                        -   return_collections
 
     responses:
         200:

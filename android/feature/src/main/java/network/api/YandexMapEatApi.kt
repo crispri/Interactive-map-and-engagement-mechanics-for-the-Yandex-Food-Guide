@@ -29,11 +29,12 @@ interface YandexMapEatApi {
         @Path("id") id: String,
     ): RestaurantItemForJson
 
-    @GET("guide/v1/selections")
+    @POST("guide/v1/selections")
     suspend fun getCollections(
         @Header("Authorization") token: String,
         @Header("Accept") accept: String = "application/json",
         @Header("Content-Type") contentType: String = "application/json",
+        @Body requestBody: RequestBodyCollection,
     ): CollectionListResponseForJson
 
 }
@@ -42,6 +43,10 @@ data class RequestBody(
     @SerializedName("lower_left_corner") val lowerLeftCorner: Coordinates,
     @SerializedName("top_right_corner") val topRightCorner: Coordinates,
     @SerializedName("filters") val filters: List<FilterForJson> = listOf()
+)
+
+data class RequestBodyCollection(
+    @SerializedName( "return_collections" ) val  return_collections : Boolean,
 )
 
 data class FilterForJson(

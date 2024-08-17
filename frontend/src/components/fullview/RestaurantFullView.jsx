@@ -17,7 +17,8 @@ function map(el) {
     price_upper_bound: el.price_upper_bound,
     tags: el.tags,
     // close_time: formatTime(el.close_time),
-    in_collection: el.in_collection
+    in_collection: el.in_collection,
+    pictures: el.pictures,
   }
 }
 
@@ -55,11 +56,16 @@ const RestaurantFullView = ({ sheetRef }) => {
             <span className={styles.reviews}>82 оценки</span>
           </div>
           <div className={styles.images}>
-            <img src="image1.jpg" alt="Restaurant Interior 1" className={styles.mainImage} />
-            <div className={styles.sideImages}>
-              <img src="image2.jpg" alt="Restaurant Interior 2" />
-              <img src="image3.jpg" alt="Restaurant Interior 3" />
-            </div>
+          { restaurant?.pictures?.map((picture, index) => {
+              if (index === 0) {
+                { console.log(picture) };
+                <img src={picture} alt="Restaurant Interior 1" className={styles.mainImage} />
+              } else {
+                { console.log(picture) };
+                <img src={picture} alt="Restaurant Interior 2" />
+              }
+          })
+          }
           </div>
           <div className={styles.info}>
             <div className={styles.tags}>

@@ -7,23 +7,37 @@ import filtersButton from '../../assets/filters_button.svg'
 const HeaderFilters = ({debouncedValue}) => {
 
     const navigateTo = useNavigate();
-    const filtersMap = useSelector((state) => state.filters);
     
     function handleFilterFullViewClick() {
         navigateTo("/restaurants/filters");
     }
 
+    const filtersMap = useSelector((state) => state.restaurantsSlice.filters)
+
     const filters = [
         {
+            key: "nearby",
             name: "Рядом со мной",
             operator: "test1"
         },
         {
+            key: "open_now",
             name: "Открыто сейчас",
             operator: "test2"
         },
         {
+            key: "ultima",
             name: "ULTIMA",
+            operator: "test3"
+        },
+        {
+            key: "ultima2",
+            name: "ULTIMA2",
+            operator: "test3"
+        },
+        {
+            key: "ultima3",
+            name: "ULTIMA3",
             operator: "test3"
         }
     ]
@@ -33,7 +47,7 @@ const HeaderFilters = ({debouncedValue}) => {
             <div className={styles.filters}>
                 <img className={styles.filters_button} src={filtersButton} alt="Filter button" onClick={handleFilterFullViewClick}></img>
                 {filters?.map((filter, index) => (
-                    <div key={index} className={styles.filter}><Filter filtersMap={filtersMap} debouncedValue={debouncedValue} filter={filter}></Filter></div>
+                    <Filter key={index} filtersMap={filtersMap} debouncedValue={debouncedValue} filter={filter}></Filter>
                 ))}
             </div>
         </>

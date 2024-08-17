@@ -10,8 +10,9 @@ struct TRestaurantFilter {
     TCoordinates top_right_corner;
     userver::storages::postgres::ParameterStore& filter_params;
     const std::string& filter_string;
+    bool only_collection;
 
-    TRestaurantFilter(TCoordinates, TCoordinates, userver::storages::postgres::ParameterStore&, const std::string&);
+    TRestaurantFilter(TCoordinates, TCoordinates, userver::storages::postgres::ParameterStore&, const std::string&, bool);
 };
 
 };

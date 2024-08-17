@@ -5,27 +5,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="2dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="16dp">
+        android:layout_height="90dp"
+        android:orientation="vertical">
 
-        <!-- Background and content container-->
         <FrameLayout
             android:layout_width="130dp"
-            android:layout_height="90dp"
+            android:layout_height="match_parent"
             android:background="@drawable/custom_pin_background"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/ivPictureOfPlace"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:background="@drawable/custom_pin_background"/>
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#9747FF"
+                android:scaleType="centerCrop" />
         </FrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,7 +32,7 @@
             android:layout_marginTop="50dp"
             android:background="@drawable/rounded_corners"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="4dp">
 
             <TextView
                 android:id="@+id/titleTextView"
@@ -89,7 +86,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!--/FrameLayout-->
 
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
     <ImageView
         android:layout_width="24dp"

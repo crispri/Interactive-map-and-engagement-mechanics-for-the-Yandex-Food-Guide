@@ -1,4 +1,6 @@
 #include "PgRestaurantRepository.hpp"
+#include <userver/logging/log.hpp>
+#include "models/TRestaurant.hpp"
 
 namespace service {
 
@@ -56,11 +58,25 @@ std::vector<TRestaurant> PgRestaurantRepository::GetByFilter(const TRestaurantFi
         filter.filter_params
     );
 
+    // LOG_ERROR() << "ONLY COLLECTION = " << filter.only_collection;
+
     auto result = restaurants.AsContainer<std::vector<TRestaurant>>(userver::storages::postgres::kRowTag);
+    std::vector<TRestaurant> result_restaurants;
+    
+    // LOG_ERROR() << "rest in coll size = " << restaurants_in_collection.size();
+    // LOG_ERROR() << " restaurants sz = " << restaurants.Size();
     for (auto& restaurant : result) {
         restaurant.in_collection = restaurants_in_collection.count(restaurant.id);
+        if (filter.only_collection && restaurant.in_collection) {
+            result_restaurants.push_back(restaurant);
+        }
+        if (!filter.only_collection) {
+            result_restaurants.push_back(restaurant);
+        }
+        if (result_restaurants.size() == 20) break;
     }
-    return result;
+    
+    return result_restaurants;
 }
 
 

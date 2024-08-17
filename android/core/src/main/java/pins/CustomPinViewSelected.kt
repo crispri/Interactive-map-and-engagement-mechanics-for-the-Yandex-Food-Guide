@@ -1,14 +1,15 @@
 package pins
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import coil.load
-import coil.transform.CircleCropTransformation
+import androidx.core.util.TypedValueCompat.dpToPx
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.core.R
 
 class CustomPinViewSelected @JvmOverloads constructor(
@@ -27,40 +28,26 @@ class CustomPinViewSelected @JvmOverloads constructor(
         inflate(context, R.layout.view_custom_pin_selected, this)
 
         // Get references to the views
-        imageView = findViewById(R.id.ivPictureOfPlace)
+        imageView = findViewById(R.id.ivPictureOfPlace1)
         titleTextView = findViewById(R.id.titleTextView)
         ratingTextView = findViewById(R.id.ratingTextView)
         descriptionTextView = findViewById(R.id.descriptionTextView)
     }
 
-    fun setImageWithGlide(url: String) {
+    fun setImageWithGlide(url: String, onSuccess: () -> Unit) {
         Glide.with(this)
             .load(url)
-            .placeholder(R.drawable.ic_mini_pin) // Плейсхолдер на время загрузки
-            .error(R.drawable.baseline_language_24) // Изображение ошибки
-            .into(imageView) // Замените на ваш ImageView
-
-    }
-    fun setImageWithCoil(imageUrl: String) {
-
-        imageView.load(imageUrl) {
-            placeholder(R.drawable.ic_mini_pin) // Плейсхолдер на время загрузки
-            error(R.drawable.baseline_language_24) // Изображение ошибки, если не удалось загрузить
-            transformations(CircleCropTransformation()) // Скругление изображения
-            listener(
-                onStart = {
-                    Log.d("setImageLoading", "Загрузка изображения начата: $imageUrl")
-                },
-                onSuccess = { _, result ->
-                    Log.d("setImageSuccess", "Изображение загружено успешно: $imageUrl")
-                },
-                onError = { _, result ->
-                    Log.d("setImageError", "Ошибка при загрузке изображения: $imageUrl")
+            .placeholder(R.drawable.ic_mini_pin)
+            .error(R.drawable.baseline_language_24)
+            .transform(CenterCrop(), RoundedCorners(dpToPx(50f, context.resources.displayMetrics).toInt()))
+            .into(object : com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>() {
+                override fun onResourceReady(resource: android.graphics.drawable.Drawable, transition: com.bumptech.glide.request.transition.Transition<in android.graphics.drawable.Drawable>?) {
+                    imageView.setImageDrawable(resource)
+                    onSuccess() // Notify that the image has been loaded
                 }
-            )
-        }
 
-        Log.d("setImageEnd", imageUrl)
+                override fun onLoadCleared(placeholder: android.graphics.drawable.Drawable?) {}
+            })
     }
 
     fun setTitle(title: String) {

@@ -4,9 +4,10 @@ import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
 import SheetContent from '../sheetcontent/SheetContent';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getSelections } from '../../lib/restaurantsSlice';
 import SelectionsList from '../selection/SelectionsList';
+import CollectionsList from '../collection/CollectionsList';
 import HeaderFilters from '../filter/HeaderFilters';
 import { useLocation } from 'react-router-dom';
 
@@ -39,6 +40,7 @@ const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
     dispatch(getSelections())
   }, [])
 
+  const isInCollection = useSelector((state) => state.restaurantsSlice.is_in_collection);
   const shouldShowHeader = location.pathname === '/restaurants';  
 
   return (
@@ -46,7 +48,12 @@ const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
       ref={sheetRef}
       open={true}
       blocking={false}
-      header={shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+      header={
+        <>
+        {isInCollection ? <CollectionsList/> : <SelectionsList/>}
+        {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+        </>
+      }
       defaultSnap={({ maxHeight }) => maxHeight * 0.05}
       snapPoints={({ maxHeight }) => [
         maxHeight * 0.45,

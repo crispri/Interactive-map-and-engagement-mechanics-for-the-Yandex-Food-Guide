@@ -111,6 +111,7 @@ fun MapScreen(
     pinViewN.setRating("4.9")
     pinViewNSelected.setTitle("Хороший бар")
     pinViewNSelected.setRating("4.9")
+
     val restaurantMarkerNormal =
         remember { createBitmapFromView(pinViewN, com.example.core.R.color.grey, 32f, 0f, 0f) }
 
@@ -130,22 +131,35 @@ fun MapScreen(
     pinView.setRating("4.9")
     pinView.setDescription("кофе от 300Р")
 
+    //Maxi
+    val pinView = remember { CustomPinView(context = mapView.context) }
+    val pinViewSelected = remember { CustomPinViewSelected(context = mapView.context) }
     val pinViewSelected: CustomPinViewSelected = CustomPinViewSelected(context = mapView.context)
     pinViewSelected.setImageWithCoil("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg")
     pinViewSelected.setTitle("Хороший бар")
     pinViewSelected.setRating("4.9")
     pinViewSelected.setDescription("кофе от 300Р")
 
+    pinView.setTitle("aaaaa")
+    pinView.setDescription("bbb")
+    pinView.setRating("2,0")
 
-    val restaurantMarkerMaxi =
-        remember { createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f) }
-    val restaurantMarkerImageProviderMaxi =
-        remember { ImageProvider.fromBitmap(restaurantMarkerMaxi) }
+    pinViewSelected.setTitle("aaaaa")
+    pinViewSelected.setDescription("bbb")
+    pinViewSelected.setRating("2,0")
 
-    val restaurantMarkerMaxiSelected =
-        remember { createBitmapFromView(pinViewSelected, com.example.core.R.color.grey, 16f, 0f, 0f) }
-    val restaurantMarkerImageProviderMaxiSelected =
-        remember { ImageProvider.fromBitmap(restaurantMarkerMaxiSelected) }
+    val restaurantMarkerImageProviderMaxi = remember { mutableStateOf<ImageProvider>(ImageProvider.fromBitmap(restaurantMarkerNormal)) }
+    val restaurantMarkerImageProviderMaxiSelected = remember { mutableStateOf<ImageProvider>(ImageProvider.fromBitmap(restaurantMarkerNormalSelected)) }
+    LaunchedEffect(Unit) {
+        pinView.setImageWithGlide("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg") {
+            val restaurantMarkerMaxi = createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f)
+            restaurantMarkerImageProviderMaxi.value = ImageProvider.fromBitmap(restaurantMarkerMaxi)
+        }
+        pinViewSelected.setImageWithGlide("https://baldezh.top/uploads/posts/2023-12/1703987413_baldezh-top-p-restoran-vnutri-vkontakte-2.jpg") {
+            val restaurantMarkerMaxiSelected = createBitmapFromView(pinViewSelected, com.example.core.R.color.grey, 16f, 0f, 0f)
+            restaurantMarkerImageProviderMaxiSelected.value = ImageProvider.fromBitmap(restaurantMarkerMaxiSelected)
+        }
+    }
 
     // curLocation
     val curLocationMarker = remember {
@@ -287,9 +301,9 @@ fun MapScreen(
                         }
                     } else {
                         if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
-                            restaurantMarkerImageProviderMaxiSelected
+                            restaurantMarkerImageProviderMaxiSelected.value
                         } else {
-                            restaurantMarkerImageProviderMaxi
+                            restaurantMarkerImageProviderMaxi.value
                         }
                     }
 

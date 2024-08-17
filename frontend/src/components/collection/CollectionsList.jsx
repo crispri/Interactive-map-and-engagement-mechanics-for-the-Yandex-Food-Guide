@@ -1,4 +1,4 @@
-import styles from './SelectionsList.module.scss'
+import styles from './CollectionsList.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSelection } from '../../lib/restaurantsSlice'
 import { useRef } from 'react'
@@ -6,8 +6,8 @@ import { getRestaurants } from '../../lib/restaurantsSlice'
 import info_picture from '../../assets/info.svg'
 import bookmark_outline from '../../assets/bookmark_outline.svg'
 
-function SelectionsList() {
-	const selections = useSelector((state) => state.restaurantsSlice.selections)
+function CollectionsList() {
+	const selections = useSelector((state) => state.restaurantsSlice.collections)
 	const current_selection = useSelector((state) => state.restaurantsSlice.currentSelection)
 	const restaurants = useSelector((state) => state.restaurantsSlice.restaurants)
 	const dispatch = useDispatch();
@@ -59,10 +59,16 @@ function SelectionsList() {
   return (
 	<div className={styles.wrapper} ref={wrapperRef}>
 		<div className={styles.categories}>
+            {/* <div className={styles.card} transition={{ duration: 0.3 }}>
+
+            </div>
+            <div className={styles.card} transition={{ duration: 0.3 }}> */}
+
+            {/* </div> */}
 			{cards}
 		</div>
 	</div>
   )
 }
 
-export default SelectionsList
+export default CollectionsList
