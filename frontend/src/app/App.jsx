@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 // import SheetContent from "../components/sheetcontent/SheetContent.jsx";
 import RestaurantFullView from "../components/fullview/RestaurantFullView.jsx";
 import sample from '../assets/sample.jpeg'
+import FiltersFullView from "../components/filter/FiltersFullView.jsx";
 
 const SheetContent = lazy(() => import('../components/sheetcontent/SheetContent.jsx'))
  
@@ -49,7 +50,6 @@ function App() {
   }
   const debouncedValue = useDebounce(currentPolygon, 300);
   
-
   useEffect(() => {
     dispatch(getRestaurants({
       "lower_left_corner": {
@@ -74,7 +74,7 @@ function App() {
         <>
           <Navbar/>
           <MapComponent sheetRef={sheetRef} location={location} updateHandler={updateHandler} setLocation={setLocation}/>
-          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>}/>
+          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue}/>
         </>
       ),
       children: [
@@ -90,6 +90,10 @@ function App() {
           path: ':restId',
           element: <RestaurantFullView sheetRef={sheetRef}/>
         },
+        {
+          path: 'filters',
+          element: <FiltersFullView sheetRef={sheetRef}/>
+        }
       ]
     },
   ]);

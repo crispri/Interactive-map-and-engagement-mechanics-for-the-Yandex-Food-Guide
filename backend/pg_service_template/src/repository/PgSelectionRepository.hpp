@@ -16,8 +16,8 @@ class PgSelectionRepository : public ISelectionRepository {
 public:
     explicit PgSelectionRepository(const userver::storages::postgres::ClusterPtr& pg_cluster);
 
-    std::vector<TSelection> GetAll() override;
-    std::vector<TRestaurant> GetById(const boost::uuids::uuid& id) override;
+    std::vector<TSelection> GetAll(const boost::uuids::uuid& user_id, bool return_collections) override;
+    std::vector<TRestaurant> GetById(const boost::uuids::uuid& selection_id, const boost::uuids::uuid& user_id) override;
 };
 
 

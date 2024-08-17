@@ -25,12 +25,7 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
 
   const current_pin = useSelector((state) => state.restaurantsSlice.current_pin)
   const navigate = useNavigate()
-  const restaurants = useSelector((state) => state.restaurantsSlice.restaurants).map(el => {
-    return ({
-      ...el,
-      coordinates: [el.coordinates.lon, el.coordinates.lat],
-    })
-  })
+  const restaurants = useSelector((state) => state.restaurantsSlice.restaurants)
   const dispatch = useDispatch()
 
   const setFocus = (pin) => {
@@ -45,9 +40,18 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
 
   const onOutsideClick = useOutsideClick(() => {
     navigate(`/restaurants`)
-    sheetRef.current.snapTo(({ maxHeight }) =>  maxHeight * 0.05);
+    // sheetRef.current.snapTo(({ maxHeight }) =>  maxHeight * 0.05);
     dispatch(setCurrentPin(null))
   })
+
+ useEffect(() => {
+  if (current_pin) {
+    setLocation(loco => ({
+      center: [current_pin.coordinates[0], current_pin.coordinates[1]],
+      duration: 300,
+    }))
+  }
+ }, [current_pin])
 
  return (
  <>
@@ -69,12 +73,11 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
       ))}
 
       <YMapListener 
-        onUpdate={updateHandler}
+        onActionEnd={updateHandler}
       />
-      <YMapControls position="left">
+      <YMapControls position="right">
           {/* Add the geolocation control to the map */}
           <YMapGeolocationControl/>
-          <YMapZoomControl/>
       </YMapControls>
     </YMap>    
   </div>

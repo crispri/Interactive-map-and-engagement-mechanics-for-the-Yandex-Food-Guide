@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import './RestaurantCard.css'
 import restaurantImage from '../../assets/restaurant_example.png'
-import snippetFavourite from '../../assets/snippet_unfavourite.svg'
+import snippetFavourite from '../../assets/snippet_favourite.svg'
+import snippetUnfavourite from '../../assets/snippet_unfavourite.svg'
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 const RestaurantCard = ({ restaurantInfo }) => {
 
@@ -14,16 +17,33 @@ const RestaurantCard = ({ restaurantInfo }) => {
   }
 
   function favouriteClick() {
+    // useEffect
+    console.log('favouriteClick')
+  }
 
+  function unfavouriteClick() {
+    console.log('unfavouriteClick')
+    // useEffect
   }
 
   return (
-    <div className='card' onClick={handleClick}>
-      <div className='image-with-favourite' onClick={handleClick}>
+    <div className='card'>
+      <div className='image-with-favourite'>
+        {restaurantInfo?.in_collection
+        ?
         <img className="fav_button" src={snippetFavourite} alt="Favourite" onClick={favouriteClick} />
-        <img className="snippet" src={restaurantImage} alt="Restaurant" />
+        :
+        <img className="fav_button" src={snippetUnfavourite} alt="Unfavourite" onClick={unfavouriteClick} />
+        }
+        {
+          restaurantInfo?.images && restaurantInfo?.images?.lenngth > 0
+          ?
+          <img className="snippet" src={restaurantInfo?.images[0]} alt="Restaurant" onClick={handleClick}/>
+          :
+          <img className="snippet" src={restaurantImage} alt="Restaurant" onClick={handleClick}/>
+        }
       </div>
-      <div className="content">
+      <div className="content" onClick={handleClick}>
         <div className='title-rating'>
           <div className="title">{restaurantInfo?.name}</div>
           <div className="rating" onClick={handleClick}>

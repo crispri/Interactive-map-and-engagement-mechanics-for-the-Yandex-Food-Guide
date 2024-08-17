@@ -83,7 +83,9 @@ class RecommendationsBySelectionId final : public userver::server::handlers::Htt
       
 
         boost::uuids::string_generator gen;
-        auto restaurants = selection_service_.GetById(gen(id));
+        auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+        auto selection_id = gen(id);
+        auto restaurants = selection_service_.GetById(selection_id, user_id);
         userver::formats::json::ValueBuilder responseJSON;
         responseJSON["items"].Resize(0);
         for (auto& restaurant : restaurants) {

@@ -3,7 +3,12 @@ import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
 import SheetContent from '../sheetcontent/SheetContent';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getSelections } from '../../lib/restaurantsSlice';
+import SelectionsList from '../selection/SelectionsList';
+import HeaderFilters from '../filter/HeaderFilters';
+import { useLocation } from 'react-router-dom';
 
 const cardInfos = [
 {
@@ -26,33 +31,40 @@ const cardInfos = [
 }
 ];
 
-const MyBottomSheet = ({sheetRef, content}) => {
+const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
+  const location = useLocation(); 
+  const dispatch = useDispatch();
 
-  let options = {
-    root: document.querySelector("#key"),
-    rootMargin: "0px",
-    threshold: 0.8,
-  };
-  // let observer = new IntersectionObserver(callback, options);
+  useEffect(() => {
+    dispatch(getSelections())
+  }, [])
+
+  const shouldShowHeader = location.pathname === '/restaurants';  
 
   return (
-    <>
-      <BottomSheet 
-        ref={sheetRef}
-        open={true}
-        blocking={false}
-        defaultSnap={({ maxHeight }) => maxHeight * 0.05}
-        snapPoints={({ maxHeight }) => [
-          maxHeight * 0.45,
-          maxHeight * 0.05,
-          maxHeight
-        ]}
-      >
-        <div className="bottomsheet">
+    <BottomSheet 
+      ref={sheetRef}
+      open={true}
+      blocking={false}
+      header={
+        <>
+        <SelectionsList/>
+        {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+        </>
+      }
+      defaultSnap={({ maxHeight }) => maxHeight * 0.05}
+      snapPoints={({ maxHeight }) => [
+        maxHeight * 0.45,
+        maxHeight * 0.05,
+        maxHeight
+      ]}
+      // sibling={<SelectionsList/>}
+      // header={<SelectionsList/>}
+    >
+      <div className="bottomsheet">
         {content}
-        </div>
-      </BottomSheet >
-    </>
+      </div>
+    </BottomSheet >
   )
 }
 

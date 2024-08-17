@@ -5,7 +5,7 @@ function Button({
 	onClick,
 }) {
   return (
-	<div className={styles.wrapper}>
+	<div className={styles.wrapper} onClick={onClick}>
 	  <img src={icon} alt="icon" />
 	</div>
   )

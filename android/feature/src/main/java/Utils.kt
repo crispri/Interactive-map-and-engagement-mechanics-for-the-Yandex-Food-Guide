@@ -2,6 +2,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Picture
 import android.graphics.Rect
@@ -54,7 +56,7 @@ object Utils {
         canvas.drawRoundRect(
             0f, 0f,
             originalBitmap.width.toFloat(),
-            originalBitmap.height.dp.value - 21.dp.value,
+            originalBitmap.height.dp.value - 25.dp.value,
             40.dp.value,
             40.dp.value,
             paint,
@@ -239,4 +241,24 @@ object Utils {
             closeTime = "",
         ),
     )
+
+    fun invertColors(bitmap: Bitmap): Bitmap {
+        val invertedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
+        val canvas = Canvas(invertedBitmap)
+        val paint = Paint()
+
+        val colorMatrix = ColorMatrix()
+        colorMatrix.set(
+            floatArrayOf(
+                -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
+                0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
+                0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
+                0.0f, 0.0f, 0.0f, 1.0f, 0.0f
+            )
+        )
+        paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
+
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
+        return invertedBitmap
+    }
 }

@@ -1,0 +1,27 @@
+.wrapper{
+	position: absolute;
+	width: 100%;
+	top: -66px;
+	left: 0px;
+	overflow: scroll;
+    overflow-y: hidden;
+	z-index: 1000;
+	&::-webkit-scrollbar {
+		width: 0;
+	  }
+}
+.categories{
+	padding: 0px 6px;
+	gap: 6px;
+	display: flex;
+}
+.card{
+	height: 60px;
+	width: 145px;
+	background-color: white;
+	border-radius: 20px;
+	padding: 6px 12px;
+	font-size: 13px;
+	font-weight: 500;
+	min-width: 146px;
+}

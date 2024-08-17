@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boost/uuid/uuid.hpp>
+#include <string>
 #include <userver/formats/json/value_builder.hpp>
 
 
@@ -10,13 +11,15 @@ struct TSelection {
     boost::uuids::uuid id;
     std::string name;
     std::string description;
-    bool is_collection;
+    std::optional<boost::uuids::uuid> owner_id;
+    std::string picture;
 
     std::tuple<
         boost::uuids::uuid&,
         std::string&,
         std::string&,
-            bool&
+        std::optional<boost::uuids::uuid>&,
+        std::string&
     > Introspect();
 };
 
