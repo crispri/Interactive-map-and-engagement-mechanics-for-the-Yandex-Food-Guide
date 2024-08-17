@@ -169,11 +169,15 @@ const restaurantsSlice = createSlice({
 		restaurants: [],
 		unfocused_restaurants: {},
 		current_pin: null,
-		selections: []
+		selections: [],
+		currentSelection: null
 	},
 	reducers: {
 		setCurrentPin: (state, action) => {
 			state.current_pin = action.payload
+		},
+		setSelection: (state, action) => {
+			state.currentSelection = action.payload
 		}
 	},
 	extraReducers: (builder) => {
@@ -195,5 +199,5 @@ const restaurantsSlice = createSlice({
 	}
 })
 
-export const { setCurrentPin } = restaurantsSlice.actions
+export const { setCurrentPin, setSelection } = restaurantsSlice.actions
 export default restaurantsSlice.reducer

@@ -46,7 +46,12 @@ const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
       ref={sheetRef}
       open={true}
       blocking={false}
-      header={shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+      header={
+        <>
+        <SelectionsList/>
+        {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+        </>
+      }
       defaultSnap={({ maxHeight }) => maxHeight * 0.05}
       snapPoints={({ maxHeight }) => [
         maxHeight * 0.45,

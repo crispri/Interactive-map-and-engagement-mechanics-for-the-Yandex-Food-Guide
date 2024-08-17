@@ -6,7 +6,7 @@ import filtersSlice from './filtersSlice'
 const rootReducer = combineReducers({
   restaurantsSlice,
   restaurantByIdSlice,
-  filtersSlice,
+  // filtersSlice,
 })
 
 export const store = configureStore({

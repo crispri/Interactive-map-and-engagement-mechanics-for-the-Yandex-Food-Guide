@@ -1,11 +1,14 @@
 .wrapper{
-	// height: 50px;
-	// position: absolute;
-	top: 0px;
+	position: absolute;
+	width: 100%;
+	top: -66px;
 	left: 0px;
 	overflow: scroll;
     overflow-y: hidden;
 	z-index: 1000;
+	&::-webkit-scrollbar {
+		width: 0;
+	  }
 }
 .categories{
 	padding: 0px 6px;
@@ -20,4 +23,5 @@
 	padding: 6px 12px;
 	font-size: 13px;
 	font-weight: 500;
+	min-width: 146px;
 }

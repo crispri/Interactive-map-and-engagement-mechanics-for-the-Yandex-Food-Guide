@@ -9,19 +9,19 @@ const Filter = ({ filtersMap, debouncedValue, filter }) => {
     const dispatch = useDispatch();
 
     function handleClick() {
-        dispatch(setFilter({ key: 'category', value: 'restaurant' })).then(() => {
-            dispatch(getRestaurants({
-                "lower_left_corner": {
-                "lat": debouncedValue[1][1],
-                "lon": debouncedValue[0][0]
-                },
-                "top_right_corner": {
-                "lat": debouncedValue[0][1],
-                "lon": debouncedValue[1][0]
-                },
-                "max_count": 0
-            }))
-        });   
+        // dispatch(setFilter({ key: 'category', value: 'restaurant' })).then(() => {
+        //     dispatch(getRestaurants({
+        //         "lower_left_corner": {
+        //         "lat": debouncedValue[1][1],
+        //         "lon": debouncedValue[0][0]
+        //         },
+        //         "top_right_corner": {
+        //         "lat": debouncedValue[0][1],
+        //         "lon": debouncedValue[1][0]
+        //         },
+        //         "max_count": 0
+        //     }))
+        // });   
     }
 
     return (
