@@ -67,10 +67,8 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                     tappableArea: nil
                 )
                 if index < 3 {
-                    let uiView = BigPinView(
-                        frame: .init(x: 0, y: 0, width: PinSize.big.width, height: PinSize.big.height)
-                    )
-                    uiView.model = snippets[index]
+                    let uiView = BigPinView(frame: .init(x: 0, y: 0, width: 172, height: 106), model: pins[index])
+//                    uiView.model = pins[index]
                     uiView.setSelected(false)
                     placemark.setIconWith(uiView.asImage(), style: commonStyle)
                 } else if index < 6 {
