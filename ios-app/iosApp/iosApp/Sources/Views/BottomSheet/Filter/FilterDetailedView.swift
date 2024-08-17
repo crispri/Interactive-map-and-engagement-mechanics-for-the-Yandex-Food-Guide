@@ -49,11 +49,15 @@ struct SectionView: View {
 }
 
 struct TagView: View {
+    @EnvironmentObject private var viewModel: SnippetViewModel
     @Binding var filter: Filter
 
     var body: some View {
         Button {
             filter.isActive.toggle()
+            viewModel.mapManager.disablePins()
+            viewModel.mapManager.cleanPins()
+            viewModel.onCameraMove()
         } label: {
             Text(filter.name)
                 .font(.system(size: 14, weight: .medium))
