@@ -14,62 +14,32 @@ struct FilterDetailedView: View {
     var body: some View {
         ScrollView {
             VStack {
-                SectionView(
-                    title: "Время работы",
-                    tags: [
-                        Tag(text: "Открыто сейчас"),
-                        Tag(text: "Круглосуточно"),
-                        Tag(text: "Кальянная 2"),
-                        Tag(text: "Бар2"),
-                        Tag(text: "Кальянная 3"),
-                        Tag(text: "Бар3"),
-                        Tag(text: "Кальянная 4")
-                    ]
-                    )
-                SectionView(
-                    title: "Тип заведения",
-                    tags: [
-                        Tag(text: "Банкетный зал "),
-                        Tag(text: "Бар"),
-                        Tag(text: "Кальянная 2"),
-                        Tag(text: "Бар2"),
-                        Tag(text: "Кальянная 3"),
-                        Tag(text: "Бар3"),
-                        Tag(text: "Кальянная 4")
-                    ]
-                )
-                
+                ForEach($viewModel.filterCategories) { filterCategory in
+                    SectionView(filterCategory: filterCategory)
+                }
             }
-            
         }
         .background( Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all) )
     }
 }
 
 struct SectionView: View {
-    @EnvironmentObject private var viewModel: SnippetViewModel
-    let title: String
-    var tags: [Tag]
+    @Binding var filterCategory: FilterCategory
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            if !title.isEmpty {
-                Text(title)
+            if !filterCategory.title.isEmpty {
+                Text(filterCategory.title)
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding(.leading, 8)
             }
             
             WrappingHStack(alignment: .leading) {
-                ForEach(tags) {
-                    TagView(
-                        text: $0.text,
-                        isActive: Binding.constant(false)
-                    )
+                ForEach($filterCategory.filters) { filter in
+                    TagView(filter: filter)
                 }
             }
-            
-            Spacer(minLength: .zero)
         }
         .padding()
         .background(.white)
@@ -79,22 +49,18 @@ struct SectionView: View {
 }
 
 struct TagView: View {
-    let text: String
-    @EnvironmentObject var viewModel: SnippetViewModel
-    @Binding var isActive: Bool
+    @Binding var filter: Filter
 
     var body: some View {
         Button {
-            isActive.toggle()
-//            viewModel.tags[text] = isActive
-            print(isActive)
+            filter.isActive.toggle()
         } label: {
-            Text(text)
+            Text(filter.name)
                 .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(isActive ? .white : .black)
+                .foregroundStyle(filter.isActive ? .white : .black)
                 .tint(.primary)
                 .padding(16)
-                .background(isActive ? .black : Color(hex: 0x5C5A57).opacity(0.1))
+                .background(filter.isActive ? .black : Color(hex: 0x5C5A57).opacity(0.1))
                 .clipShape(Capsule())
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
