@@ -80,9 +80,9 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                     uiView.model = snippets[index]
                     uiView.setSelected(false)
                     placemark.setIconWith(uiView.asImage(), style: commonStyle)
-                } else if index < 14 {
+                } else if index < 20 {
                     let smallStyle = YMKIconStyle(
-                        anchor: CGPoint(x: 0.5, y: 0.5) as NSValue,
+                        anchor: CGPoint(x: 0.0, y: 0.0) as NSValue,
                         rotationType: .none,
                         zIndex: 0,
                         flat: true,

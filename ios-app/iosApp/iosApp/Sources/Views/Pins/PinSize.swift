@@ -9,7 +9,7 @@ import Foundation
 
 final class PinSize {
     static var small: CGSize {
-        .init(width: 7, height: 10)
+        .init(width: 11, height: 11)
     }
     
     static var normal: CGSize {

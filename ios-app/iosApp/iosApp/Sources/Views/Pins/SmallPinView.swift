@@ -17,10 +17,10 @@ final class SmallPinView: UIView {
         view.frame = .init(x: 0, y: 0, width: 11, height: 11)
         view.backgroundColor = .white
         view.layer.cornerRadius = 5
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 3)
-        view.layer.shadowOpacity = 0.5
-        view.layer.shadowRadius = 5.0
+//        view.layer.shadowColor = UIColor.black.cgColor
+//        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+//        view.layer.shadowOpacity = 0.5
+//        view.layer.shadowRadius = 5.0
         return view
     }()
 
