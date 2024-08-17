@@ -44,8 +44,6 @@ components:
             in: header
             name: Authorization
 
-
-
 paths:
     /restaurants:
         $ref: "./paths/restaurants.yaml"
