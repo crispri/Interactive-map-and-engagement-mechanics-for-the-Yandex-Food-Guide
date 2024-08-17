@@ -59,7 +59,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                 let commonStyle = YMKIconStyle(
                     anchor: CGPoint(x: 0.5, y: 1.0) as NSValue,
                     rotationType: .none,
-                    zIndex: 0,
+                    zIndex: 1,
                     flat: true,
                     visible: true,
                     scale: 1.0,
@@ -90,9 +90,9 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                         tappableArea: nil
                     )
                     let uiView = SmallPinView(
-                        frame: .init(x: 0, y: 0, width: PinSize.big.width, height: PinSize.big.height)
+                        frame: .init(x: 0, y: 0, width: PinSize.big.width, height: PinSize.big.height),
+                        model: snippets[index]
                     )
-                    uiView.setSelected(false)
                     placemark.setIconWith(uiView.asImage(), style: smallStyle)
                 }
                 placedPins[snippets[index].id] = (placemark, true)
