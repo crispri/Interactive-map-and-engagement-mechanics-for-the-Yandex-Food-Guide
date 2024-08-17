@@ -1,5 +1,5 @@
 DROP SCHEMA IF EXISTS guide CASCADE;
-
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE SCHEMA IF NOT EXISTS guide;
 
 CREATE TABLE IF NOT EXISTS guide.places (
@@ -214,7 +214,7 @@ VALUES
     ('74ba4bb4-5eec-4ba0-8675-161a5dc7e90b', 'Бизнес ланчи', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/4aaec371-dbb4-4bc4-9317-31a509e18521.jpg'),
     ('9097a7bf-26e0-4099-960a-818713c500f2', 'Кондитерские возле Яндекса', 'Богатый ассортимент', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/5f8aff6e-0f3f-41b0-92dc-8f2c52368390.jpg'),
     ('2822cbc7-7b0d-41fb-81a7-ad3f901ca9e5', 'Чайные возсле Яндекса', 'Уютная атмосфера', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/b3051c08-7078-4a18-9c20-f4ef139c193b.jpg'),
-    ('65609266-5ddb-4496-9638-32011aabf730', 'Детские кафе', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/46ebe70d-f028-475d-8343-02e5d50462db.jpg'),
+    ('65609266-5ddb-4496-9638-32011aabf730', 'Детские кафе', 'Вкусно', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/46ebe70d-f028-475d-8343-02e5d50462db.jpg')
 ON CONFLICT DO NOTHING;
 
 
