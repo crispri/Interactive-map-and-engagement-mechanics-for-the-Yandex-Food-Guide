@@ -80,3 +80,4 @@ fastlane/test_output
 
 iOSInjectionProject/
 ios-app/iosApp/Podfile.lock
+ios-app/iosApp/iosApp.xcodeproj/xcshareddata/xcschemes/iosApp.xcscheme

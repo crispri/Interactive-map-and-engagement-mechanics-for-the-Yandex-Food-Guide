@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HeaderView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
+    @Binding var isFiltersPresented: Bool
     
     var body: some View {
         VStack {
@@ -16,7 +17,7 @@ struct HeaderView: View {
                 .environmentObject(viewModel)
             VStack {
                 GrabberView()
-                FilterView()
+                FilterView(isFiltersPresented: $isFiltersPresented)
                     .padding(.bottom, 8)
             }
             .background(

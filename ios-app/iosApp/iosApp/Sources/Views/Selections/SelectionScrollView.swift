@@ -14,14 +14,14 @@ struct SelectionScrollView: View {
         ScrollViewReader { reader in
             ScrollView(.horizontal) {
                 LazyHStack(alignment: .bottom) {
-                    ForEach(viewModel.collections.indices, id: \.self) { index in
+                    ForEach(viewModel.selections.indices, id: \.self) { index in
                         SelectionView(
-                            title: viewModel.collections[index].name,
-                            desc: viewModel.collections[index].description,
+                            title: viewModel.selections[index].name,
+                            desc: viewModel.selections[index].description,
                             selected: Binding(
                                 get: {
                                     if let selectedCollection = viewModel.selectedCollection,
-                                       selectedCollection == viewModel.collections[index] {
+                                       selectedCollection == viewModel.selections[index] {
                                         return true
                                     }
                                     return false

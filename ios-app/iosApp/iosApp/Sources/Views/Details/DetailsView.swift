@@ -12,6 +12,7 @@ struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var viewModel: SnippetViewModel
     @State private var isBottomSheetPresented = true
+    @State var isFiltersPresented = false
     @State var sheetPosition: BottomSheetPosition = .dynamicBottom
     
     var body: some View {
@@ -26,7 +27,7 @@ struct DetailsView: View {
                         .absolute(500),
                         .relativeTop(0.9)
                     ],
-                    headerContent: { HeaderView() },
+                    headerContent: { HeaderView(isFiltersPresented: $isFiltersPresented) },
                     mainContent: { BottomSheetView()  }
                 )
                 .enableAppleScrollBehavior(false)
@@ -53,6 +54,10 @@ struct DetailsView: View {
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             viewModel.eventOnAppear()
+        }
+        .sheet(isPresented: $isFiltersPresented) {
+            FilterDetailedView()
+                .environmentObject(viewModel)
         }
     }
     

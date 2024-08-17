@@ -53,14 +53,15 @@ final class NetworkManager {
         return decodedResponse
     }
     
-    func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
+    func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point, filters: [FilterDTO]? = nil) async throws -> [SnippetDTO] {
         let request = try makeRequest(
             path: Api.restaurants.path,
             method: HTTPMethod.post.rawValue,
-            with: SnippetsRequest(
+            with: FilteredSnippetRequest(
                 lowerLeftCorner: lowerLeftCorner,
                 topRightCorner: topRightCorner,
-                maxCount: 0
+                maxCount: 0,
+                filters: filters
             )
         )
         
