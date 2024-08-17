@@ -6,12 +6,14 @@ import { useInView } from "react-intersection-observer";
 import { truncateString, formatTime } from '../../lib/utils.js'
 import { setCurrentPin } from '../../lib/restaurantsSlice';
 import { useDispatch } from 'react-redux';
+import { InView } from 'react-intersection-observer';
 
 const SheetContent = ({ restaurants }) => {
   
   restaurants = restaurants.map(el => ({
     id: el.id,
     name: el.name,
+    coordinates: el.coordinates,
     description: truncateString(el.description, 200),
     address: el.address,
     is_approved: el.is_approved,
@@ -22,14 +24,14 @@ const SheetContent = ({ restaurants }) => {
     close_time: formatTime(el.close_time),
     is_favorite: el.is_favourite
   }))
-  // const dispatch = useDispatch()
-  // const [currentRest, setCurrentRest] = useState(null);
-  // const debouncedValue = useDebounce(currentRest, 300);
-  
+  const dispatch = useDispatch()
+  const [currentRest, setCurrentRest] = useState(null);
+  const debouncedValue = useDebounce(currentRest, 300);  
 
-  // useEffect(() => {
-  //   dispatch(setCurrentPin(debouncedValue))
-  // }, [debouncedValue])
+  useEffect(() => {
+    dispatch(setCurrentPin(debouncedValue))
+    // console.log('debouncedValue', debouncedValue);
+  }, [debouncedValue])
 
   return (
     <div style={{
@@ -40,32 +42,30 @@ const SheetContent = ({ restaurants }) => {
       flexDirection: 'column',
       gap: '16px'
     }}>
-      {restaurants.map((restaurantInfo) => {
-        const { ref, inView } = useInView({
-          triggerOnce: false,
-          threshold: 0.9,
-        });
-      
-        if (inView) {
-          console.log(`Restaurant in view: ${restaurantInfo.id}`);
-          // setCurrentRest(restaurantInfo)
-        }
-      
-      return (
-        <div 
-          key={restaurantInfo.id} 
-          ref={ref}
-          style={{
-            scrollSnapAlign: 'start',
-            height: '100vh',
-            display: 'flex',
-            alignItems: 'center', 
-            justifyContent: 'center', 
-          }}
-        >
-          <RestaurantCard restaurantInfo={restaurantInfo}/>
-        </div>
-      );
+      {restaurants.map((el) => {
+        return (
+          <InView 
+            onChange={(inView) => inView && setCurrentRest(el)}
+            as='div'
+            key={el?.id} 
+            threshold={0.9}
+          >
+            {({ref}) => (
+              <div
+                ref={ref}
+                style={{
+                  scrollSnapAlign: 'start',
+                  height: '100vh',
+                  display: 'flex',
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                }}
+              >
+                <RestaurantCard restaurantInfo={el}/>
+              </div>
+            )}
+          </InView>
+        )
       })}
     </div>
   )
