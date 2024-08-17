@@ -9,7 +9,11 @@ properties:
     description:
         type: string
 
+    picture:
+        type: string
+
 required:
     - id
     - name
     - description
+    - picture

@@ -57,7 +57,7 @@ components_manager:
 
         handler-selections:
             path: /guide/v1/selections
-            method: GET,OPTIONS
+            method: POST,OPTIONS
             task_processor: main-task-processor
         handler-recs-by-selection-id:
             path: /guide/v1/selections/{id}
