@@ -99,16 +99,12 @@ public:
             );
         }
 
-        if (!request_body_json.HasMember("only_collections")) {
-            return errorBuilder.build(
-                userver::server::http::HttpStatus::kBadRequest,
-                ErrorDescriprion::kOnlyCollectionsNotSpecified
-            );
-        }
-
         userver::storages::postgres::ParameterStore filter_params;
         std::string filter_string;
-        const auto& only_collections = request_body_json["only_collections"].As<bool>();
+        bool only_collections = false;
+        if (request_body_json.HasMember("only_collections")) {
+            only_collections = request_body_json["only_collections"].As<bool>();
+        }
 
         if (request_body_json.HasMember("filters")) {
             if (!request_body_json["filters"].IsArray()) {
