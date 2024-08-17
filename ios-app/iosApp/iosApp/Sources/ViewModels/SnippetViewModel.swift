@@ -57,8 +57,6 @@ final class SnippetViewModel: ObservableObject {
                 let tr = rect.topRightCorner
                 
                 print("Square position: \(ll.description) \(tr.description)")
-                mapManager.disablePins()
-                mapManager.cleanPins()
                 
                 let restaurants = try await loadSnippets(
                     lowerLeftCorner: .init(lat: ll.lat, lon: ll.lon), topRightCorner: .init(lat: tr.lat, lon: tr.lon)

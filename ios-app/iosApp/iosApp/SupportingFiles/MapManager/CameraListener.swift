@@ -18,6 +18,11 @@ final class CameraListener: NSObject, YMKMapCameraListener {
             print("No delegate")
             return
         }
+        Task {
+            await delegate.disablePins()
+            await delegate.cleanPins()
+        }
+        
         guard finished else { return }
 
         let now = Date()
