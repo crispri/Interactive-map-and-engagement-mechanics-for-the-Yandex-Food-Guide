@@ -1,8 +1,8 @@
-import './CollectionBottomSheet.module.scss'
+import './AddCollectionBottomsheet.module.scss'
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 
-const CollectionBottomSheet = () => {
+const AddCollectionBottomSheet = () => {
     return (
         <>
             <BottomSheet
@@ -10,15 +10,12 @@ const CollectionBottomSheet = () => {
                 open={true}
                 blocking={false}
                 header={
-                    <>
-                        {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
-                    </>
+                    <h1>Добавить коллецию
+                    </h1>
                 }
                 defaultSnap={({ maxHeight }) => maxHeight * 0.05}
                 snapPoints={({ maxHeight }) => [
                     maxHeight * 0.45,
-                    maxHeight * 0.05,
-                    maxHeight
                 ]}
             // sibling={<SelectionsList/>}
             // header={<SelectionsList/>}
@@ -26,9 +23,12 @@ const CollectionBottomSheet = () => {
                 <div className="bottomsheet">
                     {content}
                 </div>
+                <div>
+                    
+                </div>
             </BottomSheet >
         </>
     )
 }
 
-export default CollectionBottomSheet;
+export default AddCollectionBottomSheet;

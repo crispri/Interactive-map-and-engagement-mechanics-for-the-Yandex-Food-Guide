@@ -38,7 +38,6 @@ const RestaurantCard = ({ restaurantInfo }) => {
         <img className="fav_button" src={snippetUnfavourite} alt="Unfavourite" onClick={unfavouriteClick} />
         }
         {
-  
           restaurantInfo?.pictures && restaurantInfo?.pictures?.length > 0
           ?
           <img className="snippet" src={restaurantInfo?.pictures[0]} alt="Restaurant" onClick={handleClick}/>
