@@ -77,7 +77,7 @@ function App() {
       body["only_collections"] = true
     }
     dispatch(getRestaurants(body))
-  }, [debouncedValue, current_selection])
+  }, [debouncedValue, current_selection, isInCollection])
   const router = createBrowserRouter([
     {
       path: "/",

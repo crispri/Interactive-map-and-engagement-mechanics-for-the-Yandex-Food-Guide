@@ -17,7 +17,6 @@ function Navbar() {
 
   async function toggleButton() {
 	await dispatch(toggleIsInCollection());
-	console.log('Get collection');
 	if (isInCollection === true) {
 		dispatch(getCollections());
 	} else {
