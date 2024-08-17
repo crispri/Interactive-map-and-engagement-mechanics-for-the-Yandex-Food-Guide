@@ -4,5 +4,5 @@ properties:
 		type: string
 		format: uuid
 required:
-	-    collection_id
-	-    restaurant_id
+	- collection_id
+	- restaurant_id
