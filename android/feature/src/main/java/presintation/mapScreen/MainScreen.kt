@@ -1,5 +1,6 @@
 package presintation.mapScreen
 
+import ImageCarousel
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -288,22 +289,29 @@ fun MainScreen(
                                 shape = RoundedCornerShape(16.dp),
                                 colors = CardDefaults.cardColors(Color.White)
                             ) {
-                                Column(
-                                    modifier = Modifier.padding(8.dp)
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
-                                        contentDescription = "Фото места",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(200.dp)
-                                            .clip(RoundedCornerShape(16.dp))
+                                Column{
+//                                    Image(
+//                                        painter = painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
+//                                        contentDescription = "Фото места",
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .height(200.dp)
+//                                            .clip(RoundedCornerShape(16.dp))
+//                                    )
+
+                                    ImageCarousel(
+
+                                        imageUrls = restaurant.pictures
+//                                        listOf(
+//                                            "https://pixy.org/src/0/7688.jpg",
+//                                            "https://avatanplus.com/files/resources/original/57a6de5284a4815663d4726f.jpg",
+//                                        )
                                     )
 
                                     Row(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(top = 9.5.dp),
+                                            .padding(top = 9.5.dp, start = 8.dp, end = 8.dp),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(
@@ -329,21 +337,21 @@ fun MainScreen(
                                     Text(
                                         text = restaurant.address,
                                         fontSize = 16.sp,
-                                        modifier = Modifier.padding(top = 1.5.dp)
+                                        modifier = Modifier.padding(start = 8.dp, end = 8.dp)
                                     )
 
                                     Text(
                                         text = restaurant.description,
                                         fontSize = 14.sp,
                                         color = Color.Gray,
-                                        modifier = Modifier.padding(top = 8.dp),
+                                        modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis,
                                         lineHeight = 15.sp,
                                     )
 
                                     LazyRow(
-                                        modifier = Modifier.padding(top = 8.dp)
+                                        modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
                                     ) {
                                         items(restaurant.tags) { item ->
                                             TextCard(text = item)

@@ -1,30 +1,23 @@
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
-import android.graphics.Picture
-import android.graphics.Rect
-import android.util.Log
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.RectF
+import android.graphics.drawable.Drawable
+import android.transition.Transition
 import android.view.View
-import android.widget.TextView
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
-import com.example.feature.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.yandex.mapkit.geometry.Point
 import model.CollectionOfPlace
 import model.Restaurant
-import pins.CustomPinView
-import pins.CustomPinViewSelected
-import pins.NormalPinView
-import ui.SuperPinCard
 
 
 object Utils {
@@ -75,6 +68,53 @@ object Utils {
 
         return view.drawToBitmap()
     }
+
+//    fun createBitmapFromView(
+//        view: View,
+//        shadowColor: Int,
+//        shadowRadius: Float,
+//        dx: Float,
+//        dy: Float
+//    ): Bitmap {
+//        // Создаем bitmap из view
+//        val originalBitmap = createBitmapFromViewForShadow(view)
+//
+//        // Создаем bitmap с добавлением тени
+//        val shadowBitmap = Bitmap.createBitmap(
+//            originalBitmap.width + (shadowRadius * 2).toInt(),
+//            originalBitmap.height + (shadowRadius * 2).toInt(),
+//            Bitmap.Config.ARGB_8888
+//        )
+//
+//        val canvas = Canvas(shadowBitmap)
+//        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+//
+//        // Добавляем тень
+//        paint.setShadowLayer(shadowRadius, dx, dy, shadowColor)
+//
+//        // Рисуем элемент, у которого будет тень
+//        canvas.drawRoundRect(
+//            0f, 0f,
+//            originalBitmap.width.toFloat(),
+//            originalBitmap.height.dp.value - 21.dp.value,
+//            40.dp.value,
+//            40.dp.value,
+//            paint,
+//        )
+//
+//        // Рисуем исходный bitmap поверх тени
+//        canvas.drawBitmap(originalBitmap, 0f, 0f, null)
+//
+//        return shadowBitmap
+//    }
+//
+//    private fun createBitmapFromViewForShadow(view: View): Bitmap {
+//        view.forceLayout()
+//        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+//        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+//
+//        return view.drawToBitmap()
+//    }
 
 
     fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
@@ -136,6 +176,9 @@ object Utils {
             isFavorite = false,
             openTime = "",
             closeTime = "",
+            inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
         ),
         Restaurant(
             id = "",
@@ -152,7 +195,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
             id = "",
@@ -169,7 +215,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
             id = "",
@@ -186,7 +235,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
             id = "",
@@ -203,7 +255,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
 
         Restaurant(
@@ -221,7 +276,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
             id = "",
@@ -238,7 +296,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
     )
 
