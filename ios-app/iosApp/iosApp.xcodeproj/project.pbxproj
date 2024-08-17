@@ -12,6 +12,7 @@
 		4F13FDCD2C6B675100EB8D8C /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCC2C6B675100EB8D8C /* RoundedCorner.swift */; };
 		4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCE2C6B696700EB8D8C /* HeaderView.swift */; };
 		4F69DC832C678BD00026828E /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 4F69DC822C678BD00026828E /* BottomSheet */; };
+		4F7D1CFC2C70A4E8002D126C /* UIView+asImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D1CFB2C70A4E8002D126C /* UIView+asImage.swift */; };
 		4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */; };
 		4F9DCAE92C5E6C4200B39252 /* YandexMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */; };
 		4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAED2C5E754A00B39252 /* DetailsView.swift */; };
@@ -91,6 +92,7 @@
 		4F13FDCE2C6B696700EB8D8C /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		4F6ECDD32C68E54600E8B5BE /* ISelectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISelectionsResponse.swift; sourceTree = "<group>"; };
 		4F6ECDD52C68E56600E8B5BE /* SelectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionsResponse.swift; sourceTree = "<group>"; };
+		4F7D1CFB2C70A4E8002D126C /* UIView+asImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+asImage.swift"; sourceTree = "<group>"; };
 		4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapView.swift; sourceTree = "<group>"; };
 		4F9DCAEC2C5E73F900B39252 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				CBFD7ED32C655C8600CEC0BC /* Color+hex.swift */,
+				4F7D1CFB2C70A4E8002D126C /* UIView+asImage.swift */,
 			);
 			name = Extensions;
 			path = ../Sources/Extensions;
@@ -747,6 +750,7 @@
 				CBF46D492C6FC26300186255 /* FilterDetailedView.swift in Sources */,
 				CBF46D3E2C6F937F00186255 /* ISnippetsResponse.swift in Sources */,
 				6EF910102C6F9DCB00680AEE /* SmallPinView.swift in Sources */,
+				4F7D1CFC2C70A4E8002D126C /* UIView+asImage.swift in Sources */,
 				4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */,
 				CBF46D422C6FA41A00186255 /* FilterDTO.swift in Sources */,
 				CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */,
