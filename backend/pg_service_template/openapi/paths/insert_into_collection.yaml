@@ -1,0 +1,22 @@
+put:
+    description: "Добавить заведение в коллекцию"
+
+    parameters:
+        -   $ref: "../params/PathUUID.yaml"
+
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: "../openapi.yaml#/components/schemas/InsertIntoCollection"
+    security:
+        -   UserTicketAuth: [ ]
+
+    responses:
+        200:
+            description: "OK"
+        400:
+            $ref: "../responses/400.yaml"
+        401:
+            $ref: "../responses/401.yaml"
