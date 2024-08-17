@@ -1,11 +1,11 @@
 type: object
 properties:
-	name:
+    name:
         type: string
 
     description:
         type: string
 
 required:
-    - name
-    - description
+    -   name
+    -   description
