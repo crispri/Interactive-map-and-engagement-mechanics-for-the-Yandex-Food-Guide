@@ -21,4 +21,6 @@ const std::unordered_map<ErrorDescriprion, std::string> errorMapping = {
     {ErrorDescriprion::kInvalidValueType, "INVALID_VALUE_TYPE"},
     {ErrorDescriprion::kFiltersIsNotArray, "FILTERS_IS_NOT_ARRAY"},
     {ErrorDescriprion::kReturnCollectionsNotSpecified, "RETURN_COLLECTIONS_NOT_SPECIFIED"},
+    {ErrorDescriprion::kOnlyCollectionsNotSpecified, "ONLY_COLLECTIONS_NOT_SPECIFIED"},
+    {ErrorDescriprion::kInvalidOnlyCollectionsValue, "INVALID_ONLY_COLLECTIONS_VALUE"}
 };
