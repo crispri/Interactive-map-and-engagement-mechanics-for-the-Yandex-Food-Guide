@@ -13,6 +13,7 @@
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/server/http/http_status.hpp>
 #include <userver/utils/assert.hpp>
 
 #include <boost/uuid/string_generator.hpp>
@@ -98,9 +99,16 @@ public:
             );
         }
 
+        if (!request_body_json.HasMember("only_collections")) {
+            return errorBuilder.build(
+                userver::server::http::HttpStatus::kBadRequest,
+                ErrorDescriprion::kOnlyCollectionsNotSpecified
+            );
+        }
+
         userver::storages::postgres::ParameterStore filter_params;
         std::string filter_string;
-
+        const auto& only_collections = request_body_json["only_collections"].As<bool>();
 
         if (request_body_json.HasMember("filters")) {
             if (!request_body_json["filters"].IsArray()) {
@@ -177,7 +185,8 @@ public:
             request_body_json["lower_left_corner"].As<TCoordinates>(),
             request_body_json["top_right_corner"].As<TCoordinates>(),
             filter_params,
-            filter_string
+            filter_string,
+            only_collections
         );
 
         boost::uuids::string_generator gen;
