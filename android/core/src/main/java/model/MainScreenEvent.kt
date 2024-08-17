@@ -27,6 +27,8 @@ class UpdateItemsOnMap(
     val filterList: List<Filter>,
 ) : MainScreenEvent()
 
+class SelectFilter(val isAdding: Boolean, val filter: Filter) : MainScreenEvent()
+
 class UpdateListOfRestaurant(
     val listOfRestaurant: List<Restaurant>,
 ) : MainScreenEvent()

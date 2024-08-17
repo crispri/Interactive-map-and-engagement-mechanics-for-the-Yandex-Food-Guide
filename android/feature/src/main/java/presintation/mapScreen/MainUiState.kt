@@ -17,6 +17,7 @@ data class MainUiState(
     val recommendations: List<CollectionOfPlace> = listOf(),
     val zoomValue: Float = 16.0f,
     val centeringIsRequired: Boolean = true,
+    val filterMap: HashMap<String, Boolean> = hashMapOf(),
 
     val lowerLeft: Point = Point(55.0, 37.0),
     val topRight: Point = Point(56.0, 38.0),
