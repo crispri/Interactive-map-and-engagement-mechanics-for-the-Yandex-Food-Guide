@@ -7,6 +7,5 @@ properties:
         type: string
 
 required:
-    - id
     - name
     - description
