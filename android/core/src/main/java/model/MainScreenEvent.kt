@@ -40,3 +40,5 @@ class SelectFilter(val isAdding: Boolean, val filter: Filter) : MainScreenEvent(
 class UpdateListOfRestaurant(
     val listOfRestaurant: List<Restaurant>,
 ) : MainScreenEvent()
+
+class SwitchUserModeEvent : MainScreenEvent()

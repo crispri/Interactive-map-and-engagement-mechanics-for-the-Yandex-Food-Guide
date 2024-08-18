@@ -29,7 +29,7 @@ import com.example.core.R
 fun CategoriesButton() {
     val itemsList = listOf(
         "Музыка громче",
-        "Завтраки",
+        "Завтрак",
         "Винотека",
         "Европейская",
         "Коктели",
