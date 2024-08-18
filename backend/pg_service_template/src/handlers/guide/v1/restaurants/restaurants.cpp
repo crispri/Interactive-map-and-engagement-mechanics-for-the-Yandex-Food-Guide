@@ -1,5 +1,6 @@
 #include "restaurants.hpp"
 #include <lib/error_response_builder.hpp>
+#include <memory>
 #include <models/TCoordinates.hpp>
 #include <models/TRestaurant.hpp>
 
@@ -13,6 +14,7 @@
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/server/http/http_status.hpp>
 #include <userver/utils/assert.hpp>
 
 #include <boost/uuid/string_generator.hpp>
@@ -74,16 +76,15 @@ namespace service {
                 }
                 ErrorResponseBuilder errorBuilder(request);
 
-                if (!request.HasHeader("Authorization")) {
-                    return errorBuilder.build(
-                            userver::server::http::HttpStatus::kUnauthorized,
-                            ErrorDescriprion::kTokenNotSpecified
-                    );
-                }
-
-                const auto &request_body_string = request.RequestBody();
-                userver::formats::json::Value request_body_json = userver::formats::json::FromString(
-                        request_body_string);
+        if (!request.HasHeader("Authorization")) {
+            return errorBuilder.build(
+                    userver::server::http::HttpStatus::kUnauthorized,
+                    ErrorDescriprion::kTokenNotSpecified
+            );
+        }
+        
+        const auto &request_body_string = request.RequestBody();
+        userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
 
                 if (!request_body_json.HasMember("lower_left_corner") &&
                     !request_body_json.HasMember("top_right_corner")) {
@@ -106,9 +107,12 @@ namespace service {
                     );
                 }
 
-                userver::storages::postgres::ParameterStore filter_params;
-                std::string filter_string;
-
+        userver::storages::postgres::ParameterStore filter_params;
+        std::string filter_string;
+        bool only_collections = false;
+        if (request_body_json.HasMember("only_collections")) {
+            only_collections = request_body_json["only_collections"].As<bool>();
+        }
 
                 if (request_body_json.HasMember("filters")) {
                     if (!request_body_json["filters"].IsArray()) {
@@ -181,12 +185,13 @@ namespace service {
 
                 LOG_ERROR() << "FILTER STRING = ." << filter_string << ".";
 
-                TRestaurantFilter filters(
-                        request_body_json["lower_left_corner"].As<TCoordinates>(),
-                        request_body_json["top_right_corner"].As<TCoordinates>(),
-                        filter_params,
-                        filter_string
-                );
+        TRestaurantFilter filters(
+            request_body_json["lower_left_corner"].As<TCoordinates>(),
+            request_body_json["top_right_corner"].As<TCoordinates>(),
+            filter_params,
+            filter_string,
+            only_collections
+        );
 
                 boost::uuids::string_generator gen;
                 auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
@@ -258,6 +263,17 @@ namespace service {
             > StringRestaurantFilterMapping_;
         };
 
+const std::unordered_map<
+        std::string, std::shared_ptr<IRestaurantFilterJSON>
+> RestaurantController::StringRestaurantFilterMapping_ = {
+    {"rating", std::make_shared<RatingRestaurantFilterJSON>()},
+    {"price_lower_bound", std::make_shared<PriceLBRestaurantFilterJSON>()},
+    {"price_upper_bound", std::make_shared<PriceUBRestaurantFilterJSON>()},
+    {"open_time", std::make_shared<OpenTimeRestaurantFilterJSON>()},
+    {"close_time", std::make_shared<CloseTimeRestaurantFilterJSON>()},
+    {"selection_id", std::make_shared<SelectionRestaurantFilterJSON>()},
+    {"tags", std::make_shared<TagRestaurantFilterJSON>()},
+};
         const std::unordered_map<
                 std::string, std::shared_ptr<IRestaurantFilterJSON>
         > RestaurantController::StringRestaurantFilterMapping_ = {

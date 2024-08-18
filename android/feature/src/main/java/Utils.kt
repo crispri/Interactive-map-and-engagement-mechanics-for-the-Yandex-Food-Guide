@@ -1,30 +1,16 @@
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
-import android.graphics.Picture
-import android.graphics.Rect
-import android.util.Log
 import android.view.View
-import android.widget.TextView
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
-import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import model.CollectionOfPlace
 import model.Restaurant
-import pins.CustomPinView
-import pins.CustomPinViewSelected
-import pins.NormalPinView
-import ui.SuperPinCard
 
 
 object Utils {
@@ -76,6 +62,53 @@ object Utils {
         return view.drawToBitmap()
     }
 
+//    fun createBitmapFromView(
+//        view: View,
+//        shadowColor: Int,
+//        shadowRadius: Float,
+//        dx: Float,
+//        dy: Float
+//    ): Bitmap {
+//        // Создаем bitmap из view
+//        val originalBitmap = createBitmapFromViewForShadow(view)
+//
+//        // Создаем bitmap с добавлением тени
+//        val shadowBitmap = Bitmap.createBitmap(
+//            originalBitmap.width + (shadowRadius * 2).toInt(),
+//            originalBitmap.height + (shadowRadius * 2).toInt(),
+//            Bitmap.Config.ARGB_8888
+//        )
+//
+//        val canvas = Canvas(shadowBitmap)
+//        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+//
+//        // Добавляем тень
+//        paint.setShadowLayer(shadowRadius, dx, dy, shadowColor)
+//
+//        // Рисуем элемент, у которого будет тень
+//        canvas.drawRoundRect(
+//            0f, 0f,
+//            originalBitmap.width.toFloat(),
+//            originalBitmap.height.dp.value - 21.dp.value,
+//            40.dp.value,
+//            40.dp.value,
+//            paint,
+//        )
+//
+//        // Рисуем исходный bitmap поверх тени
+//        canvas.drawBitmap(originalBitmap, 0f, 0f, null)
+//
+//        return shadowBitmap
+//    }
+//
+//    private fun createBitmapFromViewForShadow(view: View): Bitmap {
+//        view.forceLayout()
+//        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+//        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+//
+//        return view.drawToBitmap()
+//    }
+
 
     fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
         val drawable = ContextCompat.getDrawable(context, art) ?: return null
@@ -121,7 +154,7 @@ object Utils {
 
     val restaurants = listOf(
         Restaurant(
-            id = "",
+            id = "1",
             coordinates = Point(55.736863, 37.596052),
             name = "Blanc",
             description = "Ресторан авторской кухни, расположенный в исторической части города",
@@ -136,9 +169,12 @@ object Utils {
             isFavorite = false,
             openTime = "",
             closeTime = "",
+            inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
         ),
         Restaurant(
-            id = "",
+            id = "2",
             coordinates = Point(55.734252, 37.588973),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -152,10 +188,13 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
-            id = "",
+            id = "3",
             coordinates = Point(55.732005, 37.587676),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -169,10 +208,13 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
-            id = "",
+            id = "4",
             coordinates = Point(55.731359, 37.589837),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -186,10 +228,13 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
-            id = "",
+            id = "5",
             coordinates = Point(55.732321, 37.592902),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -203,11 +248,14 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
 
         Restaurant(
-            id = "",
+            id = "6",
             coordinates = Point(55.736012, 37.595277),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -221,10 +269,13 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
         Restaurant(
-            id = "",
+            id = "7",
             coordinates = Point(55.730026, 37.589179),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -238,7 +289,10 @@ object Utils {
             ),
             isFavorite = false,
             openTime = "",
-            closeTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+
         ),
     )
 

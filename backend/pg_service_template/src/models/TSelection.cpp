@@ -13,8 +13,13 @@ userver::formats::json::Value Serialize(
     item["id"] = boost::uuids::to_string(selection.id);
     item["name"] = selection.name;
     item["description"] = selection.description;
-    item["picture"] = selection.picture;
-//    item["is_collection"] = selection.owner_id;
+    if (selection.picture) {
+        item["picture"] = selection.picture.value();
+    }
+    if (selection.link) {
+        item["link"] = selection.link.value();
+    }
+    
    
     return item.ExtractValue();
 }
@@ -24,7 +29,8 @@ std::tuple<
     std::string&,
     std::string&,
     std::optional<boost::uuids::uuid>&,
-    std::string&
+    std::optional<std::string>&,
+    std::optional<std::string>&
     > TSelection::Introspect()
 {
     return std::tie(
@@ -32,7 +38,8 @@ std::tuple<
           name,
           description,
           owner_id,
-          picture
+          picture,
+          link
     );
 }
 

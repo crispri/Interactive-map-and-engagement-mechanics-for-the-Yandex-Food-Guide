@@ -85,6 +85,16 @@ components_manager:
             method: GET,OPTIONS
             task_processor: main-task-processor
 
+        handler-collection-create:
+            path: /guide/v1/collection
+            method: POST,OPTIONS
+            task_processor: main-task-processor
+
+        handler-collection-insert:
+            path: /guide/v1/collection/{id}
+            method: PUT,OPTIONS
+            task_processor: main-task-processor
+
         postgres-db-1:
             dbconnection: $dbconnection
             dbconnection#env: DB_CONNECTION

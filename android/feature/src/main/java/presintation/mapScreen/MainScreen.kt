@@ -1,5 +1,6 @@
 package presintation.mapScreen
 
+import ImageCarousel
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -40,8 +41,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -56,6 +59,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
@@ -66,6 +70,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -73,12 +78,13 @@ import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
-import model.Recommendation
 import model.Restaurant
 import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
 import model.CollectionOfPlace
 import model.Filter
+import model.RaiseCameraPosition
+import model.RecommendationIsSelected
 import model.SelectItemFromBottomSheet
 import model.UpdateItemsOnMap
 import ui.BigCard
@@ -98,7 +104,6 @@ fun MainScreen(
     mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
-
     val offsetState = remember { mutableFloatStateOf(-96f) }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -111,10 +116,12 @@ fun MainScreen(
 
     val listState = rememberLazyListState()
 
-    val coroutineScope = rememberCoroutineScope()
+    val bottomSheetHeight = remember { mutableStateOf<Dp?>(null)}
 
     val list = mutableStateOf(uiState.restaurantsOnMap)
     val isMapSelected = remember { mutableStateOf(false) }
+    var isSheetOpen by remember{ mutableStateOf(false) }
+    val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val sheetState = rememberBottomSheetState(
         initialValue = SheetValue.Hidden,
@@ -171,6 +178,10 @@ fun MainScreen(
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Hidden) {
             send(SelectItemFromBottomSheet(null))
+//            send(RaiseCameraPosition(false))
+        }
+        if (sheetState.currentValue == SheetValue.PartiallyExpanded) {
+//            send(RaiseCameraPosition(true))
         }
     }
 
@@ -205,10 +216,16 @@ fun MainScreen(
             visibleIndex
         }
 
+
+        Log.d("lazyListState", "list = ${list.value}")
+        Log.d("lazyListState", "size = ${list.value.size}")
         Log.d("lazyListState", "Current Index: ${currentIndex.value}")
+        Log.d("lazyListState", "selectedItemFromBottomSheetId: ${uiState.selectedItemFromBottomSheetId}")
         if (sheetState.currentValue == SheetValue.PartiallyExpanded
             && uiState.selectedItemFromMapId == null) {
-            send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
+            if (list.value.isNotEmpty()){
+                send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
+            }
             Log.e("lazyListState", "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}")
         }
     }
@@ -236,7 +253,7 @@ fun MainScreen(
                         .background(Color.White)
 
                 ) {
-                    Carousel()
+                    Carousel(uiState = uiState, onFilterClick = {isSheetOpen = true}, send = send)
                     Spacer(modifier = Modifier.height(16.dp))
 //                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
@@ -267,6 +284,7 @@ fun MainScreen(
                                     .onGloballyPositioned { coordinates ->
                                         val heightInPx = coordinates.size.height
                                         itemHeight.value = with(density) { heightInPx.toDp() }
+                                        bottomSheetHeight.value = itemHeight.value + 100.dp
                                     }
                                     .pointerInput(Unit) {
                                         detectTapGestures(
@@ -288,22 +306,29 @@ fun MainScreen(
                                 shape = RoundedCornerShape(16.dp),
                                 colors = CardDefaults.cardColors(Color.White)
                             ) {
-                                Column(
-                                    modifier = Modifier.padding(8.dp)
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
-                                        contentDescription = "Фото места",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(200.dp)
-                                            .clip(RoundedCornerShape(16.dp))
+                                Column{
+//                                    Image(
+//                                        painter = painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
+//                                        contentDescription = "Фото места",
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .height(200.dp)
+//                                            .clip(RoundedCornerShape(16.dp))
+//                                    )
+
+                                    ImageCarousel(
+
+                                        imageUrls = restaurant.pictures
+//                                        listOf(
+//                                            "https://pixy.org/src/0/7688.jpg",
+//                                            "https://avatanplus.com/files/resources/original/57a6de5284a4815663d4726f.jpg",
+//                                        )
                                     )
 
                                     Row(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(top = 9.5.dp),
+                                            .padding(top = 9.5.dp, start = 8.dp, end = 8.dp),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(
@@ -329,21 +354,21 @@ fun MainScreen(
                                     Text(
                                         text = restaurant.address,
                                         fontSize = 16.sp,
-                                        modifier = Modifier.padding(top = 1.5.dp)
+                                        modifier = Modifier.padding(start = 8.dp, end = 8.dp)
                                     )
 
                                     Text(
                                         text = restaurant.description,
                                         fontSize = 14.sp,
                                         color = Color.Gray,
-                                        modifier = Modifier.padding(top = 8.dp),
+                                        modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis,
                                         lineHeight = 15.sp,
                                     )
 
                                     LazyRow(
-                                        modifier = Modifier.padding(top = 8.dp)
+                                        modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
                                     ) {
                                         items(restaurant.tags) { item ->
                                             TextCard(text = item)
@@ -363,7 +388,24 @@ fun MainScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                MapScreen(uiState, send, mapView, curLocation)
+                MapScreen(uiState, send, mapView, curLocation, bottomSheetHeight)
+            }
+        }
+
+        if (isSheetOpen){
+            ModalBottomSheet(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .heightIn(screenHeight - 150.dp)
+                    .padding(top = 50.dp),
+                sheetState = filterBottomSheetState,
+                onDismissRequest = { isSheetOpen = false},
+                scrimColor = Color.Black.copy(alpha = 0.32f),
+                dragHandle = null,
+                containerColor = Color.White
+            ) {
+                FilterBottomScreen(send, uiState)
             }
         }
 
@@ -502,6 +544,13 @@ fun CollectionCarousel(
     val configuration = LocalConfiguration.current
     val screenWidthInt = configuration.screenWidthDp
     LaunchedEffect(selectedCardIndex) {
+        if(selectedCardIndex != -1){
+            send(RecommendationIsSelected(true))
+        } else{
+            send(RecommendationIsSelected(false))
+        }
+    }
+    LaunchedEffect(selectedCardIndex) {
         if (selectedCardIndex != -1 && selectedCardIndex != 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, -(screenWidthInt / 2))
         } else if (selectedCardIndex == 0) {
@@ -538,7 +587,7 @@ fun CollectionCarousel(
                         selectedCardIndex = -1
                     } else {
                         selectedCardIndex = index
-                        filterList.add(Filter("selection_id", listOf(item.id), "in"))
+                        filterList.add(Filter("selection_id", listOf(item.id), "in", true))
                     }
 
                     Log.d("okFilter", filterList.toString())
@@ -573,7 +622,8 @@ fun BottomSheetContent(
 
 
 @Composable
-fun Carousel() {
+fun Carousel(uiState: MainUiState, onFilterClick: () -> Unit, send: (MainScreenEvent) -> Unit) {
+
     val itemsList = listOf(
         "Музыка громче",
         "Завтраки",
@@ -583,35 +633,34 @@ fun Carousel() {
         "Можно с собакой",
         "Веранда"
     )
-
-    Row {
-        IconButton(
-            onClick = { /*TODO*/ },
-            colors = IconButtonColors(
-                Color.LightGray,
-                Color.Black,
-                Color.LightGray,
-                Color.LightGray
-            ),
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .height(32.dp),
-            content = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_slot),
-                    contentDescription = "Фильтр"
-                )
-            }
-        )
+    Row{
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                /* .height(50.dp)*/
                 .background(Color.White)
         ) {
+            item{
+                IconButton(
+                    onClick = {onFilterClick()},
+                    colors = IconButtonColors(
+                        Color(0xFFE2E2E2),
+                        Color.Black,
+                        Color(0xFFE2E2E2),
+                        Color(0xFFE2E2E2)
+                    ),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .height(38.dp),
+                    content = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_slot),
+                            contentDescription = "Фильтр"
+                        )
+                    }
+                )
+            }
             items(itemsList) { item ->
-                CategoryButtonCard(text = item) {
-                }
+                CategoryFilterButtonCard(uiState = uiState, text = item, send = send)
             }
         }
     }

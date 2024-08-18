@@ -45,10 +45,10 @@ properties:
     in_collection:
         type: boolean
     
-    pin:
+    food:
         type: string
     
-    pictures:
+    interior:
         type: array
         items:
             type: string
@@ -66,6 +66,6 @@ required:
     - open_time
     - close_time
     - tags
-    - is_favorite
-    - pin
-    - pictures
+    - in_collection
+    - food
+    - interior

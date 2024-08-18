@@ -32,10 +32,10 @@ userver::formats::json::Value Serialize(
         }
     }
     item["in_collection"] = restaurant.in_collection;
-    item["pin"] = restaurant.pin;
-    if (restaurant.pictures) {
-        for (const auto& picture : restaurant.pictures.value()) {
-            item["pictures"].PushBack(userver::formats::json::ValueBuilder{picture});
+    item["food"] = restaurant.food;
+    if (restaurant.interior) {
+        for (const auto& picture : restaurant.interior.value()) {
+            item["interior"].PushBack(userver::formats::json::ValueBuilder{picture});
         }
     }
     item["score"] = restaurant.score;
@@ -76,8 +76,8 @@ std::tuple<
           close_time,
           address,
           tags,
-          pin,
-          pictures,
+          food,
+          interior,
           score
   );
 }

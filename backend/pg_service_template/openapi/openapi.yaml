@@ -28,6 +28,11 @@ components:
         Scores:
             $ref: "./schemas/Scores.yaml"
 
+        CollectionCreate:
+            $ref: "./schemas/CollectionCreate.yaml"
+
+        InsertIntoCollection:
+            $ref: "./schemas/InsertIntoCollection.yaml"
 
     parameters:
         PathUUID:
@@ -38,8 +43,6 @@ components:
             type: apiKey
             in: header
             name: Authorization
-
-
 
 paths:
     /restaurants:
@@ -54,3 +57,10 @@ paths:
         $ref: "./paths/ml-sort.yaml"
     /ml-rate:
         $ref: "./paths/ml-rate.yaml"
+
+    /collection:
+        $ref: "./paths/create_collection.yaml"
+
+    /collection/{id}:
+        $ref: "./paths/insert_into_collection.yaml"
+
