@@ -3,7 +3,7 @@
 #include <repository/PgSelectionRepository.hpp>
 #include <userver/components/component_list.hpp>
 #include <userver/components/component_base.hpp>
-#include "models/restaurant.hpp"
+#include <models/TRestaurant.hpp>
 
 namespace service {
 
@@ -19,9 +19,12 @@ public:
         const userver::components::ComponentContext &context
     );
 
-    std::vector<TSelection> GetAll();
-    std::vector<TRestaurant> GetById(const boost::uuids::uuid& id);
+    std::vector<TSelection> GetAll(const boost::uuids::uuid& user_id, bool return_collections);
+    std::vector<TRestaurant> GetById(const boost::uuids::uuid& selection_id, const boost::uuids::uuid& user_id);
     
+    void InsertIntoCollection(const boost::uuids::uuid& user_id, const boost::uuids::uuid& collection_id, const boost::uuids::uuid& restaurant_id);
+
+    boost::uuids::uuid CreateCollection(const boost::uuids::uuid& user_id, const std::string& name, const std::string& description);
 };
 
 

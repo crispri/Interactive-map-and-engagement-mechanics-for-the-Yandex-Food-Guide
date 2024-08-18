@@ -17,12 +17,19 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -32,10 +39,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -46,16 +55,21 @@ import androidx.compose.ui.unit.dp
 import com.example.feature.R
 import presintation.mapScreen.Carousel
 import ui.AboutPlaceCard
+import ui.CategoryButtonCard
+import ui.GetRestaurantInfo
 import ui.ImageCarousel
 import ui.PlaceCard
 import ui.PlaceWidgetCard
+import ui.RestaurantScreenEvent
 import ui.TopCard
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 
 
 //моки:)
-val description = "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
+val description =
+    "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
 
 val listImages = listOf(
     R.drawable.hardcode_picture_of_cafe,
@@ -72,21 +86,32 @@ val listImages = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(
-    navToBack: () -> Unit,
+    restaurantId: String?,
+    send: (RestaurantScreenEvent) -> Unit,
+    uiState: RestaurantUiState,
+    navToBack: () -> Unit
 ) {
-
+    LaunchedEffect(Unit) {
+        send(GetRestaurantInfo(restaurantId))
+    }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWeight = configuration.screenWidthDp.dp
 
 
     val bottomSheetState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded,
-        skipHiddenState = true,
-        confirmValueChange = { newState ->
-            newState != SheetValue.Hidden
-        })
+        bottomSheetState = rememberSaveable(
+            saver = SheetStateSaver(skipPartiallyExpanded = false, skipHiddenState = true,
+                confirmValueChange = { newState ->
+                    newState != SheetValue.Hidden
+                })
+        ) {
+            SheetState(
+                skipPartiallyExpanded = false,
+                initialValue = SheetValue.PartiallyExpanded,
+                skipHiddenState = true,
+            )
+        }
     )
 
     val offsetState = remember { mutableFloatStateOf(200f) }
@@ -121,11 +146,13 @@ fun RestaurantScreen(
                         .verticalScroll(rememberScrollState())
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    Carousel()
+                    RestaurantTagsCarousel {
+
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     ImageCarousel(listImages = listImages)
                     Spacer(modifier = Modifier.height(4.dp))
-                    AboutPlaceCard(true)
+                    AboutPlaceCard(true, uiState.currentRestaurant?.description)
                     Spacer(modifier = Modifier.height(16.dp))
                     ImageCarousel(listImages = listImages)
                 }
@@ -163,8 +190,11 @@ fun RestaurantScreen(
                 visible = offsetState.floatValue > sheetHeight - 200f,
                 enter = fadeIn(),
                 exit = fadeOut()
-            ){
-                PlaceWidgetCard()
+            ) {
+                PlaceWidgetCard(
+                    name = uiState.currentRestaurant?.name,
+                    note = uiState.currentRestaurant?.rating
+                )
             }
         }
 
@@ -235,3 +265,62 @@ fun RestaurantScreen(
         }
     }
 }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+fun SheetStateSaver(
+    skipPartiallyExpanded: Boolean,
+    confirmValueChange: (SheetValue) -> Boolean,
+    skipHiddenState: Boolean,
+) = androidx.compose.runtime.saveable.Saver<SheetState, SheetValue>(
+    save = { it.currentValue },
+    restore = { savedValue ->
+        SheetState(skipPartiallyExpanded, savedValue, confirmValueChange, skipHiddenState)
+    }
+)
+
+@Composable
+fun RestaurantTagsCarousel(onFilterClick: () -> Unit) {
+
+    val itemsList = listOf(
+        "Музыка громче",
+        "Завтраки",
+        "Винотека",
+        "Европейская",
+        "Коктели",
+        "Можно с собакой",
+        "Веранда"
+    )
+    Row{
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+        ) {
+            item{
+                IconButton(
+                    onClick = {onFilterClick()},
+                    colors = IconButtonColors(
+                        Color(0xFFE2E2E2),
+                        Color.Black,
+                        Color(0xFFE2E2E2),
+                        Color(0xFFE2E2E2)
+                    ),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .height(38.dp),
+                    content = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_slot),
+                            contentDescription = "Фильтр"
+                        )
+                    }
+                )
+            }
+            items(itemsList) { item ->
+                CategoryButtonCard(text = item, clickOnCategory = {})
+            }
+        }
+    }
+}
+

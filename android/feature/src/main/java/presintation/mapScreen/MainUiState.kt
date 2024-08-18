@@ -1,16 +1,31 @@
 package presintation.mapScreen
 
 import com.yandex.mapkit.geometry.Point
+import model.CollectionOfPlace
+import model.Filter
 import model.Recommendation
 import model.Restaurant
 
+
+//все отображаемые элементы
 data class MainUiState(
-    //val currentDeviceLocation: Point? = null,
+    val selectedItemFromMapId: String? = null,
+    val selectedItemFromBottomSheetId: String? = null,
+
+    val curCoordinates: Pair<Point, Point>? = null,
+    val raiseRequired: Boolean = false,
+
     val currentAddress: String = "Льва Толстого, 16",
     val restaurantsOnMap: List<Restaurant> = listOf(),
-    val recommendations: List<Recommendation> = listOf(),
+    val recommendations: List<CollectionOfPlace> = listOf(),
+    val recommendationIsSelected: Boolean = false,
     val zoomValue: Float = 16.0f,
     val centeringIsRequired: Boolean = true,
+    val filterMap: HashMap<String, Boolean> = hashMapOf(),
+
+    val lowerLeft: Point = Point(55.0, 37.0),
+    val topRight: Point = Point(56.0, 38.0),
+    val filterList: MutableList<Filter> = mutableListOf(),
 
     val listOfRestaurant: List<Restaurant> = listOf(),
     val isLoading: Boolean = false,

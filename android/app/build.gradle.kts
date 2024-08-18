@@ -69,6 +69,7 @@ dependencies {
     //DI - Hilt
     implementation(libs.hilt)
     testImplementation(project(":core"))
+    testImplementation(project(":core"))
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.fragment:fragment-ktx:1.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")

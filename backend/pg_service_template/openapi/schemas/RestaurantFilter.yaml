@@ -1,0 +1,36 @@
+type: object
+
+properties:
+
+    property:
+        type: string
+        enum: [
+            "rating",
+            "price_lower_bound",
+            "price_upper_bound",
+            "open_time",
+            "close_time",
+            "tags",
+            "collection_id"
+        ]
+        description: "Поле, на которое хотим наложить фильтр."
+
+    operator:
+        type: string
+        enum: [
+            "lt",
+            "gt",
+            "le",
+            "ge",
+            "in",
+            "notin",
+            "eq",
+            "neq"
+        ]
+        description: "Оператор для фильтрации. Не каждый фильтр поддерживает все операции."
+
+    value:
+        type: array
+        description: "Список параметров любого типа (int, string, time и прочее)"
+        items:
+            type: string

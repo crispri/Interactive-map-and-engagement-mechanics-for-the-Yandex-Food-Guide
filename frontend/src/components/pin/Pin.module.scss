@@ -1,7 +1,7 @@
 .wrapperr{
 	width: 32px;
 	height: 32px;
-	background-color: black;
+	background-color: #21201F;
 	border-radius: 8px;
 	padding: 6px;
 }
@@ -17,7 +17,7 @@
 	&__wrapper{
 		width: 13px;
 		height: 13px;
-		border: 1px solid black;
+		border: 1px solid #21201F;
 		border-radius: 7px;
 		background-color: white;
 	}
@@ -33,6 +33,12 @@
 	align-items: center;
 	position: relative;
 	transform: translate(-50%, -115%);
+	transition: all 0.3s ease;
+	&__focused{
+		background-color: #21201F;
+		color: white;
+		transition: all 0.3s ease;
+	}
 	&__text{
 		font-weight: 500;
 		font-size: 13px;
@@ -64,9 +70,52 @@
 		height: 12px;
 		box-sizing: content-box;
 		position: absolute;
-		right: -7%;
-		top: -20%;
+		right: -5%;
+		top: -30%;
 		padding: 4px 5px;
 		border-radius: 6px;
+		transition: all 0.3s ease;
+		&__focused{
+			background-color: #21201F;
+		}
 	}
+}
+.sexy{
+	background-color: white;
+	border-radius: 12px;
+	height: 46px;
+	padding: 9px 8px;
+	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.12), 0 0 1px 0 rgba(0, 0, 0, 0.15);
+	position: relative;
+	transition: all 0.3s ease;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1px;
+	z-index: 1;
+	&__container{
+		transform: translate(-50%, -115%);
+	}
+	&__descr{
+		font-size: 11px;
+		font-weight: normal;
+	}
+	&__wrapper{
+		display: flex;
+		gap: 4px;
+		align-items: center;
+	}
+	&__focused{
+		background-color: #21201F;
+		color: white;
+	}
+}
+.sexy_photo{
+	position: absolute;
+	z-index: -2;
+	border-radius: 8px;
+	transform: translate(-50%, -115%);
+	height: 60px;
+	width: 100%;
+	bottom: -37px;
 }

@@ -23,16 +23,16 @@ RestaurantService::RestaurantService(
     )
 {}
 
-std::vector<TRestaurant> RestaurantService::GetAll() {
-    return repository_->GetAll();
+std::vector<TRestaurant> RestaurantService::GetAll(const boost::uuids::uuid& user_id) {
+    return repository_->GetAll(user_id);
 }
 
-std::optional<TRestaurant> RestaurantService::GetById(const boost::uuids::uuid& id) {
-    return repository_->GetById(id);
+std::optional<TRestaurant> RestaurantService::GetById(const boost::uuids::uuid& restaurant_id, const boost::uuids::uuid& user_id) {
+    return repository_->GetById(restaurant_id, user_id);
 }
 
-std::vector<TRestaurant> RestaurantService::GetByFilter(const TRestaurantFilter& filter) {
-    return repository_->GetByFilter(filter);
+std::vector<TRestaurant> RestaurantService::GetByFilter(const TRestaurantFilter& filter, const boost::uuids::uuid& user_id) {
+    return repository_->GetByFilter(filter, user_id);
 }
 
 void AppendRestaurantService(userver::components::ComponentList& component_list) {

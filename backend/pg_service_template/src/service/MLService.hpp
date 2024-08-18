@@ -1,22 +1,33 @@
 #pragma once
 
+#include <boost/uuid/uuid_io.hpp>
+#include <repository/PgMLRepository.hpp>
 #include <userver/components/component_base.hpp>
 #include <userver/components/component_list.hpp>
 
 namespace service {
 
-class MLService final : public userver::components::ComponentBase {
- public:
-  static constexpr std::string_view kName = "ml-service-component";
+    class MLService final : public userver::components::ComponentBase {
+        std::shared_ptr<IMLRepository> repository_;
 
-  MLService(const userver::components::ComponentConfig& config,
-            const userver::components::ComponentContext& context);
+    public:
+        static constexpr std::string_view kName = "ml-service-component";
 
-  static void MLSort(std::vector<int>& restaurant_ids);
-  //std::vector<std::pair<int, int>> SetRating(std::vector<int>& restaurant_ids);
-};
+        MLService(const userver::components::ComponentConfig &config,
+                  const userver::components::ComponentContext &context);
 
-void AppendMLService(
-    userver::components::ComponentList& component_list);
+        static void MLSort(std::vector<boost::uuids::uuid> &restaurant_ids);
+
+        static std::vector<std::pair<boost::uuids::uuid, int>> SetScore(
+                boost::uuids::uuid &user_id, std::vector<boost::uuids::uuid> &restaurant_ids);
+
+        boost::uuids::uuid GetUserIdByAuthToken(const boost::uuids::uuid& session_id);
+
+    private:
+        static uint32_t GetHash(boost::uuids::uuid &user_id, boost::uuids::uuid &restaurant_id);
+
+    };
+
+    void AppendMLService(userver::components::ComponentList &component_list);
 
 }  // namespace service
