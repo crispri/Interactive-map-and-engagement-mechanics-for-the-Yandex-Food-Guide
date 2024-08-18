@@ -222,7 +222,7 @@ namespace service {
                 http_client_.ResetUserAgent(boost::uuids::to_string(user_id));
 
                 const auto MLresponse = http_client_.CreateRequest()
-                        .post("http://localhost:8081/guide/v1/ml_rate", std::move(MLrequestString))
+                        .post("http://localhost:8080/guide/v1/ml_rate", std::move(MLrequestString))
                         .timeout(std::chrono::seconds(10))
                         .retry(10)
                         .headers({std::make_pair("Cookie", "session_id=" + request.GetCookie("session_id"))})
