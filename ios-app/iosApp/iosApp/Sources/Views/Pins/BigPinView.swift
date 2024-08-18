@@ -11,17 +11,7 @@ import UIKit
 final class BigPinView: UIView {
 
    private var isSelected = true
-//    var isFavorit = true
-    var model: SnippetDTO {
-        didSet {
-//            imageRest.image = UIImage(named: model?. "1rest")
-            nameRest.text = model.name
-//            descriptionRest.text = model?.description ?? "Название ресторана"
-            raiting.text = String(format: "%.1f" , model.rating)
-            // isFavorit = model?.inCollection ?? false
-            background()
-        }
-    }
+    var model: SnippetDTO
 
     private lazy var squareView: UIView = {
         let view = UIView()
@@ -62,7 +52,7 @@ final class BigPinView: UIView {
         let label = UILabel()
         label.frame = .init(x: 8, y: 8, width: 113, height: 14)
         label.font = .systemFont(ofSize: 13)
-//        label.text = "Название ресторана"
+        label.text = model.name
         label.numberOfLines = 1
         return label
     }()
@@ -72,7 +62,7 @@ final class BigPinView: UIView {
         label.frame = .init(x: 8, y: 23, width: 144, height: 12)
         label.font = .systemFont(ofSize: 11)
         label.numberOfLines = 1
-        label.text = "кофе от 300р"
+        label.text = "ср. чек от \(model.priceLowerBound)₽"
         return label
     }()
 
@@ -95,7 +85,7 @@ final class BigPinView: UIView {
         let label = UILabel()
         label.frame = .init(x: 132, y: 8, width: 20, height: 12)
         label.font = .systemFont(ofSize: 11)
-//        label.text = "4.9"
+        label.text = String(format: "%.1f" , model.rating)
         return label
     }()
 
