@@ -1,8 +1,10 @@
 package ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,7 +40,10 @@ fun BigCard(restaurant: Restaurant, navToRestaurant: () -> Unit) {
             .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth()
             .background(Color.White)
-            .clickable {navToRestaurant()},
+            .clickable {
+
+                navToRestaurant()
+               },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {
@@ -94,19 +100,10 @@ fun BigCard(restaurant: Restaurant, navToRestaurant: () -> Unit) {
                 lineHeight = 15.sp,
             )
 
-            val itemsList = listOf(
-                "Музыка громче",
-                "Завтраки",
-                "Винотека",
-                "Европейская",
-                "Коктели",
-                "Можно с собакой",
-                "Веранда"
-            )
             LazyRow(
                 modifier = Modifier.padding(top = 8.dp)
             ) {
-                items(itemsList) { item ->
+                items(restaurant.tags) { item ->
                     TextCard(text = item)
                 }
             }

@@ -18,9 +18,9 @@ public:
         const userver::components::ComponentContext &context
     );
 
-    std::vector<TRestaurant> GetAll();
-    std::optional<TRestaurant> GetById(const boost::uuids::uuid& id);
-    std::vector<TRestaurant> GetByFilter(const TRestaurantFilter& filter);
+    std::vector<TRestaurant> GetAll(const boost::uuids::uuid& user_id);
+    std::optional<TRestaurant> GetById(const boost::uuids::uuid& id, const boost::uuids::uuid& user_id);
+    std::vector<TRestaurant> GetByFilter(const TRestaurantFilter& filter, const boost::uuids::uuid& user_id);
 };
 
 

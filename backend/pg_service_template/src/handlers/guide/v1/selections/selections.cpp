@@ -1,8 +1,6 @@
 #include "selections.hpp"
-#include <boost/uuid/string_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
+#include <models/TSelection.hpp>
 #include <lib/error_response_builder.hpp>
-#include <models/selection.hpp>
 
 #include <fmt/format.h>
 
@@ -11,12 +9,17 @@
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/server/http/http_request.hpp>
+#include <userver/server/http/http_status.hpp>
 #include <userver/storages/postgres/cluster.hpp>
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
 #include <service/SelectionService.hpp>
-#include <service/SessionService.hpp>
+#include <boost/uuid/string_generator.hpp>
+#include "lib/error_description.hpp"
+
+
 namespace service {
 
 namespace {
@@ -38,7 +41,10 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
         component_context
         .FindComponent<SelectionService>()
     ),
-    session_service_(component_context.FindComponent<SessionService>())
+    session_service_(
+        component_context
+        .FindComponent<SessionService>()
+    )
     {}
 
     std::string HandleRequestThrow(
@@ -65,12 +71,22 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
             ErrorDescriprion::kTokenNotSpecified
         );
       }
-      boost::uuids::string_generator gen;
-      auto user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
 
-      LOG_ERROR()<<boost::uuids::to_string(user_id);
-     
-      auto selections = selection_service_.GetAll();
+      const auto& request_body_string = request.RequestBody();
+      userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
+      if (!request_body_json.HasMember("return_collections")) {
+        return errorBuilder.build(
+              userver::server::http::HttpStatus::kBadRequest,
+              ErrorDescriprion::kReturnCollectionsNotSpecified
+        );
+      }
+
+        boost::uuids::string_generator gen;
+        auto user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
+
+        LOG_ERROR()<<boost::uuids::to_string(user_id);
+
+      auto selections = selection_service_.GetAll(user_id, request_body_json["return_collections"].As<bool>());
         userver::formats::json::ValueBuilder responseJSON;
         responseJSON["items"].Resize(0);
         for (auto& selection : selections) {

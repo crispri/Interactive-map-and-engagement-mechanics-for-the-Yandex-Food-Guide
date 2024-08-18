@@ -1,15 +1,13 @@
 package repository
 
 import kotlinx.coroutines.flow.Flow
+import model.CollectionOfPlace
+import model.Filter
 import model.Recommendation
 import model.Restaurant
 import network.util.NetworkState
 
 interface RestaurantRepository {
-
-    val recommendations: Flow<List<Recommendation>>
-
-    val restaurants: Flow<List<Restaurant>>
 
     fun getRestaurants(
         token: String,
@@ -17,14 +15,18 @@ interface RestaurantRepository {
         lowerLeftLon: Double,
         topRightLat: Double,
         topRightLon: Double,
-        maxCount: Int
+        filterList: List<Filter>,
     ): Flow<NetworkState<List<Restaurant>>>
 
-    fun updateTask(
-        task: Restaurant,
-        revision: Int,
+    fun getRestaurantById(
         token: String,
-        login: String
+        id: String,
     ): Flow<NetworkState<Restaurant>>
+
+    fun getCollections(
+        token: String,
+    ): Flow<NetworkState<List<CollectionOfPlace>>>
+
+
 }
 

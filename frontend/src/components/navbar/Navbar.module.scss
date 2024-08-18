@@ -12,4 +12,16 @@
 		flex-direction: column;
 		justify-content: center;
 	}
+	&__back_button{
+		height: 100px;
+		width: 100px;
+	}
+	&__in_collection{
+		height: 100px;
+		width: 100px;
+	}
+	&__not_in_collection{
+		height: 100px;
+		width: 100px;
+	}
 }

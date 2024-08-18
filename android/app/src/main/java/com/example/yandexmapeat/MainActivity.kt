@@ -1,5 +1,6 @@
 package com.example.yandexmapeat
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -7,25 +8,48 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import com.example.feature.R
 import com.example.yandexmapeat.ui.theme.YandexMapEatTheme
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.ScreenPoint
+import com.yandex.mapkit.ScreenRect
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.location.Location
 import com.yandex.mapkit.location.LocationListener
 import com.yandex.mapkit.location.LocationManager
 import com.yandex.mapkit.location.LocationStatus
+import com.yandex.mapkit.map.CircleMapObject
+import com.yandex.mapkit.map.ClusterListener
+import com.yandex.mapkit.map.ClusterTapListener
+import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
+import com.yandex.mapkit.map.MapObject
+import com.yandex.mapkit.map.MapObjectCollection
+import com.yandex.mapkit.map.MapObjectDragListener
+import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.MapObjectVisitor
+import com.yandex.mapkit.map.PlacemarkMapObject
+import com.yandex.mapkit.map.PolygonMapObject
+import com.yandex.mapkit.map.PolylineMapObject
+import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
+import presintation.mapScreen.CustomMapView
 import presintation.navigation.AppNavigation
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+private const val CLUSTER_RADIUS = 60.0
+private const val CLUSTER_MIN_ZOOM = 15
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private lateinit var mapView: MapView
+    private lateinit var mapView: CustomMapView
     private lateinit var locationManager: LocationManager
     private lateinit var locationListener: LocationListener
     private lateinit var mapkit: MapKit
@@ -47,6 +71,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         setApiKey(savedInstanceState)
@@ -57,6 +82,7 @@ class MainActivity : ComponentActivity() {
         locationManager = mapkit.createLocationManager()
         locationListener = object : LocationListener{
             override fun onLocationUpdated(p0: Location) {
+                Log.e("in onLocationUpdated", "${p0.position.latitude}, ${p0.position.longitude}")
                 curLocation.value = Point(p0.position.latitude, p0.position.longitude)
             }
 
@@ -80,7 +106,14 @@ class MainActivity : ComponentActivity() {
 
         val context = this
 
-        mapView = MapView(context)
+        mapView = CustomMapView(context)
+
+        val style = loadJsonFromAsset(this, "my_json.json")
+        if (style != null) {
+            mapView.mapWindow.map.setMapStyle(style)
+        } else {
+            Log.d("jsonfile", "error")
+        }
 
 
         setContent {
@@ -123,5 +156,21 @@ class MainActivity : ComponentActivity() {
     companion object {
         const val MAPKIT_API_KEY = "8e691497-5f95-489d-862e-b24bd7507b87"
     }
+}
 
+fun loadJsonFromAsset(context: Context, fileName: String): String? {
+    return try {
+        val inputStream = context.assets.open(fileName)
+        val buffer = BufferedReader(InputStreamReader(inputStream))
+        val sb = StringBuilder()
+        var line: String?
+        while (buffer.readLine().also { line = it } != null) {
+            sb.append(line)
+        }
+        buffer.close()
+        sb.toString()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
 }

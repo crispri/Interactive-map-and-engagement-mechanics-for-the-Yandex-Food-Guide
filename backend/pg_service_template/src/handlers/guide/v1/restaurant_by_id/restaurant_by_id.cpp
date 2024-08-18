@@ -1,7 +1,7 @@
 #include "restaurant_by_id.hpp"
 #include <lib/error_response_builder.hpp>
-#include <models/coordinates.hpp>
-#include <models/restaurant.hpp>
+#include <models/TCoordinates.hpp>
+#include <models/TRestaurant.hpp>
 
 #include <fmt/format.h>
 
@@ -71,21 +71,16 @@ public:
         }
 
         boost::uuids::string_generator gen;
-        auto id = gen(request.GetPathArg("id"));
+        auto restaurant_id = gen(request.GetPathArg("id"));
+        auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
 
-        auto restaurant = restaurant_service_.GetById(id);
+        auto restaurant = restaurant_service_.GetById(restaurant_id, user_id);
         if (!restaurant) {
             return errorBuilder.build(
                 userver::server::http::HttpStatus::kNotFound,
                 ErrorDescriprion::kRestaurantNotFound
             );
         }
-        userver::formats::json::ValueBuilder responseJSON;
-        // responseJSON["restaurant"] = userver::formats::json::ValueBuilder{restaurant};
-        // for (auto& restaurant : restaurants) {
-        //     responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
-        // }
-
         return userver::formats::json::ToPrettyString(
             userver::formats::json::ValueBuilder{restaurant.value()}.ExtractValue(),
             {' ', 4}

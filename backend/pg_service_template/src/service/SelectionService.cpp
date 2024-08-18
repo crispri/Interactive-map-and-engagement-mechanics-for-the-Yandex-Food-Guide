@@ -1,10 +1,10 @@
 #include "SelectionService.hpp"
 
+#include <boost/uuid/uuid.hpp>
 #include <userver/storages/postgres/component.hpp>
 #include <userver/components/component.hpp>
-#include "models/restaurant.hpp"
-#include "models/selection.hpp"
-#include "service/SelectionService.hpp"
+#include <models/TRestaurant.hpp>
+#include <models/TSelection.hpp>
 
 namespace service {
 
@@ -26,15 +26,22 @@ SelectionService::SelectionService(
     )
 {}
 
-std::vector<TSelection> SelectionService::GetAll() {
-    return repository_->GetAll();
+std::vector<TSelection> SelectionService::GetAll(const boost::uuids::uuid& user_id, bool return_collections) {
+    return repository_->GetAll(user_id, return_collections);
 }
 
-std::vector<TRestaurant> SelectionService::GetById(const boost::uuids::uuid& id) {
-    return repository_->GetById(id);
+std::vector<TRestaurant> SelectionService::GetById(const boost::uuids::uuid& selection_id, const boost::uuids::uuid& user_id) {
+    return repository_->GetById(selection_id, user_id);
+}
+
+boost::uuids::uuid SelectionService::CreateCollection(const boost::uuids::uuid& user_id, const std::string& name, const std::string& description) {
+    return repository_->CreateCollection(user_id, name, description);
 }
 
 
+void SelectionService::InsertIntoCollection(const boost::uuids::uuid& user_id, const boost::uuids::uuid& collection_id, const boost::uuids::uuid& restaurant_id) {
+    repository_->InsertIntoCollection(user_id, collection_id, restaurant_id);
+}
 
 void AppendSelectionService(userver::components::ComponentList& component_list) {
     component_list.Append<SelectionService>();

@@ -3,6 +3,13 @@ import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import sample from '../../assets/sample.jpeg'
 import SheetContent from '../sheetcontent/SheetContent';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSelections } from '../../lib/restaurantsSlice';
+import SelectionsList from '../selection/SelectionsList';
+import CollectionsList from '../collection/CollectionsList';
+import HeaderFilters from '../filter/HeaderFilters';
+import { useLocation } from 'react-router-dom';
 
 const cardInfos = [
 {
@@ -25,23 +32,41 @@ const cardInfos = [
 }
 ];
 
-const MyBottomSheet = () => {
+const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
+  const location = useLocation(); 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSelections())
+  }, [])
+
+  const isInCollection = useSelector((state) => state.restaurantsSlice.is_in_collection);
+  const shouldShowHeader = location.pathname === '/restaurants';  
+
   return (
-    <>
-      <BottomSheet 
-        open={true}
-        blocking={false}
-        defaultSnap={({ maxHeight }) => maxHeight * 0.05}
-        snapPoints={({ maxHeight }) => [
-          maxHeight / 3 * 2,
-          maxHeight * 0.05,
-          maxHeight
-        ]}
-      >
-        <img src={sample} alt="sample" style={{width: '100%', height: '100%'}}/>
-        <SheetContent cardInfos={cardInfos}></SheetContent>
-      </BottomSheet >
-    </>
+    <BottomSheet 
+      ref={sheetRef}
+      open={true}
+      blocking={false}
+      header={
+        <>
+        {isInCollection ? <CollectionsList/> : <SelectionsList/>}
+        {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null}
+        </>
+      }
+      defaultSnap={({ maxHeight }) => maxHeight * 0.05}
+      snapPoints={({ maxHeight }) => [
+        maxHeight * 0.45,
+        maxHeight * 0.05,
+        maxHeight
+      ]}
+      // sibling={<SelectionsList/>}
+      // header={<SelectionsList/>}
+    >
+      <div className="bottomsheet">
+        {content}
+      </div>
+    </BottomSheet >
   )
 }
 

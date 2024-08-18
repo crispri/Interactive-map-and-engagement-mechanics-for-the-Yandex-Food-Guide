@@ -41,13 +41,13 @@ components_manager:
         restaurant-service-component: {}
         selection-service-component: {}
         session-service-component: {}
-
         ml-service-component: {}
         check-session-middleware: {}
         
 
+
         http-client:
-            load-enabled: $is-testing
+            load-enabled: true
             fs-task-processor: fs-task-processor
 
 
@@ -65,7 +65,7 @@ components_manager:
 
         handler-selections:
             path: /guide/v1/selections
-            method: GET,OPTIONS
+            method: POST,OPTIONS
             task_processor: main-task-processor
         handler-recs-by-selection-id:
             path: /guide/v1/selections/{id}
@@ -76,24 +76,30 @@ components_manager:
             path: /guide/v1/restaurants
             method: POST,OPTIONS
             task_processor: main-task-processor
-        
-        handler-ml:
-            path: /guide/v1/ml
+        handler-ml_sort:
+            path: /guide/v1/ml_sort
             method: POST
             task_processor: main-task-processor
-        handler-selections:
-            path: /guide/v1/selections
-            method: GET
-            task_processor: main-task-processor 
-        handler-recs-by-selection-id:
-            path: /guide/v1/selections/{id}
-            method: GET
-            task_processor: main-task-processor       
+
+        handler-ml_rate:
+            path: /guide/v1/ml_rate
+            method: POST
+            task_processor: main-task-processor
 
 
         handler-restaurant-by-id:
             path: /guide/v1/restaurants/{id}
             method: GET,OPTIONS
+            task_processor: main-task-processor
+
+        handler-collection-create:
+            path: /guide/v1/collection
+            method: POST,OPTIONS
+            task_processor: main-task-processor
+
+        handler-collection-insert:
+            path: /guide/v1/collection/{id}
+            method: PUT,OPTIONS
             task_processor: main-task-processor
 
         postgres-db-1:
