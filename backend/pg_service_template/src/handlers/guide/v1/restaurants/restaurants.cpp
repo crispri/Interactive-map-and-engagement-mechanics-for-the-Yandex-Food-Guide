@@ -33,6 +33,9 @@
 #include <userver/clients/http/component.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+
+#include <service/SessionService.hpp>
+
 namespace service {
 
     namespace {
@@ -57,7 +60,12 @@ namespace service {
                     http_client_(
                             component_context
                                     .FindComponent<userver::components::HttpClient>().GetHttpClient()
-                    ) {}
+                    ),
+                    session_service_(
+                            component_context
+                            .FindComponent<SessionService>()
+                    )
+                    {}
 
             std::string HandleRequestThrow(
                     const userver::server::http::HttpRequest &request,
@@ -75,13 +83,8 @@ namespace service {
                     return "";
                 }
                 ErrorResponseBuilder errorBuilder(request);
-
-                if (!request.HasHeader("Authorization")) {
-                    return errorBuilder.build(
-                            userver::server::http::HttpStatus::kUnauthorized,
-                            ErrorDescriprion::kTokenNotSpecified
-                    );
-                }
+                
+                LOG_ERROR() << "HERE0";
 
                 const auto &request_body_string = request.RequestBody();
                 userver::formats::json::Value request_body_json = userver::formats::json::FromString(
@@ -194,9 +197,12 @@ namespace service {
                         only_collections
                 );
 
-                boost::uuids::string_generator gen;
-                auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+                LOG_ERROR() << "HERE1";
 
+                boost::uuids::string_generator gen;
+                const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
+
+                LOG_ERROR() << boost::uuids::to_string(user_id);
                 auto restaurants = restaurant_service_.GetByFilter(filters, user_id);
 
                 userver::formats::json::ValueBuilder MLrequestJSON;
@@ -207,25 +213,30 @@ namespace service {
 
                     LOG_ERROR() << restaurant.id;
                 }
+                LOG_ERROR() << "HERE2";
 
                 auto MLrequestString = userver::formats::json::ToPrettyString(MLrequestJSON.ExtractValue(),
                                                                               {' ', 4});
 
-
+                LOG_ERROR() << "HERE3";
                 http_client_.ResetUserAgent(boost::uuids::to_string(user_id));
 
                 const auto MLresponse = http_client_.CreateRequest()
-                        .post("http://localhost:8080/guide/v1/ml_rate", std::move(MLrequestString))
-                        .timeout(std::chrono::seconds(1))
+                        .post("http://localhost:8081/guide/v1/ml_rate", std::move(MLrequestString))
+                        .timeout(std::chrono::seconds(10))
                         .retry(10)
-                        .headers({std::make_pair("Authorization", request.GetHeader("Authorization"))})
+                        .headers({std::make_pair("Cookie", "session_id=" + request.GetCookie("session_id"))})
                         .perform();
 
-
+                LOG_ERROR() << "HERE4";
                 const auto MLresponseBody = MLresponse->body_view();
+
+                LOG_ERROR() << "HERE5" << MLresponseBody;
 
                 userver::formats::json::Value MLresponseBodyJSON = userver::formats::json::FromString(
                         MLresponseBody);
+
+                LOG_ERROR() << "HERE6";
 
                 std::map<boost::uuids::uuid, int32_t> restaurant_scores;
 
@@ -256,7 +267,7 @@ namespace service {
                     restaurant.score = restaurant_scores[restaurant.id];
                 }
                 std::sort(restaurants.rbegin(), restaurants.rend());
-
+                LOG_ERROR() << "HERElkfdsj;lkgjslkgj " << restaurants.size();
                 userver::formats::json::ValueBuilder responseJSON;
                 responseJSON["items"].Resize(0);
                 for (auto &restaurant: restaurants) {
@@ -271,6 +282,7 @@ namespace service {
 
             RestaurantService &restaurant_service_;
             userver::clients::http::Client &http_client_;
+            SessionService& session_service_;
             static const std::unordered_map<
                     std::string, std::shared_ptr<IRestaurantFilterJSON>
             > StringRestaurantFilterMapping_;

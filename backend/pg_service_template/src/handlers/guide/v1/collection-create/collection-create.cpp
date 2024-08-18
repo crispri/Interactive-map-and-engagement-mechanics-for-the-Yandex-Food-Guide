@@ -20,6 +20,7 @@
 #include <service/SelectionService.hpp>
 #include "lib/error_description.hpp"
 
+#include <service/SessionService.hpp>
 
 namespace service {
 
@@ -41,6 +42,10 @@ class CollectionCreateController final : public userver::server::handlers::HttpH
     selection_service_(
         component_context
         .FindComponent<SelectionService>()
+    ),
+    session_service_(
+        component_context
+        .FindComponent<SessionService>()
     )
     {}
 
@@ -62,13 +67,6 @@ class CollectionCreateController final : public userver::server::handlers::HttpH
 
         ErrorResponseBuilder errorBuilder(request);
 
-        if (!request.HasHeader("Authorization")) {
-            return errorBuilder.build(
-                userver::server::http::HttpStatus::kUnauthorized,
-                ErrorDescriprion::kTokenNotSpecified
-            );
-        }
-
         const auto& request_body_string = request.RequestBody();
         userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
         if (!request_body_json.HasMember("name")) {
@@ -86,7 +84,7 @@ class CollectionCreateController final : public userver::server::handlers::HttpH
         }
 
         boost::uuids::string_generator gen;
-        auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+        const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
         const auto& name = request_body_json["name"].As<std::string>();
         const auto& description = request_body_json["description"].As<std::string>(); 
 
@@ -102,6 +100,7 @@ class CollectionCreateController final : public userver::server::handlers::HttpH
 
     
     SelectionService& selection_service_;
+    SessionService& session_service_;
     };
     
 }   // namespace 
