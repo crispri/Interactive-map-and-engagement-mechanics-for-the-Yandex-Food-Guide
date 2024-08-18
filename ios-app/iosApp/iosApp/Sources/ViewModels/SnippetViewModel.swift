@@ -14,8 +14,12 @@ final class SnippetViewModel: ObservableObject {
     
     @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = SnippetDTO.mockData
+    
     @Published var selections = SelectionDTO.mockData
-    @Published var selectedCollection: SelectionDTO? = nil
+    @Published var currentSelection: SelectionDTO?
+    
+    @Published var userCollections = UserCollection.mockData
+    
     @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
     private var filtersDTO: Array<FilterDTO> {
         let activeFilters = filterCategories.flatMap { $0.filters.filter { $0.isActive }}
@@ -34,14 +38,13 @@ final class SnippetViewModel: ObservableObject {
         eventPlaceUser()
         eventCenterCamera(to: .user)
         eventOnGesture()
+        Task { await fetchSelections() }
     }
     
     func eventOnGesture() {
         Task { await fetchSnippets() }
         Task { await fetchSelections() }
-        Task {
-            try? await loadAddress()
-        }
+        Task { try? await loadAddress() }
         
         eventCenterCamera(to: .user)
         mapManager.placeUser()
@@ -52,6 +55,7 @@ final class SnippetViewModel: ObservableObject {
     func onCameraMove() {
         Task {
             do {
+                await fetchSelections()
                 let rect = mapManager.getScreenPoints()
                 let ll = rect.lowerLeftCorner
                 let tr = rect.topRightCorner
@@ -81,14 +85,14 @@ final class SnippetViewModel: ObservableObject {
     }
     
     func eventSelectionPressed(at index: Int, reader: ScrollViewProxy) async {
-        if let selectedCollection,
-           selectedCollection == selections[index] {
-            self.selectedCollection = nil
+        if let currentSelection,
+           currentSelection == selections[index] {
+            self.currentSelection = nil
             await fetchSnippets()
         } else {
-            selectedCollection = selections[index]
+            currentSelection = selections[index]
             reader.scrollTo(index, anchor: .center)
-            await fetchSelectionSnippets(id: selectedCollection?.id ?? "")
+            await fetchSelectionSnippets(id: currentSelection?.id ?? "")
             eventCenterCamera(to: .pins)
         }
     }
@@ -123,6 +127,21 @@ final class SnippetViewModel: ObservableObject {
         } catch { print(error) }
     }
     
+    func fetchUserCollections() async {
+        do {
+            let remoteUserCollections = try await loadUserCollections()
+            var userCollectionsTail: [UserCollection] = []
+            for selection in remoteUserCollections {
+                let restaurants = try await loadSelectionSnippets(id: selection.id)
+                userCollectionsTail += [UserCollection(
+                    selection: selection,
+                    restaurants: restaurants
+                )]
+            }
+            userCollections = UserCollection.mockData + userCollectionsTail
+        } catch { print(error) }
+    }
+    
     func fetchSelectionSnippets(id: String) async {
         do {
             snippets = try await loadSelectionSnippets(id: id)
@@ -139,6 +158,11 @@ final class SnippetViewModel: ObservableObject {
     
     private func loadSelections() async throws -> [SelectionDTO] {
         let data = try await networkManager.fetchSelections()
+        return data
+    }
+    
+    private func loadUserCollections() async throws -> [SelectionDTO] {
+        let data = try await networkManager.fetchUserCollections()
         return data
     }
     
