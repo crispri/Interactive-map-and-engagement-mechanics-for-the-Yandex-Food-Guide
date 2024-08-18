@@ -283,7 +283,8 @@ fun SheetStateSaver(
 fun RestaurantTagsCarousel(onFilterClick: () -> Unit) {
 
     val itemsList = listOf(
-        "Музыка громче",
+        "ULTIMA GUIDE",
+        "Рядом со мной",
         "Завтраки",
         "Винотека",
         "Европейская",

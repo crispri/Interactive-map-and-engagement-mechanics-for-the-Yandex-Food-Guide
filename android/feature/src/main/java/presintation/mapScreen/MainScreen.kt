@@ -119,9 +119,8 @@ fun MainScreen(
     val bottomSheetHeight = remember { mutableStateOf<Dp?>(null)}
 
 
-    val list = remember {
-        mutableStateOf(uiState.restaurantsOnMap)
-    }
+    val list = mutableStateOf(uiState.restaurantsOnMap)
+
     val isMapSelected = remember { mutableStateOf(false) }
     var isSheetOpen by remember{ mutableStateOf(false) }
     val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -593,24 +592,6 @@ fun CollectionCarousel(
                     .height(cardHeight)
                     .offset(y = yOffset)
             )
-        }
-    }
-}
-
-
-@Composable
-fun BottomSheetContent(
-    isLoading: Boolean,
-    restaurants: List<Restaurant>,
-    navToRestaurant: () -> Unit,
-) {
-    if (isLoading) {
-        CircularProgressBar()
-    } else {
-        LazyColumn {
-            items(restaurants) { item ->
-                BigCard(item, navToRestaurant)
-            }
         }
     }
 }

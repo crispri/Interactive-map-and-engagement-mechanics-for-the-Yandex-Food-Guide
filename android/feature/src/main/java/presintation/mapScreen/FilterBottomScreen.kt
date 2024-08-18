@@ -621,10 +621,6 @@ fun CategoryFilterButtonCard(uiState: MainUiState, text: String, send: (MainScre
         isSelected.value = flag
     }
 
-
-
-    Log.d("FLAG", "${isSelected.toString()}, ${text}")
-
     TextButton(
         colors = ButtonDefaults.textButtonColors(
             containerColor = if (isSelected.value) Color.Black else Color(0xFFE2E2E2),
