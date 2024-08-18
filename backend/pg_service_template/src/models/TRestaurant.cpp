@@ -8,6 +8,10 @@
 
 namespace service {
 
+bool TRestaurant::operator<(const TRestaurant& other) {
+    return score < other.score;
+}
+
 userver::formats::json::Value Serialize(
     const TRestaurant& restaurant,
     userver::formats::serialize::To<userver::formats::json::Value>

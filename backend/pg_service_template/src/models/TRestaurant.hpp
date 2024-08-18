@@ -26,6 +26,8 @@ struct TRestaurant {
     std::optional<std::vector<std::string>> interior;
     int32_t score;
 
+    bool operator<(const TRestaurant& other);
+
     std::tuple<
         boost::uuids::uuid&,
         double&,

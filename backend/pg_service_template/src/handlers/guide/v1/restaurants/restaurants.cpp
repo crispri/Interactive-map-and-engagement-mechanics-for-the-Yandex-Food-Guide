@@ -241,12 +241,14 @@ namespace service {
                 }
 
                 assert(restaurant_scores.size() == restaurants.size());
-
+                for (auto &restaurant: restaurants) {
+                        restaurant.score = restaurant_scores[restaurant.id];
+                }
+                std::sort(restaurants.rbegin(), restaurants.rend());
 
                 userver::formats::json::ValueBuilder responseJSON;
                 responseJSON["items"].Resize(0);
                 for (auto &restaurant: restaurants) {
-                    restaurant.score = restaurant_scores[restaurant.id];
                     responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
                 }
 
