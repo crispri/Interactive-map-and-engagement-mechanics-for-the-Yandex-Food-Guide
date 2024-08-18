@@ -85,6 +85,62 @@ export const getCollections = createAsyncThunk(
 	}
 )
 
+export const createCollection = createAsyncThunk(
+	'restaurants/createCollection',
+	async ({name, description}) => {
+		try {
+			// debugger;
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/collection`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json;charset=utf-8",
+						"Authorization": "token",
+					},
+					body: JSON.stringify({ "name": name, "description": description }),
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
+export const putInCollection = createAsyncThunk(
+	'restaurants/createCollection',
+	async ({id, restaurantId}) => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/collection/${id}`,
+				{
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json;charset=utf-8",
+						"Authorization": "token",
+					},
+					body: JSON.stringify({ "restaurant_id": restaurantId }),
+				}
+			)
+			if (response.ok) {
+				// const data = await response.json();
+				// return data;
+				return response.status;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
 const restaurantsSlice = createSlice({
 	name: 'restaurants',
 	initialState: {
