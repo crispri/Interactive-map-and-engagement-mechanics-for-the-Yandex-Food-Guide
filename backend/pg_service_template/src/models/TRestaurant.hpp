@@ -45,7 +45,7 @@ struct TRestaurant {
         std::optional<std::vector<std::string>>&,
         std::string&,
         std::optional<std::vector<std::string>>&,
-        int32_t,
+        int32_t&,
         std::string&
     > Introspect();
 };

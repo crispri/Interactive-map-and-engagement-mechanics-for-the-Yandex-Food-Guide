@@ -65,7 +65,7 @@ std::tuple<
     std::optional<std::vector<std::string>>&,
     std::string&,
     std::optional<std::vector<std::string>>&,
-    int32_t,
+    int32_t&,
     std::string&
     > TRestaurant::Introspect()
 {
