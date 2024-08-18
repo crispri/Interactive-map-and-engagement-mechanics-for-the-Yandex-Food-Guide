@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS guide.selections (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     owner_id UUID,
-    picture TEXT NOT NULL,
-    link TEXT NOT NUll,
+    picture TEXT,
+    link TEXT,
     FOREIGN KEY(owner_id) REFERENCES guide.users(id)
 );
 
@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS guide.places_selections (
    place_id UUID,
    selection_id UUID,
    FOREIGN KEY(place_id) REFERENCES guide.places(id),
-   FOREIGN KEY(selection_id) REFERENCES guide.selections(id)
+   FOREIGN KEY(selection_id) REFERENCES guide.selections(id),
+   CONSTRAINT PK UNIQUE (place_id, selection_id)
 );
 
 -- CREATE TABLE IF NOT EXISTS guide.visibility (

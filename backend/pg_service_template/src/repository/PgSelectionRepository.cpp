@@ -1,5 +1,7 @@
 #include "PgSelectionRepository.hpp"
 #include <models/TRestaurant.hpp>
+#include <string>
+#include <userver/storages/postgres/cluster_types.hpp>
 
 namespace service {
 
@@ -41,7 +43,45 @@ std::vector<TRestaurant> PgSelectionRepository::GetById(const boost::uuids::uuid
    return restaurants.AsContainer<std::vector<TRestaurant>>(userver::storages::postgres::kRowTag);
 }
 
+boost::uuids::uuid PgSelectionRepository::CreateCollection(const boost::uuids::uuid& user_id, const std::string& name, const std::string& description) {
+    const auto& result = pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"( INSERT INTO guide.selections(name, description, owner_id) )"
+        R"( VALUES ($1, $2, $3) )"
+        R"( RETURNING id; )",
+        name,
+        description,
+        user_id
+    );
+    return result[0].As< boost::uuids::uuid >();
+}
 
+
+void PgSelectionRepository::InsertIntoCollection(const boost::uuids::uuid& user_id, const boost::uuids::uuid& collection_id, const boost::uuids::uuid& restaurant_id) {
+    pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"( INSERT INTO guide.places_selections(place_id, selection_id) )"
+        R"( VALUES ($1, $2) )"
+        R"( ON CONFLICT DO NOTHING; )",
+        restaurant_id, collection_id
+    );
+
+    const auto& query_result = pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"( SELECT food FROM guide.places )"
+        R"( WHERE id = $1; )",
+        restaurant_id
+    );
+    const auto& food_picture_url = query_result[0].As<std::string>();
+    pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"( UPDATE guide.selections )"
+        R"( SET picture = $1 )"
+        R"( WHERE id = $2; )",
+        food_picture_url,
+        collection_id
+    );
+}
 
 
 } // service

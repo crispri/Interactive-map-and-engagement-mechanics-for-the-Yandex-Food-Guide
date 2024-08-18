@@ -1,0 +1,8 @@
+type: object
+properties:
+    restaurant_id:
+        type: string
+        format: uuid
+required:
+    -   collection_id
+    -   restaurant_id
