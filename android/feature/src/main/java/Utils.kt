@@ -171,7 +171,8 @@ object Utils {
             closeTime = "",
             inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 20,
         ),
         Restaurant(
             id = "",
@@ -190,8 +191,8 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 40,
         ),
         Restaurant(
             id = "",
@@ -210,9 +211,10 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 30,
 
-        ),
+            ),
         Restaurant(
             id = "",
             coordinates = Point(55.731359, 37.589837),
@@ -230,8 +232,8 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 50,
         ),
         Restaurant(
             id = "",
@@ -250,8 +252,8 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 60,
         ),
 
         Restaurant(
@@ -271,8 +273,8 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 23,
         ),
         Restaurant(
             id = "",
@@ -291,8 +293,8 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 45,
         ),
     )
 
