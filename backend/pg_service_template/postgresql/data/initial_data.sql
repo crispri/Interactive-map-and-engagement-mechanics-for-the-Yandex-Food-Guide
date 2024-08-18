@@ -58,12 +58,12 @@ CREATE TABLE IF NOT EXISTS guide.places_selections (
 CREATE TABLE IF NOT EXISTS guide.auth (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     session_id UUID NOT NULL DEFAULT uuid_generate_v4(),
-    started_at TIMESTAMPTZ NOT NULL,
-    expires_at TIMESTAMPTZ NOT NULL
+    expiration_time TIMESTAMPTZ NOT NULL
 );
 
-INSERT INTO guide.auth(user_id, session_id, started_at, expires_at) VALUES
-    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11','2024-08-10 14:30:45+03', '2024-09-10 22:30:45+03');
+
+INSERT INTO guide.auth(user_id, session_id, expiration_time) VALUES
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', '5142cece-b22e-4a4f-adf9-990949d053ff','2024-09-10 22:30:45+03');
 
 INSERT INTO guide.users(id, name, password) VALUES
 ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'John', '1234');
