@@ -63,3 +63,30 @@
 	object-fit: cover;
 	border-radius: 20px;
 }
+.ultima{
+	height: 60px;
+	width: 100px;
+	border-radius: 20px;
+	padding: 6px 12px;
+	font-size: 13px;
+	font-weight: 500;
+	min-width: 100px;
+	transition: all 0.3s ease;
+	display: flex;
+	justify-content: center;
+	position: relative;
+	align-items: center;
+	color: black;
+	&_active{
+		min-width: 274px;
+		transition: all 0.3s ease;
+	}
+	&__text{
+		z-index: 3;
+		height: fit-content;
+		font-size: 11px;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+}

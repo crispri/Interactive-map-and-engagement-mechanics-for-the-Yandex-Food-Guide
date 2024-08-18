@@ -31,7 +31,7 @@ const cardInfos = [
 }
 ];
 
-const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
+const MyBottomSheet = ({sheetRef, content, debouncedValue, onSpringEnd}) => {
   const location = useLocation(); 
   const dispatch = useDispatch();
 
@@ -51,13 +51,17 @@ const MyBottomSheet = ({sheetRef, content, debouncedValue}) => {
         <SelectionsList/>
         {/* {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null} */}
         </>
+
       }
       defaultSnap={({ maxHeight }) => maxHeight * 0.05}
-      snapPoints={({ maxHeight }) => [
-        maxHeight * 0.45,
-        maxHeight * 0.05,
-        maxHeight
-      ]}
+      snapPoints={({ maxHeight }) => {
+        return [
+          maxHeight * 0.45,
+          maxHeight * 0.05,
+          maxHeight
+        ]
+      }}
+      onSpringEnd={onSpringEnd}
       // sibling={<SelectionsList/>}
       // header={<SelectionsList/>}
     >
