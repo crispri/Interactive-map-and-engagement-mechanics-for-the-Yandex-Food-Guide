@@ -98,10 +98,10 @@ components_manager:
             method: POST,OPTIONS
             task_processor: main-task-processor
 
-        # handler-collection-insert:
-        #     path: /guide/v1/collection/{id}
-        #     method: PUT,OPTIONS
-        #     task_processor: main-task-processor
+        handler-collection-insert:
+            path: /guide/v1/collection/{id}
+            method: PUT,OPTIONS
+            task_processor: main-task-processor
 
         postgres-db-1:
             dbconnection: $dbconnection

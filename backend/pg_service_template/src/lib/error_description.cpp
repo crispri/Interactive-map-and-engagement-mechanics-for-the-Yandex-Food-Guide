@@ -25,4 +25,5 @@ const std::unordered_map<ErrorDescriprion, std::string> errorMapping = {
     {ErrorDescriprion::kInvalidOnlyCollectionsValue, "INVALID_ONLY_COLLECTIONS_VALUE"},
     {ErrorDescriprion::kCollectionNameNotSpecified, "COLLECTION_NAME_NOT_SPECIFIED"},
     {ErrorDescriprion::kCollectionDescriptionNotSpecified, "COLLECTION_DESCRIPTION_NOT_SPECIFIED"},
+    {ErrorDescriprion::kRestaurantIdNotSpecified, "RESTAURANT_ID_NOT_SPECIFIED"},
 };

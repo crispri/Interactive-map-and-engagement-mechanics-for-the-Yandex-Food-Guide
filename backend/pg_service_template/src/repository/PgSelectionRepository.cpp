@@ -1,6 +1,7 @@
 #include "PgSelectionRepository.hpp"
 #include <models/TRestaurant.hpp>
 #include <string>
+#include <userver/storages/postgres/cluster_types.hpp>
 
 namespace service {
 
@@ -55,6 +56,13 @@ boost::uuids::uuid PgSelectionRepository::CreateCollection(const boost::uuids::u
     return result[0].As< boost::uuids::uuid >();
 }
 
+
+void PgSelectionRepository::InsertIntoCollection(const boost::uuids::uuid& user_id, const boost::uuids::uuid& collection_id, const boost::uuids::uuid& restaurant_id) {
+    pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"(  )"
+    );
+}
 
 
 } // service
