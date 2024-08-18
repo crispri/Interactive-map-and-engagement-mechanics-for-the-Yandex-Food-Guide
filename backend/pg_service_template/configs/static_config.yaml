@@ -36,11 +36,11 @@ components_manager:
 
         restaurant-service-component: {}
         selection-service-component: {}
-
         ml-service-component: {}
 
+
         http-client:
-            load-enabled: $is-testing
+            load-enabled: true
             fs-task-processor: fs-task-processor
 
         tests-control:
@@ -78,14 +78,6 @@ components_manager:
             path: /guide/v1/ml_rate
             method: POST
             task_processor: main-task-processor
-        handler-selections:
-            path: /guide/v1/selections
-            method: GET
-            task_processor: main-task-processor 
-        handler-recs-by-selection-id:
-            path: /guide/v1/selections/{id}
-            method: GET
-            task_processor: main-task-processor       
 
 
         handler-restaurant-by-id:
