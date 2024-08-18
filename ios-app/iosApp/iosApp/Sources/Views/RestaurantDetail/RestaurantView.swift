@@ -8,11 +8,8 @@
 import SwiftUI
 
 struct RestaurantView: View {
-    @Environment(\.dismiss) var dismiss
-    @State var nameRest: String
-    @State var rating: Double
-    @State var inCollection: Bool
-    @State var tags: [String]
+    @Environment(\.dismiss) private var dismiss
+    @State var restaurant: SnippetDTO
 
     var body: some View {
         ScrollView(.vertical) {
@@ -20,7 +17,8 @@ struct RestaurantView: View {
                 ZStack {
                     Image("1rest")
                         .resizable()
-                        .aspectRatio(3/2, contentMode: .fit)
+                        .aspectRatio(3/2, contentMode: .fill)
+                        .frame(width: 200)
 
                     VStack(alignment: .leading) {
                         ButtonBackAndShare()
@@ -41,7 +39,6 @@ struct RestaurantView: View {
                         .padding()
                         .frame(height: 50)
                         .background(.white)
-                        .cornerRadius(24)
                         .padding(.top, 275)
                 }
                 Gallery()
@@ -50,7 +47,6 @@ struct RestaurantView: View {
 
                 VStack {
                     ChatGPT()
-                    //.frame(width: 400, height: 60)
                         .padding(16)
                         .cornerRadius(20)
                     ComentYGPT()
@@ -64,7 +60,8 @@ struct RestaurantView: View {
                 .clipShape(.rect(cornerRadius: 16))
                 }
         }
-        .edgesIgnoringSafeArea(.top)
+        .edgesIgnoringSafeArea(.all)
+
     }
 
 //    кнопки назад и поделиться
@@ -95,7 +92,7 @@ struct RestaurantView: View {
 
 //    имя ресторана
     private func NameRest() -> some View {
-        Text(nameRest)
+        Text(restaurant.name)
             .foregroundStyle(.white)
             .bold()
             .font(.system(size: 30))
@@ -108,7 +105,7 @@ struct RestaurantView: View {
                 .resizable()
                 .frame(width: 24, height: 24)
                 .padding(.top, 4)
-            Text(String(format: "%.1f" , rating))
+            Text(String(format: "%.1f" , restaurant.rating))
                 .font(.system(size: 22))
                 .bold()
             Spacer()
@@ -146,7 +143,7 @@ struct RestaurantView: View {
         Button(action: {
             // TODO: add action.
         }, label: {
-            Image(systemName: inCollection ? "bookmark.fill" : "bookmark")
+            Image(systemName: restaurant.inCollection ? "bookmark.fill" : "bookmark")
                 .frame(width: 45, height: 45)
                 .foregroundStyle(.black)
                 .background(.white)
@@ -158,7 +155,7 @@ struct RestaurantView: View {
     private func BadgesTrain() -> some View {
         ScrollView(.horizontal) {
             HStack {
-                ForEach(tags, id:\.self) { tag in
+                ForEach(restaurant.tags, id:\.self) { tag in
                     Chips(text: tag)
                 }
             }
@@ -220,11 +217,11 @@ struct RestaurantView: View {
     }
 
     private func ComentYGPT() -> some View {
-        Text("\(nameRest) - это стильное и уютное метсто, где вы можете насладиться вкусной едой и напитками. Здесь вы можете попробовать лучши коктейли в городе")
+        Text(restaurant.description)
             .font(.system(size: 14))
     }
 }
 
 #Preview {
-    RestaurantView(nameRest: "МЭЛТ", rating: 5.0, inCollection: false, tags: ["Итальянская", "Европейская"])
+    RestaurantView(restaurant: SnippetDTO.mockData[2])
 }

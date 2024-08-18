@@ -10,14 +10,20 @@ import BottomSheet
 
 struct BottomSheetView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
-    
+    @State private var isSheetPresented = false
+    @State private var selectedSnipped: SnippetDTO?
+
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 ForEach(viewModel.snippets, id: \.self) { snippet in
                     SnippetCell(restaurant: snippet)
-                        .sheet(isPresented: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Is Presented@*/.constant(false)/*@END_MENU_TOKEN@*/, content: {
-                            /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Sheet Content")/*@END_MENU_TOKEN@*/
+                        .onTapGesture {
+                            selectedSnipped = snippet
+                            isSheetPresented = true
+                        }
+                        .sheet(item: $selectedSnipped, content: { item in
+                            RestaurantView(restaurant: item)
                         })
                 }
             }
