@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-var textNames = ["1000-2500р", "Европейская", "Коктейли", "Завтрак"]
 var imageRest = ["1rest", "2rest", "3rest"]
 
 struct SnippetCell: View {
@@ -44,21 +43,6 @@ struct SnippetCell: View {
 
             ImageRestWithPC(pages: pages)
                 .frame(height: 150)
-//            Image("1rest")
-//                .resizable()
-//                .aspectRatio(contentMode: .fill)
-//                .frame(height: 200)
-//                .cornerRadius(24)
-
-//            ZStack {
-//
-//
-//                PageControl(numberOfPages: 3, currentPage:$currentPage)
-//                    .frame(width: 20.0, height: 20)
-//                    .padding(.top, 150)
-//                    .padding()
-//            }
-//
 
             ZStack {
                 Image(systemName: "circle.fill")
@@ -86,7 +70,7 @@ struct SnippetCell: View {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 12, height: 12)
-                Text("\(restaurant.rating)")
+                Text("\(String(format: "%.1f" , restaurant.rating))")
                     .font(.system(size: 14))
             }
         }
@@ -94,11 +78,12 @@ struct SnippetCell: View {
 
     private func Meta() -> some View {
         HStack {
-            Text("До 00:00")
+            Text("До \(restaurant.closeTime.dropLast(2))0")
             Image(systemName: "circle.fill")
                 .resizable()
                 .frame(width: 2, height: 2)
-            Text("м. Китай-город")
+            Text("\(restaurant.address)")
+                .lineLimit(1)
             Image(systemName: "circle.fill")
                 .resizable()
                 .frame(width: 2, height: 2)
@@ -118,8 +103,8 @@ struct SnippetCell: View {
     private func BadgesTrain() -> some View {
         ScrollView(.horizontal) {
             HStack {
-                ForEach(textNames, id:\.self) { textName in
-                    Chips(text: textName)
+                ForEach(restaurant.tags, id:\.self) { tag in
+                    Chips(text: tag)
                 }
             }
         }
