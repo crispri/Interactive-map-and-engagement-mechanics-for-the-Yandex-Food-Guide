@@ -13,7 +13,7 @@ import SwiftUI
 @MainActor
 final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     let mapView = YMKMapView(frame: CGRect.zero)
-    private lazy var map : YMKMap = {  return mapView?.mapWindow.map ?? .init() }()
+    lazy var map : YMKMap = {  return mapView?.mapWindow.map ?? .init() }()
     private let manager = CLLocationManager()
     private var targetPin: YMKPoint = .init()
     private let cameraListener = CameraListener()
