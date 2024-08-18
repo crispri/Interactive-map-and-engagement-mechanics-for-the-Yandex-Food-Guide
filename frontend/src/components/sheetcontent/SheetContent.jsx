@@ -8,7 +8,7 @@ import { setCurrentPin } from '../../lib/restaurantsSlice';
 import { useDispatch } from 'react-redux';
 import { InView } from 'react-intersection-observer';
 
-const SheetContent = ({ restaurants }) => {
+const SheetContent = ({ currentRest, setCurrentRest, collectionSetOpen, collectionRef, restaurants }) => {
   
   restaurants = restaurants.map(el => ({
     id: el.id,
@@ -26,7 +26,7 @@ const SheetContent = ({ restaurants }) => {
     pictures: el.pictures,
   }))
   const dispatch = useDispatch()
-  const [currentRest, setCurrentRest] = useState(null);
+  // const [currentRest, setCurrentRest] = useState(null);
   const debouncedValue = useDebounce(currentRest, 300);  
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const SheetContent = ({ restaurants }) => {
                   scrollSnapAlign: 'start',
                 }}
               >
-                <RestaurantCard restaurantInfo={el}/>
+                <RestaurantCard setCurrentRest={setCurrentRest} collectionSetOpen={collectionSetOpen} collectionRef={collectionRef} restaurantInfo={el}/>
               </div>
             )}
           </InView>

@@ -15,9 +15,9 @@ function Navbar() {
 
   const dispatch = useDispatch();
 
-  async function toggleButton() {
-	await dispatch(toggleIsInCollection());
-	if (isInCollection === true) {
+  function toggleButton() {
+	dispatch(toggleIsInCollection());
+	if (isInCollection === false) {
 		dispatch(getCollections());
 	} else {
 		dispatch(getSelections());
