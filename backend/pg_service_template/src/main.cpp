@@ -17,6 +17,12 @@
 #include <service/RestaurantService.hpp>
 #include <service/SelectionService.hpp>
 #include <service/MLService.hpp>
+#include <handlers/guide/v1/collection-create/collection-create.hpp>
+#include <handlers/guide/v1/insert-into-collection/insert-into-collection.hpp>
+#include "handlers/guide/v1/insert-into-collection/insert-into-collection.hpp"
+#include <service/SessionService.hpp>
+#include "handlers/guide/v1/auth/auth_middleware.hpp"
+
 
 
 int main(int argc, char* argv[]) {
@@ -40,8 +46,11 @@ int main(int argc, char* argv[]) {
   service::AppendSelectionService(component_list);
   service::AppendMLService(component_list);
   service::AppendMLRate(component_list);
+  service::AppendCollectionCreate(component_list);
+  service::AppendInsertIntoCollection(component_list);
 
-
+  service::AppendSessionController(component_list);
+  service::AppendSessionService(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

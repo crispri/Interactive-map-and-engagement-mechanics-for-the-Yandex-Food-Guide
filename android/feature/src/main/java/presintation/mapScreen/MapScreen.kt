@@ -3,6 +3,7 @@ package presintation.mapScreen
 import Utils.createBitmapFromVector
 import Utils.createBitmapFromView
 import Utils.invertColors
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ import pins.CustomPinView
 import pins.CustomPinViewSelected
 import pins.NormalPinView
 import pins.NormalPinViewSelected
+import java.text.DecimalFormat
 
 
 @Composable
@@ -40,8 +42,6 @@ fun MapScreen(
     curLocation: MutableState<Point?>,
     bottomSheetHeight: MutableState<Dp?>
 ) {
-
-
     fun raiseCameraPosition(dpValue: Dp, bottomLeft: Point, topRight: Point) {
 
         Log.e("raiseCameraPosition", "called")
@@ -74,17 +74,9 @@ fun MapScreen(
 
     }
 
-    LaunchedEffect(uiState.raiseRequired) {
-        if(uiState.raiseRequired && bottomSheetHeight.value != null){
-            if(bottomSheetHeight.value!! > 0.dp) {
-                raiseCameraPosition(bottomSheetHeight.value!!, uiState.lowerLeft, uiState.topRight)
-            }
-        }
-    }
-
-
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
 
+    //Mini
     //Mini - general
     val restaurantMarkerMini = remember {
         createBitmapFromVector(
@@ -125,12 +117,10 @@ fun MapScreen(
         remember { ImageProvider.fromBitmap(restaurantMarkerNormalSelected) }
 
     //Maxi
+
+    //Maxi
     val pinView = remember { CustomPinView(context = mapView.context) }
     val pinViewSelected = remember { CustomPinViewSelected(context = mapView.context) }
-    pinViewSelected.setTitle("Хороший бар")
-    pinViewSelected.setRating("4.9")
-    pinViewSelected.setDescription("кофе от 300Р")
-
 
     pinView.setTitle("aaaaa")
     pinView.setDescription("bbb")
@@ -273,10 +263,35 @@ fun MapScreen(
 
 
         uiState.restaurantsOnMap.reversed().forEachIndexed { index, restaurant ->
+
+            Log.d("maponmap11", "1111111itemId == ${uiState.selectedItemFromMapId}")
             //val selected = uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId
             val placemark = mapObjectCollection.addPlacemark()
             placemark.userData = restaurant.id
-
+//            var currentPin = restaurantMarkerImageProviderMini
+//            if (index < uiState.restaurantsOnMap.size - 6) {
+//                if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId  uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
+//                    currentPin = restaurantMarkerImageProviderMiniSelected
+//                } else {
+//                    currentPin = restaurantMarkerImageProviderMini
+//                }
+//            }
+//            else{
+//                if (index < uiState.restaurantsOnMap.size - 3) {
+//                    if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId  uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
+//                        restaurantMarkerImageProviderNormalSelected
+//                    } else {
+//                        restaurantMarkerImageProviderNormal
+//                    }
+//                } else {
+//                    if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId  uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
+//                        restaurantMarkerImageProviderMaxiSelected
+//                    } else {
+//                        restaurantMarkerImageProviderMaxi
+//                    }
+//                }
+//
+//            }
             val currentPin =
                 if (index < uiState.restaurantsOnMap.size - 6) {
                     if (uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromMapId || uiState.restaurantsOnMap.reversed()[index].id == uiState.selectedItemFromBottomSheetId) {
@@ -310,6 +325,7 @@ fun MapScreen(
                 geometry = restaurant.coordinates
                 setIcon(currentPin)
             }
+
             placemark.addTapListener(tapListener)
 
             mapView.addTabListener(tapListener)
@@ -323,6 +339,8 @@ fun MapScreen(
             geometry = curLocation.value ?: Point(55.733415, 37.590042)
             setIcon(curLocationMarkerImageProvider)
         }
+
+        Log.d("chastota", "message2222")
 
     }
 }

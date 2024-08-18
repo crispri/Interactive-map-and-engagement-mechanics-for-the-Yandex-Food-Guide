@@ -37,6 +37,7 @@ class RestaurantRepositoryImpl @Inject constructor(
         topRightLat: Double,
         topRightLon: Double,
         lowerLeftLat: Double,
+        onCollection: Boolean,
         filterList: List<Filter>,
     ): Flow<NetworkState<List<Restaurant>>> = flow {
         Log.d("SourceGetLoading", "start")
@@ -58,6 +59,7 @@ class RestaurantRepositoryImpl @Inject constructor(
                         lat = topRightLat,
                         lon = topRightLon,
                     ),
+                    onlyCollections = onCollection,
                     filters = filterList.map(Filter::toJson),
                 )
             )
@@ -77,6 +79,7 @@ class RestaurantRepositoryImpl @Inject constructor(
             emit(NetworkState.Failure(e))
         }
     }.flowOn(Dispatchers.IO)
+
 
     override fun getRestaurantById(
         token: String,
@@ -111,6 +114,7 @@ class RestaurantRepositoryImpl @Inject constructor(
 
     override fun getCollections(
         token: String,
+        isUserCollection: Boolean,
     ): Flow<NetworkState<List<CollectionOfPlace>>> = flow {
         Log.d("SourceGetLoading", "start")
         emit(NetworkState.Loading)
@@ -121,7 +125,7 @@ class RestaurantRepositoryImpl @Inject constructor(
 
             val response = api.getCollections(
                 bearToken,
-                requestBody = RequestBodyCollection(false)
+                requestBody = RequestBodyCollection(isUserCollection)
             )
 
             Log.d(

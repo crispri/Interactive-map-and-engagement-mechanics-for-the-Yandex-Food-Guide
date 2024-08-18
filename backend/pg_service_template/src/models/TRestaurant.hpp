@@ -24,6 +24,9 @@ struct TRestaurant {
     bool in_collection;
     std::string food;
     std::optional<std::vector<std::string>> interior;
+    int32_t score;
+
+    bool operator<(const TRestaurant& other);
 
     std::tuple<
         boost::uuids::uuid&,
@@ -40,7 +43,8 @@ struct TRestaurant {
         std::string&,
         std::optional<std::vector<std::string>>&,
         std::string&,
-        std::optional<std::vector<std::string>>&
+        std::optional<std::vector<std::string>>&,
+        int32_t
     > Introspect();
 };
 

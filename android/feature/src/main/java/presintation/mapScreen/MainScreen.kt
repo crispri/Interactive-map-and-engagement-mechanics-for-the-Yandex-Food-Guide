@@ -53,13 +53,11 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
@@ -76,20 +74,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
-import model.MainScreenEvent
-import model.NavigateToLocationEvent
-import model.Restaurant
-import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
 import model.CollectionOfPlace
 import model.Filter
+import model.MainScreenEvent
+import model.NavigateToLocationEvent
 import model.RaiseCameraPosition
 import model.RecommendationIsSelected
+import model.Restaurant
 import model.SelectItemFromBottomSheet
+import model.SwitchUserModeEvent
 import model.UpdateItemsOnMap
 import ui.BigCard
 import ui.CardWithImageAndText
-import ui.CategoryButtonCard
 import ui.TextCard
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
@@ -116,12 +113,11 @@ fun MainScreen(
 
     val listState = rememberLazyListState()
 
-    val bottomSheetHeight = remember { mutableStateOf<Dp?>(null)}
+    val bottomSheetHeight = remember { mutableStateOf<Dp?>(null) }
+
+    val list = mutableStateOf(uiState.restaurantsOnMap)
 
 
-    val list = remember {
-        mutableStateOf(uiState.restaurantsOnMap)
-    }
     val isMapSelected = remember { mutableStateOf(false) }
     var isSheetOpen by remember{ mutableStateOf(false) }
     val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -181,6 +177,10 @@ fun MainScreen(
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Hidden) {
             send(SelectItemFromBottomSheet(null))
+//            send(RaiseCameraPosition(false))
+        }
+        if (sheetState.currentValue == SheetValue.PartiallyExpanded) {
+//            send(RaiseCameraPosition(true))
         }
     }
 
@@ -204,7 +204,10 @@ fun MainScreen(
 
     val currentIndex = remember { mutableStateOf(0) }
 
-    LaunchedEffect(key1 = lazyListState.firstVisibleItemScrollOffset, key2 = sheetState.currentValue) {
+    LaunchedEffect(
+        key1 = lazyListState.firstVisibleItemScrollOffset,
+        key2 = sheetState.currentValue
+    ) {
         val visibleIndex = lazyListState.firstVisibleItemIndex
         val visibleItemOffset = lazyListState.firstVisibleItemScrollOffset
         val itemHeightPx = itemHeight.value.value
@@ -215,17 +218,19 @@ fun MainScreen(
             visibleIndex
         }
 
+
+        Log.d("lazyListState", "list = ${list.value}")
+        Log.d("lazyListState", "size = ${list.value.size}")
         Log.d("lazyListState", "Current Index: ${currentIndex.value}")
-        Log.d("lazyListState", "list: ${list.value}")
+        Log.d("lazyListState", "selectedItemFromBottomSheetId: ${uiState.selectedItemFromBottomSheetId}")
         if (sheetState.currentValue == SheetValue.PartiallyExpanded
             && uiState.selectedItemFromMapId == null) {
-            send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
-            send(RaiseCameraPosition(true))
+            if (list.value.isNotEmpty()){
+                send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
+            }
             Log.e("lazyListState", "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}")
         }
     }
-
-
 
     Box(
         modifier = Modifier
@@ -248,7 +253,7 @@ fun MainScreen(
                         .background(Color.White)
 
                 ) {
-                    Carousel(uiState = uiState, onFilterClick = {isSheetOpen = true}, send = send)
+                    Carousel(uiState = uiState, onFilterClick = { isSheetOpen = true }, send = send)
                     Spacer(modifier = Modifier.height(16.dp))
 //                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
@@ -301,23 +306,9 @@ fun MainScreen(
                                 shape = RoundedCornerShape(16.dp),
                                 colors = CardDefaults.cardColors(Color.White)
                             ) {
-                                Column{
-//                                    Image(
-//                                        painter = painterResource(id = com.example.core.R.drawable.hardcode_picture_of_cafe),
-//                                        contentDescription = "Фото места",
-//                                        modifier = Modifier
-//                                            .fillMaxWidth()
-//                                            .height(200.dp)
-//                                            .clip(RoundedCornerShape(16.dp))
-//                                    )
-
+                                Column {
                                     ImageCarousel(
-
                                         imageUrls = restaurant.pictures
-//                                        listOf(
-//                                            "https://pixy.org/src/0/7688.jpg",
-//                                            "https://avatanplus.com/files/resources/original/57a6de5284a4815663d4726f.jpg",
-//                                        )
                                     )
 
                                     Row(
@@ -356,14 +347,22 @@ fun MainScreen(
                                         text = restaurant.description,
                                         fontSize = 14.sp,
                                         color = Color.Gray,
-                                        modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
+                                        modifier = Modifier.padding(
+                                            top = 8.dp,
+                                            start = 8.dp,
+                                            end = 8.dp
+                                        ),
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis,
                                         lineHeight = 15.sp,
                                     )
 
                                     LazyRow(
-                                        modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
+                                        modifier = Modifier.padding(
+                                            top = 8.dp,
+                                            start = 8.dp,
+                                            end = 8.dp
+                                        )
                                     ) {
                                         items(restaurant.tags) { item ->
                                             TextCard(text = item)
@@ -387,7 +386,7 @@ fun MainScreen(
             }
         }
 
-        if (isSheetOpen){
+        if (isSheetOpen) {
             ModalBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -395,7 +394,7 @@ fun MainScreen(
                     .heightIn(screenHeight - 150.dp)
                     .padding(top = 50.dp),
                 sheetState = filterBottomSheetState,
-                onDismissRequest = { isSheetOpen = false},
+                onDismissRequest = { isSheetOpen = false },
                 scrimColor = Color.Black.copy(alpha = 0.32f),
                 dragHandle = null,
                 containerColor = Color.White
@@ -465,9 +464,9 @@ fun MainScreen(
             Spacer(modifier = Modifier.weight(0.4f))
 
             FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.onSurface,
+                containerColor = if (uiState.isCollectionMode) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSecondary,
                 onClick = {
-                    send(SaveInCollectionEvent(""))
+                    send(SwitchUserModeEvent())
                 },
                 shape = CircleShape,
             ) {
@@ -475,7 +474,11 @@ fun MainScreen(
                     modifier = Modifier.size(28.dp, 28.dp),
                     painter = painterResource(R.drawable.baseline_bookmark_border_24),
                     contentDescription = "go_back",
-                    colorFilter = ColorFilter.tint(Color.White)
+                    colorFilter = if (uiState.isCollectionMode)
+                        ColorFilter.tint(Color.White)
+                    else ColorFilter.tint(
+                        Color.Black
+                    )
                 )
             }
         }
@@ -539,9 +542,9 @@ fun CollectionCarousel(
     val configuration = LocalConfiguration.current
     val screenWidthInt = configuration.screenWidthDp
     LaunchedEffect(selectedCardIndex) {
-        if(selectedCardIndex != -1){
+        if (selectedCardIndex != -1) {
             send(RecommendationIsSelected(true))
-        } else{
+        } else {
             send(RecommendationIsSelected(false))
         }
     }
@@ -577,8 +580,8 @@ fun CollectionCarousel(
                 {},
                 onClick = {
                     val filterList = uiState.filterList
-                    filterList.removeAll { it.property == "selection_id"}
-                    if (isSelected){
+                    filterList.removeAll { it.property == "selection_id" }
+                    if (isSelected) {
                         selectedCardIndex = -1
                     } else {
                         selectedCardIndex = index
@@ -586,7 +589,13 @@ fun CollectionCarousel(
                     }
 
                     Log.d("okFilter", filterList.toString())
-                    send(UpdateItemsOnMap(uiState.lowerLeft, uiState.topRight, filterList = filterList))
+                    send(
+                        UpdateItemsOnMap(
+                            uiState.lowerLeft,
+                            uiState.topRight,
+                            filterList = filterList
+                        )
+                    )
                 },
                 modifier = Modifier
                     .width(cardWidth)
@@ -621,22 +630,22 @@ fun Carousel(uiState: MainUiState, onFilterClick: () -> Unit, send: (MainScreenE
 
     val itemsList = listOf(
         "Музыка громче",
-        "Завтраки",
+        "Завтрак",
         "Винотека",
         "Европейская",
         "Коктели",
         "Можно с собакой",
         "Веранда"
     )
-    Row{
+    Row {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
         ) {
-            item{
+            item {
                 IconButton(
-                    onClick = {onFilterClick()},
+                    onClick = { onFilterClick() },
                     colors = IconButtonColors(
                         Color(0xFFE2E2E2),
                         Color.Black,

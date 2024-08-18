@@ -107,6 +107,9 @@ import ui.CardWithImageAndText
 import ui.CategoryButtonCard
 import ui.TextCard
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
@@ -139,7 +142,10 @@ fun FilterBottomScreen(
                     rowsCount = 2,
                     cardDescription = "Тип заведения",
                     cardItemsCount = arrayOf(2, 3),
-                    cardItemsText = arrayOf(arrayOf("Азиатский ресторан", "Бар-клуб"), arrayOf("Бельгийский бар", "Бистро", "Винотека")),
+                    cardItemsText = arrayOf(
+                        arrayOf("Азиатский ресторан", "Бар-клуб"),
+                        arrayOf("Бельгийский бар", "Бистро", "Винотека")
+                    ),
                     send = send,
                     uiState = uiState
                 )
@@ -150,7 +156,10 @@ fun FilterBottomScreen(
                     rowsCount = 2,
                     cardDescription = "Блюда",
                     cardItemsCount = arrayOf(4, 4),
-                    cardItemsText = arrayOf(arrayOf("Десерты", "Бургер", "Суши", "Пиццы"), arrayOf("Вок", "Суп", "Паста", "Шашлык")),
+                    cardItemsText = arrayOf(
+                        arrayOf("Десерты", "Бургер", "Суши", "Пиццы"),
+                        arrayOf("Вок", "Суп", "Паста", "Шашлык")
+                    ),
                     send = send,
                     uiState = uiState
                 )
@@ -160,7 +169,10 @@ fun FilterBottomScreen(
                     rowsCount = 2,
                     cardDescription = "Кухни",
                     cardItemsCount = arrayOf(3, 3),
-                    cardItemsText = arrayOf(arrayOf("Европа", "Грузия", "Итальянская"), arrayOf("Русская", "Узбекская", "Восток")),
+                    cardItemsText = arrayOf(
+                        arrayOf("Европа", "Грузия", "Итальянская"),
+                        arrayOf("Русская", "Узбекская", "Восток")
+                    ),
                     send = send,
                     uiState = uiState
                 )
@@ -171,7 +183,10 @@ fun FilterBottomScreen(
                     rowsCount = 2,
                     cardDescription = "Время работы",
                     cardItemsCount = arrayOf(2, 1),
-                    cardItemsText = arrayOf(arrayOf("Круглосуточно", "Открыто сейчас"), arrayOf("Открыто в указанное время")),
+                    cardItemsText = arrayOf(
+                        arrayOf("Круглосуточно", "Открыто сейчас"),
+                        arrayOf("Открыто в указанное время")
+                    ),
                     send = send,
                     uiState = uiState
                 )
@@ -182,9 +197,13 @@ fun FilterBottomScreen(
                     rowsCount = 2,
                     cardDescription = "Доступность",
                     cardItemsCount = arrayOf(2, 1),
-                    cardItemsText = arrayOf(arrayOf("Пандус", "Парковка для инвалидов"), arrayOf("Туалет для инвалидов")),
+                    cardItemsText = arrayOf(
+                        arrayOf("Пандус", "Парковка для инвалидов"),
+                        arrayOf("Туалет для инвалидов")
+                    ),
                     send = send,
-                    uiState = uiState)
+                    uiState = uiState
+                )
             }
 
             item {
@@ -205,9 +224,8 @@ fun FilterBottomScreen(
 }
 
 
-
 @Composable
-fun SortedByCard(){
+fun SortedByCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -390,7 +408,6 @@ fun SortedByCard(){
 }
 
 
-
 @Composable
 fun CategoryCard(
     rowsCount: Int,
@@ -452,7 +469,7 @@ fun CategoryRow(
 fun MainFilters(
     send: (MainScreenEvent) -> Unit,
     uiState: MainUiState
-){
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -469,14 +486,21 @@ fun MainFilters(
                 .padding(top = 10.dp, start = 8.dp, end = 8.dp, bottom = 10.dp)
         ) {
             CategoryRow(2, "Рядом со мной", "Навынос", send = send, uiState = uiState)
-            CategoryRow(itemsCount = 3, "Кофе с собой", "Танцпол", "Бар", send = send, uiState = uiState)
+            CategoryRow(
+                itemsCount = 3,
+                "Выпить кофе",
+                "Танцпол",
+                "Бар",
+                send = send,
+                uiState = uiState
+            )
             Row(
                 modifier = Modifier.padding(top = 6.dp)
             ) {
                 val painterFood = painterResource(id = R.drawable.ic_raiting)
                 CategoryImageFilterButtonCard(
                     uiState = uiState,
-                    text = "Гид ULTIMA",
+                    text = "ULTIMA GUIDE",
                     send,
                     image = painterFood
                 )
@@ -489,11 +513,39 @@ fun MainFilters(
                 )
             }
             CategoryRow(3, "Новое место", "Гриль", "Музыка", send = send, uiState = uiState)
-            CategoryRow(itemsCount = 3, "Летняя веранда", "Панорманый вид", "Халал", send = send, uiState = uiState)
+            CategoryRow(
+                itemsCount = 3,
+                "Летняя веранда",
+                "Панорманый вид",
+                "Халал",
+                send = send,
+                uiState = uiState
+            )
             CategoryRow(3, "Настольные игры", "На крыше", "Бильярд", send = send, uiState = uiState)
-            CategoryRow(itemsCount = 3, "Детское меню", "Детская комната", "Завтраки", send = send, uiState = uiState)
-            CategoryRow(itemsCount = 3, "Дог-френдли", "Бизнес-ланч", "Свидание", send = send, uiState = uiState)
-            CategoryRow(itemsCount = 2, "Для большой компании", "Семейный", send = send, uiState = uiState)
+            CategoryRow(
+                itemsCount = 3,
+                "Детское меню",
+                "Детская комната",
+                "Завтрак",
+                send = send,
+                uiState = uiState
+            )
+            CategoryRow(
+                itemsCount = 3,
+                "Дог-френдли",
+                "Бизнес-ланч",
+                "Выпить кофе",
+                "Свидание",
+                send = send,
+                uiState = uiState
+            )
+            CategoryRow(
+                itemsCount = 2,
+                "Для большой компании",
+                "Семейный ужин с детьми",
+                send = send,
+                uiState = uiState
+            )
         }
     }
 }
@@ -509,9 +561,11 @@ fun FilterResultCard() {
             .shadow(6.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 40.dp), verticalArrangement = Arrangement.Bottom) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 40.dp), verticalArrangement = Arrangement.Bottom
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -561,19 +615,78 @@ fun FilterResultCard() {
 
 
 @Composable
-fun CategoryImageFilterButtonCard(uiState: MainUiState, text: String, send: (MainScreenEvent) -> Unit, image: Painter) {
+fun CategoryImageFilterButtonCard(
+    uiState: MainUiState,
+    text: String,
+    send: (MainScreenEvent) -> Unit,
+    image: Painter
+) {
     var isSelected by remember { mutableStateOf(uiState.filterMap[text] ?: false) }
 
     TextButton(
         onClick = {
             isSelected = !isSelected
-            val filter = Filter(
-                property = text,
-                value = listOf(text),
-                operator = "eq",
-                isSelected = !isSelected
-            )
-            send(SelectFilter(isSelected, filter))
+            var filter = Filter("", listOf(""), "", !isSelected)
+            when (text) {
+                "Высокий рейтинг" -> {
+                    filter = Filter(
+                        property = "rating",
+                        value = listOf(4.5),
+                        operator = "gt",
+                        isSelected = !isSelected,
+                    )
+                    send(SelectFilter(isSelected, filter))
+                }
+
+                "Круглосуточно" -> {
+                    filter = Filter(
+                        property = "open_time",
+                        value = listOf("00:00:00"),
+                        operator = "eq",
+                        isSelected = !isSelected,
+                    )
+                    send(SelectFilter(isSelected, filter))
+                    filter = Filter(
+                        property = "close_time",
+                        value = listOf("00:00:00"),
+                        operator = "eq",
+                        isSelected = !isSelected,
+                    )
+                    send(SelectFilter(isSelected, filter))
+                }
+
+                "Открыто сейчас" -> {
+                    val currentTime = System.currentTimeMillis()
+                    val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                    val formattedTime = sdf.format(Date(currentTime))
+                    filter = Filter(
+                        property = "open_time",
+                        value = listOf(formattedTime),
+                        operator = "gt",
+                        isSelected = !isSelected,
+                    )
+                    send(SelectFilter(isSelected, filter))
+                    filter = Filter(
+                        property = "close_time",
+                        value = listOf(formattedTime),
+                        operator = "gt",
+                        isSelected = !isSelected,
+                    )
+                    send(SelectFilter(isSelected, filter))
+                }
+
+                else -> {
+                    if (text == "Завтрак" || text == "ULTIMA GUIDE" || text == "Бар" || text == "Бизнес-ланч" || text == "Семейный ужин с детьми") {
+                        filter = Filter(
+                            property = "tags",
+                            value = listOf(text),
+                            operator = "in",
+                            isSelected = !isSelected,
+                        )
+                        send(SelectFilter(isSelected, filter))
+                    }
+                }
+            }
         },
         colors = ButtonDefaults.textButtonColors(
             containerColor = if (isSelected) Color.Black else Color(0xFFE2E2E2),
@@ -591,7 +704,9 @@ fun CategoryImageFilterButtonCard(uiState: MainUiState, text: String, send: (Mai
                 painter = image,
                 contentDescription = "Your Icon",
                 modifier = Modifier.size(24.dp),
-                colorFilter = if (isSelected) ColorFilter.tint(Color.White) else ColorFilter.tint(Color.Black)
+                colorFilter = if (isSelected) ColorFilter.tint(Color.White) else ColorFilter.tint(
+                    Color.Black
+                )
             )
             Spacer(modifier = Modifier.width(4.dp))
             BasicText(
@@ -607,23 +722,16 @@ fun CategoryImageFilterButtonCard(uiState: MainUiState, text: String, send: (Mai
 }
 
 
-
-
-
 @Composable
 fun CategoryFilterButtonCard(uiState: MainUiState, text: String, send: (MainScreenEvent) -> Unit) {
 
     val flag =
-        if(uiState.filterMap[text] != null) uiState.filterMap[text]!!
+        if (uiState.filterMap[text] != null) uiState.filterMap[text]!!
         else false
     val isSelected = remember { mutableStateOf(uiState.filterMap[text] ?: false) }
     LaunchedEffect(flag) {
         isSelected.value = flag
     }
-
-
-
-    Log.d("FLAG", "${isSelected.toString()}, ${text}")
 
     TextButton(
         colors = ButtonDefaults.textButtonColors(
@@ -632,19 +740,29 @@ fun CategoryFilterButtonCard(uiState: MainUiState, text: String, send: (MainScre
         ),
         onClick = {
             isSelected.value = !isSelected.value
-            val filter = Filter(
-                property = text,
-                value = listOf(text),
-                operator = "eq",
-                isSelected = !isSelected.value
-            )
-            Log.d("UNTIL SEND isSelected $text", "$text ${isSelected.value}")
-            Log.d("UNTIL SEND filterList", uiState.filterList.toString())
-            Log.d("UNTIL SEND filterMap", "${uiState.filterMap.keys.toString()}  ${uiState.filterMap.values.toString()}")
-            send(SelectFilter(isSelected.value, filter))
+            if (text == "Завтрак" || text == "ULTIMA GUIDE" || text == "Бар" || text == "Бизнес-ланч" || text == "Семейный ужин с детьми") {
+
+                val filter = Filter(
+                    property = "tags",
+                    value = listOf(text),
+                    operator = "in",
+                    isSelected = !isSelected.value
+                )
+                Log.d("UNTIL SEND isSelected $text", "$text ${isSelected.value}")
+                Log.d("UNTIL SEND filterList", uiState.filterList.toString())
+                Log.d(
+                    "UNTIL SEND filterMap",
+                    "${uiState.filterMap.keys.toString()}  ${uiState.filterMap.values.toString()}"
+                )
+                send(SelectFilter(isSelected.value, filter))
+
+            }
             Log.d("isSelected $text", "$text ${isSelected.value}")
             Log.d("filterList", uiState.filterList.toString())
-            Log.d("filterMap", "${uiState.filterMap.keys.toString()}  ${uiState.filterMap.values.toString()}")
+            Log.d(
+                "filterMap",
+                "${uiState.filterMap.keys.toString()}  ${uiState.filterMap.values.toString()}"
+            )
         },
         modifier = Modifier
             .padding(horizontal = 4.dp)

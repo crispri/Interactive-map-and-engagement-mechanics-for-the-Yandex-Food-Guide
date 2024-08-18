@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS guide.places (
     tags varchar(50)[],
     food TEXT NOT NULL,
     interior TEXT[],
-    additional_info TEXT,
+    additional_info TEXT NOT NULL,
+    score INTEGER DEFAULT 0,
     CHECK (rating >= 1.0 AND rating <= 5.0),
     CHECK (price_lower_bound > 0 AND price_lower_bound <= price_upper_bound)
 );
@@ -35,8 +36,8 @@ CREATE TABLE IF NOT EXISTS guide.selections (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     owner_id UUID,
-    picture TEXT NOT NULL,
-    link TEXT NOT NUll,
+    picture TEXT,
+    link TEXT,
     FOREIGN KEY(owner_id) REFERENCES guide.users(id)
 );
 
@@ -44,7 +45,8 @@ CREATE TABLE IF NOT EXISTS guide.places_selections (
    place_id UUID,
    selection_id UUID,
    FOREIGN KEY(place_id) REFERENCES guide.places(id),
-   FOREIGN KEY(selection_id) REFERENCES guide.selections(id)
+   FOREIGN KEY(selection_id) REFERENCES guide.selections(id),
+   CONSTRAINT PK UNIQUE (place_id, selection_id)
 );
 
 -- CREATE TABLE IF NOT EXISTS guide.visibility (
@@ -57,12 +59,12 @@ CREATE TABLE IF NOT EXISTS guide.places_selections (
 CREATE TABLE IF NOT EXISTS guide.auth (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     session_id UUID NOT NULL DEFAULT uuid_generate_v4(),
-    started_at TIMESTAMPTZ NOT NULL,
-    expires_at TIMESTAMPTZ NOT NULL
+    expiration_time TIMESTAMPTZ NOT NULL
 );
 
-INSERT INTO guide.auth(user_id, session_id, started_at, expires_at) VALUES
-    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', '5142cece-b22e-4a4f-adf9-990949d053ff','2024-08-10 14:30:45+03', '2024-09-10 22:30:45+03');
+
+INSERT INTO guide.auth(user_id, session_id, expiration_time) VALUES
+    ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', '5142cece-b22e-4a4f-adf9-990949d053ff','2024-09-10 22:30:45+03');
 
 INSERT INTO guide.users(id, name, password) VALUES
 ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'John', '1234');
@@ -509,6 +511,8 @@ VALUES
 (uuid_generate_v4(), 55.787302, 37.494101, 'Winners', 'Кофейня «Winners» – это уютное место, где можно насладиться ароматным кофе и разнообразными десертами', FALSE, 4.7, 500, 1500, '10:00', '20:00', 'м. Зорге', '<1000 ₽', ARRAY['<1000 ₽', 'Веранда', 'Кофейня'], 'https://avatars.mds.yandex.net/get-altay/4465779/2a0000017af395d31fcc0e64e2b7a9207ca8/XL_height', ARRAY['https://avatars.mds.yandex.net/get-altay/4797538/2a000001791efdaf6a9864f2e9300bde10ac/XL_height', 'https://avatars.mds.yandex.net/get-altay/5482016/2a0000017d660e0b3f0624295624609da88d/XL_height', 'https://avatars.mds.yandex.net/get-altay/9719535/2a000001898a5013d76074a9174cd45cd448/XL_height', 'https://avatars.mds.yandex.net/get-altay/4285172/2a0000017a3f64fa047826fde58e10cdba45/XL_height', 'https://avatars.mds.yandex.net/get-altay/10639454/2a0000018a6001cca6b5ac78dfecc20d5731/XL_height', 'https://avatars.mds.yandex.net/get-altay/4437253/2a000001791efdb006417978d0d5fd601485/XL_height', 'https://avatars.mds.yandex.net/get-altay/3986639/2a0000017ada4b558db81f20bdbc674ba0e1/XL_height', 'https://avatars.mds.yandex.net/get-altay/5455550/2a0000018326c81f70e7aef4397b30421164/XL_height', 'https://avatars.mds.yandex.net/get-altay/3733076/2a00000179e65595f846ed667fb5aab0b291/XL_height'], 795938),
 (uuid_generate_v4(), 55.804745, 37.513214, 'Пич', 'Кофейня «Пич» – это уютное место, где можно насладиться ароматным кофе и вкусными десертами', FALSE, 5.0, 500, 1500, '10:00', '18:00', 'м. Сокол', '<1000 ₽', ARRAY['<1000 ₽', 'Кофейня'], 'https://avatars.mds.yandex.net/get-altay/10175550/2a0000018a46f93337d28f09c5e75df6e157/XL_height', ARRAY['https://avatars.mds.yandex.net/get-eda/3583862/013c0dbe310058ff20968469dfc223c3/XL_height', 'https://avatars.mds.yandex.net/get-altay/897342/2a0000018c258146e766c8418ab35db453bd/XL_height', 'https://avatars.mds.yandex.net/get-altay/11003990/2a0000018c25815108e549201a644c56ca36/XL_height', 'https://avatars.mds.yandex.net/get-altay/10142335/2a0000018c258151c13d0a9893d21a16808f/XL_height', 'https://avatars.mds.yandex.net/get-altay/10637974/2a0000018c2581557246a0131403cfb822c7/XL_height', 'https://avatars.mds.yandex.net/get-altay/5104371/2a0000018819cdacf90e9398432678373a39/XL_height', 'https://avatars.mds.yandex.net/get-altay/10639454/2a0000018ab767a0182b953983795e9cf4a9/XL_height', 'https://avatars.mds.yandex.net/get-altay/10637974/2a0000018c25815425d028f298b5364c3750/XL_height', 'https://avatars.mds.yandex.net/get-altay/9829646/2a00000190abbda777979a7be049bee9c4f0/XL_height'], 125546),
 (uuid_generate_v4(), 55.78646, 37.494889, 'Грузинчик', 'Кафе «Грузинчик» – это место, где можно попробовать блюда грузинской кухни и насладиться уютной атмосферой', FALSE, 4.4, 500, 1500, '9:00', '23:00', 'м. Зорге', '<1000 ₽', ARRAY['<1000 ₽', 'Кавказская', 'Грузинская', 'Кафе'], 'https://avatars.mds.yandex.net/get-altay/11003990/2a0000018b4ca44678e749361cdc8efd5201/XL_height', ARRAY['https://avatars.mds.yandex.net/get-eda/1463280/28bec14a1e8d0b3feb51ebfb5a5da102/XL_height', 'https://avatars.mds.yandex.net/get-altay/9827107/2a0000018984d546c6c9e810f39c9b6121ba/XL_height', 'https://avatars.mds.yandex.net/get-altay/6057477/2a0000018181bd8d6aa809552037ed112aaf/XL_height', 'https://avatars.mds.yandex.net/get-altay/10878016/2a0000018be38c7e092be2f3c1e76c1a785e/XL_height', 'https://avatars.mds.yandex.net/get-altay/6528051/2a00000187f2263b7ca00ba0042b2d43547e/XL_height', 'https://avatars.mds.yandex.net/get-altay/11748256/2a000001903fc2ca589319b3d9ab65db2b57/XL_height', 'https://avatars.mds.yandex.net/get-altay/6197788/2a00000183164e9e6909479e50a4aadbfe45/XL_height', 'https://avatars.mds.yandex.net/get-altay/910613/2a0000018cd0454c000592abfe319a222803/XL_height', 'https://avatars.mds.yandex.net/get-altay/10700956/2a0000018cd0437a8859243c6c15cacbc8f4/XL_height'], 934465);
+
+CREATE INDEX desc_score_idx ON guide.places(score DESC NULLS LAST);
 
 INSERT INTO guide.places_selections(
         place_id,

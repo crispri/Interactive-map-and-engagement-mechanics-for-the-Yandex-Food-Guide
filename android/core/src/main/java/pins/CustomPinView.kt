@@ -41,7 +41,7 @@ class CustomPinView @JvmOverloads constructor(
             .load(url)
             .placeholder(R.drawable.ic_mini_pin)
             .error(R.drawable.baseline_language_24)
-            .transform(CenterCrop(), RoundedCorners(dpToPx(50f, context.resources.displayMetrics).toInt()))
+            .transform(CenterCrop(), RoundedCorners(dpToPx(40f, context.resources.displayMetrics).toInt()))
             .into(object : com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>() {
                 override fun onResourceReady(resource: android.graphics.drawable.Drawable, transition: com.bumptech.glide.request.transition.Transition<in android.graphics.drawable.Drawable>?) {
                     imageView.setImageDrawable(resource)

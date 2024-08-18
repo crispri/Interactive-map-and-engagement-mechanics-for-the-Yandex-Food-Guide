@@ -88,6 +88,19 @@ add_library(${PROJECT_NAME}_objs OBJECT
         src/models/RestaurantFilterJSON/SelectionRestaurantFilterJSON.cpp
         src/models/RestaurantFilterJSON/TagRestaurantFilterJSON.hpp
         src/models/RestaurantFilterJSON/TagRestaurantFilterJSON.cpp
+        src/handlers/guide/v1/collection-create/collection-create.hpp
+        src/handlers/guide/v1/collection-create/collection-create.cpp
+        src/handlers/guide/v1/insert-into-collection/insert-into-collection.hpp
+        src/handlers/guide/v1/insert-into-collection/insert-into-collection.cpp
+    src/handlers/guide/v1/auth/auth_middleware.hpp
+    src/handlers/guide/v1/auth/auth_middleware.cpp
+    src/models/session.cpp
+    src/models/session.hpp
+    src/repository/PgSessionRepository.hpp
+    src/repository/PgSessionRepository.cpp
+    src/service/SessionService.hpp
+    src/service/SessionService.cpp    
+
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 
