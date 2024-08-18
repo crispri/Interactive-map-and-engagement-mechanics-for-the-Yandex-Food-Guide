@@ -1,5 +1,6 @@
 #include "SelectionService.hpp"
 
+#include <boost/uuid/uuid.hpp>
 #include <userver/storages/postgres/component.hpp>
 #include <userver/components/component.hpp>
 #include <models/TRestaurant.hpp>
@@ -33,6 +34,9 @@ std::vector<TRestaurant> SelectionService::GetById(const boost::uuids::uuid& sel
     return repository_->GetById(selection_id, user_id);
 }
 
+boost::uuids::uuid SelectionService::CreateCollection(const boost::uuids::uuid& user_id, const std::string& name, const std::string& description) {
+    return repository_->CreateCollection(user_id, name, description);
+}
 
 
 void AppendSelectionService(userver::components::ComponentList& component_list) {

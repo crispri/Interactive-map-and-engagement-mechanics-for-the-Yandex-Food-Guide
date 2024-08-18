@@ -17,6 +17,7 @@
 #include <service/RestaurantService.hpp>
 #include <service/SelectionService.hpp>
 #include <service/MLService.hpp>
+#include <handlers/guide/v1/collection-create/collection-create.hpp>
 
 
 int main(int argc, char* argv[]) {
@@ -40,6 +41,7 @@ int main(int argc, char* argv[]) {
   service::AppendSelectionService(component_list);
   service::AppendMLService(component_list);
   service::AppendMLRate(component_list);
+  service::AppendCollectionCreate(component_list);
 
 
 

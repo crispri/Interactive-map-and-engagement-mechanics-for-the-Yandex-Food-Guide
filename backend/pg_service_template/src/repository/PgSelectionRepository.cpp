@@ -1,5 +1,6 @@
 #include "PgSelectionRepository.hpp"
 #include <models/TRestaurant.hpp>
+#include <string>
 
 namespace service {
 
@@ -41,6 +42,18 @@ std::vector<TRestaurant> PgSelectionRepository::GetById(const boost::uuids::uuid
    return restaurants.AsContainer<std::vector<TRestaurant>>(userver::storages::postgres::kRowTag);
 }
 
+boost::uuids::uuid PgSelectionRepository::CreateCollection(const boost::uuids::uuid& user_id, const std::string& name, const std::string& description) {
+    const auto& result = pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"( INSERT INTO guide.selections(name, description, owner_id) )"
+        R"( VALUES ($1, $2, $3) )"
+        R"( RETURNING id; )",
+        name,
+        description,
+        user_id
+    );
+    return result[0].As< boost::uuids::uuid >();
+}
 
 
 

@@ -88,6 +88,9 @@ add_library(${PROJECT_NAME}_objs OBJECT
         src/models/RestaurantFilterJSON/SelectionRestaurantFilterJSON.cpp
         src/models/RestaurantFilterJSON/TagRestaurantFilterJSON.hpp
         src/models/RestaurantFilterJSON/TagRestaurantFilterJSON.cpp
+        src/handlers/guide/v1/collection-create/collection-create.hpp
+        src/handlers/guide/v1/collection-create/collection-create.cpp
+
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

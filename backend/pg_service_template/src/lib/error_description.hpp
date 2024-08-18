@@ -23,6 +23,8 @@ enum class ErrorDescriprion {
     kReturnCollectionsNotSpecified,
     kOnlyCollectionsNotSpecified,
     kInvalidOnlyCollectionsValue,
+    kCollectionNameNotSpecified,
+    kCollectionDescriptionNotSpecified
 };
 
 extern const std::unordered_map<ErrorDescriprion, std::string> errorMapping;
