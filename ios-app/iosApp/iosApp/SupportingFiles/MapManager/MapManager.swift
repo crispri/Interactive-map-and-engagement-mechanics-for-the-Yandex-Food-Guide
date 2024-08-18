@@ -44,57 +44,119 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     
     func placePins(_ pins: [SnippetDTO]) {
         var cnt = 0
+        print("-------------------")
         
-        var snippets = pins
-        sortSnippets(&snippets)
-        for index in snippets.indices {
-            if var pp = placedPins[snippets[index].id] {
+        var bigPins = [SnippetDTO]()
+        for i in pins.indices {
+            if i == 0 {
+                bigPins.append(pins[i])
+                continue
+            }
+            var intersects = false
+            var insideWhile = false
+            var j = i + 1
+            while j < pins.count {
+                insideWhile = true
+                if isIntersection((pins[i], .high), (pins[j], .high)) {
+                    intersects = true
+                    break
+                }
+                j += 1
+            }
+            if !intersects && insideWhile {
+                bigPins.append(pins[i])
+            }
+        }
+        print("big pins count: \(bigPins.count)")
+        
+        var normalPins = [SnippetDTO]()
+        for  i in pins.indices {
+            if !bigPins.contains(pins[i]) {
+                var intersects = false
+                var insideWhile = false
+                
+                for j in bigPins.indices {
+                    insideWhile = true
+                    if isIntersection((pins[i], .medium), (pins[j], .high)) {
+                        intersects = true
+                        break
+                    }
+                }
+                
+                for j in normalPins.indices {
+                    insideWhile = true
+                    if isIntersection((pins[i], .medium), (pins[j], .medium)) {
+                        intersects = true
+                        break
+                    }
+                }
+                
+                if !intersects && insideWhile {
+                    normalPins.append(pins[i])
+                }
+            }
+        }
+        
+        var smallPins = [SnippetDTO]()
+        for  i in pins.indices {
+            if !bigPins.contains(pins[i]) && !normalPins.contains(pins[i]) {
+                smallPins.append(pins[i])
+            }
+        }
+        
+        
+        let result = bigPins + normalPins + smallPins
+        
+        for index in result.indices {
+            if var pp = placedPins[result[index].id] {
                 pp.1 = true
-                placedPins[snippets[index].id] = pp
+                placedPins[result[index].id] = pp
             } else {
                 let placemark = map.mapObjects.addPlacemark()
                 placemark.geometry = .init(
-                    latitude: snippets[index].coordinates.lat,
-                    longitude: snippets[index].coordinates.lon
+                    latitude: result[index].coordinates.lat,
+                    longitude: result[index].coordinates.lon
                 )
                 let commonStyle = YMKIconStyle(
                     anchor: CGPoint(x: 0.5, y: 1.0) as NSValue,
                     rotationType: .none,
                     zIndex: 1,
-                    flat: true,
+                    flat: false,
                     visible: true,
                     scale: 1.0,
                     tappableArea: nil
                 )
-                if index < 3 {
-                    let uiView = BigPinView(frame: .init(x: 0, y: 0, width: 172, height: 106), model: pins[index])
-//                    uiView.model = pins[index]
+                if index < bigPins.count {
+                    let uiView = BigPinView(
+                        frame: .init(x: 0, y: 0, width: 172, height: 106),
+                        model: result[index]
+                    )
                     uiView.setSelected(false)
                     placemark.setIconWith(uiView.asImage(), style: commonStyle)
-                } else if index < 6 {
+                } else if index < bigPins.count + normalPins.count {
                     let uiView = NormalPinView(
                         frame: .init(x: 0, y: 0, width: PinSize.normal.width, height: PinSize.normal.height)
                     )
-                    uiView.model = snippets[index]
+                    uiView.model = result[index]
                     uiView.setSelected(false)
                     placemark.setIconWith(uiView.asImage(), style: commonStyle)
-                } else if index < 20 {
+                } else {
                     let smallStyle = YMKIconStyle(
                         anchor: CGPoint(x: 0.0, y: 0.0) as NSValue,
                         rotationType: .none,
                         zIndex: 0,
-                        flat: true,
+                        flat: false,
                         visible: true,
                         scale: 1.5,
                         tappableArea: nil
                     )
                     let uiView = SmallPinView(
                         frame: .init(x: 0, y: 0, width: PinSize.big.width, height: PinSize.big.height),
-                        model: snippets[index]
+                        model: result[index]
                     )
                     placemark.setIconWith(uiView.asImage(), style: smallStyle)
                 }
-                placedPins[snippets[index].id] = (placemark, true)
+                placedPins[result[index].id] = (placemark, true)
                 cnt += 1
             }
         }
@@ -184,30 +246,6 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         )
     }
     
-    private func sortSnippets(_ snippets: inout [SnippetDTO]) {
-        var index = 0
-        
-        while index < snippets.count {
-            var j = 0
-            var hasOverlap = false
-            
-            while j < index {
-                if isIntersection((snippets[index], getPriorityByIndex(index)), (snippets[j], getPriorityByIndex(index))) {
-                    hasOverlap = true
-                    break
-                }
-                j += 1
-            }
-            
-            if hasOverlap {
-                let overlappingRect = snippets.remove(at: index)
-                snippets.append(overlappingRect)
-            } else {
-                index += 1
-            }
-        }
-    }
-    
     private func getPriorityByIndex(_ index: Int) -> PinPriority {
         if index < 3 {
             return .high
@@ -221,69 +259,43 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     
     private func isIntersection(_ lhs: (SnippetDTO, PinPriority), _ rhs: (SnippetDTO, PinPriority)) -> Bool {
-        let lhsRect = getRect(lhs)
-        let rhsRect = getRect(rhs)
+        let lhsCenter = getCenter(lhs)
+        let rhsCenter = getCenter(rhs)
+        guard let coef = mapView?.mapWindow.scaleFactor else { return false }
         
-        if lhsRect.rightBottomX < rhsRect.leftTopX || rhsRect.rightBottomX < lhsRect.leftTopX {
-            return false
-        }
-        
-        if lhsRect.rightBottomY > rhsRect.leftTopY || rhsRect.rightBottomY > lhsRect.leftTopY {
-            return false
-        }
-        
-        return true
+        let result = (lhsCenter.x - rhsCenter.x) * (lhsCenter.x - rhsCenter.x) +
+        (lhsCenter.y - rhsCenter.y) * (lhsCenter.y - rhsCenter.y) < Float(202 * 202) * (coef + 1) * (coef + 1)
+        print(result)
+        return result
     }
     
-    private func getRect(_ snippet: (SnippetDTO, PinPriority)) -> Rectangle {
-        let lhsCenter = mapView?.mapWindow.worldToScreen(
+    private func getCenter(_ snippet: (SnippetDTO, PinPriority)) -> YMKScreenPoint {
+        let originPoint = mapView?.mapWindow.worldToScreen(
             withWorldPoint: YMKPoint(
                 latitude: snippet.0.coordinates.lat,
                 longitude: snippet.0.coordinates.lon
             )
         ) ?? YMKScreenPoint()
-        var lhsTopLeft: YMKScreenPoint? = nil
-        var lhsLowerRight: YMKScreenPoint? = nil
+        guard let coef = mapView?.mapWindow.scaleFactor else { return YMKScreenPoint() }
         switch snippet.1 {
         case .none:
-            return .init(leftTopX: 0, leftTopY: 0, rightBottomX: 0, rightBottomY: 0)
+            return .init(x: 0, y: 0)
         case .low:
-            lhsTopLeft = .init(
-                x: lhsCenter.x - Float(PinSize.small.width / 2),
-                y: lhsCenter.y - Float(PinSize.small.height / 2)
-            )
-            lhsLowerRight = .init(
-                x: lhsCenter.x + Float(PinSize.small.width / 2),
-                y: lhsCenter.y + Float(PinSize.small.height / 2)
+            return .init(
+                x: originPoint.x + Float(PinSize.small.width / 2) * coef,
+                y: originPoint.y + Float(PinSize.small.height / 2) * coef
             )
         case .medium:
-            lhsTopLeft = .init(
-                x: lhsCenter.x - Float(PinSize.normal.width / 2),
-                y: lhsCenter.y - Float(PinSize.normal.height)
-            )
-            lhsLowerRight = .init(
-                x: lhsCenter.x + Float(PinSize.normal.width / 2),
-                y: lhsCenter.y
+            return .init(
+                x: originPoint.x,
+                y: originPoint.y - Float(PinSize.normal.height / 2) * coef
             )
         case .high:
-            lhsTopLeft = .init(
-                x: lhsCenter.x - Float(PinSize.big.width / 2),
-                y: lhsCenter.y - Float(PinSize.big.height)
-            )
-            lhsLowerRight = .init(
-                x: lhsCenter.x + Float(PinSize.big.width / 2),
-                y: lhsCenter.y
+            return .init(
+                x: originPoint.x,
+                y: originPoint.y - Float(PinSize.big.height / 2) * coef
             )
         }
-        guard let lhsTopLeft, let lhsLowerRight else {
-            return .init(leftTopX: 0, leftTopY: 0, rightBottomX: 0, rightBottomY: 0)
-        }
-        return Rectangle(
-            leftTopX: lhsTopLeft.x,
-            leftTopY: lhsTopLeft.y,
-            rightBottomX: lhsLowerRight.x,
-            rightBottomY: lhsLowerRight.y
-        )
     }
     
     func getUserLocation() throws -> Point {
@@ -303,12 +315,5 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         case low
         case medium
         case high
-    }
-    
-    struct Rectangle {
-        var leftTopX: Float
-        var leftTopY: Float
-        var rightBottomX: Float
-        var rightBottomY: Float
     }
 }
