@@ -154,7 +154,7 @@ object Utils {
 
     val restaurants = listOf(
         Restaurant(
-            id = "",
+            id = "1",
             coordinates = Point(55.736863, 37.596052),
             name = "Blanc",
             description = "Ресторан авторской кухни, расположенный в исторической части города",
@@ -174,7 +174,7 @@ object Utils {
             pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
         ),
         Restaurant(
-            id = "",
+            id = "2",
             coordinates = Point(55.734252, 37.588973),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -194,7 +194,7 @@ object Utils {
 
         ),
         Restaurant(
-            id = "",
+            id = "3",
             coordinates = Point(55.732005, 37.587676),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -214,7 +214,7 @@ object Utils {
 
         ),
         Restaurant(
-            id = "",
+            id = "4",
             coordinates = Point(55.731359, 37.589837),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -234,7 +234,7 @@ object Utils {
 
         ),
         Restaurant(
-            id = "",
+            id = "5",
             coordinates = Point(55.732321, 37.592902),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -255,7 +255,7 @@ object Utils {
         ),
 
         Restaurant(
-            id = "",
+            id = "6",
             coordinates = Point(55.736012, 37.595277),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -275,7 +275,7 @@ object Utils {
 
         ),
         Restaurant(
-            id = "",
+            id = "7",
             coordinates = Point(55.730026, 37.589179),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
