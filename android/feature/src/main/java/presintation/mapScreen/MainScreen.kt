@@ -116,6 +116,8 @@ fun MainScreen(
     val bottomSheetHeight = remember { mutableStateOf<Dp?>(null) }
 
     val list = mutableStateOf(uiState.restaurantsOnMap)
+
+
     val isMapSelected = remember { mutableStateOf(false) }
     var isSheetOpen by remember{ mutableStateOf(false) }
     val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
