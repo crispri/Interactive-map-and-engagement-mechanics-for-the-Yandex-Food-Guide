@@ -1,4 +1,6 @@
 #include "selections.hpp"
+#include <boost/uuid/string_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #include <lib/error_response_builder.hpp>
 #include <models/selection.hpp>
 
@@ -14,6 +16,7 @@
 #include <userver/utils/assert.hpp>
 
 #include <service/SelectionService.hpp>
+#include <service/SessionService.hpp>
 namespace service {
 
 namespace {
@@ -34,7 +37,8 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
     selection_service_(
         component_context
         .FindComponent<SelectionService>()
-    )
+    ),
+    session_service_(component_context.FindComponent<SessionService>())
     {}
 
     std::string HandleRequestThrow(
@@ -61,7 +65,10 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
             ErrorDescriprion::kTokenNotSpecified
         );
       }
-      
+      boost::uuids::string_generator gen;
+      auto user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
+
+      LOG_ERROR()<<boost::uuids::to_string(user_id);
      
       auto selections = selection_service_.GetAll();
         userver::formats::json::ValueBuilder responseJSON;
@@ -78,6 +85,7 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
 
     
     SelectionService& selection_service_;
+    SessionService& session_service_;
     };
     
 }   // namespace 

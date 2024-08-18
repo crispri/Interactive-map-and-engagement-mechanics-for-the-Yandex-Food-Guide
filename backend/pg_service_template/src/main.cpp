@@ -17,6 +17,8 @@
 #include <service/RestaurantService.hpp>
 #include <service/SelectionService.hpp>
 #include <service/MLService.hpp>
+#include <service/SessionService.hpp>
+#include "handlers/guide/v1/auth/auth_middleware.hpp"
 
 
 
@@ -32,6 +34,9 @@ int main(int argc, char* argv[]) {
                             .Append<userver::components::Postgres>("postgres-db-1")
                             .Append<userver::clients::dns::Component>();
 
+  
+  service::AppendSessionController(component_list);
+  service::AppendSessionService(component_list);
 
   service::AppendRestaurantController(component_list);
   service::AppendRestaurantByIdController(component_list);

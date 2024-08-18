@@ -21,6 +21,7 @@
 #include <boost/lexical_cast.hpp>
 #include "lib/error_description.hpp"
 
+
 namespace service {
 
 namespace {
@@ -97,7 +98,7 @@ public:
 }  // namespace
 
 void AppendRestaurantByIdController(userver::components::ComponentList& component_list) {
-    component_list.Append<RestaurantByIdController>();
+    component_list.Append<RestaurantByIdController>();                
 }
 
 }  // namespace service

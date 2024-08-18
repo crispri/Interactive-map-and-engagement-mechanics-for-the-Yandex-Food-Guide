@@ -32,16 +32,24 @@ components_manager:
                     network_timeout_ms: 750
                     statement_timeout_ms: 500
 
+        default-server-middleware-pipeline-builder:
+            append:
+              - check-session-middleware           
+
         testsuite-support: {}
 
         restaurant-service-component: {}
         selection-service-component: {}
+        session-service-component: {}
 
         ml-service-component: {}
+        check-session-middleware: {}
+        
 
         http-client:
             load-enabled: $is-testing
             fs-task-processor: fs-task-processor
+
 
         tests-control:
             load-enabled: $is-testing
@@ -68,7 +76,7 @@ components_manager:
             path: /guide/v1/restaurants
             method: POST,OPTIONS
             task_processor: main-task-processor
-
+        
         handler-ml:
             path: /guide/v1/ml
             method: POST

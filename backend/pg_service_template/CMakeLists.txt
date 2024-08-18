@@ -63,6 +63,15 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/guide/v1/selection_by_id/recommendations_by_selection_id.cpp    
     src/service/MLService.hpp
     src/service/MLService.cpp
+    src/handlers/guide/v1/auth/auth_middleware.hpp
+    src/handlers/guide/v1/auth/auth_middleware.cpp
+    src/models/session.cpp
+    src/models/session.hpp
+    src/repository/PgSessionRepository.hpp
+    src/repository/PgSessionRepository.cpp
+    src/service/SessionService.hpp
+    src/service/SessionService.cpp
+
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 

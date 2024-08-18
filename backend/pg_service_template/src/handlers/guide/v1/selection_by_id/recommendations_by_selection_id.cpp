@@ -79,6 +79,7 @@ class RecommendationsBySelectionId final : public userver::server::handlers::Htt
             ErrorDescriprion::kInvalidSelectionId
         );
       }
+      const auto& request_body_string = request.RequestBody();
 
       
 

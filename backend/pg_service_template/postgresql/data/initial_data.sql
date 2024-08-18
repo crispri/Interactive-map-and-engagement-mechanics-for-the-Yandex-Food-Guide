@@ -52,12 +52,13 @@ CREATE TABLE IF NOT EXISTS guide.visibility (
 CREATE TABLE IF NOT EXISTS guide.auth (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     session_id UUID NOT NULL DEFAULT uuid_generate_v4(),
-    started_at TIMESTAMPTZ NOT NULL,
-    expires_at TIMESTAMPTZ NOT NULL
+    expiration_time TIMESTAMPTZ NOT NULL
 );
 
-INSERT INTO guide.auth(user_id, session_id, started_at, expires_at) VALUES
-    ('61846daf-3303-465e-ab7f-4af27d3e8f41', '5142cece-b22e-4a4f-adf9-990949d053ff','2024-08-10 14:30:45+03', '2024-09-10 22:30:45+03');
+
+
+INSERT INTO guide.auth(user_id, session_id, expiration_time) VALUES
+    ('61846daf-3303-465e-ab7f-4af27d3e8f41', '5142cece-b22e-4a4f-adf9-990949d053ff','2024-09-10 22:30:45+03');
 
 INSERT INTO guide.users(id, name, password) VALUES
 ('61846daf-3303-465e-ab7f-4af27d3e8f41', 'John', '1234');

@@ -4,4 +4,4 @@ logger-level: warning
 
 is-testing: false
 
-server-port: 8080
+server-port: 8081
