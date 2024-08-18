@@ -243,8 +243,6 @@ namespace service {
 
                 assert(restaurant_scores.size() == restaurants.size());
                 for (auto &restaurant: restaurants) {
-                    restaurant.score = restaurant_scores[restaurant.id];
-
                     if (restaurant.in_collection) {
                         restaurant_scores[restaurant.id] += 300000;
                     }
@@ -256,7 +254,7 @@ namespace service {
                             }
                         }
                     }
-
+                    restaurant.score = restaurant_scores[restaurant.id];
                 }
                 std::sort(restaurants.rbegin(), restaurants.rend());
 
