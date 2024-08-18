@@ -47,7 +47,7 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
  useEffect(() => {
   if (current_pin) {
     setLocation(loco => ({
-      center: [current_pin?.coordinates?.[0], current_pin?.coordinates?.[1]],
+      center: [current_pin.coordinates[0], current_pin.coordinates[1]],
       duration: 300,
     }))
   }
