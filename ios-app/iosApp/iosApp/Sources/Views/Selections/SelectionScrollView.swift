@@ -18,6 +18,7 @@ struct SelectionScrollView: View {
                         SelectionView(
                             title: viewModel.selections[index].name,
                             desc: viewModel.selections[index].description,
+                            imageUrlString: viewModel.selections[index].picture,
                             selected: Binding(
                                 get: {
                                     if let selectedCollection = viewModel.selectedCollection,
