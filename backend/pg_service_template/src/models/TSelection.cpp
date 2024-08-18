@@ -16,7 +16,10 @@ userver::formats::json::Value Serialize(
     if (selection.picture) {
         item["picture"] = selection.picture.value();
     }
-    item["link"] = selection.link;
+    if (selection.link) {
+        item["link"] = selection.link.value();
+    }
+    
    
     return item.ExtractValue();
 }

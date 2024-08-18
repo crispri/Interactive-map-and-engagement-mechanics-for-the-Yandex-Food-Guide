@@ -39,6 +39,10 @@ boost::uuids::uuid SelectionService::CreateCollection(const boost::uuids::uuid& 
 }
 
 
+void SelectionService::InsertIntoCollection(const boost::uuids::uuid& user_id, const boost::uuids::uuid& collection_id, const boost::uuids::uuid& restaurant_id) {
+    repository_->InsertIntoCollection(user_id, collection_id, restaurant_id);
+}
+
 void AppendSelectionService(userver::components::ComponentList& component_list) {
     component_list.Append<SelectionService>();
 }
