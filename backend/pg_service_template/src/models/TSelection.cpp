@@ -16,6 +16,8 @@ userver::formats::json::Value Serialize(
     if (selection.picture) {
         item["picture"] = selection.picture.value();
     }
+    item["link"] = selection.link;
+   
     return item.ExtractValue();
 }
 
@@ -24,6 +26,7 @@ std::tuple<
     std::string&,
     std::string&,
     std::optional<boost::uuids::uuid>&,
+    std::optional<std::string>&,
     std::optional<std::string>&
     > TSelection::Introspect()
 {
@@ -32,7 +35,8 @@ std::tuple<
           name,
           description,
           owner_id,
-          picture
+          picture,
+          link
     );
 }
 

@@ -30,6 +30,7 @@ function App() {
   const current_pin = useSelector((state) => state.restaurantsSlice.current_pin)
   const restaurants = useSelector((state) => state.restaurantsSlice.restaurants)
   const current_selection = useSelector((state) => state.restaurantsSlice.currentSelection)
+  const isInCollection = useSelector((state) => state.restaurantsSlice.is_in_collection)
   // console.log(current_pin, restaurants.filter(el => el.name === current_pin?.name));
   const {restId} = useParams()
 
@@ -50,7 +51,8 @@ function App() {
     setCurrentPolygon(obj.location.bounds)
   }
   const debouncedValue = useDebounce(currentPolygon, 300);
-  
+
+
   useEffect(() => {
     let body = {
       "lower_left_corner": {
@@ -71,8 +73,11 @@ function App() {
         ]
       }]
     }
+    if (isInCollection) {
+      body["only_collections"] = true
+    }
     dispatch(getRestaurants(body))
-  }, [debouncedValue, current_selection])
+  }, [debouncedValue, current_selection, isInCollection])
   const router = createBrowserRouter([
     {
       path: "/",

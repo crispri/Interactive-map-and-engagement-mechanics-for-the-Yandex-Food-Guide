@@ -12,11 +12,16 @@ data class MainUiState(
     val selectedItemFromMapId: String? = null,
     val selectedItemFromBottomSheetId: String? = null,
 
+    val curCoordinates: Pair<Point, Point>? = null,
+    val raiseRequired: Boolean = false,
+
     val currentAddress: String = "Льва Толстого, 16",
     val restaurantsOnMap: List<Restaurant> = listOf(),
     val recommendations: List<CollectionOfPlace> = listOf(),
+    val recommendationIsSelected: Boolean = false,
     val zoomValue: Float = 16.0f,
     val centeringIsRequired: Boolean = true,
+    val filterMap: HashMap<String, Boolean> = hashMapOf(),
 
     val lowerLeft: Point = Point(55.0, 37.0),
     val topRight: Point = Point(56.0, 38.0),
