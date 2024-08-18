@@ -84,7 +84,6 @@ namespace service {
                 }
                 ErrorResponseBuilder errorBuilder(request);
                 
-                LOG_ERROR() << "HERE0";
                 
                 const auto &request_body_string = request.RequestBody();
                 userver::formats::json::Value request_body_json = userver::formats::json::FromString(
@@ -162,7 +161,6 @@ namespace service {
                         const auto &property_name = filter["property"].As<std::string>();
 
                         if (!StringRestaurantFilterMapping_.count(property_name)) {
-                            LOG_ERROR() << property_name;
                             return errorBuilder.build(
                                     userver::server::http::HttpStatus::kBadRequest,
                                     ErrorDescriprion::kInvalidPropertyName
@@ -187,8 +185,6 @@ namespace service {
                     }
                 }
 
-                LOG_ERROR() << "FILTER STRING = ." << filter_string << ".";
-
                 TRestaurantFilter filters(
                         request_body_json["lower_left_corner"].As<TCoordinates>(),
                         request_body_json["top_right_corner"].As<TCoordinates>(),
@@ -197,12 +193,9 @@ namespace service {
                         only_collections
                 );
 
-                LOG_ERROR() << "HERE1";
-
                 boost::uuids::string_generator gen;
                 const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
 
-                LOG_ERROR() << boost::uuids::to_string(user_id);
                 auto restaurants = restaurant_service_.GetByFilter(filters, user_id);
 
                 userver::formats::json::ValueBuilder MLrequestJSON;
@@ -211,14 +204,11 @@ namespace service {
                     MLrequestJSON["restaurant_ids"].PushBack(
                             userver::formats::json::ValueBuilder{boost::uuids::to_string(restaurant.id)});
 
-                    LOG_ERROR() << restaurant.id;
                 }
-                LOG_ERROR() << "HERE2";
 
                 auto MLrequestString = userver::formats::json::ToPrettyString(MLrequestJSON.ExtractValue(),
                                                                               {' ', 4});
 
-                LOG_ERROR() << "HERE3";
                 http_client_.ResetUserAgent(boost::uuids::to_string(user_id));
 
                 const auto MLresponse = http_client_.CreateRequest()
@@ -228,15 +218,10 @@ namespace service {
                         .headers({std::make_pair("Cookie", "session_id=" + request.GetCookie("session_id"))})
                         .perform();
 
-                LOG_ERROR() << "HERE4";
                 const auto MLresponseBody = MLresponse->body_view();
-
-                LOG_ERROR() << "HERE5" << MLresponseBody;
 
                 userver::formats::json::Value MLresponseBodyJSON = userver::formats::json::FromString(
                         MLresponseBody);
-
-                LOG_ERROR() << "HERE6";
 
                 std::map<boost::uuids::uuid, int32_t> restaurant_scores;
 
@@ -267,7 +252,6 @@ namespace service {
                     restaurant.score = restaurant_scores[restaurant.id];
                 }
                 std::sort(restaurants.rbegin(), restaurants.rend());
-                LOG_ERROR() << "HERElkfdsj;lkgjslkgj " << restaurants.size();
                 userver::formats::json::ValueBuilder responseJSON;
                 responseJSON["items"].Resize(0);
                 for (auto &restaurant: restaurants) {
