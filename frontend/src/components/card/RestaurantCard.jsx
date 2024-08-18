@@ -5,10 +5,13 @@ import snippetFavourite from '../../assets/snippet_favourite.svg'
 import snippetUnfavourite from '../../assets/snippet_unfavourite.svg'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { getCollections } from '../../lib/restaurantsSlice';
 
-const RestaurantCard = ({ restaurantInfo }) => {
+const RestaurantCard = ({ setCurrentRest, collectionSetOpen, collectionRef, restaurantInfo }) => {
 
   const navigateTo = useNavigate();
+
+  const dispatch = useDispatch();
 
   function handleClick() {
     navigateTo("/restaurants/" + restaurantInfo?.id);
@@ -18,13 +21,23 @@ const RestaurantCard = ({ restaurantInfo }) => {
 
   function favouriteClick() {
     // useEffect
-    console.log('favouriteClick')
-    console.log(restaurantInfo?.pictures)
+    // console.log('favouriteClick')
+    // console.log(restaurantInfo?.pictures)
+    collectionSetOpen(true);
+    setCurrentRest(restaurantInfo?.id)
+    // collectionRef.current.snapTo(({ maxHeight }) => maxHeight);
   }
 
   function unfavouriteClick() {
-    console.log(restaurantInfo?.pictures)
-    console.log('unfavouriteClick')
+
+    console.log(restaurantInfo?.pictures);
+    console.log('unfavouriteClick');
+    dispatch(getCollections())
+    collectionSetOpen(true);
+
+
+    console.log(collectionRef.current);
+    // collectionRef.current.snapTo(({ maxHeight }) => maxHeight);
     // useEffect
   }
 

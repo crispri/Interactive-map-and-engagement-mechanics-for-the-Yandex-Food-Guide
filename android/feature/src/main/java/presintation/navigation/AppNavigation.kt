@@ -23,23 +23,27 @@ import presintation.restaurantScreen.RestaurantViewModel
 fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
+    val mainViewModel: MainViewModel = hiltViewModel()
+    val mainUiState by mainViewModel.uiState.collectAsState()
     NavHost(
         navController = navController,
         startDestination = AppDestination.HOME_SCREEN
     ) {
         composable(AppDestination.HOME_SCREEN) {
             HomeScreen(
+                mainViewModel::send,
+                mainUiState,
                 actions.onMapScreen
             )
         }
 
         composable(AppDestination.MAP_SCREEN) {
-            val mainViewModel: MainViewModel = hiltViewModel()
-            val uiState by mainViewModel.uiState.collectAsState()
+
+
 
             MainScreen(
                 navToRestaurant = actions.onRestaurantScreen,
-                uiState = uiState,
+                uiState = mainUiState,
                 navToBack = actions.onBack,
                 send = mainViewModel::send,
                 mapView = mapView,
