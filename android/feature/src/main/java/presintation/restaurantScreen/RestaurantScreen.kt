@@ -285,7 +285,7 @@ fun RestaurantTagsCarousel(onFilterClick: () -> Unit) {
     val itemsList = listOf(
         "ULTIMA GUIDE",
         "Рядом со мной",
-        "Завтраки",
+        "Завтрак",
         "Винотека",
         "Европейская",
         "Коктели",

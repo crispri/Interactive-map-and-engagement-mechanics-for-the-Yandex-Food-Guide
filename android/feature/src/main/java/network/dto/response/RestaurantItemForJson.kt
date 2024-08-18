@@ -18,6 +18,7 @@ data class RestaurantItemForJson(
     @SerializedName("is_favorite") val isFavorite: Boolean,
     @SerializedName("tags") val tags: List<String>,
     @SerializedName("in_collection") val inCollection: Boolean,
-    @SerializedName("pin") val pin: String,
-    @SerializedName("pictures") val pictures: List<String>,
+    @SerializedName("food") val food: String,
+    @SerializedName("interior") val interior: List<String>,
+    @SerializedName("score") val score: Long,
 )

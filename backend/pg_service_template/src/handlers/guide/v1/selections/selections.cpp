@@ -40,6 +40,10 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
     selection_service_(
         component_context
         .FindComponent<SelectionService>()
+    ),
+    session_service_(
+        component_context
+        .FindComponent<SessionService>()
     )
     {}
 
@@ -78,7 +82,9 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
       }
 
         boost::uuids::string_generator gen;
-        auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+        auto user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
+
+        LOG_ERROR()<<boost::uuids::to_string(user_id);
 
       auto selections = selection_service_.GetAll(user_id, request_body_json["return_collections"].As<bool>());
         userver::formats::json::ValueBuilder responseJSON;
@@ -95,6 +101,7 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
 
     
     SelectionService& selection_service_;
+    SessionService& session_service_;
     };
     
 }   // namespace 
