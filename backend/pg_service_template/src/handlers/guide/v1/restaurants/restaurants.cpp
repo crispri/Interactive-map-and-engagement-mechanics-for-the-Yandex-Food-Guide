@@ -244,21 +244,18 @@ namespace service {
                 assert(restaurant_scores.size() == restaurants.size());
                 for (auto &restaurant: restaurants) {
                     restaurant.score = restaurant_scores[restaurant.id];
-                    int32_t add_score = 0;
 
                     if (restaurant.in_collection) {
-                        add_score = 300000;
+                        restaurant_scores[restaurant.id] += 300000;
                     }
 
                     if (restaurant.tags) {
                         for (const auto& tag: *restaurant.tags) {
                             if (tag == "ULTIMA GUIDE" || tag == "Открытая кухня") {
-                                add_score = 500000;
+                                restaurant_scores[restaurant.id] += 500000;
                             }
                         }
                     }
-
-                    restaurant.score += add_score;
 
                 }
                 std::sort(restaurants.rbegin(), restaurants.rend());
