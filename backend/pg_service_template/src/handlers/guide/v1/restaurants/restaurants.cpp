@@ -76,15 +76,16 @@ namespace service {
                 }
                 ErrorResponseBuilder errorBuilder(request);
 
-        if (!request.HasHeader("Authorization")) {
-            return errorBuilder.build(
-                    userver::server::http::HttpStatus::kUnauthorized,
-                    ErrorDescriprion::kTokenNotSpecified
-            );
-        }
-        
-        const auto &request_body_string = request.RequestBody();
-        userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
+                if (!request.HasHeader("Authorization")) {
+                    return errorBuilder.build(
+                            userver::server::http::HttpStatus::kUnauthorized,
+                            ErrorDescriprion::kTokenNotSpecified
+                    );
+                }
+
+                const auto &request_body_string = request.RequestBody();
+                userver::formats::json::Value request_body_json = userver::formats::json::FromString(
+                        request_body_string);
 
                 if (!request_body_json.HasMember("lower_left_corner") &&
                     !request_body_json.HasMember("top_right_corner")) {
@@ -107,12 +108,12 @@ namespace service {
                     );
                 }
 
-        userver::storages::postgres::ParameterStore filter_params;
-        std::string filter_string;
-        bool only_collections = false;
-        if (request_body_json.HasMember("only_collections")) {
-            only_collections = request_body_json["only_collections"].As<bool>();
-        }
+                userver::storages::postgres::ParameterStore filter_params;
+                std::string filter_string;
+                bool only_collections = false;
+                if (request_body_json.HasMember("only_collections")) {
+                    only_collections = request_body_json["only_collections"].As<bool>();
+                }
 
                 if (request_body_json.HasMember("filters")) {
                     if (!request_body_json["filters"].IsArray()) {
@@ -185,13 +186,13 @@ namespace service {
 
                 LOG_ERROR() << "FILTER STRING = ." << filter_string << ".";
 
-        TRestaurantFilter filters(
-            request_body_json["lower_left_corner"].As<TCoordinates>(),
-            request_body_json["top_right_corner"].As<TCoordinates>(),
-            filter_params,
-            filter_string,
-            only_collections
-        );
+                TRestaurantFilter filters(
+                        request_body_json["lower_left_corner"].As<TCoordinates>(),
+                        request_body_json["top_right_corner"].As<TCoordinates>(),
+                        filter_params,
+                        filter_string,
+                        only_collections
+                );
 
                 boost::uuids::string_generator gen;
                 auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
@@ -218,7 +219,7 @@ namespace service {
                         .post("http://localhost:8080/guide/v1/ml_rate", std::move(MLrequestString))
                         .timeout(std::chrono::seconds(1))
                         .retry(10)
-                        .headers({ std::make_pair("Authorization", request.GetHeader("Authorization")) })
+                        .headers({std::make_pair("Authorization", request.GetHeader("Authorization"))})
                         .perform();
 
 
@@ -233,7 +234,7 @@ namespace service {
                         .As<std::vector<userver::formats::json::Value>>();
 
 
-                for (auto &pairJSON : scores_field) {
+                for (auto &pairJSON: scores_field) {
                     auto restaurant_id = pairJSON["restaurant_id"].As<std::string>();
                     auto score = pairJSON["score"].As<int32_t>();
 
@@ -242,7 +243,23 @@ namespace service {
 
                 assert(restaurant_scores.size() == restaurants.size());
                 for (auto &restaurant: restaurants) {
-                        restaurant.score = restaurant_scores[restaurant.id];
+                    restaurant.score = restaurant_scores[restaurant.id];
+                    int32_t add_score = 0;
+
+                    if (restaurant.in_collection) {
+                        add_score = 300000;
+                    }
+
+                    if (restaurant.tags) {
+                        for (const auto& tag: *restaurant.tags) {
+                            if (tag == "ULTIMA GUIDE" || tag == "Открытая кухня") {
+                                add_score = 500000;
+                            }
+                        }
+                    }
+
+                    restaurant.score += add_score;
+
                 }
                 std::sort(restaurants.rbegin(), restaurants.rend());
 
@@ -264,6 +281,7 @@ namespace service {
                     std::string, std::shared_ptr<IRestaurantFilterJSON>
             > StringRestaurantFilterMapping_;
         };
+
         const std::unordered_map<
                 std::string, std::shared_ptr<IRestaurantFilterJSON>
         > RestaurantController::StringRestaurantFilterMapping_ = {
