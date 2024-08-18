@@ -34,12 +34,8 @@ CREATE TABLE IF NOT EXISTS guide.selections (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     owner_id UUID,
-<<<<<<< HEAD
     picture TEXT,
-=======
-    picture TEXT NOT NULL,
-    link TEXT NOT NUll,
->>>>>>> main
+    link TEXT,
     FOREIGN KEY(owner_id) REFERENCES guide.users(id)
 );
 
