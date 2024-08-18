@@ -55,4 +55,3 @@ data class FilterForJson(
     @SerializedName("value") val value: List<Any>,
     @SerializedName("operator") val operator: String
 )
-

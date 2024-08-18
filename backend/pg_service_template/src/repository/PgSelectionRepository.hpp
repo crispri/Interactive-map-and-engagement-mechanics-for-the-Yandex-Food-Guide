@@ -18,6 +18,8 @@ public:
 
     std::vector<TSelection> GetAll(const boost::uuids::uuid& user_id, bool return_collections) override;
     std::vector<TRestaurant> GetById(const boost::uuids::uuid& selection_id, const boost::uuids::uuid& user_id) override;
+    boost::uuids::uuid CreateCollection(const boost::uuids::uuid& user_id, const std::string& name, const std::string& description) override;
+    void InsertIntoCollection(const boost::uuids::uuid& user_id, const boost::uuids::uuid& collection_id, const boost::uuids::uuid& restaurant_id) override;
 };
 
 

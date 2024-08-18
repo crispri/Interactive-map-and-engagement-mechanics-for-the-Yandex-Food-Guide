@@ -115,11 +115,9 @@ fun MainScreen(
 
     val bottomSheetHeight = remember { mutableStateOf<Dp?>(null) }
 
-
     val list = mutableStateOf(uiState.restaurantsOnMap)
-
     val isMapSelected = remember { mutableStateOf(false) }
-    var isSheetOpen by remember { mutableStateOf(false) }
+    var isSheetOpen by remember{ mutableStateOf(false) }
     val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val sheetState = rememberBottomSheetState(
@@ -177,6 +175,10 @@ fun MainScreen(
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Hidden) {
             send(SelectItemFromBottomSheet(null))
+//            send(RaiseCameraPosition(false))
+        }
+        if (sheetState.currentValue == SheetValue.PartiallyExpanded) {
+//            send(RaiseCameraPosition(true))
         }
     }
 
@@ -214,17 +216,17 @@ fun MainScreen(
             visibleIndex
         }
 
+
+        Log.d("lazyListState", "list = ${list.value}")
+        Log.d("lazyListState", "size = ${list.value.size}")
         Log.d("lazyListState", "Current Index: ${currentIndex.value}")
-        Log.d("lazyListState", "list: ${list.value}")
+        Log.d("lazyListState", "selectedItemFromBottomSheetId: ${uiState.selectedItemFromBottomSheetId}")
         if (sheetState.currentValue == SheetValue.PartiallyExpanded
-            && uiState.selectedItemFromMapId == null
-        ) {
-            send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
-//            send(RaiseCameraPosition(true))
-            Log.e(
-                "lazyListState",
-                "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}"
-            )
+            && uiState.selectedItemFromMapId == null) {
+            if (list.value.isNotEmpty()){
+                send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
+            }
+            Log.e("lazyListState", "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}")
         }
     }
 

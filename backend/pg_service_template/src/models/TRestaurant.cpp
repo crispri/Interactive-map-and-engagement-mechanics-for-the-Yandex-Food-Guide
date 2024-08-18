@@ -3,9 +3,14 @@
 #include <lib/time_parser.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <userver/logging/log.hpp>
+#include <userver/formats/serialize/common_containers.hpp>
 
 
 namespace service {
+
+bool TRestaurant::operator<(const TRestaurant& other) {
+    return score < other.score;
+}
 
 userver::formats::json::Value Serialize(
     const TRestaurant& restaurant,
@@ -37,6 +42,7 @@ userver::formats::json::Value Serialize(
             item["interior"].PushBack(userver::formats::json::ValueBuilder{picture});
         }
     }
+    item["score"] = restaurant.score;
 
     return item.ExtractValue();
 }
@@ -56,7 +62,8 @@ std::tuple<
     std::string&,
     std::optional<std::vector<std::string>>&,
     std::string&,
-    std::optional<std::vector<std::string>>&
+    std::optional<std::vector<std::string>>&,
+    int32_t
     > TRestaurant::Introspect()
 {
     return std::tie(
@@ -74,7 +81,8 @@ std::tuple<
           address,
           tags,
           food,
-          interior
+          interior,
+          score
   );
 }
 
