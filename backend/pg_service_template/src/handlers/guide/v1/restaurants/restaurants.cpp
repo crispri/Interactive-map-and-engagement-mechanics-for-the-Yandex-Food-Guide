@@ -199,7 +199,6 @@ namespace service {
 
                 auto restaurants = restaurant_service_.GetByFilter(filters, user_id);
 
-
                 userver::formats::json::ValueBuilder MLrequestJSON;
                 MLrequestJSON["restaurant_ids"].Resize(0);
                 for (auto &restaurant: restaurants) {
