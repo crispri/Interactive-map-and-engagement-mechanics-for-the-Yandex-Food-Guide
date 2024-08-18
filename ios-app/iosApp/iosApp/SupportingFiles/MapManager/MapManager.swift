@@ -17,7 +17,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let manager = CLLocationManager()
     private var targetPin: YMKPoint = .init()
     private let cameraListener = CameraListener()
-    var delegate: SnippetViewModel? = nil
+    var delegate: SnippetViewModel?
     private var placedPins: [String: (YMKPlacemarkMapObject, Bool)] = [:]
     
     override init() {

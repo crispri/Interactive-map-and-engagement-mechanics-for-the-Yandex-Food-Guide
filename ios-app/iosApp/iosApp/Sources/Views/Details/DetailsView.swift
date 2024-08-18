@@ -13,6 +13,7 @@ struct DetailsView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
     @State private var isBottomSheetPresented = true
     @State var isFiltersPresented = false
+    @State var isUserCollectionsPresented = false
     @State var sheetPosition: BottomSheetPosition = .dynamicBottom
     
     var body: some View {
@@ -59,6 +60,9 @@ struct DetailsView: View {
             FilterDetailedView()
                 .environmentObject(viewModel)
         }
+        .sheet(isPresented: $isUserCollectionsPresented) {
+            UserCollectionsView()
+        }
     }
     
     private var backButton: some View {
@@ -99,7 +103,8 @@ struct DetailsView: View {
     
     private var bookmarkButton: some View {
         Button {
-            // TODO: add action.
+            isUserCollectionsPresented.toggle()
+            Task { await viewModel.fetchUserCollections() }
         } label: {
             Image(systemName: "bookmark")
                 .bold()

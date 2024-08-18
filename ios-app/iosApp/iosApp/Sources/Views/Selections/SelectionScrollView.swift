@@ -20,7 +20,7 @@ struct SelectionScrollView: View {
                             desc: viewModel.selections[index].description,
                             selected: Binding(
                                 get: {
-                                    if let selectedCollection = viewModel.selectedCollection,
+                                    if let selectedCollection = viewModel.currentSelection,
                                        selectedCollection == viewModel.selections[index] {
                                         return true
                                     }
@@ -41,7 +41,7 @@ struct SelectionScrollView: View {
                     }
                 }
                 .padding(.horizontal)
-                .animation(.spring(duration: 0.2), value:  viewModel.selectedCollection)
+                .animation(.spring(duration: 0.2), value:  viewModel.currentSelection)
             }
             .scrollIndicators(.hidden)
             .frame(height: 100)

@@ -84,7 +84,20 @@ final class NetworkManager {
     func fetchSelections() async throws -> [SelectionDTO] {
         let request = try makeRequest(
             path: Api.selections.path,
-            method: HTTPMethod.get.rawValue
+            method: HTTPMethod.post.rawValue,
+            with: SelectionRequest(returnCollections: false)
+        )
+        
+        let data: SelectionsResponse = try await performRequest(request: request)
+        
+        return data.items
+    }
+    
+    func fetchUserCollections() async throws -> [SelectionDTO] {
+        let request = try makeRequest(
+            path: Api.selections.path,
+            method: HTTPMethod.post.rawValue,
+            with: SelectionRequest(returnCollections: true)
         )
         
         let data: SelectionsResponse = try await performRequest(request: request)

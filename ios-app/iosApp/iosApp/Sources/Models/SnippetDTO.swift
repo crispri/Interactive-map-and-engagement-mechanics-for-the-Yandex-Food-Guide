@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SnippetDTO: Codable, Hashable {
+struct SnippetDTO: Codable, Hashable, Equatable {
     let id: String
     let coordinates: Coordinates
     let name: String
