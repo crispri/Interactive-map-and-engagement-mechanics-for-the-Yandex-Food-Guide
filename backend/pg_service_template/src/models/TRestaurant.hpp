@@ -25,6 +25,7 @@ struct TRestaurant {
     std::string food;
     std::optional<std::vector<std::string>> interior;
     int32_t score;
+    std::string additional_info;
 
     bool operator<(const TRestaurant& other);
 
@@ -44,7 +45,8 @@ struct TRestaurant {
         std::optional<std::vector<std::string>>&,
         std::string&,
         std::optional<std::vector<std::string>>&,
-        int32_t
+        int32_t,
+        std::string&
     > Introspect();
 };
 

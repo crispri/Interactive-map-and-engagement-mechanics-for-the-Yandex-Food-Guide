@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS guide.places (
     tags varchar(50)[],
     food TEXT NOT NULL,
     interior TEXT[],
-    additional_info TEXT NOT NULL,
     score INTEGER DEFAULT 0,
+    additional_info TEXT NOT NULL,
     CHECK (rating >= 1.0 AND rating <= 5.0),
     CHECK (price_lower_bound > 0 AND price_lower_bound <= price_upper_bound)
 );

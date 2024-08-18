@@ -1,4 +1,5 @@
 #include "TRestaurant.hpp"
+#include <string>
 #include <userver/formats/json/value_builder.hpp>
 #include <lib/time_parser.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -43,6 +44,7 @@ userver::formats::json::Value Serialize(
         }
     }
     item["score"] = restaurant.score;
+    item["additional_info"] = restaurant.additional_info;
 
     return item.ExtractValue();
 }
@@ -63,7 +65,8 @@ std::tuple<
     std::optional<std::vector<std::string>>&,
     std::string&,
     std::optional<std::vector<std::string>>&,
-    int32_t
+    int32_t,
+    std::string&
     > TRestaurant::Introspect()
 {
     return std::tie(
@@ -82,7 +85,8 @@ std::tuple<
           tags,
           food,
           interior,
-          score
+          score,
+          additional_info
   );
 }
 
