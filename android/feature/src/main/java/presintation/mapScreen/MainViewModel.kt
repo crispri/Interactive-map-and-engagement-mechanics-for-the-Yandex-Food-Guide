@@ -265,12 +265,12 @@ class MainViewModel @Inject constructor(
             val newFilter = filter.copy(isSelected = true)
             newList.add(newFilter)
             _uiState.value.filterMap[filter.property] = true
-            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, newList)
+            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, newList, 0.0,0.0)
         } else {
             Log.d("selectFilter", "remove ${filter.property}")
             newList.remove(filter)
             _uiState.value.filterMap[filter.property] = false
-            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, newList)
+            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, newList, 0.0,0.0)
         }
         _uiState.update { it.copy(filterList = newList) }
     }
@@ -341,7 +341,7 @@ class MainViewModel @Inject constructor(
                     isCollectionMode = true,
                 )
             }
-            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList)
+            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList, 0.0,0.0)
         } else{
             fetchCollections()
             _uiState.update {
@@ -349,7 +349,7 @@ class MainViewModel @Inject constructor(
                     isCollectionMode = false,
                 )
             }
-            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList)
+            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList, 0.0,0.0)
         }
     }
 
