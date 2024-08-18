@@ -262,18 +262,6 @@ namespace service {
                     std::string, std::shared_ptr<IRestaurantFilterJSON>
             > StringRestaurantFilterMapping_;
         };
-
-const std::unordered_map<
-        std::string, std::shared_ptr<IRestaurantFilterJSON>
-> RestaurantController::StringRestaurantFilterMapping_ = {
-    {"rating", std::make_shared<RatingRestaurantFilterJSON>()},
-    {"price_lower_bound", std::make_shared<PriceLBRestaurantFilterJSON>()},
-    {"price_upper_bound", std::make_shared<PriceUBRestaurantFilterJSON>()},
-    {"open_time", std::make_shared<OpenTimeRestaurantFilterJSON>()},
-    {"close_time", std::make_shared<CloseTimeRestaurantFilterJSON>()},
-    {"selection_id", std::make_shared<SelectionRestaurantFilterJSON>()},
-    {"tags", std::make_shared<TagRestaurantFilterJSON>()},
-};
         const std::unordered_map<
                 std::string, std::shared_ptr<IRestaurantFilterJSON>
         > RestaurantController::StringRestaurantFilterMapping_ = {
