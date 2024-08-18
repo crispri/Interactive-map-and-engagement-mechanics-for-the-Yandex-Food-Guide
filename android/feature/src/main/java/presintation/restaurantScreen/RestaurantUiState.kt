@@ -10,7 +10,7 @@ data class RestaurantUiState(
 
     val itemsList: List<String> = listOf(
         "Музыка громче",
-        "Завтраки",
+        "Завтрак",
         "Винотека",
         "Европейская",
         "Коктели",
