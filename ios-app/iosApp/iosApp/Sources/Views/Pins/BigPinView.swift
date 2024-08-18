@@ -62,7 +62,7 @@ final class BigPinView: UIView {
         let label = UILabel()
         label.frame = .init(x: 8, y: 8, width: 113, height: 14)
         label.font = .systemFont(ofSize: 13)
-//        label.text = "Название ресторана"
+        label.text = model.name
         label.numberOfLines = 1
         return label
     }()
