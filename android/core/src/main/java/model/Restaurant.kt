@@ -19,4 +19,5 @@ data class Restaurant(
     val inCollection: Boolean,
     val pin: String,
     val pictures: List<String>,
+    val score: Long,
 )

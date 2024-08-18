@@ -178,10 +178,10 @@ fun MainScreen(
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Hidden) {
             send(SelectItemFromBottomSheet(null))
-//            send(RaiseCameraPosition(false))
+            send(RaiseCameraPosition(false))
         }
         if (sheetState.currentValue == SheetValue.PartiallyExpanded) {
-//            send(RaiseCameraPosition(true))
+            send(RaiseCameraPosition(true))
         }
     }
 
@@ -202,6 +202,11 @@ fun MainScreen(
             list.value = uiState.restaurantsOnMap
         }
     }
+
+    LaunchedEffect(list.value) {
+        Log.d("CameraListener", "List in Main Screen = ${list.value}")
+    }
+
 
     val currentIndex = remember { mutableStateOf(0) }
 
@@ -591,7 +596,7 @@ fun CollectionCarousel(
                     }
 
                     Log.d("okFilter", filterList.toString())
-                    send(UpdateItemsOnMap(uiState.lowerLeft, uiState.topRight, filterList = filterList))
+                    send(UpdateItemsOnMap(uiState.lowerLeft, uiState.topRight, filterList = filterList, 0.0, 0.0))
                 },
                 modifier = Modifier
                     .width(cardWidth)

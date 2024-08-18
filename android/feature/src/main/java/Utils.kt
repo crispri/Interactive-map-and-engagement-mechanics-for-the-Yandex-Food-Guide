@@ -171,7 +171,8 @@ object Utils {
             closeTime = "",
             inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 20,
         ),
         Restaurant(
             id = "2",
@@ -190,8 +191,8 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 40,
         ),
         Restaurant(
             id = "3",
@@ -210,9 +211,10 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 30,
 
-        ),
+            ),
         Restaurant(
             id = "4",
             coordinates = Point(55.731359, 37.589837),
@@ -230,8 +232,8 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 50,
         ),
         Restaurant(
             id = "5",
@@ -250,12 +252,32 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 60,
 
         ),
-
         Restaurant(
             id = "6",
+            coordinates = Point(55.732321, 37.592902),
+            name = "Lions Head",
+            description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
+            address = "До 00:00, м. Тургеневская, 29мин на машине",
+            isApproved = true,
+            rating = 4.8,
+            priceLowerBound = 1100,
+            priceUpperBound = 2600,
+            tags = listOf(
+                "Европейская", "Коктейли", "Завтрак"
+            ),
+            isFavorite = false,
+            openTime = "",
+            closeTime = "", inCollection = false,
+            pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 60,
+        ),
+        Restaurant(
+            id = "7",
             coordinates = Point(55.736012, 37.595277),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -271,11 +293,11 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 23,
         ),
         Restaurant(
-            id = "7",
+            id = "8",
             coordinates = Point(55.730026, 37.589179),
             name = "Lions Head",
             description = "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -291,8 +313,8 @@ object Utils {
             openTime = "",
             closeTime = "", inCollection = false,
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
-            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg")
-
+            pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
+            score = 45,
         ),
     )
 

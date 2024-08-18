@@ -24,12 +24,16 @@ import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
 import model.MainScreenEvent
+import model.Restaurant
 import model.SelectItemFromMap
+import model.SetNewList
 import model.UpdateItemsOnMap
 import pins.CustomPinView
 import pins.CustomPinViewSelected
 import pins.NormalPinView
 import pins.NormalPinViewSelected
+import kotlin.math.cos
+import kotlin.math.pow
 
 
 @Composable
@@ -74,13 +78,13 @@ fun MapScreen(
 
     }
 
-    LaunchedEffect(uiState.raiseRequired) {
-        if(uiState.raiseRequired && bottomSheetHeight.value != null){
-            if(bottomSheetHeight.value!! > 0.dp) {
-                raiseCameraPosition(bottomSheetHeight.value!!, uiState.lowerLeft, uiState.topRight)
-            }
-        }
-    }
+//    LaunchedEffect(uiState.raiseRequired) {
+//        if(uiState.raiseRequired && bottomSheetHeight.value != null){
+//            if(bottomSheetHeight.value!! > 0.dp) {
+//                raiseCameraPosition(bottomSheetHeight.value!!, uiState.lowerLeft, uiState.topRight)
+//            }
+//        }
+//    }
 
 
     val mapObjectCollection = remember { mapView.mapWindow.map.mapObjects }
@@ -141,10 +145,18 @@ fun MapScreen(
     pinViewSelected.setRating("2,0")
 
     val restaurantMarkerImageProviderMaxi = remember { mutableStateOf<ImageProvider>(ImageProvider.fromBitmap(restaurantMarkerNormal)) }
+
+    val restaurantMarkerMaxiWidth = remember { mutableStateOf<Int>(0) }
+    val restaurantMarkerMaxiHeight = remember { mutableStateOf<Int>(0) }
+
+
     val restaurantMarkerImageProviderMaxiSelected = remember { mutableStateOf<ImageProvider>(ImageProvider.fromBitmap(restaurantMarkerNormalSelected)) }
+
     LaunchedEffect(Unit) {
         pinView.setImageWithGlide("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg") {
             val restaurantMarkerMaxi = createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f)
+            restaurantMarkerMaxiWidth.value = restaurantMarkerMaxi.width
+            restaurantMarkerMaxiHeight.value = restaurantMarkerMaxi.height
             restaurantMarkerImageProviderMaxi.value = ImageProvider.fromBitmap(restaurantMarkerMaxi)
         }
         pinViewSelected.setImageWithGlide("https://baldezh.top/uploads/posts/2023-12/1703987413_baldezh-top-p-restoran-vnutri-vkontakte-2.jpg") {
@@ -171,6 +183,7 @@ fun MapScreen(
             false
         }
     }
+
 
     LaunchedEffect(uiState.recommendationIsSelected) {
         if(uiState.raiseRequired && bottomSheetHeight.value != null){
@@ -226,6 +239,36 @@ fun MapScreen(
 
     // end for double tap
 
+    LaunchedEffect(uiState.raiseRequired) {
+        if (uiState.raiseRequired == true && uiState.selectedItemFromMapId == null) {
+            val topRightPoint= mapView.mapWindow.map.visibleRegion.topRight
+            val bottomLeftPoint:Point = mapView.mapWindow.map.visibleRegion.bottomLeft
+
+
+            val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, bottomLeftPoint, topRightPoint)
+            val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, bottomLeftPoint, topRightPoint)
+
+            Log.d("CameraListener", "w = $w h = $h")
+
+            val raisedBottomLeftPoint = Point(
+                bottomLeftPoint.latitude + ((topRightPoint.latitude - bottomLeftPoint.latitude) * 0.7),
+                bottomLeftPoint.longitude
+            )
+            Log.d("CameraListener", "uiState.raiseRequired = Top right: ${topRightPoint.latitude} : ${topRightPoint.longitude}, Bottom left:  ${raisedBottomLeftPoint.latitude} : ${raisedBottomLeftPoint.longitude}, last Left:   ${bottomLeftPoint.latitude} : ${bottomLeftPoint.longitude}")
+            send(UpdateItemsOnMap(raisedBottomLeftPoint, topRightPoint, uiState.filterList, w, h))
+            Log.e("CameraListener", "size = ${uiState.restaurantsOnMap.size}  list = ${uiState.restaurantsOnMap}")
+//            send(SetNewList(ls))
+
+        }
+        else {
+            val topRightPoint= mapView.mapWindow.map.visibleRegion.topRight
+            val bottomLeftPoint:Point = mapView.mapWindow.map.visibleRegion.bottomLeft
+            val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, bottomLeftPoint, topRightPoint)
+            val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, bottomLeftPoint, topRightPoint)
+            Log.d("CameraListener", "uiState.raiseRequired = Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
+            send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList, w, h))
+        }
+    }
     LaunchedEffect(Unit) {
 
         //mapView.mapWindow.map.isNightModeEnabled = true // Включаем ночной режим
@@ -234,8 +277,10 @@ fun MapScreen(
             if (actionIsFinished) {
                 val topRightPoint = mapView.mapWindow.map.visibleRegion.topRight
                 val bottomLeftPoint = mapView.mapWindow.map.visibleRegion.bottomLeft
-                send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList))
-                Log.d("CameraListener", "Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
+                val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, bottomLeftPoint, topRightPoint)
+                val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, bottomLeftPoint, topRightPoint)
+                send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList, w, h))
+//                Log.d("CameraListener", "Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
             }
         }
         mapView.addCameraListener(cameraListener)
@@ -326,6 +371,96 @@ fun MapScreen(
 
     }
 }
+
+
+fun updateOverlayHeight(zoomLevel: Int, viewHeightInPx: Int, bl: Point, tr: Point) : Double {
+
+
+// Средняя широта, на которой находится карта
+    val latitude = (tr.latitude + bl.latitude) / 2
+
+// Конвертируем высоту вью в метры
+    val metersPerPixel = (40075016.686 / (256 * 2.0.pow(zoomLevel))) * cos(latitude * (Math.PI / 180))
+    val heightInMeters = viewHeightInPx * metersPerPixel
+
+// Конвертируем метры в градусы широты
+    val metersPerDegree = 111320.0
+    val latitudeDelta = heightInMeters / metersPerDegree
+
+    return latitudeDelta
+
+}
+
+fun updateOverlayWidth(zoomLevel: Int, viewWidthInPx: Int, bl: Point, tr: Point): Double {
+
+    val latitude = (tr.latitude + bl.latitude) / 2
+
+
+    val metersPerPixel = (40075016.686 / (256 * 2.0.pow(zoomLevel))) * cos(latitude * (Math.PI / 180))
+    val widthInMeters = viewWidthInPx * metersPerPixel
+
+
+    val metersPerDegreeLongitude = 40075016.686 / 360.0 * cos(latitude * (Math.PI / 180))
+    val longitudeDelta = widthInMeters / metersPerDegreeLongitude
+
+    return longitudeDelta
+}
+
+
+fun filterNonOverlappingRestaurants(
+    restaurants: List<Restaurant>,
+    rectWidth: Double, // Ширина прямоугольника в градусах
+    rectHeight: Double
+): List<Restaurant> {
+
+    val nonOverlappingRestaurants = mutableListOf<Restaurant>()
+
+    for (restaurant in restaurants) {
+        val restaurantRect = createRectangle(restaurant.coordinates, rectWidth, rectHeight)
+
+
+        var isOverlapping = false
+        for (filteredRestaurant in nonOverlappingRestaurants) {
+            val filteredRestaurantRect = createRectangle(filteredRestaurant.coordinates, rectWidth, rectHeight)
+
+            if (rectanglesOverlap(restaurantRect, filteredRestaurantRect)) {
+                isOverlapping = true
+                break
+            }
+        }
+
+        if (!isOverlapping) {
+            nonOverlappingRestaurants.add(restaurant)
+        }
+    }
+
+    return nonOverlappingRestaurants
+}
+
+fun createRectangle(center: Point, width: Double, height: Double): Rect {
+    val halfWidth = width / 2
+    val halfHeight = height / 2
+    return Rect(
+        bottomLeft = Point(center.latitude - halfHeight, center.longitude - halfWidth),
+        topRight = Point(center.latitude + halfHeight, center.longitude + halfWidth)
+    )
+}
+
+fun rectanglesOverlap(rect1: Rect, rect2: Rect): Boolean {
+    Log.d("rectanglesOverlap", "rect1.topRight.latitude = ${rect1.topRight.latitude}, rect2.bottomLeft.latitude = ${rect2.bottomLeft.latitude }")
+    Log.d("rectanglesOverlap", "rect1.bottomLeft.latitude = ${rect1.bottomLeft.latitude}, rect2.topRight.latitude = ${rect2.topRight.latitude }")
+    Log.d("rectanglesOverlap", "rect1.topRight.longitude = ${rect1.topRight.longitude}, rect2.bottomLeft.longitude = ${rect2.bottomLeft.longitude }")
+    Log.d("rectanglesOverlap", " rect1.bottomLeft.longitude = ${ rect1.bottomLeft.longitude}, rect2.topRight.longitude = ${rect2.topRight.longitude }")
+    Log.d("rectanglesOverlap", " rect1.bottomLeft.longitude = ${ (rect1.topRight.latitude < rect2.bottomLeft.latitude || rect1.bottomLeft.latitude > rect2.topRight.latitude ||  rect1.topRight.longitude < rect2.bottomLeft.longitude ||  rect1.bottomLeft.longitude > rect2.topRight.longitude)}")
+    return !(rect1.topRight.latitude < rect2.bottomLeft.latitude || // rect1 ниже rect2
+            rect1.bottomLeft.latitude > rect2.topRight.latitude || // rect1 выше rect2
+            rect1.topRight.longitude < rect2.bottomLeft.longitude || // rect1 левее rect2
+            rect1.bottomLeft.longitude > rect2.topRight.longitude)  // rect1 правее rect2
+}
+
+// Данные прямоугольника
+data class Rect(val bottomLeft: Point, val topRight: Point)
+
 
 /*fun updateFocusRect(mapView: CustomMapView) {
     val horizontalMargin = 40f
