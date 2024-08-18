@@ -38,13 +38,7 @@ userver::formats::json::Value Serialize(
             item["pictures"].PushBack(userver::formats::json::ValueBuilder{picture});
         }
     }
-    if (restaurant.global_score) {
-        item["global_score"] = restaurant.global_score;
-    }
-
-    if (restaurant.personal_score) {
-        item["global_score"] = restaurant.personal_score;
-    }
+    item["score"] = restaurant.score;
 
     return item.ExtractValue();
 }
@@ -65,8 +59,7 @@ std::tuple<
     std::optional<std::vector<std::string>>&,
     std::string&,
     std::optional<std::vector<std::string>>&,
-    std::optional<int32_t>&,
-    std::optional<int32_t>&
+    int32_t
     > TRestaurant::Introspect()
 {
     return std::tie(
@@ -85,8 +78,7 @@ std::tuple<
           tags,
           pin,
           pictures,
-          global_score,
-          personal_score
+          score
   );
 }
 

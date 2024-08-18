@@ -24,8 +24,7 @@ struct TRestaurant {
     bool in_collection;
     std::string pin;
     std::optional<std::vector<std::string>> pictures;
-    std::optional<int32_t> global_score;
-    std::optional<int32_t> personal_score;
+    int32_t score;
 
     std::tuple<
         boost::uuids::uuid&,
@@ -43,8 +42,7 @@ struct TRestaurant {
         std::optional<std::vector<std::string>>&,
         std::string&,
         std::optional<std::vector<std::string>>&,
-        std::optional<int32_t>&,
-        std::optional<int32_t>&
+        int32_t
     > Introspect();
 };
 

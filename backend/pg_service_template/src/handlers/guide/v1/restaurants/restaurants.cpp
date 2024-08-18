@@ -3,6 +3,7 @@
 #include <models/TCoordinates.hpp>
 #include <models/TRestaurant.hpp>
 
+#include <unordered_map>
 #include <fmt/format.h>
 
 #include <string>
@@ -26,6 +27,9 @@
 #include <models/RestaurantFilterJSON/CloseTimeRestaurantFilterJSON.hpp>
 #include <models/RestaurantFilterJSON/SelectionRestaurantFilterJSON.hpp>
 #include <models/RestaurantFilterJSON/TagRestaurantFilterJSON.hpp>
+#include <userver/clients/http/client.hpp>
+#include <userver/clients/http/component.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 namespace service {
 
@@ -47,6 +51,10 @@ namespace service {
                     restaurant_service_(
                             component_context
                                     .FindComponent<RestaurantService>()
+                    ),
+                    http_client_(
+                            component_context
+                                    .FindComponent<userver::components::HttpClient>().GetHttpClient()
                     ) {}
 
             std::string HandleRequestThrow(
@@ -184,9 +192,56 @@ namespace service {
                 auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
 
                 auto restaurants = restaurant_service_.GetByFilter(filters, user_id);
+
+
+                userver::formats::json::ValueBuilder MLrequestJSON;
+                MLrequestJSON["restaurant_ids"].Resize(0);
+                for (auto &restaurant: restaurants) {
+                    MLrequestJSON["restaurant_ids"].PushBack(
+                            userver::formats::json::ValueBuilder{boost::uuids::to_string(restaurant.id)});
+
+                    LOG_ERROR() << restaurant.id;
+                }
+
+                auto MLrequestString = userver::formats::json::ToPrettyString(MLrequestJSON.ExtractValue(),
+                                                                              {' ', 4});
+
+
+                http_client_.ResetUserAgent(boost::uuids::to_string(user_id));
+
+                const auto MLresponse = http_client_.CreateRequest()
+                        .post("http://localhost:8080/guide/v1/ml_rate", std::move(MLrequestString))
+                        .timeout(std::chrono::seconds(1))
+                        .retry(10)
+                        .headers({ std::make_pair("Authorization", request.GetHeader("Authorization")) })
+                        .perform();
+
+
+                const auto MLresponseBody = MLresponse->body_view();
+
+                userver::formats::json::Value MLresponseBodyJSON = userver::formats::json::FromString(
+                        MLresponseBody);
+
+                std::map<boost::uuids::uuid, int32_t> restaurant_scores;
+
+                auto scores_field = MLresponseBodyJSON["scores"]
+                        .As<std::vector<userver::formats::json::Value>>();
+
+
+                for (auto &pairJSON : scores_field) {
+                    auto restaurant_id = pairJSON["restaurant_id"].As<std::string>();
+                    auto score = pairJSON["score"].As<int32_t>();
+
+                    restaurant_scores[gen(restaurant_id)] = score;
+                }
+
+                assert(restaurant_scores.size() == restaurants.size());
+
+
                 userver::formats::json::ValueBuilder responseJSON;
                 responseJSON["items"].Resize(0);
                 for (auto &restaurant: restaurants) {
+                    restaurant.score = restaurant_scores[restaurant.id];
                     responseJSON["items"].PushBack(userver::formats::json::ValueBuilder{restaurant});
                 }
 
@@ -197,6 +252,7 @@ namespace service {
             }
 
             RestaurantService &restaurant_service_;
+            userver::clients::http::Client &http_client_;
             static const std::unordered_map<
                     std::string, std::shared_ptr<IRestaurantFilterJSON>
             > StringRestaurantFilterMapping_;
