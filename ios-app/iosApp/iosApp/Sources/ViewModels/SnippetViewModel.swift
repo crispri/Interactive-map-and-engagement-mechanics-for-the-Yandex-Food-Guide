@@ -15,15 +15,29 @@ final class SnippetViewModel: ObservableObject {
     @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = [SnippetDTO]()
     @Published var selections = [SelectionDTO]()
-    @Published var selectedCollection: SelectionDTO? = nil
+    @Published var selectedCollection: SelectionDTO?
     @Published var currentSelection: SelectionDTO?
     
     @Published var userCollections = UserCollection.mockData
     
     @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
-    private var filtersDTO: Array<FilterDTO> {
+    
+    private var filtersDTO: [FilterDTO] {
         let activeFilters = filterCategories.flatMap { $0.filters.filter { $0.isActive }}
-        return activeFilters.flatMap(\.dtos)
+        var activeFiltersDTOs = activeFilters.flatMap(\.dtos)
+        
+        // MARK: Adds current selection to filters
+        if let currentSelection {
+            activeFiltersDTOs.append(FilterDTO(
+                    property: .selectionID,
+                    operator: .in,
+                    value: currentSelection.id
+                ))
+        } else {
+            activeFiltersDTOs = activeFilters.flatMap(\.dtos)
+        }
+        
+        return activeFiltersDTOs
     }
     
     
@@ -32,15 +46,15 @@ final class SnippetViewModel: ObservableObject {
     
     init() {
         mapManager.delegate = self
-        for index in userCollections.indices {
-            Task {
-                let id = try await sendUserCollection(
-                    name: userCollections[index].selection.name,
-                    description: userCollections[index].selection.description
-                )
-                userCollections[index].id = id
-            }
-        }
+//        for index in userCollections.indices {
+//            Task {
+//                let id = try await sendUserCollection(
+//                    name: userCollections[index].selection.name,
+//                    description: userCollections[index].selection.description
+//                )
+//                userCollections[index].id = id
+//            }
+//        }
     }
     
     func eventOnAppear() {

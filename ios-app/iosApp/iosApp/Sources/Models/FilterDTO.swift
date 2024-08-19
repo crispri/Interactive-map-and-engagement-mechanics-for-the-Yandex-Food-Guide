@@ -16,6 +16,7 @@ struct FilterDTO: Codable, Hashable {
         case openTime = "open_time"
         case closeTime = "close_time"
         case tags = "tags"
+        case selectionID = "selection_id"
     }
     
     enum Operator: String, Codable {

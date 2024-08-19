@@ -245,12 +245,14 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         return CGRect(x: Int(x), y: Int(y), width: Int(width), height: Int(height))
     }
     
+    // MARK: Gives all pins mark for future deletion
     func disablePins() {
         for kv in placedPins {
             placedPins[kv.key] = (kv.value.0, false)
         }
     }
     
+    // MARK: Deletes all marked pins
     func cleanPins() {
         for kv in placedPins {
             if !kv.value.1 {
