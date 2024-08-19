@@ -62,7 +62,7 @@ final class BigPinView: UIView {
         label.frame = .init(x: 8, y: 23, width: 144, height: 12)
         label.font = .systemFont(ofSize: 11)
         label.numberOfLines = 1
-        label.text = "ср. чек от \(model.priceLowerBound)₽"
+        label.text = "\(model.additionalInfo)"
         return label
     }()
 
