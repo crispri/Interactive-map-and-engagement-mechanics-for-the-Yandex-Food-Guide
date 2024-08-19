@@ -19,7 +19,7 @@ final class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("session_id=\(sessionID)", forHTTPHeaderField: "Cookie")
           
         return request
     }
