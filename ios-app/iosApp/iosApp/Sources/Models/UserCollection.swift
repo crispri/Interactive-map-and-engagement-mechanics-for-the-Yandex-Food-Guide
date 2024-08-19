@@ -8,14 +8,22 @@
 import Foundation
 
 struct UserCollection: Hashable, Identifiable, Equatable {
-    let id = UUID().uuidString
+    var id = UUID().uuidString
     let selection: SelectionDTO
-    var restaurants: [SnippetDTO] = []
+    
+    var restaurantIDs: Set<String>
+    
+    var count: Int {
+        restaurantIDs.count
+    }
+    func contains(_ restaurantID: String) -> Bool {
+        return restaurantIDs.contains(restaurantID)
+    }
 }
 
 extension UserCollection {
     static var mockData = [
-        UserCollection(selection: SelectionDTO(name: "Хочу сходить", description: "", picture: "WantToGo"), restaurants: [SnippetDTO(inCollection: true)]),
-        UserCollection(selection: SelectionDTO(name: "Хочу заказать", description: "", picture: "WantToOrder"), restaurants: [])
+        UserCollection(selection: SelectionDTO(name: "Хочу сходить", description: "", picture: "WantToGo"), restaurantIDs: []),
+        UserCollection(selection: SelectionDTO(name: "Хочу заказать", description: "", picture: "WantToOrder"), restaurantIDs: [])
     ]
 }

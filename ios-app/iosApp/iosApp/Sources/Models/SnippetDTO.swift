@@ -79,7 +79,6 @@ struct SnippetDTO: Codable, Hashable, Equatable {
 extension SnippetDTO {
     static var mockData = [
         SnippetDTO(
-            id: "0",
             coordinates: Coordinates(lat: 55.74048502788512, lon: 37.610338866258985),
             name: "Сыроварня",
             description: "Крупная сеть ресторанов с собственным сырным производством",
@@ -89,7 +88,6 @@ extension SnippetDTO {
             priceUpperBound: 6000
         ),
         SnippetDTO(
-            id: "1",
             coordinates: Coordinates(lat: 55.755956, lon: 37.643203),
             name: "Blanc",
             description: "Ресторан авторской кухни, расположенный в исторической части города",
@@ -99,7 +97,6 @@ extension SnippetDTO {
             priceUpperBound: 6000
         ),
         SnippetDTO(
-            id: "2",
             coordinates: Coordinates(lat: 55.762986, lon: 37.634945),
             name: "Lions Head",
             description: "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -109,7 +106,6 @@ extension SnippetDTO {
             priceUpperBound: 6000
         ),
         SnippetDTO(
-            id: "3",
             coordinates: Coordinates(lat: 55.804959, lon: 37.589506),
             name: "Ya Cafe",
             description: "Здесь вы найдете красивый зал, а также вкусное и разнообразное меню.",

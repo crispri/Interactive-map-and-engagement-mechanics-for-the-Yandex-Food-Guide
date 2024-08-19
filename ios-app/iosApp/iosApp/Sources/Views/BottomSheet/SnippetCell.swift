@@ -11,8 +11,12 @@ var textNames = ["1000-2500р", "Европейская", "Коктейли", "�
 var imageRest = ["1rest", "2rest", "3rest"]
 
 struct SnippetCell: View {
-    @State var restaurant: SnippetDTO
+    @EnvironmentObject private var viemModel: SnippetViewModel
+    @Binding var restaurant: SnippetDTO
+    
     @State private var currentPage = 0
+    
+    @Binding var isEditUserCollectionsPresented: Bool
 
     var body: some View {
         VStack {
@@ -27,6 +31,10 @@ struct SnippetCell: View {
             BadgesTrain()
         }
         .padding()
+        .sheet(isPresented: $isEditUserCollectionsPresented) {
+            EditUserCollectionsView(restaurant: $restaurant)
+                .presentationDetents([.medium])
+        }
     }
 
     private func ImageRest() -> some View {
@@ -70,6 +78,10 @@ struct SnippetCell: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
                     .bold()
+                    .onTapGesture {
+                        isEditUserCollectionsPresented.toggle()
+                        Task { await viemModel.fetchUserCollections() }
+                    }
                 .foregroundStyle(.white)
             }
             .padding([.top, .trailing], 10.0)
@@ -136,5 +148,15 @@ struct SnippetCell: View {
 }
 
 #Preview {
-    SnippetCell(restaurant: SnippetViewModel().snippets[0])
+    SnippetCell(
+        restaurant: Binding(get: {
+            SnippetViewModel().snippets[0]
+        },
+                            set: {
+                                _ in
+                            } ),
+        isEditUserCollectionsPresented: Binding.constant(
+            false
+        )
+    )
 }

@@ -10,12 +10,13 @@ import BottomSheet
 
 struct BottomSheetView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
+    @State private var isEditUserCollectionsPresented = false
     
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                ForEach(viewModel.snippets, id: \.self) { snippet in
-                    SnippetCell(restaurant: snippet)
+                ForEach($viewModel.snippets, id: \.self) { snippet in
+                    SnippetCell(restaurant: snippet, isEditUserCollectionsPresented: $isEditUserCollectionsPresented)
                 }
             }
             .padding(.bottom)

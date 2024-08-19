@@ -32,6 +32,15 @@ final class SnippetViewModel: ObservableObject {
     
     init() {
         mapManager.delegate = self
+        for index in userCollections.indices {
+            Task {
+                let id = try await sendUserCollection(
+                    name: userCollections[index].selection.name,
+                    description: userCollections[index].selection.description
+                )
+                userCollections[index].id = id
+            }
+        }
     }
     
     func eventOnAppear() {
@@ -126,6 +135,13 @@ final class SnippetViewModel: ObservableObject {
             selections = try await loadSelections()
         } catch { print(error) }
     }
+        
+    func fetchSelectionSnippets(id: String) async {
+        do {
+            snippets = try await loadSelectionSnippets(id: id)
+            mapManager.placePins(snippets)
+        } catch { print(error) }
+    }
     
     func fetchUserCollections() async {
         do {
@@ -133,19 +149,13 @@ final class SnippetViewModel: ObservableObject {
             var userCollectionsTail: [UserCollection] = []
             for selection in remoteUserCollections {
                 let restaurants = try await loadSelectionSnippets(id: selection.id)
+                
                 userCollectionsTail += [UserCollection(
                     selection: selection,
-                    restaurants: restaurants
+                    restaurantIDs: Set(restaurants.map { restaurant in restaurant.id })
                 )]
             }
             userCollections = UserCollection.mockData + userCollectionsTail
-        } catch { print(error) }
-    }
-    
-    func fetchSelectionSnippets(id: String) async {
-        do {
-            snippets = try await loadSelectionSnippets(id: id)
-            mapManager.placePins(snippets)
         } catch { print(error) }
     }
     
@@ -160,34 +170,40 @@ final class SnippetViewModel: ObservableObject {
         let data = try await networkManager.fetchSelections()
         return data
     }
+        
+    private func loadSelectionSnippets(id: String) async throws -> [SnippetDTO] {
+        let data = try await networkManager.fetchSelectionSnippets(id: id)
+        return data
+    }
     
     private func loadUserCollections() async throws -> [SelectionDTO] {
         let data = try await networkManager.fetchUserCollections()
         return data
     }
-    
-    private func loadSelectionSnippets(id: String) async throws -> [SnippetDTO] {
-        let data = try await networkManager.fetchSelectionSnippets(id: id)
-        return data
-    }
 
-    public func loadAddress() async throws {
+    func loadAddress() async throws {
+    do {
+        let userLocation = try mapManager.getUserLocation()
+        
+        let data = try await networkManager.fetchAddress(loc: userLocation)
         do {
-            let userLocation = try mapManager.getUserLocation()
-            
-            let data = try await networkManager.fetchAddress(loc: userLocation)
-            do {
-                let decoder = JSONDecoder()
-                let geocoderResponse = try decoder.decode(GeocoderResponse.self, from: data)
-                let address = geocoderResponse.response.geoObjectCollection.featureMember.first?.geoObject.name ?? "Неизвестный адрес"
-                print(address)
-                userLocaitonTitle = address
-            } catch {
-                print("Ошибка декодирования: \(error)")
-            }
+            let decoder = JSONDecoder()
+            let geocoderResponse = try decoder.decode(GeocoderResponse.self, from: data)
+            let address = geocoderResponse.response.geoObjectCollection.featureMember.first?.geoObject.name ?? "Неизвестный адрес"
+            print(address)
+            userLocaitonTitle = address
+        } catch {
+            print("Ошибка декодирования: \(error)")
         }
-        catch {
-            userLocaitonTitle = "Ошибка геолокации"
-        }
+    }
+    catch {
+        userLocaitonTitle = "Ошибка геолокации"
+    }
+}
+    
+    // MARK: send data to server
+    
+    func sendUserCollection(name: String, description: String) async throws -> String {
+        return try await networkManager.sendCollection(name: name, description: description)
     }
 }
