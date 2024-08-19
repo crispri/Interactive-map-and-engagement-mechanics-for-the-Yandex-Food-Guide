@@ -19,6 +19,11 @@ final class CameraListener: NSObject, YMKMapCameraListener {
             return
         }
         guard finished else { return }
+        
+        Task {
+            await delegate.disablePins()
+            await delegate.cleanPins()
+        }
 
         let now = Date()
 
