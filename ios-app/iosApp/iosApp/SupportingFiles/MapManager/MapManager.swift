@@ -45,7 +45,6 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     
     func placePins(_ pins: [SnippetDTO]) {
         var cnt = 0
-        print("-------------------")
         
         var bigPins = [SnippetDTO]()
         for i in pins.indices {
@@ -81,7 +80,6 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                 bigPins.append(pins[i])
             }
         }
-        print("big pins count: \(bigPins.count)")
         
         var normalPins = [SnippetDTO]()
         for i in pins.indices {
@@ -133,10 +131,35 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         var smallPins = [SnippetDTO]()
         for  i in pins.indices {
             if !bigPins.contains(pins[i]) && !normalPins.contains(pins[i]) {
-                smallPins.append(pins[i])
+                var intersects = false
+                
+                let currentOrigin = mapView?.mapWindow.worldToScreen(
+                    withWorldPoint: YMKPoint(
+                        latitude: pins[i].coordinates.lat,
+                        longitude: pins[i].coordinates.lon
+                    )
+                ) ?? YMKScreenPoint()
+                let currentRect = getRectByOrigin(currentOrigin, with: .low)
+                
+                for j in smallPins.indices {
+                    let originToCompare = mapView?.mapWindow.worldToScreen(
+                        withWorldPoint: YMKPoint(
+                            latitude: pins[j].coordinates.lat,
+                            longitude: pins[j].coordinates.lon
+                        )
+                    ) ?? YMKScreenPoint()
+                    let rectToCompare = getRectByOrigin(originToCompare, with: .low)
+                    if currentRect.intersects(rectToCompare) {
+                        intersects = true
+                        break
+                    }
+                }
+                
+                if !intersects {
+                    smallPins.append(pins[i])
+                }
             }
         }
-        
         
         let result = bigPins + normalPins + smallPins
         
