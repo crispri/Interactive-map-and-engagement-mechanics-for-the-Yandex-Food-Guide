@@ -13,7 +13,6 @@
 		4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCE2C6B696700EB8D8C /* HeaderView.swift */; };
 		4F1C8F4C2C739B4600B2B4A6 /* InputListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1C8F4B2C739B4600B2B4A6 /* InputListener.swift */; };
 		4F1C8F502C739D4B00B2B4A6 /* MapObjectTapListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1C8F4F2C739D4B00B2B4A6 /* MapObjectTapListener.swift */; };
-		4F3A97602C71E2A6002F0699 /* SelectionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A975F2C71E2A6002F0699 /* SelectionsRequest.swift */; };
 		4F69DC832C678BD00026828E /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 4F69DC822C678BD00026828E /* BottomSheet */; };
 		4F7D1CFC2C70A4E8002D126C /* UIView+asImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D1CFB2C70A4E8002D126C /* UIView+asImage.swift */; };
 		4F7D1CFE2C70C714002D126C /* PinSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D1CFD2C70C714002D126C /* PinSize.swift */; };
