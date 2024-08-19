@@ -16,28 +16,33 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     lazy var map : YMKMap = {  return mapView?.mapWindow.map ?? .init() }()
     private let manager = CLLocationManager()
     private let cameraListener = CameraListener()
-    var delegate: SnippetViewModel?
+    private var delegate: SnippetViewModel?
     private var placedPins: [String: (YMKPlacemarkMapObject, Bool)] = [:]
     private var userPin: YMKPlacemarkMapObject? = nil
     private var mapObjectTapListener: YMKMapObjectTapListener?
+    private var inputListener: InputListener!
+    var isPinFocusMode = false {
+        didSet {
+            delegate?.pinFocusModeEnabled(isPinFocusMode)
+        }
+    }
     
     init(delegate: SnippetViewModel?) {
         super.init()
-        self.cameraListener.delegate = self
-        map.addCameraListener(with: cameraListener)
-        
-        self.manager.delegate = self
+        self.delegate = delegate
+        manager.delegate = self
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
-        
         map.isRotateGesturesEnabled = false
         map.setMapStyleWithStyle(StyleMap().styleMap)
         
-        let inputListener = InputListener()
+        self.cameraListener.delegate = self
+        map.addCameraListener(with: cameraListener)
+        
+        inputListener = InputListener(mapManager: self)
         map.addInputListener(with: inputListener)
         
         mapObjectTapListener = MapObjectTapListener(mapManager: self, viewModel: delegate)
-        self.delegate = delegate
     }
     
     func eventOnGesture() {
@@ -191,7 +196,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                 )
                 if index < bigPins.count {
                     let uiView = BigPinView(
-                        frame: .init(x: 0, y: 0, width: 172, height: 106),
+                        frame: .init(x: 0, y: 0, width: PinSize.big.width, height: PinSize.big.height),
                         model: result[index]
                     )
                     uiView.setSelected(false)
@@ -225,6 +230,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                 if let mapObjectTapListener {
                     placemark.addTapListener(with: mapObjectTapListener)
                 }
+                placemark.userData = result[index]
             }
         }
         print("\(cnt) restaurants added;")
@@ -313,11 +319,28 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         }
     }
     
-    func centerCamera(to point: YMKPoint) {
+    func eventPinPressed(to placemark: YMKPlacemarkMapObject) {
+        isPinFocusMode = true
         centerMapLocation(
-            target: point,
+            target: placemark.geometry,
             map: mapView ?? .init()
         )
+        let style = YMKIconStyle(
+            anchor: CGPoint(x: 0.5, y: 1.0) as NSValue,
+            rotationType: .none,
+            zIndex: 1,
+            flat: false,
+            visible: true,
+            scale: 1.0,
+            tappableArea: nil
+        )
+        guard let userData = placemark.userData as? SnippetDTO else { return }
+        let uiView = BigPinView(
+            frame: .init(x: 0, y: 0, width: PinSize.big.width, height: PinSize.big.height),
+            model: userData
+        )
+        uiView.setSelected(true)
+        placemark.setIconWith(uiView.asImage(), style: style)
     }
     
     func getScreenPoints(sheetPosition: SheetPosition = .bottom) -> (lowerLeftCorner: Point, topRightCorner: Point) {

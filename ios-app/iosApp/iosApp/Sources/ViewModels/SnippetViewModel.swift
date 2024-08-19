@@ -13,6 +13,7 @@ import BottomSheet
 final class SnippetViewModel: ObservableObject {
     private let MAX_POLIGON_WIDTH = 0.20
     
+    @Published var isPinFocusMode = false
     @Published var sheetPosition: BottomSheetPosition = .dynamicBottom
     @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = [SnippetDTO]()
@@ -72,6 +73,7 @@ final class SnippetViewModel: ObservableObject {
     
     @MainActor
     func onCameraMove() {
+        guard !mapManager.isPinFocusMode else { return }
         Task {
             do {
                 await fetchSelections()
@@ -114,8 +116,9 @@ final class SnippetViewModel: ObservableObject {
         }
     }
     
-    func eventOpenBottomSheet() {
-        sheetPosition = .absolute(500)
+    func pinFocusModeEnabled(_ isEnabled: Bool) {
+        isPinFocusMode = isEnabled
+        sheetPosition = isEnabled ? .absolute(500) : .dynamicBottom
     }
     
     // MARK: Wrappers for fetching snippets and selections.

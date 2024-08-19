@@ -21,8 +21,7 @@ final class MapObjectTapListener: NSObject, YMKMapObjectTapListener {
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
         print("Tapped point \((point.latitude, point.longitude))")
         if let placemark = mapObject as? YMKPlacemarkMapObject {
-            mapManager?.centerCamera(to: placemark.geometry)
-            viewModel?.eventOpenBottomSheet()
+            mapManager?.eventPinPressed(to: placemark)
         }
         return true
     }
