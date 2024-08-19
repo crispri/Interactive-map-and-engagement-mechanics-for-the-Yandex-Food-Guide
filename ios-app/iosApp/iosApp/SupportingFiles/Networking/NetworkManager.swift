@@ -57,9 +57,10 @@ final class NetworkManager {
         let request = try makeRequest(
             path: Api.restaurants.path,
             method: HTTPMethod.post.rawValue,
-            with: FilteredSnippetRequest(
+            with: SnippetRequest(
                 lowerLeftCorner: lowerLeftCorner,
                 topRightCorner: topRightCorner,
+                onlyCollections: false,
                 maxCount: 0,
                 filters: filters
             )
