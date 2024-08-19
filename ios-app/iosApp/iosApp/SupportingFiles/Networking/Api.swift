@@ -22,9 +22,11 @@ public enum Api {
     }
     
     case restaurants
-    case restaurant(id:String)
+    case restaurant(id: String)
     case selections
-    case selection(id:String)
+    case selection(id: String)
+    case collection
+    case collections(id: String)
     
     public var path: String {
         switch self {
@@ -36,6 +38,10 @@ public enum Api {
             return "selections"
         case .selection(id: let id):
             return "selections/\(id)"
+        case .collection:
+            return "collection"
+        case .collections(id: let id):
+            return "collection/\(id)"
         }
     }
 }

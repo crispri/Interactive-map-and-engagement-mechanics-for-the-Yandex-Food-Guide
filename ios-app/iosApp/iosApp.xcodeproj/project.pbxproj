@@ -39,6 +39,11 @@
 		CB5CA3922C5FB6560025F771 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3912C5FB6560025F771 /* NetworkManager.swift */; };
 		CB5CA3942C5FB9BC0025F771 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */; };
 		CB6037C22C722CFC00B1F664 /* UserCollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037C12C722CFC00B1F664 /* UserCollectionsView.swift */; };
+		CB6037C42C73AFAD00B1F664 /* ISelectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037C32C73AFAD00B1F664 /* ISelectionRequest.swift */; };
+		CB6037C62C73AFF300B1F664 /* ICollectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037C52C73AFF300B1F664 /* ICollectionRequest.swift */; };
+		CB6037C82C73B02700B1F664 /* CollectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037C72C73B02700B1F664 /* CollectionRequest.swift */; };
+		CB6037CA2C73B09D00B1F664 /* ICollectionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037C92C73B09D00B1F664 /* ICollectionResponse.swift */; };
+		CB6037CC2C73B12500B1F664 /* CollectionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037CB2C73B12500B1F664 /* CollectionResponse.swift */; };
 		CBB2A2892C715D550056A105 /* SelectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB2A2882C715D550056A105 /* SelectionRequest.swift */; };
 		CBBDC6AB2C6ECF95007EB943 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */; };
 		CBBDC6AD2C6ECFBB007EB943 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AC2C6ECFBB007EB943 /* Point.swift */; };
@@ -131,6 +136,11 @@
 		CB5CA3912C5FB6560025F771 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
 		CB6037C12C722CFC00B1F664 /* UserCollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionsView.swift; sourceTree = "<group>"; };
+		CB6037C32C73AFAD00B1F664 /* ISelectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISelectionRequest.swift; sourceTree = "<group>"; };
+		CB6037C52C73AFF300B1F664 /* ICollectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICollectionRequest.swift; sourceTree = "<group>"; };
+		CB6037C72C73B02700B1F664 /* CollectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRequest.swift; sourceTree = "<group>"; };
+		CB6037C92C73B09D00B1F664 /* ICollectionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICollectionResponse.swift; sourceTree = "<group>"; };
+		CB6037CB2C73B12500B1F664 /* CollectionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionResponse.swift; sourceTree = "<group>"; };
 		CBB2A2882C715D550056A105 /* SelectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionRequest.swift; sourceTree = "<group>"; };
 		CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		CBBDC6AC2C6ECFBB007EB943 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
@@ -415,7 +425,10 @@
 			children = (
 				CBF46D452C6FA5E700186255 /* ISnippetRequest.swift */,
 				CBF46D432C6FA5AD00186255 /* SnippetRequest.swift */,
+				CB6037C32C73AFAD00B1F664 /* ISelectionRequest.swift */,
 				CBB2A2882C715D550056A105 /* SelectionRequest.swift */,
+				CB6037C52C73AFF300B1F664 /* ICollectionRequest.swift */,
+				CB6037C72C73B02700B1F664 /* CollectionRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -440,11 +453,13 @@
 		CBF46D3B2C6F937F00186255 /* Response */ = {
 			isa = PBXGroup;
 			children = (
-				CBF46D362C6F937F00186255 /* GeocoderResponse.swift */,
 				CBF46D382C6F937F00186255 /* ISnippetsResponse.swift */,
-				CBF46D372C6F937F00186255 /* ISelectionsResponse.swift */,
 				CBF46D3A2C6F937F00186255 /* SnippetsResponse.swift */,
+				CBF46D372C6F937F00186255 /* ISelectionsResponse.swift */,
 				CBF46D392C6F937F00186255 /* SelectionsResponse.swift */,
+				CB6037C92C73B09D00B1F664 /* ICollectionResponse.swift */,
+				CB6037CB2C73B12500B1F664 /* CollectionResponse.swift */,
+				CBF46D362C6F937F00186255 /* GeocoderResponse.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -757,6 +772,7 @@
 				CBFD7EE22C655CC100CEC0BC /* FilterView.swift in Sources */,
 				CBF46D442C6FA5AD00186255 /* SnippetRequest.swift in Sources */,
 				CBF46D402C6F937F00186255 /* SnippetsResponse.swift in Sources */,
+				CB6037C42C73AFAD00B1F664 /* ISelectionRequest.swift in Sources */,
 				4F9DCAE92C5E6C4200B39252 /* YandexMapView.swift in Sources */,
 				CBFD7EE32C655CC100CEC0BC /* SnippetCell.swift in Sources */,
 				6E6A20B72C68B6390029ABCC /* BigPinView.swift in Sources */,
@@ -776,9 +792,11 @@
 				CBFD7ED62C655C9700CEC0BC /* SnippetViewModel.swift in Sources */,
 				CBF46D3D2C6F937F00186255 /* ISelectionsResponse.swift in Sources */,
 				CBBDC6AB2C6ECF95007EB943 /* Coordinates.swift in Sources */,
+				CB6037CC2C73B12500B1F664 /* CollectionResponse.swift in Sources */,
 				CBBDC6AF2C6ED018007EB943 /* Printable.swift in Sources */,
 				CB5CA3922C5FB6560025F771 /* NetworkManager.swift in Sources */,
 				CBFD7EE52C655CC100CEC0BC /* ImageRestWithPC.swift in Sources */,
+				CB6037CA2C73B09D00B1F664 /* ICollectionResponse.swift in Sources */,
 				CBFD7EE42C655CC100CEC0BC /* SelectionView.swift in Sources */,
 				CB6037C22C722CFC00B1F664 /* UserCollectionsView.swift in Sources */,
 				CBDE654B2C71ED8600753BBB /* EditUserCollectionsView.swift in Sources */,
@@ -791,12 +809,14 @@
 				CBB2A2892C715D550056A105 /* SelectionRequest.swift in Sources */,
 				CBFD7ED12C655C6F00CEC0BC /* SnippetDTO.swift in Sources */,
 				CBBDC6B72C6EDE7E007EB943 /* HTTPMethod.swift in Sources */,
+				CB6037C82C73B02700B1F664 /* CollectionRequest.swift in Sources */,
 				4F13FDCB2C6B659D00EB8D8C /* GrabberView.swift in Sources */,
 				6E11AC772C70E59000B7E075 /* StyleMap.swift in Sources */,
 				CBFD7ED22C655C6F00CEC0BC /* SelectionDTO.swift in Sources */,
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
 				CBF46D3C2C6F937F00186255 /* GeocoderResponse.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
+				CB6037C62C73AFF300B1F664 /* ICollectionRequest.swift in Sources */,
 				CBFD7EEF2C65723100CEC0BC /* CameraListener.swift in Sources */,
 				CBFD7EE12C655CC100CEC0BC /* BottomSheetView.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,

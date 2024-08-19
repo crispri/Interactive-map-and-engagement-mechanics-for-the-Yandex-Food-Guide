@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol ISnippetsResponse: Decodable {
+protocol ISnippetsResponse: Codable {
     var items: [SnippetDTO] { get }
 }
