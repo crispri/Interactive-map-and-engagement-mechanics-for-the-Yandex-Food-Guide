@@ -1,5 +1,6 @@
 package model
 
+import android.graphics.Picture
 import com.yandex.mapkit.geometry.Point
 
 data class CollectionOfPlace(
@@ -7,5 +8,7 @@ data class CollectionOfPlace(
     val name: String,
     val description: String,
     val isPublic: Int,
+    val picture: String,
+    val link: String,
 )
 

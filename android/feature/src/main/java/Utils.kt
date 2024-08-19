@@ -130,24 +130,32 @@ object Utils {
             "Собрали для вас",
             "Рекоммендации от наших экспертов",
             1,
+            "https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg",
+            "https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve",
         ),
         CollectionOfPlace(
             "",
             "Завтраки вне дома",
             "Куда сходить  Места",
-            0
+            0,
+            "https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg",
+            "https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve",
         ),
         CollectionOfPlace(
             "",
             "Пиво и футбол",
             "Куда сходить  Места",
             1,
+            "https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg",
+            "https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve",
         ),
         CollectionOfPlace(
             "",
             "Где перекусить спортсмену",
             "Куда сходить  Места",
-            0
+            0,
+            "https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg",
+            "https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve",
         )
 
     )
@@ -173,6 +181,7 @@ object Utils {
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
             pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
             score = 20,
+            additionalInfo = "1000-2500",
         ),
         Restaurant(
             id = "75d07f8a-a2e8-4557-b879-bfc585738ec6",
@@ -193,6 +202,7 @@ object Utils {
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
             pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
             score = 40,
+            additionalInfo = "1000-2500",
         ),
         Restaurant(
             id = "f1483fdb-c304-41bc-8392-c33b218c533e",
@@ -213,6 +223,7 @@ object Utils {
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
             pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
             score = 30,
+            additionalInfo = "1000-2500",
 
             ),
         Restaurant(
@@ -234,6 +245,7 @@ object Utils {
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
             pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
             score = 50,
+            additionalInfo = "1000-2500",
 
             ),
         Restaurant(
@@ -255,6 +267,7 @@ object Utils {
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
             pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
             score = 60,
+            additionalInfo = "1000-2500",
         ),
 
         Restaurant(
@@ -276,6 +289,7 @@ object Utils {
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
             pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
             score = 23,
+            additionalInfo = "1000-2500",
         ),
         Restaurant(
             id = "2fb96cda-96ee-4e53-b9aa-6d5c379cd620",
@@ -296,6 +310,7 @@ object Utils {
             pin = "https://storage.yandexcloud.net/yandex-guide/restaurants/a4279cc6-24a0-4b36-b65c-016868e9fda2.jpg",
             pictures = listOf("https://storage.yandexcloud.net/yandex-guide/restaurants/interior/i_8.jpg"),
             score = 45,
+            additionalInfo = "1000-2500",
         ),
     )
 

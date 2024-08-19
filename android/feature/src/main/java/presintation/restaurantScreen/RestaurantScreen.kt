@@ -1,5 +1,6 @@
 package presintation.restaurantScreen
 
+import Utils
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -52,6 +53,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.feature.R
 import presintation.mapScreen.Carousel
 import ui.AboutPlaceCard
@@ -150,11 +152,11 @@ fun RestaurantScreen(
 
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ImageCarousel(listImages = listImages)
+                    ImageCarousel(listImages = uiState.currentRestaurant?.pictures ?: Utils.restaurants[0].pictures)
                     Spacer(modifier = Modifier.height(4.dp))
                     AboutPlaceCard(true, uiState.currentRestaurant?.description)
                     Spacer(modifier = Modifier.height(16.dp))
-                    ImageCarousel(listImages = listImages)
+                    ImageCarousel(listImages = uiState.currentRestaurant?.pictures ?: Utils.restaurants[0].pictures)
                 }
             },
             sheetContainerColor = Color.White,
@@ -169,7 +171,7 @@ fun RestaurantScreen(
                     .height(screenHeight / 2)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.rest),
+                    painter = rememberAsyncImagePainter(model = uiState.currentRestaurant?.pin),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -259,7 +261,7 @@ fun RestaurantScreen(
                     enter = fadeIn(),
                     exit = fadeOut()
                 ){
-                    TopCard(navToBack = navToBack)
+                    TopCard(navToBack = navToBack, name = uiState.currentRestaurant?.name ?: "Ян Примус")
                 }
             }
         }

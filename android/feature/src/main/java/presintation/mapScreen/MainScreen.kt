@@ -72,6 +72,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
 import custom_bottom_sheet.rememberBottomSheetState
@@ -308,7 +309,10 @@ fun MainScreen(
                             ) {
                                 Column {
                                     ImageCarousel(
-                                        imageUrls = restaurant.pictures
+                                        imageUrls = restaurant.pictures,
+                                        restaurantId = restaurant.id,
+                                        inCollection = restaurant.inCollection,
+                                        send = send,
                                     )
 
                                     Row(
@@ -573,7 +577,7 @@ fun CollectionCarousel(
             }
 
             CardWithImageAndText(
-                painterResource(id = com.example.core.R.drawable.photo1),
+                imagePainter = rememberAsyncImagePainter(model = item.picture),
                 text = item.name,
                 description = item.description,
                 {},
