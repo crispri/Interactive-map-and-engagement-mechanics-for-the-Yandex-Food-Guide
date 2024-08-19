@@ -13,16 +13,41 @@ PgSelectionRepository::PgSelectionRepository(const userver::storages::postgres::
     kConnectionTableName_("guide.places_selections")
     {}
 
+const std::unordered_map<std::string, size_t > PgSelectionRepository::default_user_collection_order = {
+        {"Хочу сходить", 0},
+        {"Хочу заказать", 1},
+};
+
 std::vector<TSelection> PgSelectionRepository::GetAll(const boost::uuids::uuid& user_id, bool return_collections) {
 
     if (return_collections) {
+
         const auto& selections = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kSlave,
             R"(SELECT * FROM )" + kSelectionsTableName_ +
             R"( WHERE owner_id = $1; )",
             user_id
         );
-        return selections.AsContainer<std::vector<TSelection>>(userver::storages::postgres::kRowTag);
+        auto selections_vct = selections.AsContainer<std::vector<TSelection>>(userver::storages::postgres::kRowTag);
+        std::vector<TSelection> selections_with_priority_vct(selections_vct.size());
+
+        size_t i = default_user_collection_order.size();
+        for (auto& selection : selections_vct) {
+            /*
+             *
+             * Вот тут в теории может быть пиздец,
+             * если добавить в БД новую коллекцию,
+             * но не поддержать ее в мапе
+             */
+            if (selection.pre_created_collection_name) {
+                selections_with_priority_vct[default_user_collection_order.at(selection.pre_created_collection_name.value())] =
+                        std::move(selection);
+            } else {
+                selections_with_priority_vct[i++] = std::move(selection);
+            }
+        }
+
+        return selections_with_priority_vct;
     }
 
     const auto& selections = pg_cluster_->Execute(
@@ -72,6 +97,7 @@ void PgSelectionRepository::InsertIntoCollection(const boost::uuids::uuid& user_
         R"( WHERE id = $1; )",
         restaurant_id
     );
+
     const auto& food_picture_url = query_result[0].As<std::string>();
     pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
