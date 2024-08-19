@@ -44,8 +44,15 @@ final class BigPinView: UIView {
         image.clipsToBounds = true
 
         if let url = URL(string: model.food) {
-            loadImage(from: url)
-        } 
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let data = data {
+                    DispatchQueue.main.async {
+                        image.image = UIImage(data: data)
+                    }
+                }
+            }.resume()
+        }
+
 //        image.image = UIImage(named: "1rest")
         image.layer.cornerRadius = 12
         image.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]

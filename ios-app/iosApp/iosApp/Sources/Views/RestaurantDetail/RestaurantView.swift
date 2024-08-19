@@ -15,10 +15,21 @@ struct RestaurantView: View {
         ScrollView(.vertical) {
             VStack {
                 ZStack {
-                    Image("1rest")
-                        .resizable()
-                        .aspectRatio(3/2, contentMode: .fill)
-                        .frame(width: 200)
+                    if !restaurant.interior.isEmpty {
+                        AsyncImage(url: URL(string: restaurant.interior[0])) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(3/2, contentMode: .fill)
+                                .frame(width: 200)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    } else {
+                        Image("noPhoto")
+                            .resizable()
+                            .aspectRatio(3/2, contentMode: .fill)
+                            .frame(width: 200)
+                    }
 
                     VStack(alignment: .leading) {
                         ButtonBackAndShare()
@@ -174,17 +185,57 @@ struct RestaurantView: View {
     private func Gallery() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                Image("1rest")
-                    .resizable()
-                    .cornerRadius(20)
-                    .aspectRatio(1.3, contentMode: .fit)
+                if restaurant.interior.count >= 2 {
+                    AsyncImage(url: URL(string: restaurant.interior[1])) { image in
+                        image
+                            .resizable()
+                            .cornerRadius(20)
+                            .aspectRatio(1.3, contentMode: .fit)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                } else if restaurant.interior.count == 1 {
+                    AsyncImage(url: URL(string: restaurant.interior[0])) { image in
+                        image
+                            .resizable()
+                            .cornerRadius(20)
+                            .aspectRatio(1.3, contentMode: .fit)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                } else {
+                    Image("noPhoto")
+                        .resizable()
+                        .cornerRadius(20)
+                        .aspectRatio(1.3, contentMode: .fit)
+                }
+
                 VStack {
-                    Image("2rest")
-                        .resizable()
-                        .cornerRadius(20)
-                    Image("3rest")
-                        .resizable()
-                        .cornerRadius(20)
+
+                    if restaurant.interior.count >= 4 {
+                        AsyncImage(url: URL(string: restaurant.interior[2])) { image in
+                            image
+                                .resizable()
+                                .cornerRadius(20)
+                        } placeholder: {
+                            ProgressView()
+                        }
+
+                        AsyncImage(url: URL(string: restaurant.interior[3])) { image in
+                            image
+                                .resizable()
+                                .cornerRadius(20)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    } else {
+                        Image("noPhoto")
+                            .resizable()
+                            .cornerRadius(20)
+                        Image("noPhoto")
+                            .resizable()
+                            .cornerRadius(20)
+                    }
                 }
                 .aspectRatio(2/3, contentMode: .fit)
             }
