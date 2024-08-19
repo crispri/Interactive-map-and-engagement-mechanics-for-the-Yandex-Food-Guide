@@ -621,7 +621,7 @@ fun CollectionCarousel(
             val cardWidth = if (isSelected) (260.dp) else 180.dp
 
 
-            
+
             CardWithImageAndText(
                 imagePainter = painterResource(id = R.drawable.kitchen),
                 text = "Открытая кухня",
