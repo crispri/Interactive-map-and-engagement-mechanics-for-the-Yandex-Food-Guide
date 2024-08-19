@@ -86,7 +86,6 @@ final class NetworkManager {
             path: Api.selections.path,
             method: HTTPMethod.post.rawValue,
             with: SelectionsRequest(returnCollections: false)
-            with: SelectionRequest(returnCollections: false)
         )
         
         let data: SelectionsResponse = try await performRequest(request: request)
