@@ -43,12 +43,6 @@ namespace service {
                     userver::server::request::RequestContext &) const override {
                 ErrorResponseBuilder errorBuilder(request);
 
-                if (!request.HasHeader("Authorization")) {
-                    return errorBuilder.build(
-                            userver::server::http::HttpStatus::kUnauthorized,
-                            ErrorDescriprion::kTokenNotSpecified);
-                }
-
                 /*
                 - Проверка авторизации пользователя.
                 */

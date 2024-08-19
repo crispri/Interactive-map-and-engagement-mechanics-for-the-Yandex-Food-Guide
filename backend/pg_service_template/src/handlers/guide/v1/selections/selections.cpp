@@ -15,6 +15,8 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
+
+#include <service/SessionService.hpp>
 #include <service/SelectionService.hpp>
 #include <boost/uuid/string_generator.hpp>
 #include "lib/error_description.hpp"
@@ -65,13 +67,6 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
 
       ErrorResponseBuilder errorBuilder(request);
 
-      if (!request.HasHeader("Authorization")) {
-        return errorBuilder.build(
-            userver::server::http::HttpStatus::kUnauthorized,
-            ErrorDescriprion::kTokenNotSpecified
-        );
-      }
-
       const auto& request_body_string = request.RequestBody();
       userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
       if (!request_body_json.HasMember("return_collections")) {
@@ -80,11 +75,8 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
               ErrorDescriprion::kReturnCollectionsNotSpecified
         );
       }
-
         boost::uuids::string_generator gen;
-        auto user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
-
-        LOG_ERROR()<<boost::uuids::to_string(user_id);
+        const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
 
       auto selections = selection_service_.GetAll(user_id, request_body_json["return_collections"].As<bool>());
         userver::formats::json::ValueBuilder responseJSON;

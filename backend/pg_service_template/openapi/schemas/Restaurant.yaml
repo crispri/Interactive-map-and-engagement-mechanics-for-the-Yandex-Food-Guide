@@ -56,6 +56,9 @@ properties:
     score:
         type: integer
 
+    additional_info:
+        type: string
+
 required:
     - id
     - coordinates
@@ -72,3 +75,4 @@ required:
     - in_collection
     - food
     - interior
+    - additional_info
