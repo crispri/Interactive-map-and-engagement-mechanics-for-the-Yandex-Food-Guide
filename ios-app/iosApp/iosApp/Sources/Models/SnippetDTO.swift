@@ -21,7 +21,11 @@ struct SnippetDTO: Codable, Hashable, Equatable, Identifiable {
     let closeTime: String
     let tags: [String]
     let inCollection: Bool
-    
+    let food: String
+    let interior: [String]
+    let score: Int
+    let additionalInfo: String
+
     init(
         id: String = UUID().uuidString,
         coordinates: Coordinates = Coordinates(lat: 0.0, lon: 0.0),
@@ -35,7 +39,11 @@ struct SnippetDTO: Codable, Hashable, Equatable, Identifiable {
         openTime: String = "",
         closeTime: String = "",
         tags: [String] = [],
-        inCollection: Bool = true
+        inCollection: Bool = true,
+        food: String = "",
+        interior: [String] = [],
+        score: Int = 0,
+        additionalInfo: String = ""
     ) {
         self.id = id
         self.coordinates = coordinates
@@ -50,6 +58,10 @@ struct SnippetDTO: Codable, Hashable, Equatable, Identifiable {
         self.closeTime = closeTime
         self.tags = tags
         self.inCollection = inCollection
+        self.food = food
+        self.interior = interior
+        self.score = score
+        self.additionalInfo = additionalInfo
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -60,6 +72,8 @@ struct SnippetDTO: Codable, Hashable, Equatable, Identifiable {
         case openTime = "open_time"
         case closeTime = "close_time"
         case inCollection = "in_collection"
+        case food, interior, score
+        case additionalInfo = "additional_info"
     }
 }
 
