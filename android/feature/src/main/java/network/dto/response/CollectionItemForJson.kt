@@ -8,4 +8,6 @@ data class CollectionItemForJson(
     @SerializedName("name") val name: String,
     @SerializedName("description") val description: String,
     @SerializedName("is_public") val isPublic: Int,
+    @SerializedName("picture") val picture: String,
+    @SerializedName("link") val link: String,
 )

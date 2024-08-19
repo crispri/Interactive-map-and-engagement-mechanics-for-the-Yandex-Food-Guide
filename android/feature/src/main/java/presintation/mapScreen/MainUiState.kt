@@ -35,13 +35,14 @@ data class MainUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
 
+    val isCollectionMode: Boolean = false,
     /*val mapObjectCollection: MapObjectCollection? = null,
     val placemarkMapObject: PlacemarkMapObject? = null,*/
 
 
     val itemsList: List<String> = listOf(
         "Музыка громче",
-        "Завтраки",
+        "Завтрак",
         "Винотека",
         "Европейская",
         "Коктели",

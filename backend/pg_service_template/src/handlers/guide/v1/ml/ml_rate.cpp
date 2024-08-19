@@ -47,19 +47,13 @@ namespace service {
                     userver::server::request::RequestContext &) const override {
                 ErrorResponseBuilder errorBuilder(request);
 
-                if (!request.HasHeader("Authorization")) {
-                    return errorBuilder.build(
-                            userver::server::http::HttpStatus::kUnauthorized,
-                            ErrorDescriprion::kTokenNotSpecified);
-                }
-
                 boost::uuids::string_generator gen;
-                auto session_id = gen(request.GetHeader("Authorization"));
+                const auto& session_id = gen(request.GetCookie("session_id"));
 
                 /*
                 - Проверка авторизации пользователя.
                 */
-
+                LOG_ERROR() << "HERE mlrate";
                 const auto &request_body_string = request.RequestBody();
                 userver::formats::json::Value request_body_json =
                         userver::formats::json::FromString(request_body_string);

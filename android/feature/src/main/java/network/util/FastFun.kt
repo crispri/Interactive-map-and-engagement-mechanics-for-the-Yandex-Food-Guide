@@ -11,7 +11,7 @@ import network.dto.response.CollectionItemForJson
 
 fun Restaurant.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     id,
-    Coordinates(lat = coordinates.latitude,  lon = coordinates.longitude),
+    Coordinates(lat = coordinates.latitude, lon = coordinates.longitude),
     name,
     description,
     address,
@@ -24,7 +24,7 @@ fun Restaurant.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     isFavorite,
     tags,
     inCollection,
-    pin, pictures, score
+    pin, pictures, score, additionalInfo,
 )
 
 fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
@@ -42,7 +42,7 @@ fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
     isFavorite,
     tags,
     inCollection,
-    food, interior, score
+    food, interior, score, additionalInfo
 )
 
 fun CollectionItemForJson.toModel(): CollectionOfPlace = CollectionOfPlace(
@@ -50,14 +50,15 @@ fun CollectionItemForJson.toModel(): CollectionOfPlace = CollectionOfPlace(
     name,
     description,
     isPublic,
+    picture, link,
 )
 
-fun Filter.toJson() : FilterForJson = FilterForJson(
+fun Filter.toJson(): FilterForJson = FilterForJson(
     property, value, operator
 )
 
-fun FilterForJson.toModel() : Filter = Filter(
+fun FilterForJson.toModel(): Filter = Filter(
     property, value, operator, true
 )
 
-fun String.toToken(): String = "Bearer $this"
+fun String.toToken(): String = "$this"

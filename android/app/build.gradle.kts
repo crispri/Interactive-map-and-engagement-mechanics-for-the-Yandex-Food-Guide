@@ -68,6 +68,7 @@ dependencies {
 
     //DI - Hilt
     implementation(libs.hilt)
+    implementation(libs.firebase.common.ktx)
     testImplementation(project(":core"))
     testImplementation(project(":core"))
     kapt("com.google.dagger:hilt-android-compiler:2.48")
@@ -93,6 +94,10 @@ dependencies {
 
     // MockWebServer
     testImplementation(libs.mockwebserver)
+
+    // App Metric
+    implementation(libs.mobmetricalib)
+    implementation("io.appmetrica.analytics:analytics:7.0.0")
 }
 kapt {
     correctErrorTypes = true

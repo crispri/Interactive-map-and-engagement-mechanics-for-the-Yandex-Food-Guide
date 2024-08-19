@@ -1,5 +1,6 @@
 package com.example.yandexmapeat
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -39,6 +40,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import presintation.mapScreen.CustomMapView
 import presintation.navigation.AppNavigation
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 15
@@ -105,6 +108,14 @@ class MainActivity : ComponentActivity() {
 
         mapView = CustomMapView(context)
 
+        val style = loadJsonFromAsset(this, "my_json.json")
+        if (style != null) {
+            mapView.mapWindow.map.setMapStyle(style)
+        } else {
+            Log.d("jsonfile", "error")
+        }
+
+
         setContent {
             YandexMapEatTheme {
                 AppNavigation(mapView, curLocation)
@@ -145,5 +156,21 @@ class MainActivity : ComponentActivity() {
     companion object {
         const val MAPKIT_API_KEY = "8e691497-5f95-489d-862e-b24bd7507b87"
     }
+}
 
+fun loadJsonFromAsset(context: Context, fileName: String): String? {
+    return try {
+        val inputStream = context.assets.open(fileName)
+        val buffer = BufferedReader(InputStreamReader(inputStream))
+        val sb = StringBuilder()
+        var line: String?
+        while (buffer.readLine().also { line = it } != null) {
+            sb.append(line)
+        }
+        buffer.close()
+        sb.toString()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
 }
