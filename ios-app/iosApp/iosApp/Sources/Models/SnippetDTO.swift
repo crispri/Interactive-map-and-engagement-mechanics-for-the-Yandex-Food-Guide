@@ -87,7 +87,8 @@ extension SnippetDTO {
             address: "Берсеневский пер., 2, стр.1, Москва, 119072",
             rating: 5,
             priceLowerBound: 1200,
-            priceUpperBound: 6000
+            priceUpperBound: 6000,
+            additionalInfo: "вкусный кофе"
         ),
         SnippetDTO(
             id: "1",
