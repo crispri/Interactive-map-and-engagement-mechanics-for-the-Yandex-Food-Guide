@@ -187,7 +187,7 @@ fun MapScreen(
     LaunchedEffect(uiState.recommendationIsSelected) {
         if(uiState.raiseRequired && bottomSheetHeight.value != null){
             if(bottomSheetHeight.value!! > 0.dp) {
-                raiseCameraPosition(bottomSheetHeight.value!!, uiState.lowerLeft, uiState.topRight)
+//                raiseCameraPosition(bottomSheetHeight.value!!, uiState.lowerLeft, uiState.topRight)
             } else if (uiState.recommendationIsSelected){
                 mapView.mapWindow.map.move(
                     CameraPosition(Point(55.7522200, 37.6155600), 10.0F, 0.0f, 0.0f),

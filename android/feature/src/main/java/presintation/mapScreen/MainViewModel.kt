@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
                 "${lowerLeft.latitude}, ${lowerLeft.longitude}, ${topRight.latitude}, ${topRight.longitude}, "
             )
             repository.getRestaurants(
-                "Asd",
+                "session_id=5142cece-b22e-4a4f-adf9-990949d053ff",
                 lowerLeftLat = lowerLeft.latitude,
                 lowerLeftLon = lowerLeft.longitude,
                 topRightLat = topRight.latitude,
@@ -110,7 +110,7 @@ class MainViewModel @Inject constructor(
                 "in fetchRestaurants", ""
             )
             repository.getCollections(
-                "Asd",
+                "session_id=5142cece-b22e-4a4f-adf9-990949d053ff",
                 false,
             )
                 .collect { state ->
@@ -155,7 +155,7 @@ class MainViewModel @Inject constructor(
                 "in fetchRestaurants", ""
             )
             repository.getCollections(
-                "Asd",
+                "session_id=5142cece-b22e-4a4f-adf9-990949d053ff",
                 true,
             )
                 .collect { state ->
