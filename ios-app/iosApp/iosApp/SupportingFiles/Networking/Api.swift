@@ -11,8 +11,8 @@ public enum Api {
     static var baseURL: String {
         "http://51.250.39.97:8080/guide/v1/"
     }
-    static var token: String {
-        "Yavanna"
+    static var sessionID: String {
+        "5142cece-b22e-4a4f-adf9-990949d053ff"
     }
     static var geocoderURL: String {
         "https://geocode-maps.yandex.ru/1.x/"
@@ -22,9 +22,11 @@ public enum Api {
     }
     
     case restaurants
-    case restaurant(id:String)
+    case restaurant(id: String)
     case selections
-    case selection(id:String)
+    case selection(id: String)
+    case collection
+    case collections(id: String)
     
     public var path: String {
         switch self {
@@ -36,6 +38,10 @@ public enum Api {
             return "selections"
         case .selection(id: let id):
             return "selections/\(id)"
+        case .collection:
+            return "collection"
+        case .collections(id: let id):
+            return "collection/\(id)"
         }
     }
 }

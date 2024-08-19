@@ -9,22 +9,22 @@ import Foundation
 
 final class NetworkManager {
     private let baseURL = URL(string: Api.baseURL)
-    private let token = Api.token
+    private let sessionID = Api.sessionID
     
-    private func makeRequest(path: String, method: String) throws -> URLRequest {
-        guard let url = URL(string: path, relativeTo: baseURL) else {
+    private func makeRequest(path api: Api, method: HTTPMethod) throws -> URLRequest {
+        guard let url = URL(string: api.path, relativeTo: baseURL) else {
             throw URLError(.badURL)
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = method
+        request.httpMethod = method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("session_id=\(sessionID)", forHTTPHeaderField: "Cookie")
           
         return request
     }
     
-    private func makeRequest(path: String, method: String, with requestModel: Codable?) throws -> URLRequest {
+    private func makeRequest(path: Api, method: HTTPMethod, with requestModel: Codable?) throws -> URLRequest {
         var request = try makeRequest(path: path, method: method)
         
         if let requestModel {
@@ -55,11 +55,12 @@ final class NetworkManager {
     
     func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point, filters: [FilterDTO]?) async throws -> [SnippetDTO] {
         let request = try makeRequest(
-            path: Api.restaurants.path,
-            method: HTTPMethod.post.rawValue,
-            with: FilteredSnippetRequest(
+            path: .restaurants,
+            method: .post,
+            with: SnippetRequest(
                 lowerLeftCorner: lowerLeftCorner,
                 topRightCorner: topRightCorner,
+                onlyCollections: false,
                 maxCount: 0,
                 filters: filters
             )
@@ -73,8 +74,8 @@ final class NetworkManager {
     
     func fetchSnippet(id: String) async throws -> SnippetDTO {
         let request = try makeRequest(
-            path: Api.restaurant(id: id).path,
-            method: HTTPMethod.get.rawValue
+            path: .restaurant(id: id),
+            method: .get
         )
         
         let data: SnippetDTO = try await performRequest(request: request)
@@ -84,9 +85,9 @@ final class NetworkManager {
     
     func fetchSelections() async throws -> [SelectionDTO] {
         let request = try makeRequest(
-            path: Api.selections.path,
-            method: HTTPMethod.post.rawValue,
-            with: SelectionsRequest(returnCollections: false)
+            path: .selections,
+            method: .post,
+            with: SelectionRequest(returnCollections: false)
         )
         
         let data: SelectionsResponse = try await performRequest(request: request)
@@ -94,25 +95,25 @@ final class NetworkManager {
         return data.items
     }
     
+    func fetchSelectionSnippets(id: String) async throws -> [SnippetDTO] {
+        let request = try makeRequest(
+            path: .selection(id: id),
+            method: .get
+        )
+        
+        let data: SnippetsResponse = try await performRequest(request: request)
+        
+        return data.items
+    }
+    
     func fetchUserCollections() async throws -> [SelectionDTO] {
         let request = try makeRequest(
-            path: Api.selections.path,
-            method: HTTPMethod.post.rawValue,
+            path: .selections,
+            method: .post,
             with: SelectionRequest(returnCollections: true)
         )
         
         let data: SelectionsResponse = try await performRequest(request: request)
-        
-        return data.items
-    }
-
-    func fetchSelectionSnippets(id: String) async throws -> [SnippetDTO] {
-        let request = try makeRequest(
-            path: Api.selection(id: id).path,
-            method: HTTPMethod.get.rawValue
-        )
-        
-        let data: SnippetsResponse = try await performRequest(request: request)
         
         return data.items
     }
@@ -149,5 +150,20 @@ final class NetworkManager {
         }
         
         return data
+    }
+    
+    func sendCollection(name: String, description: String) async throws -> String {
+        let request = try makeRequest(
+            path: .collection,
+            method: .post,
+            with: CollectionRequest(
+                name: name,
+                description: description
+            )
+        )
+        
+        let data: CollectionResponse = try await performRequest(request: request)
+        
+        return data.id
     }
 }

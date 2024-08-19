@@ -15,6 +15,8 @@ struct DetailsView: View {
     @State var isFiltersPresented = false
     @State var isUserCollectionsPresented = false
     
+    @State var isUserCollectionsPresented = false
+    
     var body: some View {
         ZStack {
             YandexMapView()
@@ -57,7 +59,6 @@ struct DetailsView: View {
         }
         .sheet(isPresented: $isFiltersPresented) {
             FilterDetailedView()
-                .environmentObject(viewModel)
         }
         .sheet(isPresented: $isUserCollectionsPresented) {
             UserCollectionsView()
