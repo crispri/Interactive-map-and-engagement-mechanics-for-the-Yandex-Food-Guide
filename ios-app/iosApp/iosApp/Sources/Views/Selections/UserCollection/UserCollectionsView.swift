@@ -31,17 +31,18 @@ struct UserCollectionsView: View {
 struct UserCollectionItem: View {
     @Binding var userCollection: UserCollection
     var restaurantsCount: Int {
-        userCollection.restaurants.count
+        userCollection.restaurantIDs.count
     }
     
     @ViewBuilder
     func restaurantPicture() -> some View {
-        if userCollection.selection.picture.contains("https?:")  { // #URL(...)
+        if userCollection.selection.picture.contains("http")  { // #URL(...)
             let url = URL(string: userCollection.selection.picture)
             AsyncImage(url: url) { image in
                 image
                     .resizable()
-                    .frame(width: 56, height: 56)
+                    .frame(width: 84, height: 84)
+                    .clipShape(.rect(cornerRadius: 16))
                     .padding(.leading)
             } placeholder: { Color(.clear) }
         }

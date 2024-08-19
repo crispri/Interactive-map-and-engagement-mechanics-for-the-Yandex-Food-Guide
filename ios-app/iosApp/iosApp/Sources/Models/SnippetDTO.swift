@@ -20,12 +20,12 @@ struct SnippetDTO: Codable, Hashable, Equatable, Identifiable {
     let openTime: String
     let closeTime: String
     let tags: [String]
-    let inCollection: Bool
+    var inCollection: Bool
     let food: String
     let interior: [String]
     let score: Int
     let additionalInfo: String
-
+    
     init(
         id: String = UUID().uuidString,
         coordinates: Coordinates = Coordinates(lat: 0.0, lon: 0.0),
@@ -39,7 +39,7 @@ struct SnippetDTO: Codable, Hashable, Equatable, Identifiable {
         openTime: String = "",
         closeTime: String = "",
         tags: [String] = [],
-        inCollection: Bool = true,
+        inCollection: Bool = false,
         food: String = "",
         interior: [String] = [],
         score: Int = 0,
@@ -65,14 +65,13 @@ struct SnippetDTO: Codable, Hashable, Equatable, Identifiable {
     }
     
     private enum CodingKeys: String, CodingKey {
-        case id, coordinates, name, description, address, rating, tags
+        case id, coordinates, name, description, address, rating, tags, food, interior, score
         case isApproved = "is_approved"
         case priceLowerBound = "price_lower_bound"
         case priceUpperBound = "price_upper_bound"
         case openTime = "open_time"
         case closeTime = "close_time"
         case inCollection = "in_collection"
-        case food, interior, score
         case additionalInfo = "additional_info"
     }
 }
@@ -80,7 +79,6 @@ struct SnippetDTO: Codable, Hashable, Equatable, Identifiable {
 extension SnippetDTO {
     static var mockData = [
         SnippetDTO(
-            id: "0",
             coordinates: Coordinates(lat: 55.74048502788512, lon: 37.610338866258985),
             name: "Сыроварня",
             description: "Крупная сеть ресторанов с собственным сырным производством",
@@ -91,7 +89,6 @@ extension SnippetDTO {
             additionalInfo: "вкусный кофе"
         ),
         SnippetDTO(
-            id: "1",
             coordinates: Coordinates(lat: 55.755956, lon: 37.643203),
             name: "Blanc",
             description: "Ресторан авторской кухни, расположенный в исторической части города",
@@ -101,7 +98,6 @@ extension SnippetDTO {
             priceUpperBound: 6000
         ),
         SnippetDTO(
-            id: "2",
             coordinates: Coordinates(lat: 55.762986, lon: 37.634945),
             name: "Lions Head",
             description: "Классический ирландский паб, который предлагает своим гостям широкий выбор напитков",
@@ -111,7 +107,6 @@ extension SnippetDTO {
             priceUpperBound: 6000
         ),
         SnippetDTO(
-            id: "3",
             coordinates: Coordinates(lat: 55.804959, lon: 37.589506),
             name: "Ya Cafe",
             description: "Здесь вы найдете красивый зал, а также вкусное и разнообразное меню.",
