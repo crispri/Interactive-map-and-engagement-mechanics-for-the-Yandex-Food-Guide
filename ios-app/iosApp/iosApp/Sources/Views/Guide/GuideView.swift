@@ -9,11 +9,38 @@ import SwiftUI
 
 struct GuideView: View {
     @StateObject var viewModel = SnippetViewModel()
-    
+    @State private var seach = ""
+
     var body: some View {
         NavigationStack {
             VStack {
-                Spacer()
+                Image("seach")
+                ZStack {
+                    YandexMapView()
+                        .environmentObject(viewModel.mapManager)
+                        .frame(width: 343, height: 90)
+                        .cornerRadius(20)
+                        .onAppear{
+                            viewModel.eventOnAppear()
+                    }
+
+                    NavigationLink {
+                        DetailsView()
+                            .environmentObject(viewModel)
+                    } label: {
+                        HStack {
+                            Text("Выбрать на карте")
+                            Image(systemName: "chevron.right")
+                        }
+                        .padding(6)
+                        .foregroundStyle(.black)
+                        .background(.white)
+                        .cornerRadius(20)
+                    }
+
+                }
+                Image("scroll")
+                Image("whereToGo")
             }
             .navigationTitle("Гид")
             .toolbar {
@@ -28,10 +55,10 @@ struct GuideView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .background{
-                Image("Main")
-                    .ignoresSafeArea(edges: .all)
-            }
+//            .background{
+//                Image("Main")
+//                    .ignoresSafeArea(edges: .all)
+//            }
         }
     }
 }

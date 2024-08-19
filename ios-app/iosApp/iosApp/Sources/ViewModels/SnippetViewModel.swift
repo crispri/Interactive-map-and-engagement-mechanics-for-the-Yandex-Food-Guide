@@ -13,9 +13,9 @@ final class SnippetViewModel: ObservableObject {
     private let MAX_POLIGON_WIDTH = 0.20
     
     @Published var userLocaitonTitle = "Поиск геопозиции..."
-    @Published var snippets = SnippetDTO.mockData
-    
-    @Published var selections = SelectionDTO.mockData
+    @Published var snippets = [SnippetDTO]()
+    @Published var selections = [SelectionDTO]()
+    @Published var selectedCollection: SelectionDTO? = nil
     @Published var currentSelection: SelectionDTO?
     
     @Published var userCollections = UserCollection.mockData
@@ -49,7 +49,15 @@ final class SnippetViewModel: ObservableObject {
         eventOnGesture()
         Task { await fetchSelections() }
     }
-    
+
+    func eventOnAppearForMain() {
+        eventCenterCamera(to: .user)
+        eventOnGesture()
+        mapManager.map.isScrollGesturesEnabled = false
+        mapManager.map.isRotateGesturesEnabled = false
+        mapManager.map.isZoomGesturesEnabled = false
+    }
+
     func eventOnGesture() {
         Task { await fetchSnippets() }
         Task { await fetchSelections() }
@@ -70,8 +78,6 @@ final class SnippetViewModel: ObservableObject {
                 let tr = rect.topRightCorner
                 
                 print("Square position: \(ll.description) \(tr.description)")
-                mapManager.disablePins()
-                mapManager.cleanPins()
                 
                 let restaurants = try await loadSnippets(
                     lowerLeftCorner: .init(lat: ll.lat, lon: ll.lon), topRightCorner: .init(lat: tr.lat, lon: tr.lon)

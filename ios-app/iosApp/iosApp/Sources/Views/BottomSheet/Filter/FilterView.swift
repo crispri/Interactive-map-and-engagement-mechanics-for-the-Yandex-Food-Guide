@@ -10,7 +10,8 @@ import SwiftUI
 struct FilterView: View {
     @Binding var isFiltersPresented: Bool
     @Binding var filterCategories: [FilterCategory]
-
+    @EnvironmentObject var vm: SnippetViewModel
+    
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
@@ -39,10 +40,14 @@ struct FilterView: View {
 
 struct filterButton: View {
     @Binding var filter: Filter
+    @EnvironmentObject var vm: SnippetViewModel
     
     var body: some View {
         Button {
             filter.isActive.toggle()
+            vm.mapManager.disablePins()
+            vm.mapManager.cleanPins()
+            vm.onCameraMove()
             print(filter.isActive)
         } label: {
             Text(filter.name)

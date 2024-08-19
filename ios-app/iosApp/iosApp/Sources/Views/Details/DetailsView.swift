@@ -69,7 +69,7 @@ struct DetailsView: View {
         Button {
             dismiss()
         } label: {
-            Image(systemName: "arrow.left")
+            Image("arrow-left")
                 .bold()
                 .foregroundStyle(.black)
                 .padding()
