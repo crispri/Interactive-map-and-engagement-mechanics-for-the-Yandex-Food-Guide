@@ -1,12 +1,8 @@
 package presintation.homeScreen
 
 import ImageCarousel
-import android.util.Log
-import android.widget.FrameLayout.inflate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,31 +27,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -65,26 +46,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.feature.R
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
+import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
-import model.Filter
 import model.MainScreenEvent
 import model.Restaurant
-import model.SelectFilter
 import model.UpdateItemsOnMap
-import pins.CustomPinView
-import presintation.mapScreen.CategoryFilterButtonCard
 import presintation.mapScreen.CircularProgressBar
 import presintation.mapScreen.MainUiState
-import presintation.restaurantScreen.RestaurantTagsCarousel
 import ui.BigCard
-import ui.CardWithImageAndText
 import ui.CategoryButtonCard
-import ui.RestaurantScreenEvent
 import ui.TextCard
 import java.text.DecimalFormat
 
@@ -93,7 +66,7 @@ import java.text.DecimalFormat
 fun HomeScreen(
     send: (MainScreenEvent) -> Unit,
     uiState: MainUiState,
-     navToMap: () -> Unit
+    navToMap: () -> Unit
 ) {
 
     val list = mutableStateOf(uiState.restaurantsOnMap)
@@ -155,7 +128,6 @@ fun HomeScreen(
                     })
             }
             SearchRow()
-
         }
 
         LazyColumn(
@@ -177,7 +149,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(10.dp))
             }
             item {
-                ChooseAccordingToYourTaste(list = list.value)
+                ChooseAccordingToYourTaste(list = list.value, send = send)
             }
         }
     }
@@ -207,7 +179,7 @@ fun MapFrame() {
 
 
 @Composable
-fun ChooseAccordingToYourTaste(list: List<Restaurant>) {
+fun ChooseAccordingToYourTaste(list: List<Restaurant>, send: (MainScreenEvent) -> Unit) {
     Column(
         modifier = Modifier.padding(top = 15.dp)
     ) {
@@ -221,14 +193,14 @@ fun ChooseAccordingToYourTaste(list: List<Restaurant>) {
         Spacer(modifier = Modifier.height(14.dp))
         HomeScreenFilterCarousel()
         Spacer(modifier = Modifier.height(8.dp))
-        RestaurantCardsInHomeScreen(list = list)
+        RestaurantCardsInHomeScreen(list = list, send = send)
     }
 }
 
 
 
 @Composable
-fun RestaurantCard(restaurant: Restaurant){
+fun RestaurantCard(restaurant: Restaurant, send: (MainScreenEvent) -> Unit){
     Card(
         modifier = Modifier
             .padding(bottom = 16.dp, start = 10.dp, end = 10.dp)
@@ -239,7 +211,10 @@ fun RestaurantCard(restaurant: Restaurant){
     ) {
         Column{
             ImageCarousel(
-                imageUrls = restaurant.pictures
+                imageUrls = restaurant.pictures,
+                restaurantId = restaurant.id,
+                inCollection = restaurant.inCollection,
+                send = send,
             )
 
             Row(
@@ -297,10 +272,10 @@ fun RestaurantCard(restaurant: Restaurant){
 
 
 @Composable
-fun RestaurantCardsInHomeScreen(list: List<Restaurant>) {
+fun RestaurantCardsInHomeScreen(list: List<Restaurant>, send: (MainScreenEvent) -> Unit) {
     Column {
         list.forEach { restaurant ->
-            RestaurantCard(restaurant = restaurant)
+            RestaurantCard(restaurant = restaurant, send = send)
         }
     }
 }
@@ -466,7 +441,7 @@ val description = arrayOf("Фрески, шампань и русская печ
     "Топ-10 мест Москвы от Арины Журавлёвой",
     "15 dog-friendly ресторанов и кафе Москвы",
     "Латиноамериканская кухня в Москве: 6 ресторанов, где искать вкусы " +
-        "другого континента",
+            "другого континента",
     "Лавандовые поля, фермы, виноградники: 6 место для агротуризма в России")
 
 @Preview
