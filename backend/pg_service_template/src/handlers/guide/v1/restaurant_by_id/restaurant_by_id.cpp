@@ -22,6 +22,9 @@
 #include "lib/error_description.hpp"
 
 
+#include <service/SessionService.hpp>
+
+
 namespace service {
 
 namespace {
@@ -42,6 +45,10 @@ public:
     restaurant_service_(
         component_context
         .FindComponent<RestaurantService>()
+    ),
+    session_service_(
+            component_context
+                    .FindComponent<SessionService>()
     )
     {}
 
@@ -63,16 +70,9 @@ public:
         
         ErrorResponseBuilder errorBuilder(request);
 
-        if (!request.HasHeader("Authorization")) {
-            return errorBuilder.build(
-                userver::server::http::HttpStatus::kUnauthorized,
-                ErrorDescriprion::kTokenNotSpecified
-            );
-        }
-
         boost::uuids::string_generator gen;
         auto restaurant_id = gen(request.GetPathArg("id"));
-        auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+        const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
 
         auto restaurant = restaurant_service_.GetById(restaurant_id, user_id);
         if (!restaurant) {
@@ -88,6 +88,7 @@ public:
     }
 
     RestaurantService& restaurant_service_;
+    SessionService& session_service_;
 };
 
 }  // namespace

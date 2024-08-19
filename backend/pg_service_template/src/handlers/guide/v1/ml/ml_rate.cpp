@@ -48,7 +48,6 @@ namespace service {
                 ErrorResponseBuilder errorBuilder(request);
 
                 boost::uuids::string_generator gen;
-                // auto session_id = gen("5142cece-b22e-4a4f-adf9-990949d053ff");
                 const auto& session_id = gen(request.GetCookie("session_id"));
 
                 /*
