@@ -40,7 +40,15 @@ final class SnippetViewModel: ObservableObject {
         eventOnGesture()
         Task { await fetchSelections() }
     }
-    
+
+    func eventOnAppearForMain() {
+        eventCenterCamera(to: .user)
+        eventOnGesture()
+        mapManager.map.isScrollGesturesEnabled = false
+        mapManager.map.isRotateGesturesEnabled = false
+        mapManager.map.isZoomGesturesEnabled = false
+    }
+
     func eventOnGesture() {
         Task { await fetchSnippets() }
         Task { await fetchSelections() }
