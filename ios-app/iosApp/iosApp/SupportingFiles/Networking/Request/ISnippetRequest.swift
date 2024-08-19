@@ -10,5 +10,6 @@ import Foundation
 protocol ISnippetRequest: Codable {
     var lowerLeftCorner: Point { get }
     var topRightCorner: Point { get }
+    var onlyCollections: Bool { get }
     var maxCount: Int64 { get }
 }

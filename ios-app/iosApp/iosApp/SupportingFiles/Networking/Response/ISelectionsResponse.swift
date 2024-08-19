@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol ISelectionsResponse: Decodable {
+protocol ISelectionsResponse: Codable {
     var items: [SelectionDTO] { get }
 }

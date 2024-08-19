@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SelectionRequest: Codable {
+struct SelectionRequest: ISelectionRequest {
     let returnCollections: Bool
     
     enum CodingKeys: String, CodingKey {
