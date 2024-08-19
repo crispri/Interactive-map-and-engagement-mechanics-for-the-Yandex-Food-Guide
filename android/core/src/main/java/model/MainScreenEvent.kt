@@ -30,11 +30,18 @@ class UpdateItemsOnMap(
     val lowerLeft: Point,
     val topRight: Point,
     val filterList: List<Filter>,
+    val w: Double,
+    val h: Double
 ) : MainScreenEvent()
 
 class RaiseCameraPosition(
     val raiseRequired: Boolean
 ) : MainScreenEvent()
+
+class SetNewList(
+    val restaurants: List<Restaurant>,
+) : MainScreenEvent()
+
 
 class SelectFilter(val isAdding: Boolean, val filter: Filter) : MainScreenEvent()
 

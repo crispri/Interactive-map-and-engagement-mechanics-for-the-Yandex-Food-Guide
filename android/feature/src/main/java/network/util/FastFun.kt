@@ -61,4 +61,4 @@ fun FilterForJson.toModel(): Filter = Filter(
     property, value, operator, true
 )
 
-fun String.toToken(): String = "Bearer $this"
+fun String.toToken(): String = "$this"
