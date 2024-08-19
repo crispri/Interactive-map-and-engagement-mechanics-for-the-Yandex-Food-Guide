@@ -29,6 +29,10 @@ interface RestaurantRepository {
         isUserCollection: Boolean,
     ): Flow<NetworkState<List<CollectionOfPlace>>>
 
-
+    fun addItemInCollection(
+        token: String,
+        idUserCollection: String,
+        restaurantId: String,
+    ): Flow<NetworkState<String>>
 }
 

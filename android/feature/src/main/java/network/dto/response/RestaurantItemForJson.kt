@@ -21,4 +21,5 @@ data class RestaurantItemForJson(
     @SerializedName("food") val food: String,
     @SerializedName("interior") val interior: List<String>,
     @SerializedName("score") val score: Long,
+    @SerializedName("additional_info") val additionalInfo: String,
 )

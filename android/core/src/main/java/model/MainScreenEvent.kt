@@ -5,6 +5,7 @@ import com.yandex.mapkit.geometry.Point
 abstract class MainScreenEvent {}
 
 class SaveInCollectionEvent(
+    val collectionId: String,
     val restaurantId: String
 ) : MainScreenEvent()
 
