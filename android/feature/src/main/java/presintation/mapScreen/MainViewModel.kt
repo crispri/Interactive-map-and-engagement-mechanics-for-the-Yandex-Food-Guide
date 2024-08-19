@@ -197,7 +197,7 @@ class MainViewModel @Inject constructor(
     fun send(event: MainScreenEvent) {
         when (event) {
             is SaveInCollectionEvent -> {
-                saveInCollection(event.restaurantId)
+                saveInCollection(event.collectionId, event.restaurantId)
             }
 
             is SwitchUserModeEvent -> {
@@ -275,8 +275,46 @@ class MainViewModel @Inject constructor(
         _uiState.update { it.copy(filterList = newList) }
     }
 
-    private fun saveInCollection(restaurantId: String) {
+    private fun saveInCollection(collectionId: String, restaurantId: String) {
+        viewModelScope.launch {
+            Log.e(
+                "in fetchRestaurants", ""
+            )
+            repository.addItemInCollection("session_id=5142cece-b22e-4a4f-adf9-990949d053ff", collectionId, restaurantId).collect { state ->
+                when (state) {
+                    is NetworkState.Failure -> {
+                        Log.d("NetworkException", "NetworkFailure")
 
+                        _uiState.update {
+                            it.copy(
+                                errorMessage = state.cause.message,
+                                isLoading = false,
+                            )
+                        }
+                    }
+
+                    is NetworkState.Success -> {
+                        Log.d("NetworkSuccess", "")
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                            )
+                        }
+                    }
+
+                    is NetworkState.Loading -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = true
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+
+        Log.d("AddItem", "${collectionId} ${restaurantId}")
     }
 
     fun filterNonOverlappingRestaurants(
@@ -342,7 +380,7 @@ class MainViewModel @Inject constructor(
                 )
             }
             fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList, 0.0,0.0)
-        } else{
+    } else{
             fetchCollections()
             _uiState.update {
                 it.copy(

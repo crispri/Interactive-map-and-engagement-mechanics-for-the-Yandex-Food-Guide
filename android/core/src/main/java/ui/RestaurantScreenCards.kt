@@ -43,11 +43,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.example.core.R
 import java.text.DecimalFormat
 
 @Composable
-fun ImageCarousel(listImages: List<Int>) {
+fun ImageCarousel(listImages: List<String>) {
     val size = 240f
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
@@ -104,6 +105,7 @@ fun OpenKitchenCard() {
                     text = "Редакция о месте",
                     color = Color.Black,
                     fontSize = 16.sp,
+                    lineHeight = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Row(
@@ -112,7 +114,8 @@ fun OpenKitchenCard() {
                     Text(
                         text = "Открытая кухня",
                         color = Color.Gray,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
+                        lineHeight = 12.sp,
                         fontWeight = FontWeight.Normal
                     )
                     Image(
@@ -170,6 +173,7 @@ fun YandexGPTCard() {
                     text = "YandexGPT о месте",
                     color = Color.Black,
                     fontSize = 16.sp,
+                    lineHeight = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Row(
@@ -178,7 +182,8 @@ fun YandexGPTCard() {
                     Text(
                         text = "Создано нейросетью на основе отзывов",
                         color = Color.Gray,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
+                        lineHeight = 12.sp,
                         fontWeight = FontWeight.Normal
                     )
                     Image(
@@ -202,7 +207,7 @@ fun YandexGPTCardPreview() {
 }
 
 @Composable
-fun ImageCard(id: Int, sizeY: Float, cardSmall: Boolean) {
+fun ImageCard(id: String, sizeY: Float, cardSmall: Boolean) {
     val sizeX = (if (cardSmall) sizeY else (sizeY * 4 / 3))
     Box(
         modifier = Modifier
@@ -211,7 +216,7 @@ fun ImageCard(id: Int, sizeY: Float, cardSmall: Boolean) {
             .clip(RoundedCornerShape(14.dp))
     ) {
         Image(
-            painter = painterResource(id = id),
+            painter = rememberAsyncImagePainter(model =  id),
             contentDescription = "Фото места",
             contentScale = ContentScale.Crop,
             modifier = Modifier

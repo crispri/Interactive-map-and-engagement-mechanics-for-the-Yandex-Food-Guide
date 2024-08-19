@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface YandexMapEatApi {
@@ -37,6 +38,15 @@ interface YandexMapEatApi {
         @Body requestBody: RequestBodyCollection,
     ): CollectionListResponseForJson
 
+    @PUT("guide/v1/collection/{id}")
+    suspend fun addItemToCollection(
+        @Header("Cookie") token: String,
+        @Header("Accept") accept: String = "application/json",
+        @Header("Content-Type") contentType: String = "application/json",
+        @Path("id") id: String,
+        @Body requestBody: RequestBodyAddItemCollection,
+    )
+
 }
 
 data class RequestBody(
@@ -48,6 +58,10 @@ data class RequestBody(
 
 data class RequestBodyCollection(
     @SerializedName( "return_collections" ) val  returnCollections : Boolean,
+)
+
+data class RequestBodyAddItemCollection(
+    @SerializedName( "restaurant_id" ) val  restaurantId : String,
 )
 
 data class FilterForJson(

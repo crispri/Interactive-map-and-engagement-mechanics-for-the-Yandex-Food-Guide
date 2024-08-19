@@ -20,4 +20,5 @@ data class Restaurant(
     val pin: String,
     val pictures: List<String>,
     val score: Long,
+    val additionalInfo: String,
 )
