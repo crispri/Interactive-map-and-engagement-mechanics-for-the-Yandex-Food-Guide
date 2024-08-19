@@ -91,14 +91,12 @@ final class BigPinView: UIView {
 
     private lazy var ultima: UIImageView = {
         let image = UIImageView()
-        image.frame = .init(x: 4, y: 4, width: 16, height: 16)
         image.image = UIImage(named: "ultima")
         return image
     }()
 
     private lazy var redaction: UIImageView = {
         let image = UIImageView()
-        image.frame = .init(x: 24, y: 4, width: 16, height: 16)
         image.image = UIImage(named: "redaction")
         return image
     }()
@@ -153,11 +151,16 @@ final class BigPinView: UIView {
             favoriteView.addSubview(bookmark)
         }
 
-        if model.tags.contains("ULTIMA GUIDE") {
+        if model.tags.contains("ULTIMA GUIDE") && model.tags.contains("Открытая кухня") {
+            ultima.frame = .init(x: 4, y: 4, width: 16, height: 16)
+            redaction.frame = .init(x: 24, y: 4, width: 16, height: 16)
             imageRest.addSubview(ultima)
-        }
-
-        if model.tags.contains("Открытая кухня") {
+            imageRest.addSubview(redaction)
+        } else if model.tags.contains("ULTIMA GUIDE") {
+            ultima.frame = .init(x: 4, y: 4, width: 16, height: 16)
+            imageRest.addSubview(ultima)
+        } else if model.tags.contains("Открытая кухня") {
+            redaction.frame = .init(x: 4, y: 4, width: 16, height: 16)
             imageRest.addSubview(redaction)
         }
     }
