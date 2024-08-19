@@ -19,6 +19,9 @@ userver::formats::json::Value Serialize(
     if (selection.link) {
         item["link"] = selection.link.value();
     }
+    if (selection.pre_created_collection_name) {
+        item["pre_created_collection_name"] = selection.pre_created_collection_name.value();
+    }
     
    
     return item.ExtractValue();
@@ -30,6 +33,7 @@ std::tuple<
     std::string&,
     std::optional<boost::uuids::uuid>&,
     std::optional<std::string>&,
+    std::optional<std::string>&,
     std::optional<std::string>&
     > TSelection::Introspect()
 {
@@ -39,7 +43,8 @@ std::tuple<
           description,
           owner_id,
           picture,
-          link
+          link,
+          pre_created_collection_name
     );
 }
 

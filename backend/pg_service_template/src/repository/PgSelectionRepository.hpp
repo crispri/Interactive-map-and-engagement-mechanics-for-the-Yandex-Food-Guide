@@ -13,6 +13,8 @@ class PgSelectionRepository : public ISelectionRepository {
     const std::string kSelectionsTableName_;
     const std::string kConnectionTableName_;
 
+    static const std::unordered_map<std::string, size_t> default_user_collection_order;
+
 public:
     explicit PgSelectionRepository(const userver::storages::postgres::ClusterPtr& pg_cluster);
 
