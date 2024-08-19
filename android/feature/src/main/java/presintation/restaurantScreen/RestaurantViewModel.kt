@@ -42,7 +42,7 @@ class RestaurantViewModel @Inject constructor(
             }
         } else {
             viewModelScope.launch {
-                repository.getRestaurantById("Asd", restaurantId)
+                repository.getRestaurantById("session_id=5142cece-b22e-4a4f-adf9-990949d053ff", restaurantId)
                     .collect { state ->
                         when (state) {
                             is NetworkState.Failure -> {

@@ -15,7 +15,7 @@ interface YandexMapEatApi {
 
     @POST("guide/v1/restaurants")
     suspend fun getRestaurants(
-        @Header("Authorization") token: String,
+        @Header("Cookie") token: String,
         @Header("Accept") accept: String = "application/json",
         @Header("Content-Type") contentType: String = "application/json",
         @Body requestBody: RequestBody,
@@ -23,7 +23,7 @@ interface YandexMapEatApi {
 
     @GET("guide/v1/restaurants/{id}")
     suspend fun getRestaurantById(
-        @Header("Authorization") token: String,
+        @Header("Cookie") token: String,
         @Header("Accept") accept: String = "application/json",
         @Header("Content-Type") contentType: String = "application/json",
         @Path("id") id: String,
@@ -31,7 +31,7 @@ interface YandexMapEatApi {
 
     @POST("guide/v1/selections")
     suspend fun getCollections(
-        @Header("Authorization") token: String,
+        @Header("Cookie") token: String,
         @Header("Accept") accept: String = "application/json",
         @Header("Content-Type") contentType: String = "application/json",
         @Body requestBody: RequestBodyCollection,

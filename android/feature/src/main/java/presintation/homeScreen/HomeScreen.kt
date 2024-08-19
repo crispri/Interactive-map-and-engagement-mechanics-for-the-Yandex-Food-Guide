@@ -99,7 +99,7 @@ fun HomeScreen(
     val list = mutableStateOf(uiState.restaurantsOnMap)
 
     LaunchedEffect(Unit) {
-        send(UpdateItemsOnMap(Point(55.0, 37.0), Point(55.737, 37.597), filterList = emptyList()))
+        send(UpdateItemsOnMap(Point(55.0, 37.0), Point(55.737, 37.597), filterList = emptyList(), 0.0, 0.0))
     }
 
     Column(
