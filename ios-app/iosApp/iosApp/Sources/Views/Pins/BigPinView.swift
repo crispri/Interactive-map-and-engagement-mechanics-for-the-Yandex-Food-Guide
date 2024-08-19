@@ -42,7 +42,11 @@ final class BigPinView: UIView {
         let image = UIImageView()
         image.frame = .init(x: 0, y: 0, width: 160, height: 60)
         image.clipsToBounds = true
-        image.image = UIImage(named: "1rest")
+
+        if let url = URL(string: model.food) {
+            loadImage(from: url)
+        } 
+//        image.image = UIImage(named: "1rest")
         image.layer.cornerRadius = 12
         image.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         return image
@@ -168,6 +172,25 @@ final class BigPinView: UIView {
     func setSelected(_ isSelected: Bool) {
         self.isSelected = isSelected
         background()
+    }
+
+    private func loadImage(from url: URL) {
+        let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            if let error = error {
+                print("Error loading image: \(error)")
+                return
+            }
+
+            guard let data = data, let image = UIImage(data: data) else {
+                print("Error converting data to UIImage")
+                return
+            }
+
+            DispatchQueue.main.async {
+                self?.imageRest.image = image
+            }
+        }
+        task.resume()
     }
 }
 
