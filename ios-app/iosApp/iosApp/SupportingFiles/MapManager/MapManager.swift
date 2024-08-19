@@ -18,6 +18,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let cameraListener = CameraListener()
     var delegate: SnippetViewModel? = nil
     private var placedPins: [String: (YMKPlacemarkMapObject, Bool)] = [:]
+    private var userPin: YMKPlacemarkMapObject? = nil
     
     override init() {
         super.init()
@@ -183,12 +184,17 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         let iconStyle = YMKIconStyle()
         let image = UIImage(named: "me") ?? UIImage()
         
+        if let userPin {
+            map.mapObjects.remove(with: userPin)
+        }
+        
         let placemark = map.mapObjects.addPlacemark()
         placemark.geometry = .init(
             latitude: userLocation.coordinate.latitude,
             longitude: userLocation.coordinate.longitude
         )
         placemark.setIconWith(image, style: iconStyle)
+        userPin = placemark
     }
     
     func centerCamera(to option: CameraTargetOption) {
