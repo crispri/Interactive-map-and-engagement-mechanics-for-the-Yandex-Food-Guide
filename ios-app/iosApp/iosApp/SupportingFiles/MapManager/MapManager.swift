@@ -16,7 +16,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     private lazy var map : YMKMap = {  return mapView?.mapWindow.map ?? .init() }()
     private let manager = CLLocationManager()
     private let cameraListener = CameraListener()
-    var delegate: SnippetViewModel? = nil
+    var delegate: SnippetViewModel?
     private var placedPins: [String: (YMKPlacemarkMapObject, Bool)] = [:]
     private var userPin: YMKPlacemarkMapObject? = nil
     

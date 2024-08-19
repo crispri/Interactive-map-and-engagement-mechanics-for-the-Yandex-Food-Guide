@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SelectionDTO: Codable, Identifiable, Equatable {
+struct SelectionDTO: Codable, Identifiable, Equatable, Hashable {
     var id: String = UUID().uuidString
     let name: String
     let description: String

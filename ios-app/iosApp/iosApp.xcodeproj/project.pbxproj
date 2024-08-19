@@ -34,7 +34,6 @@
 		8450397E015068C0754611A2 /* Pods_iosAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */; };
 		85FEE69FFF6D5E7FB6785FFF /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 628EC9234413B8A27E25DE28 /* Pods_iosApp.framework */; };
 		CB1156102C6FFDB10060F399 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = CB11560F2C6FFDB10060F399 /* WrappingHStack */; };
-		CB1156122C6FFE6C0060F399 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1156112C6FFE6C0060F399 /* Tag.swift */; };
 		CB28CEE62C6926B400266944 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CB28CEE52C6926B400266944 /* README.md */; };
 		CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */; };
 		CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */; };
@@ -42,10 +41,14 @@
 		CB5CA3922C5FB6560025F771 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3912C5FB6560025F771 /* NetworkManager.swift */; };
 		CB5CA3942C5FB9BC0025F771 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */; };
 		CB5CA3962C5FCCAA0025F771 /* SnippetsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3952C5FCCAA0025F771 /* SnippetsRequest.swift */; };
+		CB6037C22C722CFC00B1F664 /* UserCollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037C12C722CFC00B1F664 /* UserCollectionsView.swift */; };
+		CBB2A2892C715D550056A105 /* SelectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB2A2882C715D550056A105 /* SelectionRequest.swift */; };
 		CBBDC6AB2C6ECF95007EB943 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */; };
 		CBBDC6AD2C6ECFBB007EB943 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AC2C6ECFBB007EB943 /* Point.swift */; };
 		CBBDC6AF2C6ED018007EB943 /* Printable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AE2C6ED018007EB943 /* Printable.swift */; };
 		CBBDC6B72C6EDE7E007EB943 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6B62C6EDE7E007EB943 /* HTTPMethod.swift */; };
+		CBDE654B2C71ED8600753BBB /* EditUserCollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDE654A2C71ED8600753BBB /* EditUserCollectionsView.swift */; };
+		CBDE654D2C71F7D800753BBB /* UserCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDE654C2C71F7D800753BBB /* UserCollection.swift */; };
 		CBF46D3C2C6F937F00186255 /* GeocoderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF46D362C6F937F00186255 /* GeocoderResponse.swift */; };
 		CBF46D3D2C6F937F00186255 /* ISelectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF46D372C6F937F00186255 /* ISelectionsResponse.swift */; };
 		CBF46D3E2C6F937F00186255 /* ISnippetsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF46D382C6F937F00186255 /* ISnippetsResponse.swift */; };
@@ -125,7 +128,6 @@
 		AB953BFC42B520C290826951 /* Pods-iosAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.release.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B97334D73D92638EBD7FC9C4 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
-		CB1156112C6FFE6C0060F399 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		CB1F19172C68FF35006DE5EC /* GeocoderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocoderResponse.swift; sourceTree = "<group>"; };
 		CB28CEE52C6926B400266944 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalSelectionView.swift; sourceTree = "<group>"; };
@@ -134,10 +136,14 @@
 		CB5CA3912C5FB6560025F771 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
 		CB5CA3952C5FCCAA0025F771 /* SnippetsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsRequest.swift; sourceTree = "<group>"; };
+		CB6037C12C722CFC00B1F664 /* UserCollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionsView.swift; sourceTree = "<group>"; };
+		CBB2A2882C715D550056A105 /* SelectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionRequest.swift; sourceTree = "<group>"; };
 		CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		CBBDC6AC2C6ECFBB007EB943 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 		CBBDC6AE2C6ED018007EB943 /* Printable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Printable.swift; sourceTree = "<group>"; };
 		CBBDC6B62C6EDE7E007EB943 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		CBDE654A2C71ED8600753BBB /* EditUserCollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserCollectionsView.swift; sourceTree = "<group>"; };
+		CBDE654C2C71F7D800753BBB /* UserCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollection.swift; sourceTree = "<group>"; };
 		CBF46D362C6F937F00186255 /* GeocoderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocoderResponse.swift; sourceTree = "<group>"; };
 		CBF46D372C6F937F00186255 /* ISelectionsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISelectionsResponse.swift; sourceTree = "<group>"; };
 		CBF46D382C6F937F00186255 /* ISnippetsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISnippetsResponse.swift; sourceTree = "<group>"; };
@@ -319,7 +325,7 @@
 				CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */,
 				CBBDC6AC2C6ECFBB007EB943 /* Point.swift */,
 				CBF46D412C6FA41A00186255 /* FilterDTO.swift */,
-				CB1156112C6FFE6C0060F399 /* Tag.swift */,
+				CBDE654C2C71F7D800753BBB /* UserCollection.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -418,6 +424,7 @@
 				CB5CA3952C5FCCAA0025F771 /* SnippetsRequest.swift */,
 				CBF46D432C6FA5AD00186255 /* FilteredSnippetRequest.swift */,
 				4F3A975F2C71E2A6002F0699 /* SelectionsRequest.swift */,
+				CBB2A2882C715D550056A105 /* SelectionRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -428,6 +435,15 @@
 				CBBDC6B62C6EDE7E007EB943 /* HTTPMethod.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		CBDE65492C71ED6400753BBB /* UserCollection */ = {
+			isa = PBXGroup;
+			children = (
+				CBDE654A2C71ED8600753BBB /* EditUserCollectionsView.swift */,
+				CB6037C12C722CFC00B1F664 /* UserCollectionsView.swift */,
+			);
+			path = UserCollection;
 			sourceTree = "<group>";
 		};
 		CBF46D3B2C6F937F00186255 /* Response */ = {
@@ -468,6 +484,7 @@
 		CBFD7EE82C65616D00CEC0BC /* Selections */ = {
 			isa = PBXGroup;
 			children = (
+				CBDE65492C71ED6400753BBB /* UserCollection */,
 				CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */,
 				CBFD7EDB2C655CC100CEC0BC /* SelectionView.swift */,
 				CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */,
@@ -764,6 +781,7 @@
 				4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */,
 				CBF46D422C6FA41A00186255 /* FilterDTO.swift in Sources */,
 				4F3A97602C71E2A6002F0699 /* SelectionsRequest.swift in Sources */,
+				CBDE654D2C71F7D800753BBB /* UserCollection.swift in Sources */,
 				CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */,
 				4F13FDCD2C6B675100EB8D8C /* RoundedCorner.swift in Sources */,
 				CBFD7ED62C655C9700CEC0BC /* SnippetViewModel.swift in Sources */,
@@ -773,12 +791,15 @@
 				CB5CA3922C5FB6560025F771 /* NetworkManager.swift in Sources */,
 				CBFD7EE52C655CC100CEC0BC /* ImageRestWithPC.swift in Sources */,
 				CBFD7EE42C655CC100CEC0BC /* SelectionView.swift in Sources */,
+				CB6037C22C722CFC00B1F664 /* UserCollectionsView.swift in Sources */,
+				CBDE654B2C71ED8600753BBB /* EditUserCollectionsView.swift in Sources */,
 				CB5CA3942C5FB9BC0025F771 /* NetworkingError.swift in Sources */,
 				CBF46D3F2C6F937F00186255 /* SelectionsResponse.swift in Sources */,
 				CBFD7EE72C655CC100CEC0BC /* PageViewController.swift in Sources */,
 				6E3E42A82C6768800049111C /* BottomRestView.swift in Sources */,
 				CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */,
 				CB5CA3902C5FB60B0025F771 /* Api.swift in Sources */,
+				CBB2A2892C715D550056A105 /* SelectionRequest.swift in Sources */,
 				CBFD7ED12C655C6F00CEC0BC /* SnippetDTO.swift in Sources */,
 				CBBDC6B72C6EDE7E007EB943 /* HTTPMethod.swift in Sources */,
 				4F13FDCB2C6B659D00EB8D8C /* GrabberView.swift in Sources */,
@@ -788,7 +809,6 @@
 				CBF46D3C2C6F937F00186255 /* GeocoderResponse.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
 				CBFD7EEF2C65723100CEC0BC /* CameraListener.swift in Sources */,
-				CB1156122C6FFE6C0060F399 /* Tag.swift in Sources */,
 				CBFD7EE12C655CC100CEC0BC /* BottomSheetView.swift in Sources */,
 				4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */,
 				CB5CA3962C5FCCAA0025F771 /* SnippetsRequest.swift in Sources */,
