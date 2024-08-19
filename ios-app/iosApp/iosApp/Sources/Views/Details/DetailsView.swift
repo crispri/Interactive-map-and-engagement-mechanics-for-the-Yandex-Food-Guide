@@ -14,7 +14,6 @@ struct DetailsView: View {
     @State private var isBottomSheetPresented = true
     @State var isFiltersPresented = false
     @State var isUserCollectionsPresented = false
-    @State var sheetPosition: BottomSheetPosition = .dynamicBottom
     
     var body: some View {
         ZStack {
@@ -22,7 +21,7 @@ struct DetailsView: View {
                 .edgesIgnoringSafeArea(.all)
                 .environmentObject(viewModel.mapManager)
                 .bottomSheet(
-                    bottomSheetPosition: $sheetPosition,
+                    bottomSheetPosition: $viewModel.sheetPosition,
                     switchablePositions: [
                         .dynamicBottom,
                         .absolute(500),

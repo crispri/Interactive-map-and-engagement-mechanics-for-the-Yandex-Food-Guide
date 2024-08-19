@@ -65,9 +65,10 @@ final class NetworkManager {
             )
         )
         
-        let data: SnippetsResponse = try await performRequest(request: request)
+//        let data: SnippetsResponse = try await performRequest(request: request)
         
-        return data.items
+        return SnippetDTO.mockData
+//        return data.items
     }
     
     func fetchSnippet(id: String) async throws -> SnippetDTO {

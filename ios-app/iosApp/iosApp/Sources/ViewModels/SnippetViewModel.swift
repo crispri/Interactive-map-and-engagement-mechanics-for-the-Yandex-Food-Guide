@@ -7,11 +7,13 @@
 
 import SwiftUI
 import CoreLocation
+import BottomSheet
 
 @MainActor
 final class SnippetViewModel: ObservableObject {
     private let MAX_POLIGON_WIDTH = 0.20
     
+    @Published var sheetPosition: BottomSheetPosition = .dynamicBottom
     @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = [SnippetDTO]()
     @Published var selections = [SelectionDTO]()
@@ -27,11 +29,11 @@ final class SnippetViewModel: ObservableObject {
     }
     
     
-    var mapManager = MapManager()
+    var mapManager: MapManager!
     private let networkManager = NetworkManager()
     
     init() {
-        mapManager.delegate = self
+        mapManager = MapManager(delegate: self)
     }
     
     func eventOnAppear() {
@@ -101,6 +103,10 @@ final class SnippetViewModel: ObservableObject {
             await fetchSelectionSnippets(id: currentSelection?.id ?? "")
             eventCenterCamera(to: .pins)
         }
+    }
+    
+    func eventOpenBottomSheet() {
+        sheetPosition = .absolute(500)
     }
     
     // MARK: Wrappers for fetching snippets and selections.

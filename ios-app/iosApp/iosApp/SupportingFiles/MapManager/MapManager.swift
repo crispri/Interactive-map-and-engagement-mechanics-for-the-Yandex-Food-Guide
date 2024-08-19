@@ -19,8 +19,9 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     var delegate: SnippetViewModel?
     private var placedPins: [String: (YMKPlacemarkMapObject, Bool)] = [:]
     private var userPin: YMKPlacemarkMapObject? = nil
+    private var mapObjectTapListener: YMKMapObjectTapListener?
     
-    override init() {
+    init(delegate: SnippetViewModel?) {
         super.init()
         self.cameraListener.delegate = self
         map.addCameraListener(with: cameraListener)
@@ -31,6 +32,12 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         
         map.isRotateGesturesEnabled = false
         map.setMapStyleWithStyle(StyleMap().styleMap)
+        
+        let inputListener = InputListener()
+        map.addInputListener(with: inputListener)
+        
+        mapObjectTapListener = MapObjectTapListener(mapManager: self, viewModel: delegate)
+        self.delegate = delegate
     }
     
     func eventOnGesture() {
@@ -214,6 +221,10 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                 }
                 placedPins[result[index].id] = (placemark, true)
                 cnt += 1
+                
+                if let mapObjectTapListener {
+                    placemark.addTapListener(with: mapObjectTapListener)
+                }
             }
         }
         print("\(cnt) restaurants added;")
@@ -300,6 +311,13 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
                 map: mapView ?? .init()
             )
         }
+    }
+    
+    func centerCamera(to point: YMKPoint) {
+        centerMapLocation(
+            target: point,
+            map: mapView ?? .init()
+        )
     }
     
     func getScreenPoints(sheetPosition: SheetPosition = .bottom) -> (lowerLeftCorner: Point, topRightCorner: Point) {
