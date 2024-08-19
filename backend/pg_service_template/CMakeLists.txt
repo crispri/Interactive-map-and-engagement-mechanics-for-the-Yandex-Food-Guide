@@ -99,7 +99,9 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/repository/PgSessionRepository.hpp
     src/repository/PgSessionRepository.cpp
     src/service/SessionService.hpp
-    src/service/SessionService.cpp    
+    src/service/SessionService.cpp
+        src/handlers/guide/v1/login/login.hpp
+        src/handlers/guide/v1/login/login.cpp
 
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)

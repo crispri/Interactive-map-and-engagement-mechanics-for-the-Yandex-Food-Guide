@@ -17,7 +17,7 @@ void CheckSessionMiddleware::HandleRequest(userver::server::http::HttpRequest& r
     boost::uuids::string_generator gen;                                        
     auto session_cookie = request.GetCookie("session_id");
 
-    if (session_cookie.empty() || !session_service_.ValidateSession(gen(session_cookie))) {
+    if (request.GetRequestPath() != "/guide/v1/login" && (session_cookie.empty() || !session_service_.ValidateSession(gen(session_cookie)))) {
         request.SetResponseStatus(userver::server::http::HttpStatus::kUnauthorized);
         return;
     }
