@@ -11,7 +11,6 @@
 		4F13FDCB2C6B659D00EB8D8C /* GrabberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCA2C6B659D00EB8D8C /* GrabberView.swift */; };
 		4F13FDCD2C6B675100EB8D8C /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCC2C6B675100EB8D8C /* RoundedCorner.swift */; };
 		4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F13FDCE2C6B696700EB8D8C /* HeaderView.swift */; };
-		4F3A97602C71E2A6002F0699 /* SelectionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A975F2C71E2A6002F0699 /* SelectionsRequest.swift */; };
 		4F69DC832C678BD00026828E /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 4F69DC822C678BD00026828E /* BottomSheet */; };
 		4F7D1CFC2C70A4E8002D126C /* UIView+asImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D1CFB2C70A4E8002D126C /* UIView+asImage.swift */; };
 		4F7D1CFE2C70C714002D126C /* PinSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7D1CFD2C70C714002D126C /* PinSize.swift */; };
@@ -378,6 +377,7 @@
 				4FFB75392C6F517800FF5F8D /* GeocoderResponse.swift */,
 				4F6ECDD32C68E54600E8B5BE /* ISelectionsResponse.swift */,
 				4F6ECDD52C68E56600E8B5BE /* SelectionsResponse.swift */,
+				4F3A975F2C71E2A6002F0699 /* SelectionsRequest.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -792,7 +792,6 @@
 				4F7D1CFC2C70A4E8002D126C /* UIView+asImage.swift in Sources */,
 				4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */,
 				CBF46D422C6FA41A00186255 /* FilterDTO.swift in Sources */,
-				4F3A97602C71E2A6002F0699 /* SelectionsRequest.swift in Sources */,
 				CBDE654D2C71F7D800753BBB /* UserCollection.swift in Sources */,
 				CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */,
 				4F13FDCD2C6B675100EB8D8C /* RoundedCorner.swift in Sources */,
