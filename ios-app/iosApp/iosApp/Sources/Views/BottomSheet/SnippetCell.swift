@@ -10,7 +10,7 @@ import SwiftUI
 var imageRest = ["1rest", "2rest", "3rest"]
 
 struct SnippetCell: View {
-    @EnvironmentObject private var viemModel: SnippetViewModel
+    @EnvironmentObject private var viewModel: SnippetViewModel
     @State var restaurant: SnippetDTO
     @State private var currentPage = 0
     var mainAction: (() -> Void)?
@@ -64,9 +64,9 @@ struct SnippetCell: View {
             }
             .padding(10)
             .onTapGesture {
-                viemModel.currentRestaurantID = restaurant.id
+                viewModel.currentRestaurantID = restaurant.id
                 mainAction?() // MARK: shows collections editing sheet
-                Task { await viemModel.fetchUserCollections() }
+                Task { await viewModel.fetchUserCollections() }
             }
         }
     }

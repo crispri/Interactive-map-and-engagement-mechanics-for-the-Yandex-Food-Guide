@@ -19,12 +19,9 @@ struct BottomSheetView: View {
         if let selectedPin = viewModel.selectedPin, viewModel.isPinFocusMode {
             VStack {
                 GrabberView()
-                SnippetCell(
-                    restaurant: Binding(get: {
-                        selectedPin
-                    }, set: { _ in }),
-                    isEditUserCollectionsPresented: $isEditUserCollectionsPresented
-                )
+                SnippetCell(restaurant: selectedPin) {
+                    isEditUserCollectionsPresented.toggle()
+                }
                 .onTapGesture {
                     selectedSnipped = selectedPin
                     isSheetPresented = true
@@ -45,12 +42,12 @@ struct BottomSheetView: View {
         } else {
             ScrollView {
                 LazyVStack(spacing: 0) {
-                    ForEach($viewModel.snippets, id: \.self) { snippet in
-                        SnippetCell(restaurant: restaurant) {
+                    ForEach(viewModel.snippets, id: \.self) { snippet in
+                        SnippetCell(restaurant: snippet) {
                             isEditUserCollectionsPresented.toggle()
                         }
                         .onTapGesture {
-                            selectedSnipped = restaurant
+                            selectedSnipped = snippet
                             isSheetPresented = true
                         }
                         .sheet(item: $selectedSnipped, content: { item in
