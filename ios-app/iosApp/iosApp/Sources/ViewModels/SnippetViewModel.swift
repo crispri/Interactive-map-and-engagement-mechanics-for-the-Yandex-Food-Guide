@@ -20,6 +20,7 @@ final class SnippetViewModel: ObservableObject {
     @Published var selections = [SelectionDTO]()
     @Published var selectedCollection: SelectionDTO? = nil
     @Published var currentSelection: SelectionDTO?
+    @Published var selectedPin: SnippetDTO? = nil
     
     @Published var userCollections = UserCollection.mockData
     
@@ -28,7 +29,6 @@ final class SnippetViewModel: ObservableObject {
         let activeFilters = filterCategories.flatMap { $0.filters.filter { $0.isActive }}
         return activeFilters.flatMap(\.dtos)
     }
-    
     
     var mapManager: MapManager!
     private let networkManager = NetworkManager()

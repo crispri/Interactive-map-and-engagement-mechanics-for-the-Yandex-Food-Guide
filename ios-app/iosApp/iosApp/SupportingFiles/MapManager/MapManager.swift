@@ -341,6 +341,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         )
         uiView.setSelected(true)
         placemark.setIconWith(uiView.asImage(), style: style)
+        delegate?.selectedPin = userData
     }
     
     func getScreenPoints(sheetPosition: SheetPosition = .bottom) -> (lowerLeftCorner: Point, topRightCorner: Point) {
