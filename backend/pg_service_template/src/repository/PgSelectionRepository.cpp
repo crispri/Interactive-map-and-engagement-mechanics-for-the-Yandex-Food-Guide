@@ -1,6 +1,7 @@
 #include "PgSelectionRepository.hpp"
 #include <models/TRestaurant.hpp>
 #include <string>
+#include <userver/logging/log.hpp>
 #include <userver/storages/postgres/cluster_types.hpp>
 
 namespace service {
@@ -98,8 +99,8 @@ void PgSelectionRepository::InsertIntoCollection(const boost::uuids::uuid& user_
         R"( WHERE id = $1; )",
         collection_id
     );
-
     int size_after_insertion = prev_size[0].As< int >() + 1;
+    LOG_ERROR() << "new_size = " << size_after_insertion;
 
     pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
@@ -109,6 +110,7 @@ void PgSelectionRepository::InsertIntoCollection(const boost::uuids::uuid& user_
         size_after_insertion,
         collection_id
     );
+    LOG_ERROR() << "HERE1";
 
     const auto& query_result = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
@@ -116,15 +118,18 @@ void PgSelectionRepository::InsertIntoCollection(const boost::uuids::uuid& user_
         R"( WHERE id = $1; )",
         restaurant_id
     );
+    LOG_ERROR() << "HERE2";
 
-    const auto& interiors_url = query_result.AsContainer<std::vector<std::string>>();
-    const auto& interior = interiors_url[0];
+    const auto& interior = query_result[0].As<std::vector<std::string>>();
+    
+    LOG_ERROR() << "INTERIOR = " << interior;
+
     pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
         R"( UPDATE guide.selections )"
         R"( SET picture = $1 )"
         R"( WHERE id = $2; )",
-        interior,
+        interior[0],
         collection_id
     );
 }
