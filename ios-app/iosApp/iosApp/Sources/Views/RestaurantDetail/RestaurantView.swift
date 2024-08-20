@@ -10,6 +10,8 @@ import SwiftUI
 struct RestaurantView: View {
     @Environment(\.dismiss) private var dismiss
     @State var restaurant: SnippetDTO
+    @Binding var isEditUserCollectionsPresented: Bool
+    var mainAction: (() -> Void)?
     
     var body: some View {
         ScrollView(.vertical) {
@@ -99,7 +101,7 @@ struct RestaurantView: View {
             }
             Spacer()
             Button {
-                // TODO: add action.
+                // TODO: action
             } label: {
                 Image(systemName: "square.and.arrow.up.circle.fill")
                     .resizable()
@@ -161,12 +163,16 @@ struct RestaurantView: View {
     //    избранное
     private func Favourites() -> some View {
         Button(action: {
-            // TODO: add action.
+            mainAction?()
+            isEditUserCollectionsPresented.toggle()
+            restaurant.inCollection.toggle()
         }, label: {
-            Image(systemName: restaurant.inCollection ? "bookmark.fill" : "bookmark")
+            Image("Bookmark")
+                .renderingMode(.template)
+                .bold()
+                .foregroundStyle(restaurant.inCollection ? .white : .black)
                 .frame(width: 45, height: 45)
-                .foregroundStyle(.black)
-                .background(.white)
+                .background(restaurant.inCollection ? .black : .white)
                 .opacity(0.9)
                 .clipShape(.rect(cornerRadius: 16))
         })
@@ -284,5 +290,5 @@ struct RestaurantView: View {
 }
 
 #Preview {
-    RestaurantView(restaurant: SnippetDTO.mockData[2])
+    RestaurantView(restaurant: SnippetDTO.mockData[2], isEditUserCollectionsPresented: Binding.constant(false))
 }

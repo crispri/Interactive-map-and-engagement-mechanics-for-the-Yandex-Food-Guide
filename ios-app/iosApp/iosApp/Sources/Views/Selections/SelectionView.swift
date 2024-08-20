@@ -37,15 +37,15 @@ struct SelectionView: View {
                         .font(.system(size: 13))
                         .fontWeight(.semibold)
                         .foregroundStyle(.white)
+                        .shadow(color: .black, radius: 4)
                         .multilineTextAlignment(.center)
                         .lineLimit(selected ? 1 : 2)
-                        .shadow(radius: 10)
                     if selected {
                         Text(desc)
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.center)
                             .font(.system(size: 13))
-                            .shadow(radius: 10)
+                            .shadow(color: .black, radius: 4)
                     }
                 }
                 .padding(.vertical, 8)
