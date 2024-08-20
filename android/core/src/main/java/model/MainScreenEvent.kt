@@ -49,4 +49,10 @@ class UpdateListOfRestaurant(
     val listOfRestaurant: List<Restaurant>,
 ) : MainScreenEvent()
 
+class HideIntersections(
+    val list: List<Restaurant>,
+    val w: Double,
+    val h: Double
+) : MainScreenEvent()
+
 class SwitchUserModeEvent : MainScreenEvent()
