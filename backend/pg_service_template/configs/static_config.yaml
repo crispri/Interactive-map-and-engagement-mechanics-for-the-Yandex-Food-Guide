@@ -102,6 +102,11 @@ components_manager:
             method: PUT,OPTIONS
             task_processor: main-task-processor
 
+        handler-login:
+            path: /guide/v1/login
+            method: POST,OPTIONS
+            task_processor: main-task-processor
+
         postgres-db-1:
             dbconnection: $dbconnection
             dbconnection#env: DB_CONNECTION

@@ -84,7 +84,8 @@ class CollectionCreateController final : public userver::server::handlers::HttpH
         }
 
         boost::uuids::string_generator gen;
-        const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
+        const auto& session_id = (request.HasCookie("session_id") ? request.GetCookie("session_id") : request.GetHeader("Authorization"));
+        const auto& user_id = session_service_.GetUserId(gen(session_id));
         const auto& name = request_body_json["name"].As<std::string>();
         const auto& description = request_body_json["description"].As<std::string>(); 
 

@@ -48,7 +48,7 @@ namespace service {
                 ErrorResponseBuilder errorBuilder(request);
 
                 boost::uuids::string_generator gen;
-                const auto& session_id = gen(request.GetCookie("session_id"));
+                const auto& session_id = gen(request.HasCookie("session_id") ? request.GetCookie("session_id") : request.GetHeader("Authorization"));
 
                 /*
                 - Проверка авторизации пользователя.

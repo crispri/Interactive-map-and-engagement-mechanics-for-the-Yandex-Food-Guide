@@ -194,7 +194,8 @@ namespace service {
                 );
 
                 boost::uuids::string_generator gen;
-                const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
+                const auto& session_id = (request.HasCookie("session_id") ? request.GetCookie("session_id") : request.GetHeader("Authorization"));
+                const auto& user_id = session_service_.GetUserId(gen(session_id));
 
                 auto restaurants = restaurant_service_.GetByFilter(filters, user_id);
 
@@ -215,7 +216,8 @@ namespace service {
                         .post("http://localhost:8080/guide/v1/ml_rate", std::move(MLrequestString))
                         .timeout(std::chrono::seconds(10))
                         .retry(10)
-                        .headers({std::make_pair("Cookie", "session_id=" + request.GetCookie("session_id"))})
+                        .headers({std::make_pair("Cookie", "session_id=" + session_id)})
+                        .headers({std::make_pair("Authorization", session_id)})
                         .perform();
 
                 const auto MLresponseBody = MLresponse->body_view();

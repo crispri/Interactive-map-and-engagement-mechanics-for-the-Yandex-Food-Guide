@@ -128,7 +128,6 @@ fun HomeScreen(
                     })
             }
             SearchRow()
-
         }
 
         LazyColumn(
