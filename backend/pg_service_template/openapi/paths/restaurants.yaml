@@ -1,7 +1,7 @@
 post:
     description: "Получить рекомендация по заведениям в определенной области"
     tags:
-            - Рестораны
+        - Рестораны
     requestBody:
         required: true
         content:

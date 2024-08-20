@@ -52,7 +52,6 @@ components:
 paths:
     /restaurants:
         $ref: "./paths/restaurants.yaml"
-        
 
     /restaurants/{id}:
         $ref: "./paths/restaurant_by_id.yaml"

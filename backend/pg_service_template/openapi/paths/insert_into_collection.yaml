@@ -1,7 +1,7 @@
 put:
     description: "Добавить заведение в коллекцию"
     tags:
-            - Подборки
+        - Подборки
     parameters:
         -   $ref: "../params/PathUUID.yaml"
 

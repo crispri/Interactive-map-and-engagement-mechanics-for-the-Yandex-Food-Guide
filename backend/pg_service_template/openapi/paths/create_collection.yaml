@@ -1,7 +1,7 @@
 post:
     description: "Создать коллекцию"
     tags:
-            - Подборки
+        - Подборки
     requestBody:
         required: true
         content:
