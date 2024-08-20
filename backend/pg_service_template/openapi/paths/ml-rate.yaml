@@ -1,5 +1,7 @@
 post:
   description: Rate restaurants ids list by ML based on user info (mock)
+  tags:
+    - ML
   requestBody:
     required: true
     content:
