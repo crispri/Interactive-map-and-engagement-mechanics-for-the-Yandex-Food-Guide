@@ -38,6 +38,5 @@ struct HeaderView: View {
                     )
             )
         }
-        .tag("header")
     }
 }

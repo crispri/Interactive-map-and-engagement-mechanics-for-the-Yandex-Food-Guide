@@ -325,7 +325,28 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
             target: placemark.geometry,
             map: mapView ?? .init()
         )
-        let style = YMKIconStyle(
+        
+        let smallPinStyle = YMKIconStyle(
+            anchor: CGPoint(x: 0.5, y: 0.5) as NSValue,
+            rotationType: .none,
+            zIndex: 0,
+            flat: false,
+            visible: true,
+            scale: 1.5,
+            tappableArea: nil
+        )
+        for kv in placedPins {
+            if kv.value.0 != placemark,
+               let userData = placemark.userData as? SnippetDTO {
+                let uiView = SmallPinView(
+                    frame: .init(x: 0, y: 0, width: PinSize.small.width, height: PinSize.small.height),
+                    model: userData
+                )
+                kv.value.0.setIconWith(uiView.asImage(), style: smallPinStyle)
+            }
+        }
+        
+        let bigPinStyle = YMKIconStyle(
             anchor: CGPoint(x: 0.5, y: 1.0) as NSValue,
             rotationType: .none,
             zIndex: 1,
@@ -340,7 +361,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
             model: userData
         )
         uiView.setSelected(true)
-        placemark.setIconWith(uiView.asImage(), style: style)
+        placemark.setIconWith(uiView.asImage(), style: bigPinStyle)
         delegate?.selectedPin = userData
     }
     

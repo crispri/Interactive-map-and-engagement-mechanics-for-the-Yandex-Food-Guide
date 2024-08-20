@@ -30,7 +30,7 @@ struct BottomSheetView: View {
                 }
                 .sheet(item: $selectedSnipped, content: { item in
                     RestaurantView(restaurant: item)
-                        .presentationCornerRadius(40)
+                        .presentationCornerRadius(20)
                 })
             }
             .background(
@@ -45,7 +45,6 @@ struct BottomSheetView: View {
                         )
                     )
             )
-            .tag("header")
         } else {
             ScrollView {
                 VStack(spacing: 0) {
