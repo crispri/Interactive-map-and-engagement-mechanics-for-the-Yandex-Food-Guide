@@ -19,8 +19,8 @@
 	<string>Message</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>YS-Bold.ttf</string>
-		<string>YS-Regular.ttf</string>
+		<string>YS-Bold</string>
+		<string>YS-Regular</string>
 	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>

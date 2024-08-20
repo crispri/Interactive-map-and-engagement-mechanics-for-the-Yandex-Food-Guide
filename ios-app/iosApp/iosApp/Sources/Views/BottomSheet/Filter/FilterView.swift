@@ -51,7 +51,8 @@ struct filterButton: View {
             print(filter.isActive)
         } label: {
             Text(filter.name)
-                .font(.system(size: 13, weight: .medium))
+                .font(.custom("YS-Regular", size: 13))
+//                .font(.system(size: 13, weight: .medium))
                 .tint(.primary)
                 .foregroundStyle(filter.isActive ? .white : .black)
                 .padding(10)

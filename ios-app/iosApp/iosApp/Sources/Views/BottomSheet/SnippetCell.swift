@@ -129,7 +129,8 @@ struct SnippetCell: View {
     private func Chips(text: String) -> some View {
         Text(text)
             .padding([.trailing, .leading, .bottom, .top], 4)
-            .font(.system(size: 11))
+            .font(.custom("YS-Regular", size: 11))
+//            .font(.system(size: 11))
             .foregroundStyle(Color.grayNameChips)
             .background(Color.lightGrayChips)
             .cornerRadius(20)
