@@ -19,6 +19,8 @@
 		4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE62C5E6B3F00B39252 /* MapManager.swift */; };
 		4F9DCAE92C5E6C4200B39252 /* YandexMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */; };
 		4F9DCAEE2C5E754A00B39252 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9DCAED2C5E754A00B39252 /* DetailsView.swift */; };
+		4FA166812C7486C2008114B7 /* AppMetricaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA166802C7486C2008114B7 /* AppMetricaCore */; };
+		4FA166842C74871F008114B7 /* MetricaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA166832C74871F008114B7 /* MetricaManager.swift */; };
 		4FC5121E2C5E5585006ED790 /* iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC5121D2C5E5585006ED790 /* iosApp.swift */; };
 		4FC512202C5E5585006ED790 /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC5121F2C5E5585006ED790 /* GuideView.swift */; };
 		4FC512222C5E5586006ED790 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC512212C5E5586006ED790 /* Assets.xcassets */; };
@@ -113,6 +115,7 @@
 		4F9DCAE82C5E6C4200B39252 /* YandexMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMapView.swift; sourceTree = "<group>"; };
 		4F9DCAEC2C5E73F900B39252 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4F9DCAED2C5E754A00B39252 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
+		4FA166832C74871F008114B7 /* MetricaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricaManager.swift; sourceTree = "<group>"; };
 		4FC5121A2C5E5585006ED790 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FC5121D2C5E5585006ED790 /* iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosApp.swift; sourceTree = "<group>"; };
 		4FC5121F2C5E5585006ED790 /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
@@ -188,6 +191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85FEE69FFF6D5E7FB6785FFF /* Pods_iosApp.framework in Frameworks */,
+				4FA166812C7486C2008114B7 /* AppMetricaCore in Frameworks */,
 				CB1156102C6FFDB10060F399 /* WrappingHStack in Frameworks */,
 				4F69DC832C678BD00026828E /* BottomSheet in Frameworks */,
 			);
@@ -246,6 +250,14 @@
 				4F1C8F4F2C739D4B00B2B4A6 /* MapObjectTapListener.swift */,
 			);
 			path = MapManager;
+			sourceTree = "<group>";
+		};
+		4FA166822C748711008114B7 /* AppMetrica */ = {
+			isa = PBXGroup;
+			children = (
+				4FA166832C74871F008114B7 /* MetricaManager.swift */,
+			);
+			path = AppMetrica;
 			sourceTree = "<group>";
 		};
 		4FC512112C5E5585006ED790 = {
@@ -313,6 +325,7 @@
 		4FC512512C5E5F0F006ED790 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				4FA166822C748711008114B7 /* AppMetrica */,
 				CBBDC6AE2C6ED018007EB943 /* Printable.swift */,
 				4F9DCAE52C5E6AF800B39252 /* MapManager */,
 				CB5CA38E2C5FB5CD0025F771 /* Networking */,
@@ -555,6 +568,7 @@
 			packageProductDependencies = (
 				4F69DC822C678BD00026828E /* BottomSheet */,
 				CB11560F2C6FFDB10060F399 /* WrappingHStack */,
+				4FA166802C7486C2008114B7 /* AppMetricaCore */,
 			);
 			productName = iosApp;
 			productReference = 4FC5121A2C5E5585006ED790 /* iosApp.app */;
@@ -634,6 +648,7 @@
 			packageReferences = (
 				4F69DC812C678BD00026828E /* XCRemoteSwiftPackageReference "BottomSheet" */,
 				CB11560E2C6FFDB10060F399 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
+				4FA1667F2C7486C2008114B7 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */,
 			);
 			productRefGroup = 4FC5121B2C5E5585006ED790 /* Products */;
 			projectDirPath = "";
@@ -798,6 +813,7 @@
 				4FC512202C5E5585006ED790 /* GuideView.swift in Sources */,
 				CBF46D492C6FC26300186255 /* FilterDetailedView.swift in Sources */,
 				CBF46D3E2C6F937F00186255 /* ISnippetsResponse.swift in Sources */,
+				4FA166842C74871F008114B7 /* MetricaManager.swift in Sources */,
 				6EF910102C6F9DCB00680AEE /* SmallPinView.swift in Sources */,
 				4F7D1CFC2C70A4E8002D126C /* UIView+asImage.swift in Sources */,
 				4F13FDCF2C6B696700EB8D8C /* HeaderView.swift in Sources */,
@@ -1215,6 +1231,14 @@
 				minimumVersion = 3.1.1;
 			};
 		};
+		4FA1667F2C7486C2008114B7 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/appmetrica/appmetrica-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
 		CB11560E2C6FFDB10060F399 /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ksemianov/WrappingHStack.git";
@@ -1230,6 +1254,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F69DC812C678BD00026828E /* XCRemoteSwiftPackageReference "BottomSheet" */;
 			productName = BottomSheet;
+		};
+		4FA166802C7486C2008114B7 /* AppMetricaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FA1667F2C7486C2008114B7 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaCore;
 		};
 		CB11560F2C6FFDB10060F399 /* WrappingHStack */ = {
 			isa = XCSwiftPackageProductDependency;
