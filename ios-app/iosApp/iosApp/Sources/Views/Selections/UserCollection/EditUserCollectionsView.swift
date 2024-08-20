@@ -9,7 +9,6 @@ import SwiftUI
 
 struct EditUserCollectionsView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
-    @Binding var restaurant: SnippetDTO
     
     var body: some View {
         VStack {
@@ -21,9 +20,10 @@ struct EditUserCollectionsView: View {
                 AddUserCollectionButton()
             }
             ScrollView {
-                ForEach($viewModel.userCollections) { collection in
-                    EditUserCollectionItem(userCollection: collection, 
-                                           restaurant: $restaurant)
+                ForEach($viewModel.userCollections) { $collection in
+                    EditUserCollectionItem(
+                        userCollection: $collection
+                    )
                 }
             }
         }
@@ -31,32 +31,12 @@ struct EditUserCollectionsView: View {
 }
 
 struct EditUserCollectionItem: View {
+    @EnvironmentObject var viewModel: SnippetViewModel
     @Binding var userCollection: UserCollection
-    @Binding var restaurant: SnippetDTO
-    
-    @ViewBuilder
-    func restaurantPicture() -> some View {
-        if userCollection.selection.picture.contains("http")  { // #URL(...)
-            let url = URL(string: userCollection.selection.picture)
-            AsyncImage(url: url) { image in
-                image
-                    .resizable()
-                    .frame(width: 56, height: 56)
-                    .clipShape(.rect(cornerRadius: 16))
-                    .padding(.leading)
-            } placeholder: { Color(.clear) }
-        }
-        else {
-            Image(userCollection.selection.picture)
-                .resizable()
-                .frame(width: 56, height: 56)
-                .padding(.leading)
-        }
-    }
     
     var body: some View {
         HStack {
-            restaurantPicture()
+            RestaurantPicture(userCollection: userCollection)
             VStack(alignment: .leading) {
                 Text(userCollection.selection.name)
                     .bold()
@@ -67,21 +47,22 @@ struct EditUserCollectionItem: View {
             }
             Spacer()
             Button {
-                if userCollection.contains(restaurant.id) {
-                    userCollection.restaurantIDs = userCollection.restaurantIDs.filter { $0 != restaurant.id }
-                } else {
-                    userCollection.restaurantIDs.insert(restaurant.id)
+                if let RID = viewModel.currentRestaurantID {
+                    if userCollection.contains(RID) {
+                        userCollection.restaurantIDs = userCollection.restaurantIDs.filter { $0 != RID }
+                    } else {
+                        userCollection.restaurantIDs.insert(RID)
+                    }
                 }
-                restaurant.inCollection.toggle()
+                else { print("boockmark pressed but no RID") }
             } label: {
                 Image("Check")
                     .frame(width: 32, height: 32)
-                    .opacity(userCollection.contains(restaurant.id) ? 1 : 0)
-                    .background(userCollection.contains(restaurant.id) ? Color(hex: 0x302F2D) : Color(hex: 0x5C5A57).opacity(0.1))
+                    .opacity(userCollection.contains(viewModel.currentRestaurantID ?? "") ? 1 : 0)
+                    .background(userCollection.contains(viewModel.currentRestaurantID ?? "") ? Color(hex: 0x302F2D) : Color(hex: 0x5C5A57).opacity(0.1))
                     .clipShape(RoundedRectangle(cornerSize: CGSize(width: 8, height: 8)))
             }
             .padding()
-            
         }
     }
 }
@@ -101,10 +82,5 @@ struct AddUserCollectionButton: View {
 }
 
 #Preview {
-    EditUserCollectionsView(restaurant: Binding(get: {
-        SnippetDTO()
-    }, set: { _ in
-        
-    }))
-        .environmentObject(SnippetViewModel())
+    EditUserCollectionsView()
 }

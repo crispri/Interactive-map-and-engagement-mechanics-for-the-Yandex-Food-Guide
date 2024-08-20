@@ -10,7 +10,7 @@ import SwiftUI
 struct RestaurantView: View {
     @Environment(\.dismiss) private var dismiss
     @State var restaurant: SnippetDTO
-
+    
     var body: some View {
         ScrollView(.vertical) {
             VStack {
@@ -19,7 +19,7 @@ struct RestaurantView: View {
                         .resizable()
                         .aspectRatio(3/2, contentMode: .fill)
                         .frame(width: 200)
-
+                    
                     VStack(alignment: .leading) {
                         ButtonBackAndShare()
                         Divider()
@@ -34,7 +34,7 @@ struct RestaurantView: View {
                     }
                     .padding()
                     .padding(.bottom, 10)
-
+                    
                     BadgesTrain()
                         .padding()
                         .frame(height: 50)
@@ -43,11 +43,10 @@ struct RestaurantView: View {
                 }
                 Gallery()
                     .frame(height: 250)
-                    .padding(.horizontal)
-
+                
                 VStack {
                     ChatGPT()
-                        .padding(16)
+                        .padding()
                         .cornerRadius(20)
                     ComentYGPT()
                         .padding()
@@ -58,7 +57,7 @@ struct RestaurantView: View {
                 .padding(.horizontal)
                 .background(Color.chatGPT)
                 .clipShape(.rect(cornerRadius: 16))
-                }
+            }
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
@@ -73,10 +72,10 @@ struct RestaurantView: View {
             )
         }
     }
-
-//    кнопки назад и поделиться
+    
+    //    кнопки назад и поделиться
     private func ButtonBackAndShare() -> some View {
-
+        
         HStack {
             Button {
                 dismiss()
@@ -99,16 +98,16 @@ struct RestaurantView: View {
             }
         }
     }
-
-//    имя ресторана
+    
+    //    имя ресторана
     private func NameRest() -> some View {
         Text(restaurant.name)
             .foregroundStyle(.white)
             .bold()
             .font(.system(size: 30))
     }
-
-//    рейтинг и оценки
+    
+    //    рейтинг и оценки
     private func Estimation() -> some View {
         VStack {
             Image(systemName: "star.fill")
@@ -132,10 +131,10 @@ struct RestaurantView: View {
         .opacity(0.9)
         .cornerRadius(20)
     }
-
-//    глобус
+    
+    //    глобус
     private func Globe() -> some View {
-
+        
         Button(action: {
             // TODO: add action.
         }, label: {
@@ -147,7 +146,7 @@ struct RestaurantView: View {
                 .cornerRadius(15)
         })
     }
-
+    
     //    избранное
     private func Favourites() -> some View {
         Button(action: {
@@ -161,7 +160,7 @@ struct RestaurantView: View {
                 .clipShape(.rect(cornerRadius: 16))
         })
     }
-
+    
     private func BadgesTrain() -> some View {
         ScrollView(.horizontal) {
             HStack {
@@ -171,7 +170,7 @@ struct RestaurantView: View {
             }
         }
     }
-
+    
     private func Chips(text: String) -> some View {
         Text(text)
             .padding([.trailing, .leading, .bottom, .top], 10)
@@ -180,7 +179,7 @@ struct RestaurantView: View {
             .background(Color.lightGrayChips)
             .cornerRadius(20)
     }
-
+    
     private func Gallery() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
@@ -198,9 +197,10 @@ struct RestaurantView: View {
                 }
                 .aspectRatio(2/3, contentMode: .fit)
             }
+            .padding(.horizontal)
         }
     }
-
+    
     private func ChatGPT() -> some View {
         HStack {
             VStack {
@@ -225,7 +225,7 @@ struct RestaurantView: View {
             }
         }
     }
-
+    
     private func ComentYGPT() -> some View {
         Text(restaurant.description)
             .font(.system(size: 14))

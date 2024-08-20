@@ -13,17 +13,17 @@ final class CameraListener: NSObject, YMKMapCameraListener {
     private var lastRequestTime: Date?
     private let throttleInterval: TimeInterval = 0.5
 
+    @MainActor
     func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateReason: YMKCameraUpdateReason, finished: Bool) {
+        guard !(delegate?.isPinFocusMode ?? false) else { return }
         guard let delegate else {
             print("No delegate")
             return
         }
         guard finished else { return }
         
-        Task {
-            await delegate.disablePins()
-            await delegate.cleanPins()
-        }
+        delegate.disablePins()
+        delegate.cleanPins()
 
         let now = Date()
 

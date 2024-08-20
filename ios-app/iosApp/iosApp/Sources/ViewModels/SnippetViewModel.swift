@@ -7,40 +7,59 @@
 
 import SwiftUI
 import CoreLocation
+import BottomSheet
 
 @MainActor
 final class SnippetViewModel: ObservableObject {
     private let MAX_POLIGON_WIDTH = 0.20
     
+    @Published var isPinFocusMode = false
+    @Published var sheetPosition: BottomSheetPosition = .dynamicBottom
     @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = [SnippetDTO]()
     @Published var selections = [SelectionDTO]()
-    @Published var selectedCollection: SelectionDTO? = nil
+    @Published var selectedCollection: SelectionDTO?
     @Published var currentSelection: SelectionDTO?
+    @Published var selectedPin: SnippetDTO? = nil
     
-    @Published var userCollections = UserCollection.mockData
+    @Published var userCollections: [UserCollection] = UserCollection.mockData
+    @Published var onlyUserCollections: Bool = false
+    @Published var currentRestaurantID: String?
     
     @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
-    private var filtersDTO: Array<FilterDTO> {
+    
+    var mapManager: MapManager!
+    private let networkManager = NetworkManager()
+
+    private var filtersDTO: [FilterDTO] {
         let activeFilters = filterCategories.flatMap { $0.filters.filter { $0.isActive }}
-        return activeFilters.flatMap(\.dtos)
+        var activeFiltersDTOs = activeFilters.flatMap(\.dtos)
+        
+        // MARK: Adds current selection to filters
+        if let currentSelection {
+            activeFiltersDTOs.append(FilterDTO(
+                    property: .selectionID,
+                    operator: .in,
+                    value: currentSelection.id
+                ))
+        } else {
+            activeFiltersDTOs = activeFilters.flatMap(\.dtos)
+        }
+        
+        return activeFiltersDTOs
     }
     
-    
-    var mapManager = MapManager()
-    private let networkManager = NetworkManager()
-    
     init() {
-        mapManager.delegate = self
-        for index in userCollections.indices {
-            Task {
-                let id = try await sendUserCollection(
-                    name: userCollections[index].selection.name,
-                    description: userCollections[index].selection.description
-                )
-                userCollections[index].id = id
-            }
-        }
+        mapManager = MapManager(delegate: self)
+//        for index in userCollections.indices {
+//            Task {
+//                let id = try await sendUserCollection(
+//                    name: userCollections[index].selection.name,
+//                    description: userCollections[index].selection.description
+//                )
+//                userCollections[index].id = id
+//            }
+//        }
     }
     
     func eventOnAppear() {
@@ -70,6 +89,7 @@ final class SnippetViewModel: ObservableObject {
     
     @MainActor
     func onCameraMove() {
+        guard !mapManager.isPinFocusMode else { return }
         Task {
             do {
                 await fetchSelections()
@@ -110,6 +130,15 @@ final class SnippetViewModel: ObservableObject {
             await fetchSelectionSnippets(id: currentSelection?.id ?? "")
             eventCenterCamera(to: .pins)
         }
+    }
+    
+    func pinFocusModeEnabled(_ isEnabled: Bool) {
+        isPinFocusMode = isEnabled
+        sheetPosition = isEnabled ? .absolute(500) : .dynamicBottom
+    }
+    
+    func eventSnippetAppeared(_ snippet: SnippetDTO) {
+        mapManager.eventSnippetAppeared(snippet)
     }
     
     // MARK: Wrappers for fetching snippets and selections.
@@ -169,6 +198,10 @@ final class SnippetViewModel: ObservableObject {
             let remoteUserCollections = try await loadUserCollections()
             var userCollectionsTail: [UserCollection] = []
             for selection in remoteUserCollections {
+                if ["Хочу сходить", "Хочу заказать"].contains(selection.preCreatedCollectionName)
+                    || ["Хочу сходить", "Хочу заказать"].contains(selection.name) {
+                    continue
+                }
                 let restaurants = try await loadSelectionSnippets(id: selection.id)
                 
                 userCollectionsTail += [UserCollection(
@@ -183,7 +216,7 @@ final class SnippetViewModel: ObservableObject {
     // MARK: load data from server.
     
     private func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
-        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner, filters: filtersDTO)
+        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner, filters: filtersDTO, onlyUserCollections: onlyUserCollections)
         return data
     }
     
@@ -193,7 +226,7 @@ final class SnippetViewModel: ObservableObject {
     }
         
     private func loadSelectionSnippets(id: String) async throws -> [SnippetDTO] {
-        let data = try await networkManager.fetchSelectionSnippets(id: id)
+        let data = try await networkManager.fetchSnippets(lowerLeftCorner: .init(lat: 60.170125, lon: 24.950026), topRightCorner: .init(lat: 48.135370, lon: 67.149113), collectionID: id)
         return data
     }
     
