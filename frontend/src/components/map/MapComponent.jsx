@@ -1,10 +1,12 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import './Map.css'
 import { useDispatch } from 'react-redux'
 
 import Pin from '../pin/Pin'
 import {useSelector } from 'react-redux'
 import { setCurrentPin } from '../../lib/restaurantsSlice'
+
+import custom from '../../assets/customization.json'
 
 
 import useOutsideClick from '../../lib/useOutsideClick'
@@ -44,33 +46,39 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
     dispatch(setCurrentPin(null))
   })
 
- useEffect(() => {
-  if (current_pin) {
-    setLocation(loco => ({
-      center: [current_pin.coordinates[0], current_pin.coordinates[1]],
-      duration: 300,
-    }))
-  }
- }, [current_pin])
-
+  const pinRefs = useRef([]);
+  
  return (
  <>
   <div style={{width: '100%', height: '100%', paddingBottom: '40px'}}>
     <YMap location={location} showScaleInCopyrights={true} ref={(x) => (map = x)}>
-      <YMapDefaultSchemeLayer />
+      <YMapDefaultSchemeLayer customization={custom}/>
+      {/* customization='../../assets/customization.json' */}
       <YMapDefaultFeaturesLayer/>
 
-      {restaurants.map(el => (
-        <YMapMarker coordinates={el.coordinates} key={el.id}>
-          <Pin 
-            type={'normis'} 
-            item={el} 
-            isFocused={current_pin?.id === el.id} 
-            onClick={setFocus}
-            outsideClick={onOutsideClick}
-          />
-        </YMapMarker>
-      ))}
+      {restaurants.map((el, i) => {
+        let type
+        if (i < 3) {
+          type = 'sexy'
+        } else if (i >=3 && i < 6) {
+          type = 'normis'
+        } else {
+          type = 'default'
+        }
+        return (
+          <YMapMarker coordinates={el.coordinates} key={el.id}>
+            <Pin 
+              type={type} 
+              id={el.id}
+              item={el} 
+              isFocused={current_pin?.id === el.id} 
+              onClick={setFocus}
+              outsideClick={onOutsideClick}
+              refProp={(comp) => (pinRefs.current[i] = comp)}
+            />
+          </YMapMarker>
+        )
+      })}
 
       <YMapListener 
         onActionEnd={updateHandler}
