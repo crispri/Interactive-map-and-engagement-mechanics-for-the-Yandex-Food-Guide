@@ -47,7 +47,6 @@ const MapComponent = ({sheetRef, location, updateHandler, setLocation}) => {
   })
 
   const pinRefs = useRef([]);
-  console.log(pinRefs);
   
  return (
  <>

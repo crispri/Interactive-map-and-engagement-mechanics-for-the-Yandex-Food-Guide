@@ -11,7 +11,7 @@ export const getRestaurants = createAsyncThunk(
 					method: "POST",
 					headers: {
 					  "Content-Type": "application/json;charset=utf-8",
-					  "Authorization": "token",
+					  "Authorization": "5142cece-b22e-4a4f-adf9-990949d053ff",
 
 					},
 					body: JSON.stringify(body),
@@ -39,7 +39,7 @@ export const getSelections = createAsyncThunk(
 					method: "POST",
 					headers: {
 					  "Content-Type": "application/json;charset=utf-8",
-					  "Authorization": "token",
+					  "Authorization": "5142cece-b22e-4a4f-adf9-990949d053ff",
 					},
 					body: JSON.stringify({
 						"return_collections": false
@@ -68,7 +68,7 @@ export const getSelection = createAsyncThunk(
 					method: "GET",
 					headers: {
 					  "Content-Type": "application/json;charset=utf-8",
-					  "Authorization": "token",
+					  "Authorization": "5142cece-b22e-4a4f-adf9-990949d053ff",
 					},
 				}
 			)
