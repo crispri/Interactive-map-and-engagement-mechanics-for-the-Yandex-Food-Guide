@@ -27,7 +27,7 @@ properties:
             "eq",
             "neq"
         ]
-        description: "Оператор для фильтрации. Не каждый фильтр поддерживает все операции."
+        description: "Оператор для фильтрации."
 
     value:
         type: array
