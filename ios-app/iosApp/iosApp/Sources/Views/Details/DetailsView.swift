@@ -13,8 +13,6 @@ struct DetailsView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
     @State private var isBottomSheetPresented = true
     @State var isFiltersPresented = false
-    @State var sheetPosition: BottomSheetPosition = .dynamicBottom
-    
     @State var isUserCollectionsPresented = false
     
     var body: some View {
@@ -23,7 +21,7 @@ struct DetailsView: View {
                 .edgesIgnoringSafeArea(.all)
                 .environmentObject(viewModel.mapManager)
                 .bottomSheet(
-                    bottomSheetPosition: $sheetPosition,
+                    bottomSheetPosition: $viewModel.sheetPosition,
                     switchablePositions: [
                         .dynamicBottom,
                         .absolute(500),
@@ -103,14 +101,15 @@ struct DetailsView: View {
     
     private var bookmarkButton: some View {
         Button {
-            isUserCollectionsPresented.toggle()
-            Task { await viewModel.fetchUserCollections() }
+            viewModel.onlyUserCollections.toggle()
+            viewModel.eventCenterCamera(to: .pins)
         } label: {
-            Image(systemName: "bookmark")
+            Image("Bookmark")
+                .renderingMode(.template)
                 .bold()
-                .foregroundStyle(.black)
+                .foregroundStyle(viewModel.onlyUserCollections ? .white : .black)
                 .padding()
-                .background(.white)
+                .background(viewModel.onlyUserCollections ? .black : .white)
                 .clipShape(Circle())
         }
         .shadow(radius: 20, x: 0, y: 8)

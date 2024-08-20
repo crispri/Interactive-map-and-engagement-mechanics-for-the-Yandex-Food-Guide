@@ -8,10 +8,32 @@
 import Foundation
 
 struct SelectionDTO: Codable, Identifiable, Equatable, Hashable {
-    var id: String = UUID().uuidString
+    let id: String
     let name: String
     let description: String
-    let picture: String
+    let picture: String?
+    let link: String?
+    let preCreatedCollectionName: String?
+    init(
+        id: String = UUID().uuidString,
+        name: String = "",
+        description: String = "",
+        picture: String? = "",
+        link: String? = "",
+        preCreatedCollectionName: String? = ""
+    ) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.picture = picture
+        self.link = link
+        self.preCreatedCollectionName = preCreatedCollectionName
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case id, name, description, picture, link
+        case preCreatedCollectionName = "pre_created_collection_name"
+    }
 }
 
 extension SelectionDTO {

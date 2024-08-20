@@ -60,7 +60,7 @@ final class BigPinView: UIView {
 
     private lazy var descriptionRest: UILabel = {
         let label = UILabel()
-        label.frame = .init(x: 8, y: 23, width: 144, height: 12)
+        label.frame = .init(x: 8, y: 23, width: 144, height: 11)
         label.font = .systemFont(ofSize: 11)
         label.numberOfLines = 1
         label.text = "\(model.additionalInfo)"
