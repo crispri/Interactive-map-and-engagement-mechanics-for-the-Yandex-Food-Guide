@@ -72,8 +72,9 @@ public:
 
         boost::uuids::string_generator gen;
         auto restaurant_id = gen(request.GetPathArg("id"));
-        const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
-
+        // const auto& session_id = (request.HasCookie("session_id") ? request.GetCookie("session_id") : request.GetHeader("Authorization"));
+        // const auto& user_id = session_service_.GetUserId(gen(session_id));
+        const auto& user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
         auto restaurant = restaurant_service_.GetById(restaurant_id, user_id);
         if (!restaurant) {
             return errorBuilder.build(

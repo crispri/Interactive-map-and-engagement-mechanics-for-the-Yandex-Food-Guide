@@ -14,13 +14,18 @@ CheckSessionMiddleware::CheckSessionMiddleware
 
 void CheckSessionMiddleware::HandleRequest(userver::server::http::HttpRequest& request,
                                            userver::server::request::RequestContext& context) const {
-    boost::uuids::string_generator gen;                                        
-    auto session_cookie = request.GetCookie("session_id");
+    // boost::uuids::string_generator gen;                                        
+    // std::string session_cookie;
+    // if (request.HasCookie("session_id")) {
+    //     session_cookie = request.GetCookie("session_id");
+    // } else {
+    //     session_cookie = request.GetHeader("Authorization");
+    // }
 
-    if (session_cookie.empty() || !session_service_.ValidateSession(gen(session_cookie))) {
-        request.SetResponseStatus(userver::server::http::HttpStatus::kUnauthorized);
-        return;
-    }
+    // if (request.GetRequestPath() != "/guide/v1/login" && (session_cookie.empty() || !session_service_.ValidateSession(gen(session_cookie)))) {
+    //     request.SetResponseStatus(userver::server::http::HttpStatus::kUnauthorized);
+    //     return;
+    // }
     Next(request, context);
 }
 

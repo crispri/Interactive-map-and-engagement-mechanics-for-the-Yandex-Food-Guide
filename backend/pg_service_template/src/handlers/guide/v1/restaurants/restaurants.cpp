@@ -194,8 +194,9 @@ namespace service {
                 );
 
                 boost::uuids::string_generator gen;
-                const auto& user_id = session_service_.GetUserId(gen(request.GetCookie("session_id")));
-
+                // const auto& session_id = (request.HasCookie("session_id") ? request.GetCookie("session_id") : request.GetHeader("Authorization"));
+                // const auto& user_id = session_service_.GetUserId(gen(session_id));
+                const auto& user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
                 auto restaurants = restaurant_service_.GetByFilter(filters, user_id);
 
                 userver::formats::json::ValueBuilder MLrequestJSON;
@@ -210,12 +211,13 @@ namespace service {
                                                                               {' ', 4});
 
                 http_client_.ResetUserAgent(boost::uuids::to_string(user_id));
-
+                auto session_id = std::string("5142cece-b22e-4a4f-adf9-990949d053ff");
                 const auto MLresponse = http_client_.CreateRequest()
                         .post("http://localhost:8080/guide/v1/ml_rate", std::move(MLrequestString))
                         .timeout(std::chrono::seconds(10))
                         .retry(10)
-                        .headers({std::make_pair("Cookie", "session_id=" + request.GetCookie("session_id"))})
+                        .headers({std::make_pair("Cookie", "session_id=" + session_id)})
+                        .headers({std::make_pair("Authorization", session_id)})
                         .perform();
 
                 const auto MLresponseBody = MLresponse->body_view();

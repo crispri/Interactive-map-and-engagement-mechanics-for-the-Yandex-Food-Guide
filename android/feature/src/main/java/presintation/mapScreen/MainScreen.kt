@@ -550,6 +550,7 @@ fun CollectionCarousel(
 
     val configuration = LocalConfiguration.current
     val screenWidthInt = configuration.screenWidthDp
+
     LaunchedEffect(selectedCardIndex) {
         if (selectedCardIndex != -1) {
             send(RecommendationIsSelected(true))
@@ -557,6 +558,7 @@ fun CollectionCarousel(
             send(RecommendationIsSelected(false))
         }
     }
+
     LaunchedEffect(selectedCardIndex) {
         if (selectedCardIndex != -1 && selectedCardIndex != 0) {
             lazyListState.animateScrollToItem(selectedCardIndex, -(screenWidthInt / 2))
@@ -571,33 +573,69 @@ fun CollectionCarousel(
             .padding(horizontal = 6.dp)
             .background(Color.Transparent)
     ) {
-        itemsIndexed(recommendations) { index, item ->
-            val isSelected = index == selectedCardIndex
-            val cardWidth = if (isSelected) (250.dp) else 216.dp
-            val cardHeight = if (isSelected) 100.dp else 90.dp
-            val yOffset = if (isSelected) (-10).dp else 0.dp
+        val firstFixedCardIndex = 0
 
-            if (index > 0) {
-                Spacer(modifier = Modifier.width(6.dp))
-            }
+        item {
+            val isSelected = firstFixedCardIndex == selectedCardIndex
+            val cardWidth = if (isSelected) (260.dp) else 180.dp
 
             CardWithImageAndText(
-                imagePainter = rememberAsyncImagePainter(model = item.picture),
-                text = item.name,
-                description = item.description,
+                imagePainter = painterResource(id = R.drawable.ultima),
+                text = "",
+                description = "Топ-50 ресторанов Москвы",
                 {},
                 {},
                 onClick = {
+                    selectedCardIndex = if (isSelected) -1 else firstFixedCardIndex
                     val filterList = uiState.filterList
                     filterList.removeAll { it.property == "selection_id" }
-                    if (isSelected) {
-                        selectedCardIndex = -1
-                    } else {
-                        selectedCardIndex = index
-                        filterList.add(Filter("selection_id", listOf(item.id), "in", true))
+                    filterList.removeAll { filter ->
+                        filter.value.any { it == "Открытая кухня" }
                     }
+                    filterList.add(Filter("tags", listOf("ULTIMA GUIDE"), "in", true))
+                    send(
+                        UpdateItemsOnMap(
+                            uiState.lowerLeft,
+                            uiState.topRight,
+                            filterList = filterList,
+                            0.0,
+                            0.0
+                        )
+                    )
 
-                    Log.d("okFilter", filterList.toString())
+
+                },
+                modifier = Modifier
+                    .width(cardWidth)
+                    .height(90.dp),
+                isBlackText = true,
+                isUltima = true
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+        }
+
+        val secondFixedCardIndex = 1
+
+        item {
+            val isSelected = secondFixedCardIndex == selectedCardIndex
+            val cardWidth = if (isSelected) (260.dp) else 180.dp
+
+
+
+            CardWithImageAndText(
+                imagePainter = painterResource(id = R.drawable.kitchen),
+                text = "Открытая кухня",
+                description = "Выбор экспертов",
+                {},
+                {},
+                onClick = {
+                    selectedCardIndex = if (isSelected) -1 else secondFixedCardIndex
+                    val filterList = uiState.filterList
+                    filterList.removeAll { it.property == "selection_id" }
+                    filterList.removeAll { filter ->
+                        filter.value.any { it == "ULTIMA GUIDE" }
+                    }
+                    filterList.add(Filter("tags", listOf("Открытая кухня"), "in", true))
                     send(
                         UpdateItemsOnMap(
                             uiState.lowerLeft,
@@ -610,12 +648,56 @@ fun CollectionCarousel(
                 },
                 modifier = Modifier
                     .width(cardWidth)
-                    .height(cardHeight)
-                    .offset(y = yOffset)
+                    .height(90.dp),
+                isBlackText = true
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+        }
+
+        itemsIndexed(recommendations) { index, item ->
+            val actualIndex = index + 2
+            val isSelected = actualIndex == selectedCardIndex
+            val cardWidth = if (isSelected) (260.dp) else 216.dp
+
+            if (index > 0) {
+                Spacer(modifier = Modifier.width(6.dp))
+            }
+
+            CardWithImageAndText(
+                imagePainter = rememberAsyncImagePainter(model = item.picture),
+                text = item.name,
+                description = item.description,
+                {},
+                {},
+                onClick = {
+                    selectedCardIndex = if (isSelected) -1 else actualIndex
+                    val filterList = uiState.filterList
+                    filterList.removeAll { it.property == "selection_id" }
+                    filterList.removeAll { filter ->
+                        filter.value.any { it == "Открытая кухня" }
+                    }
+                    filterList.removeAll { filter ->
+                        filter.value.any { it == "ULTIMA GUIDE" }
+                    }
+                    filterList.add(Filter("selection_id", listOf(item.id), "in", true))
+                    send(
+                        UpdateItemsOnMap(
+                            uiState.lowerLeft,
+                            uiState.topRight,
+                            filterList = filterList,
+                            0.0,
+                            0.0
+                        )
+                    )
+                },
+                modifier = Modifier
+                    .width(cardWidth)
+                    .height(90.dp)
             )
         }
     }
 }
+
 
 
 @Composable

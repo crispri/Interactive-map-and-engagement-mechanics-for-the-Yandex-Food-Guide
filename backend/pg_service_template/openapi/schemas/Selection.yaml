@@ -12,6 +12,13 @@ properties:
     picture:
         type: string
 
+    link:
+        type: string
+
+    pre_created_collection_name:
+        type: string
+        enum: ['Хочу сходить', 'Хочу заказать']
+
 required:
     - id
     - name
