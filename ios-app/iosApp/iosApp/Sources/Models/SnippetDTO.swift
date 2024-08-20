@@ -85,7 +85,8 @@ extension SnippetDTO {
             address: "Берсеневский пер., 2, стр.1, Москва, 119072",
             rating: 5,
             priceLowerBound: 1200,
-            priceUpperBound: 6000
+            priceUpperBound: 6000,
+            additionalInfo: "вкусный кофе"
         ),
         SnippetDTO(
             coordinates: Coordinates(lat: 55.755956, lon: 37.643203),

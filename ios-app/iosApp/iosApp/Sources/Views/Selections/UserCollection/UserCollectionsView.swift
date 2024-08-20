@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UserCollectionsView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
+    @State private var isNewCollectionViewPresented: Bool = false
     
     var body: some View {
         VStack {
@@ -17,7 +18,9 @@ struct UserCollectionsView: View {
                     .font(.title2)
                     .padding(.leading)
                 Spacer()
-                AddUserCollectionButton()
+                AddUserCollectionButton() {
+                    isNewCollectionViewPresented.toggle()
+                }
             }
             ScrollView {
                 ForEach(viewModel.userCollections) { collection in
@@ -29,6 +32,12 @@ struct UserCollectionsView: View {
                 }
             }
         }
+        .sheet(isPresented: $isNewCollectionViewPresented, content: {
+            NewCollectionView() {
+                isNewCollectionViewPresented.toggle()
+            }
+                .presentationDetents([.medium])
+        })
     }
 }
 

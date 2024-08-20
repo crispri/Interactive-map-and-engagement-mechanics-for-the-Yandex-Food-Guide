@@ -10,7 +10,7 @@ import SwiftUI
 var imageRest = ["1rest", "2rest", "3rest"]
 
 struct SnippetCell: View {
-    @EnvironmentObject private var viemModel: SnippetViewModel
+    @EnvironmentObject private var viewModel: SnippetViewModel
     @State var restaurant: SnippetDTO
     @State private var currentPage = 0
     var mainAction: (() -> Void)?
@@ -19,6 +19,9 @@ struct SnippetCell: View {
         VStack {
             ImageRest()
             NameRest()
+                .onAppear {
+                    viewModel.eventSnippetAppeared(restaurant)
+                }
             Meta()
             HStack {
                 Description()
@@ -33,19 +36,24 @@ struct SnippetCell: View {
 
     private func ImageRest() -> some View {
         ZStack(alignment: .topTrailing) {
-            var pages: [Image] {
-                var arr = [Image]()
-                for name in imageRest {
-                    arr.append(
-                        Image(name)
-                            .resizable()
-                    )
-                }
-                return arr
-            }
 
-            ImageRestWithPC(pages: pages)
-                .frame(height: 150)
+            TabView {
+                var interiors = restaurant.interior.prefix(3)
+                ForEach (interiors, id: \.self) { photo in
+                    AsyncImage(url: URL(string: photo)) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        ProgressView()
+                    }
+
+                }
+            }
+            .frame(height: 150)
+            .cornerRadius(14)
+            .tabViewStyle(.page)
+            .indexViewStyle(.page(backgroundDisplayMode: .interactive))
 
             ZStack {
                 Image(systemName: "circle.fill")
@@ -61,8 +69,9 @@ struct SnippetCell: View {
             }
             .padding(10)
             .onTapGesture {
+                viewModel.currentRestaurantID = restaurant.id
                 mainAction?() // MARK: shows collections editing sheet
-                Task { await viemModel.fetchUserCollections() }
+                Task { await viewModel.fetchUserCollections() }
             }
         }
     }

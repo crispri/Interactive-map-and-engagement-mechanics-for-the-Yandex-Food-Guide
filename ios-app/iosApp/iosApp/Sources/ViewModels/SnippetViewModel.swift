@@ -7,16 +7,20 @@
 
 import SwiftUI
 import CoreLocation
+import BottomSheet
 
 @MainActor
 final class SnippetViewModel: ObservableObject {
     private let MAX_POLIGON_WIDTH = 0.20
     
+    @Published var isPinFocusMode = false
+    @Published var sheetPosition: BottomSheetPosition = .dynamicBottom
     @Published var userLocaitonTitle = "Поиск геопозиции..."
     @Published var snippets = [SnippetDTO]()
     @Published var selections = [SelectionDTO]()
     @Published var selectedCollection: SelectionDTO?
     @Published var currentSelection: SelectionDTO?
+    @Published var selectedPin: SnippetDTO? = nil
     
     @Published var userCollections: [UserCollection] = UserCollection.mockData
     @Published var onlyUserCollections: Bool = false
@@ -38,6 +42,9 @@ final class SnippetViewModel: ObservableObject {
     
     @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
     
+    var mapManager: MapManager!
+    private let networkManager = NetworkManager()
+
     private var filtersDTO: [FilterDTO] {
         let activeFilters = filterCategories.flatMap { $0.filters.filter { $0.isActive }}
         var activeFiltersDTOs = activeFilters.flatMap(\.dtos)
@@ -56,11 +63,8 @@ final class SnippetViewModel: ObservableObject {
         return activeFiltersDTOs
     }
     
-    var mapManager = MapManager()
-    private let networkManager = NetworkManager()
-    
     init() {
-        mapManager.delegate = self
+        mapManager = MapManager(delegate: self)
 //        for index in userCollections.indices {
 //            Task {
 //                let id = try await sendUserCollection(
@@ -82,9 +86,9 @@ final class SnippetViewModel: ObservableObject {
     func eventOnAppearForMain() {
         eventCenterCamera(to: .user)
         eventOnGesture()
-        mapManager.map.isScrollGesturesEnabled = false
-        mapManager.map.isRotateGesturesEnabled = false
-        mapManager.map.isZoomGesturesEnabled = false
+        mapManager.map.isScrollGesturesEnabled = true
+        mapManager.map.isRotateGesturesEnabled = true
+        mapManager.map.isZoomGesturesEnabled = true
     }
 
     func eventOnGesture() {
@@ -99,6 +103,7 @@ final class SnippetViewModel: ObservableObject {
     
     @MainActor
     func onCameraMove() {
+        guard !mapManager.isPinFocusMode else { return }
         Task {
             do {
                 await fetchSelections()
@@ -141,6 +146,15 @@ final class SnippetViewModel: ObservableObject {
         }
     }
     
+    func pinFocusModeEnabled(_ isEnabled: Bool) {
+        isPinFocusMode = isEnabled
+        sheetPosition = isEnabled ? .absolute(500) : .dynamicBottom
+    }
+    
+    func eventSnippetAppeared(_ snippet: SnippetDTO) {
+        mapManager.eventSnippetAppeared(snippet)
+    }
+    
     // MARK: Wrappers for fetching snippets and selections.
     
     func fetchSnippets() async {
@@ -168,6 +182,21 @@ final class SnippetViewModel: ObservableObject {
     func fetchSelections() async {
         do {
             selections = try await loadSelections()
+            let userLocation = try mapManager.getUserLocation()
+            let screenPoints = mapManager.getScreenPoints()
+            let params: [AnyHashable : Any]? = [
+                "user_id": "iOS user id",
+                "timestamp": Int(Date().timeIntervalSince1970),
+                "current_lat":  userLocation.lat,
+                "current_long": userLocation.lon,
+                "user_lat": screenPoints.lowerLeftCorner.lat,
+                "user_long": screenPoints.lowerLeftCorner.lon,
+                "selections_array": selections.map { $0.id }
+            ]
+            MetricaManager.logEvent(
+                name: "main_screen_button_open_map",
+                params: params
+            )
         } catch { print(error) }
     }
         

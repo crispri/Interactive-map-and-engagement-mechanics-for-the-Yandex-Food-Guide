@@ -13,12 +13,17 @@ struct HeaderView: View {
     
     var body: some View {
         VStack {
-            SelectionScrollView()
-                .environmentObject(viewModel)
+            if viewModel.isPinFocusMode {
+                Spacer().frame(height: 100)
+            } else {
+                SelectionScrollView().environmentObject(viewModel)
+            }
             VStack {
-                GrabberView()
-                FilterView(isFiltersPresented: $isFiltersPresented, filterCategories: $viewModel.filterCategories)
-                    .padding(.bottom, 8)
+                if !viewModel.isPinFocusMode {
+                    GrabberView()
+                    FilterView(isFiltersPresented: $isFiltersPresented, filterCategories: $viewModel.filterCategories)
+                        .padding(.bottom, 8)
+                }
             }
             .background(
                 Color.white

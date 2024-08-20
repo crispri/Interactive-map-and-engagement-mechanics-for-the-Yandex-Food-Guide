@@ -10,15 +10,26 @@ import SwiftUI
 struct RestaurantView: View {
     @Environment(\.dismiss) private var dismiss
     @State var restaurant: SnippetDTO
-
+    
     var body: some View {
         ScrollView(.vertical) {
             VStack {
                 ZStack {
-                    Image("1rest")
-                        .resizable()
-                        .aspectRatio(3/2, contentMode: .fill)
-                        .frame(width: 200)
+                    if !restaurant.interior.isEmpty {
+                        AsyncImage(url: URL(string: restaurant.interior[0])) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(3/2, contentMode: .fill)
+                                .frame(width: 200)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    } else {
+                        Image("noPhoto")
+                            .resizable()
+                            .aspectRatio(3/2, contentMode: .fill)
+                            .frame(width: 200)
+                    }
 
                     VStack(alignment: .leading) {
                         ButtonBackAndShare()
@@ -34,7 +45,7 @@ struct RestaurantView: View {
                     }
                     .padding()
                     .padding(.bottom, 10)
-
+                    
                     BadgesTrain()
                         .padding()
                         .frame(height: 50)
@@ -43,11 +54,10 @@ struct RestaurantView: View {
                 }
                 Gallery()
                     .frame(height: 250)
-                    .padding(.horizontal)
-
+                
                 VStack {
                     ChatGPT()
-                        .padding(16)
+                        .padding()
                         .cornerRadius(20)
                     ComentYGPT()
                         .padding()
@@ -58,15 +68,25 @@ struct RestaurantView: View {
                 .padding(.horizontal)
                 .background(Color.chatGPT)
                 .clipShape(.rect(cornerRadius: 16))
-                }
+            }
         }
         .edgesIgnoringSafeArea(.all)
-
+        .onAppear {
+            let params: [AnyHashable : Any]? = [
+                "user_id": "iOS user id",
+                "timestamp": Int(Date().timeIntervalSince1970),
+                "restaurant_id": restaurant.id
+            ]
+            MetricaManager.logEvent(
+                name: "open_on_full_screen_restaurant_card",
+                params: params
+            )
+        }
     }
-
-//    кнопки назад и поделиться
+    
+    //    кнопки назад и поделиться
     private func ButtonBackAndShare() -> some View {
-
+        
         HStack {
             Button {
                 dismiss()
@@ -89,16 +109,16 @@ struct RestaurantView: View {
             }
         }
     }
-
-//    имя ресторана
+    
+    //    имя ресторана
     private func NameRest() -> some View {
         Text(restaurant.name)
             .foregroundStyle(.white)
             .bold()
             .font(.system(size: 30))
     }
-
-//    рейтинг и оценки
+    
+    //    рейтинг и оценки
     private func Estimation() -> some View {
         VStack {
             Image(systemName: "star.fill")
@@ -122,10 +142,10 @@ struct RestaurantView: View {
         .opacity(0.9)
         .cornerRadius(20)
     }
-
-//    глобус
+    
+    //    глобус
     private func Globe() -> some View {
-
+        
         Button(action: {
             // TODO: add action.
         }, label: {
@@ -137,7 +157,7 @@ struct RestaurantView: View {
                 .cornerRadius(15)
         })
     }
-
+    
     //    избранное
     private func Favourites() -> some View {
         Button(action: {
@@ -151,7 +171,7 @@ struct RestaurantView: View {
                 .clipShape(.rect(cornerRadius: 16))
         })
     }
-
+    
     private func BadgesTrain() -> some View {
         ScrollView(.horizontal) {
             HStack {
@@ -161,7 +181,7 @@ struct RestaurantView: View {
             }
         }
     }
-
+    
     private func Chips(text: String) -> some View {
         Text(text)
             .padding([.trailing, .leading, .bottom, .top], 10)
@@ -170,27 +190,68 @@ struct RestaurantView: View {
             .background(Color.lightGrayChips)
             .cornerRadius(20)
     }
-
+    
     private func Gallery() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                Image("1rest")
-                    .resizable()
-                    .cornerRadius(20)
-                    .aspectRatio(1.3, contentMode: .fit)
+                if restaurant.interior.count >= 2 {
+                    AsyncImage(url: URL(string: restaurant.interior[1])) { image in
+                        image
+                            .resizable()
+                            .cornerRadius(20)
+                            .aspectRatio(1.3, contentMode: .fit)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                } else if restaurant.interior.count == 1 {
+                    AsyncImage(url: URL(string: restaurant.interior[0])) { image in
+                        image
+                            .resizable()
+                            .cornerRadius(20)
+                            .aspectRatio(1.3, contentMode: .fit)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                } else {
+                    Image("noPhoto")
+                        .resizable()
+                        .cornerRadius(20)
+                        .aspectRatio(1.3, contentMode: .fit)
+                }
+
                 VStack {
-                    Image("2rest")
-                        .resizable()
-                        .cornerRadius(20)
-                    Image("3rest")
-                        .resizable()
-                        .cornerRadius(20)
+
+                    if restaurant.interior.count >= 4 {
+                        AsyncImage(url: URL(string: restaurant.interior[2])) { image in
+                            image
+                                .resizable()
+                                .cornerRadius(20)
+                        } placeholder: {
+                            ProgressView()
+                        }
+
+                        AsyncImage(url: URL(string: restaurant.interior[3])) { image in
+                            image
+                                .resizable()
+                                .cornerRadius(20)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    } else {
+                        Image("noPhoto")
+                            .resizable()
+                            .cornerRadius(20)
+                        Image("noPhoto")
+                            .resizable()
+                            .cornerRadius(20)
+                    }
                 }
                 .aspectRatio(2/3, contentMode: .fit)
             }
+            .padding(.horizontal)
         }
     }
-
+    
     private func ChatGPT() -> some View {
         HStack {
             VStack {
@@ -215,7 +276,7 @@ struct RestaurantView: View {
             }
         }
     }
-
+    
     private func ComentYGPT() -> some View {
         Text(restaurant.description)
             .font(.system(size: 14))
