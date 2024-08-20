@@ -72,9 +72,9 @@ final class SnippetViewModel: ObservableObject {
     func eventOnAppearForMain() {
         eventCenterCamera(to: .user)
         eventOnGesture()
-        mapManager.map.isScrollGesturesEnabled = false
-        mapManager.map.isRotateGesturesEnabled = false
-        mapManager.map.isZoomGesturesEnabled = false
+        mapManager.map.isScrollGesturesEnabled = true
+        mapManager.map.isRotateGesturesEnabled = true
+        mapManager.map.isZoomGesturesEnabled = true
     }
 
     func eventOnGesture() {
