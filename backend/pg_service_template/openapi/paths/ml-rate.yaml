@@ -1,4 +1,5 @@
 post:
+  summary: Rate restaurants ids list by ML based on user info (mock)
   description: Rate restaurants ids list by ML based on user info (mock)
   tags:
     - ML
