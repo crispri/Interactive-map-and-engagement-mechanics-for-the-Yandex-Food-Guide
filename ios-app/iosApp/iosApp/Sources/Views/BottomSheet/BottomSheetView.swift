@@ -20,6 +20,7 @@ struct BottomSheetView: View {
             VStack {
                 GrabberView()
                 SnippetCell(restaurant: selectedPin) {
+                    viewModel.currentRestaurantID = selectedPin.id
                     isEditUserCollectionsPresented.toggle()
                 }
                 .onTapGesture {
@@ -44,19 +45,22 @@ struct BottomSheetView: View {
                 LazyVStack(spacing: 0) {
                     ForEach(viewModel.snippets) { restaurant in
                         SnippetCell(restaurant: restaurant) {
-                            isEditUserCollectionsPresented.toggle()
                             viewModel.currentRestaurantID = restaurant.id
+                            isEditUserCollectionsPresented.toggle()
                         }
                         .onTapGesture {
                             selectedSnipped = restaurant
                             isSheetPresented = true
                         }
                         .sheet(item: $selectedSnipped, content: { item in
-                            RestaurantView(restaurant: item)
+                            RestaurantView(restaurant: item, isEditUserCollectionsPresented: $isEditUserCollectionsPresented) {
+                                viewModel.currentRestaurantID = restaurant.id
+                                isEditUserCollectionsPresented = true
+                            }
                         })
                         .sheet(isPresented: $isEditUserCollectionsPresented) {
                             EditUserCollectionsView()
-                            .presentationDetents([.medium])
+                                .presentationDetents([.medium])
                         }
                     }
                 }

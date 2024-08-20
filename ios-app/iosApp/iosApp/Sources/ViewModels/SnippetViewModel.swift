@@ -38,7 +38,7 @@ final class SnippetViewModel: ObservableObject {
             objectWillChange.send()
             userCollections[index].restaurantIDs.remove(restaurantID)
         }
-        }
+    }
     
     @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
     
@@ -74,6 +74,9 @@ final class SnippetViewModel: ObservableObject {
 //                userCollections[index].id = id
 //            }
 //        }
+    }
+    init(selections: [SelectionDTO]) {
+        self.selections = selections
     }
     
     func eventOnAppear() {
