@@ -25,6 +25,8 @@
 		4FC512392C5E5586006ED790 /* iosAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC512382C5E5586006ED790 /* iosAppUITests.swift */; };
 		4FC5123B2C5E5586006ED790 /* iosAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC5123A2C5E5586006ED790 /* iosAppUITestsLaunchTests.swift */; };
 		6E11AC772C70E59000B7E075 /* StyleMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E11AC762C70E59000B7E075 /* StyleMap.swift */; };
+		6E11AC7F2C74AA2800B7E075 /* YS-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E11AC7E2C74AA2800B7E075 /* YS-Bold.ttf */; };
+		6E11AC812C74AA4B00B7E075 /* YS-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E11AC802C74AA4B00B7E075 /* YS-Regular.ttf */; };
 		6E3E42A52C665DDA0049111C /* RestaurantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3E42A42C665DDA0049111C /* RestaurantView.swift */; };
 		6E3E42A82C6768800049111C /* BottomRestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3E42A72C6768800049111C /* BottomRestView.swift */; };
 		6E6A20B72C68B6390029ABCC /* BigPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A20B62C68B6390029ABCC /* BigPinView.swift */; };
@@ -121,6 +123,8 @@
 		4FFB75392C6F517800FF5F8D /* GeocoderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocoderResponse.swift; sourceTree = "<group>"; };
 		628EC9234413B8A27E25DE28 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E11AC762C70E59000B7E075 /* StyleMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleMap.swift; sourceTree = "<group>"; };
+		6E11AC7E2C74AA2800B7E075 /* YS-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS-Bold.ttf"; sourceTree = "<group>"; };
+		6E11AC802C74AA4B00B7E075 /* YS-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS-Regular.ttf"; sourceTree = "<group>"; };
 		6E3E42A42C665DDA0049111C /* RestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantView.swift; sourceTree = "<group>"; };
 		6E3E42A72C6768800049111C /* BottomRestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomRestView.swift; sourceTree = "<group>"; };
 		6E6A20B62C68B6390029ABCC /* BigPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigPinView.swift; sourceTree = "<group>"; };
@@ -268,6 +272,7 @@
 		4FC5121C2C5E5585006ED790 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				6E11AC7B2C74A93100B7E075 /* Fonts */,
 				4FC5121D2C5E5585006ED790 /* iosApp.swift */,
 				4FC512562C5E5F16006ED790 /* Sources */,
 				4FC512512C5E5F0F006ED790 /* SupportingFiles */,
@@ -390,6 +395,15 @@
 				B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6E11AC7B2C74A93100B7E075 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				6E11AC802C74AA4B00B7E075 /* YS-Regular.ttf */,
+				6E11AC7E2C74AA2800B7E075 /* YS-Bold.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		6E3E42A62C6768420049111C /* RestaurantDetail */ = {
@@ -642,6 +656,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E11AC7F2C74AA2800B7E075 /* YS-Bold.ttf in Resources */,
+				6E11AC812C74AA4B00B7E075 /* YS-Regular.ttf in Resources */,
 				4FC512252C5E5586006ED790 /* Preview Assets.xcassets in Resources */,
 				CBFD7EEB2C65633D00CEC0BC /* .gitignore in Resources */,
 				CB28CEE62C6926B400266944 /* README.md in Resources */,

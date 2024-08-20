@@ -51,7 +51,8 @@ final class BigPinView: UIView {
     private lazy var nameRest: UILabel = {
         let label = UILabel()
         label.frame = .init(x: 8, y: 8, width: 113, height: 14)
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "YS-Bold", size: 13)
+//        label.font = .systemFont(ofSize: 13)
         label.text = model.name
         label.numberOfLines = 1
         return label
@@ -60,7 +61,8 @@ final class BigPinView: UIView {
     private lazy var descriptionRest: UILabel = {
         let label = UILabel()
         label.frame = .init(x: 8, y: 23, width: 144, height: 12)
-        label.font = .systemFont(ofSize: 11)
+        label.font = UIFont(name: "YS-Regular", size: 11)
+//        label.font = .systemFont(ofSize: 11)
         label.numberOfLines = 1
         label.text = "\(model.additionalInfo)"
         return label
@@ -84,7 +86,8 @@ final class BigPinView: UIView {
     private lazy var raiting: UILabel = {
         let label = UILabel()
         label.frame = .init(x: 132, y: 8, width: 20, height: 12)
-        label.font = .systemFont(ofSize: 11)
+        label.font = UIFont(name: "YS-Regular", size: 11)
+//        label.font = .systemFont(ofSize: 11)
         label.text = String(format: "%.1f" , model.rating)
         return label
     }()

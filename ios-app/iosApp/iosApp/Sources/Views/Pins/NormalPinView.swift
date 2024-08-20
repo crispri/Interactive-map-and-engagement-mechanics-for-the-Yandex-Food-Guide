@@ -50,7 +50,8 @@ final class NormalPinView: UIView {
     private lazy var nameRest: UILabel = {
         let label = UILabel()
         label.frame = .init(x: 8, y: 8, width: 110, height: 14)
-        label.font = .systemFont(ofSize: 13)
+        label.font = UIFont(name: "YS-Bold", size: 13)
+//        label.font = .systemFont(ofSize: 13)
 //        label.text = "Название ресторана"
         label.numberOfLines = 1
         return label
@@ -74,7 +75,8 @@ final class NormalPinView: UIView {
     private lazy var raiting: UILabel = {
         let label = UILabel()
         label.frame = .init(x: 132, y: 8, width: 20, height: 12)
-        label.font = .systemFont(ofSize: 11)
+        label.font = UIFont(name: "YS-Regular", size: 11)
+//        label.font = .systemFont(ofSize: 11)
 //        label.text = "4.9"
         return label
     }()

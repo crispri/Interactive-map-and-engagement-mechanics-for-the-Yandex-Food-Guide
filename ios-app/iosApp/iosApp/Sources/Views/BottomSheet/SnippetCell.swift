@@ -76,14 +76,16 @@ struct SnippetCell: View {
         HStack {
             Text(restaurant.name)
                 .bold()
-                .font(.system(size: 16))
+                .font(.custom("YS-Bold", size: 16))
+//                .font(.system(size: 16))
             Spacer()
             HStack {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 12, height: 12)
                 Text("\(String(format: "%.1f" , restaurant.rating))")
-                    .font(.system(size: 14))
+                    .font(.custom("YS-Regular", size: 14))
+//                    .font(.system(size: 14))
             }
         }
     }
@@ -102,14 +104,16 @@ struct SnippetCell: View {
             Text("28 мин на машине")
             Spacer()
         }
-        .font(.system(size: 13))
+        .font(.custom("YS-Regular", size: 13))
+//        .font(.system(size: 13))
     }
 
     private func Description() -> some View {
         Text(restaurant.description)
             .foregroundStyle(.gray)
             .lineLimit(2)
-            .font(.system(size: 13))
+            .font(.custom("YS-Regular", size: 13))
+//            .font(.system(size: 13))
     }
 
     private func BadgesTrain() -> some View {

@@ -17,6 +17,11 @@
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
 	<string>Message</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>YS-Bold.ttf</string>
+		<string>YS-Regular.ttf</string>
+	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict/>
