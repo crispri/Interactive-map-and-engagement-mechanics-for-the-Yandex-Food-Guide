@@ -36,19 +36,24 @@ struct SnippetCell: View {
 
     private func ImageRest() -> some View {
         ZStack(alignment: .topTrailing) {
-            var pages: [Image] {
-                var arr = [Image]()
-                for name in imageRest {
-                    arr.append(
-                        Image(name)
-                            .resizable()
-                    )
-                }
-                return arr
-            }
 
-            ImageRestWithPC(pages: pages)
-                .frame(height: 150)
+            TabView {
+                var interiors = restaurant.interior.prefix(3)
+                ForEach (interiors, id: \.self) { photo in
+                    AsyncImage(url: URL(string: photo)) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        ProgressView()
+                    }
+
+                }
+            }
+            .frame(height: 150)
+            .cornerRadius(14)
+            .tabViewStyle(.page)
+            .indexViewStyle(.page(backgroundDisplayMode: .interactive))
 
             ZStack {
                 Image(systemName: "circle.fill")
