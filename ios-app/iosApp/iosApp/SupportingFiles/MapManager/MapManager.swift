@@ -246,6 +246,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     
     // MARK: Gives all pins mark for future deletion
+    
     func disablePins() {
         for kv in placedPins {
             placedPins[kv.key] = (kv.value.0, false)
@@ -253,6 +254,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     
     // MARK: Deletes all marked pins
+    
     func cleanPins() {
         for kv in placedPins {
             if !kv.value.1 {

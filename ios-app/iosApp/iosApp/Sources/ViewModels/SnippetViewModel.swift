@@ -18,7 +18,9 @@ final class SnippetViewModel: ObservableObject {
     @Published var selectedCollection: SelectionDTO?
     @Published var currentSelection: SelectionDTO?
     
-    @Published var userCollections = UserCollection.mockData
+    @Published var userCollections: [UserCollection] = UserCollection.mockData
+    @Published var onlyUserCollections: Bool = false
+    @Published var currentRestaurantID: String?
     
     @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
     
@@ -39,7 +41,6 @@ final class SnippetViewModel: ObservableObject {
         
         return activeFiltersDTOs
     }
-    
     
     var mapManager = MapManager()
     private let networkManager = NetworkManager()
@@ -168,6 +169,10 @@ final class SnippetViewModel: ObservableObject {
             let remoteUserCollections = try await loadUserCollections()
             var userCollectionsTail: [UserCollection] = []
             for selection in remoteUserCollections {
+                if ["Хочу сходить", "Хочу заказать"].contains(selection.preCreatedCollectionName)
+                    || ["Хочу сходить", "Хочу заказать"].contains(selection.name) {
+                    continue
+                }
                 let restaurants = try await loadSelectionSnippets(id: selection.id)
                 
                 userCollectionsTail += [UserCollection(
@@ -182,7 +187,7 @@ final class SnippetViewModel: ObservableObject {
     // MARK: load data from server.
     
     private func loadSnippets(lowerLeftCorner: Point, topRightCorner: Point) async throws -> [SnippetDTO] {
-        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner, filters: filtersDTO)
+        let data = try await networkManager.fetchSnippets(lowerLeftCorner: lowerLeftCorner, topRightCorner: topRightCorner, filters: filtersDTO, onlyUserCollections: onlyUserCollections)
         return data
     }
     
@@ -192,7 +197,7 @@ final class SnippetViewModel: ObservableObject {
     }
         
     private func loadSelectionSnippets(id: String) async throws -> [SnippetDTO] {
-        let data = try await networkManager.fetchSelectionSnippets(id: id)
+        let data = try await networkManager.fetchSnippets(lowerLeftCorner: .init(lat: 60.170125, lon: 24.950026), topRightCorner: .init(lat: 48.135370, lon: 67.149113), collectionID: id)
         return data
     }
     

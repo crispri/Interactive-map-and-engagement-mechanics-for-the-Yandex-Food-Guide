@@ -34,29 +34,9 @@ struct UserCollectionItem: View {
         userCollection.restaurantIDs.count
     }
     
-    @ViewBuilder
-    func restaurantPicture() -> some View {
-        if userCollection.selection.picture.contains("http")  { // #URL(...)
-            let url = URL(string: userCollection.selection.picture)
-            AsyncImage(url: url) { image in
-                image
-                    .resizable()
-                    .frame(width: 84, height: 84)
-                    .clipShape(.rect(cornerRadius: 16))
-                    .padding(.leading)
-            } placeholder: { Color(.clear) }
-        }
-        else {
-            Image(userCollection.selection.picture)
-                .resizable()
-                .frame(width: 84, height: 84)
-                .padding(.leading)
-        }
-    }
-    
     var body: some View {
         HStack {
-            restaurantPicture()
+            RestaurantPicture(userCollection: userCollection)
             VStack(alignment: .leading) {
                 Text(userCollection.selection.name)
                     .bold()

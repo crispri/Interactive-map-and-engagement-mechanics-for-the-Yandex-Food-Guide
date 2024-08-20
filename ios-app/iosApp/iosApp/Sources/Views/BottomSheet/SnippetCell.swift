@@ -11,12 +11,10 @@ var imageRest = ["1rest", "2rest", "3rest"]
 
 struct SnippetCell: View {
     @EnvironmentObject private var viemModel: SnippetViewModel
-    @Binding var restaurant: SnippetDTO
-    
+    @State var restaurant: SnippetDTO
     @State private var currentPage = 0
+    var mainAction: (() -> Void)?
     
-    @Binding var isEditUserCollectionsPresented: Bool
-
     var body: some View {
         VStack {
             ImageRest()
@@ -30,10 +28,7 @@ struct SnippetCell: View {
             BadgesTrain()
         }
         .padding()
-        .sheet(isPresented: $isEditUserCollectionsPresented) {
-            EditUserCollectionsView(restaurant: $restaurant)
-                .presentationDetents([.medium])
-        }
+        
     }
 
     private func ImageRest() -> some View {
@@ -58,17 +53,18 @@ struct SnippetCell: View {
                     .frame(width: 32, height: 32)
                     .foregroundStyle(.black)
                     .opacity(0.1)
-                Image(systemName: "bookmark")
+                Image("Bookmark")
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
                     .bold()
-                    .onTapGesture {
-                        isEditUserCollectionsPresented.toggle()
-                        Task { await viemModel.fetchUserCollections() }
-                    }
-                .foregroundStyle(.white)
+                    .foregroundStyle(.white)
             }
-            .padding([.top, .trailing], 10.0)
+            .padding(10)
+            .onTapGesture {
+                viemModel.currentRestaurantID = restaurant.id
+                mainAction?() // MARK: shows collections editing sheet
+                Task { await viemModel.fetchUserCollections() }
+            }
         }
     }
 
@@ -133,15 +129,5 @@ struct SnippetCell: View {
 }
 
 #Preview {
-    SnippetCell(
-        restaurant: Binding(get: {
-            SnippetViewModel().snippets[0]
-        },
-                            set: {
-                                _ in
-                            } ),
-        isEditUserCollectionsPresented: Binding.constant(
-            false
-        )
-    )
+    SnippetCell(restaurant: SnippetDTO())
 }

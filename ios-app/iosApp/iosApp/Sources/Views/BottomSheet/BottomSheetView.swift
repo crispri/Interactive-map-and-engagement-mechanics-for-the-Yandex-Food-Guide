@@ -17,15 +17,21 @@ struct BottomSheetView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                ForEach($viewModel.snippets, id: \.self) { snippet in
-                    SnippetCell(restaurant: snippet, isEditUserCollectionsPresented: $isEditUserCollectionsPresented)
-                        .onTapGesture {
-                            selectedSnipped = snippet.wrappedValue
-                            isSheetPresented = true
-                        }
-                        .sheet(item: $selectedSnipped, content: { item in
-                            RestaurantView(restaurant: item)
-                        })
+                ForEach(viewModel.snippets) { restaurant in
+                    SnippetCell(restaurant: restaurant) {
+                        isEditUserCollectionsPresented.toggle()
+                    }
+                    .onTapGesture {
+                        selectedSnipped = restaurant
+                        isSheetPresented = true
+                    }
+                    .sheet(item: $selectedSnipped, content: { item in
+                        RestaurantView(restaurant: item)
+                    })
+                    .sheet(isPresented: $isEditUserCollectionsPresented) {
+                        EditUserCollectionsView()
+                        .presentationDetents([.medium])
+                    }
                 }
             }
             .padding(.bottom)
