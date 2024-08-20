@@ -1,4 +1,4 @@
-package com.example.yandexmapeat
+package com.example.yandexmapeat.di
 
 import dagger.Module
 import dagger.Provides

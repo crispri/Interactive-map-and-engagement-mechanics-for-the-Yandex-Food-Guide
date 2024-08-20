@@ -80,7 +80,7 @@ class MainViewModel @Inject constructor(
 
                         is NetworkState.Success -> {
                             Log.d("NetworkSuccess", "")
-                            Log.e("CameraListener", "size = ${state.data.size}  list = ${state.data}")
+                            Log.e("CameraListener", "1size = ${state.data.size}  list = ${state.data}")
                             val ls = filterNonOverlappingRestaurants(state.data, w, h)
                             _uiState.update {
                                 it.copy(
@@ -89,6 +89,7 @@ class MainViewModel @Inject constructor(
                                     listOfRestaurant = ls,
                                 )
                             }
+                            Log.e("CameraListener", "2size = ${state.data.size}  list = ${state.data}")
                         }
 
                         is NetworkState.Loading -> {

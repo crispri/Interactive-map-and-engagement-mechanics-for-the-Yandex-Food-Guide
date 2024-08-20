@@ -224,7 +224,6 @@ fun MapScreen(
 
     LaunchedEffect(cur.value) {
         if (cur.value != "") {
-
             if (last.value == cur.value) {
                 send(SelectItemFromMap(null))
                 last.value = null
@@ -240,6 +239,7 @@ fun MapScreen(
 
     LaunchedEffect(uiState.raiseRequired) {
         if (uiState.raiseRequired == true && uiState.selectedItemFromMapId == null) {
+            Log.d("mapscreen", "zaa")
             val topRightPoint= mapView.mapWindow.map.visibleRegion.topRight
             val bottomLeftPoint:Point = mapView.mapWindow.map.visibleRegion.bottomLeft
 
@@ -254,17 +254,17 @@ fun MapScreen(
                 bottomLeftPoint.longitude
             )
             Log.d("CameraListener", "uiState.raiseRequired = Top right: ${topRightPoint.latitude} : ${topRightPoint.longitude}, Bottom left:  ${raisedBottomLeftPoint.latitude} : ${raisedBottomLeftPoint.longitude}, last Left:   ${bottomLeftPoint.latitude} : ${bottomLeftPoint.longitude}")
-            send(UpdateItemsOnMap(raisedBottomLeftPoint, topRightPoint, uiState.filterList, w, h))
+            send(UpdateItemsOnMap(raisedBottomLeftPoint, topRightPoint, uiState.filterList, w / 2, h / 2))
             Log.e("CameraListener", "size = ${uiState.restaurantsOnMap.size}  list = ${uiState.restaurantsOnMap}")
 //            send(SetNewList(ls))
 
         }
-        else {
+        else if (uiState.selectedItemFromMapId == null){
             val topRightPoint= mapView.mapWindow.map.visibleRegion.topRight
             val bottomLeftPoint:Point = mapView.mapWindow.map.visibleRegion.bottomLeft
             val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, bottomLeftPoint, topRightPoint)
             val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, bottomLeftPoint, topRightPoint)
-            Log.d("CameraListener", "uiState.raiseRequired = Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
+            Log.d("CameraListener", "uiState.raiseRequired = else Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
             send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList, w, h))
         }
     }
@@ -279,7 +279,7 @@ fun MapScreen(
                 val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, bottomLeftPoint, topRightPoint)
                 val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, bottomLeftPoint, topRightPoint)
                 send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList, w, h))
-//                Log.d("CameraListener", "Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
+                Log.d("CameraListener", "Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
             }
         }
         mapView.addCameraListener(cameraListener)

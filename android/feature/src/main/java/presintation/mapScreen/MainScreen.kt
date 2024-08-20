@@ -116,11 +116,11 @@ fun MainScreen(
 
     val bottomSheetHeight = remember { mutableStateOf<Dp?>(null) }
 
-    val list = mutableStateOf(uiState.restaurantsOnMap)
+    val list = remember { mutableStateOf(uiState.restaurantsOnMap) }
 
 
     val isMapSelected = remember { mutableStateOf(false) }
-    var isSheetOpen by remember{ mutableStateOf(false) }
+    var isSheetOpen by remember { mutableStateOf(false) }
     val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val sheetState = rememberBottomSheetState(
@@ -166,14 +166,14 @@ fun MainScreen(
             }
     }
 
-    LaunchedEffect(uiState.selectedItemFromMapId) {
-        if (uiState.selectedItemFromMapId != null) {
-            sheetState.animateTo(SheetValue.PartiallyExpanded)
-        } else {
-            send(SelectItemFromBottomSheet(null))
-            sheetState.animateTo(SheetValue.Hidden)
-        }
-    }
+//    LaunchedEffect(uiState.selectedItemFromMapId) {
+//        if (uiState.selectedItemFromMapId != null) {
+//            sheetState.animateTo(SheetValue.PartiallyExpanded)
+//        } else {
+//            send(SelectItemFromBottomSheet(null))
+//            sheetState.animateTo(SheetValue.Hidden)
+//        }
+//    }
 
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Hidden) {
@@ -182,15 +182,22 @@ fun MainScreen(
         }
         if (sheetState.currentValue == SheetValue.PartiallyExpanded) {
             send(RaiseCameraPosition(true))
+            Log.d("CameraListener", "LaunchedEffect(sheetState.currentValue)")
         }
     }
 
-    LaunchedEffect(uiState.selectedItemFromMapId) {
+
+    LaunchedEffect(
+        key1 = uiState.selectedItemFromMapId,
+        key2 = uiState.restaurantsOnMap
+    ) {
         val selectedId = uiState.selectedItemFromMapId
         if (selectedId != null) {
             val index = uiState.restaurantsOnMap.indexOfFirst { it.id == selectedId }
             if (index != -1) {
                 list.value = listOf(uiState.restaurantsOnMap[index])
+                Log.d("CameraListener", "${list.value}")
+                sheetState.animateTo(SheetValue.PartiallyExpanded)
             } else {
                 Log.e(
                     "selectedItemFromMapId",
@@ -200,11 +207,17 @@ fun MainScreen(
             }
         } else {
             list.value = uiState.restaurantsOnMap
+            Log.e("CameraListener", " main screen size = ${uiState.restaurantsOnMap.size}  list = ${uiState.restaurantsOnMap}")
+            if (uiState.selectedItemFromMapId == null && uiState.selectedItemFromBottomSheetId == null) {
+                sheetState.animateTo(SheetValue.Hidden)
+            }
         }
     }
 
-    LaunchedEffect(list.value) {
-        Log.d("CameraListener", "List in Main Screen = ${list.value}")
+    LaunchedEffect(uiState.restaurantsOnMap) {
+//        if (uiState.restaurantsOnMap.size != 0){
+//            list.value = uiState.restaurantsOnMap
+//        }
     }
 
 
@@ -214,28 +227,33 @@ fun MainScreen(
         key1 = lazyListState.firstVisibleItemScrollOffset,
         key2 = sheetState.currentValue
     ) {
-        val visibleIndex = lazyListState.firstVisibleItemIndex
-        val visibleItemOffset = lazyListState.firstVisibleItemScrollOffset
-        val itemHeightPx = itemHeight.value.value
+        if (uiState.selectedItemFromMapId == null && sheetState.currentValue == SheetValue.PartiallyExpanded) {
+            val visibleIndex = lazyListState.firstVisibleItemIndex
+            val visibleItemOffset = lazyListState.firstVisibleItemScrollOffset
+            val itemHeightPx = itemHeight.value.value
 
-        currentIndex.value = if (visibleItemOffset > itemHeightPx / 2) {
-            visibleIndex + 1
-        } else {
-            visibleIndex
-        }
-
-
-        Log.d("lazyListState", "list = ${list.value}")
-        Log.d("lazyListState", "size = ${list.value.size}")
-        Log.d("lazyListState", "Current Index: ${currentIndex.value}")
-        Log.d("lazyListState", "selectedItemFromBottomSheetId: ${uiState.selectedItemFromBottomSheetId}")
-        if (sheetState.currentValue == SheetValue.PartiallyExpanded
-            && uiState.selectedItemFromMapId == null) {
-            if (list.value.isNotEmpty()){
+            currentIndex.value = if (visibleItemOffset > itemHeightPx / 2) {
+                visibleIndex + 1
+            } else {
+                visibleIndex
+            }
+            Log.d("lazyListState", "list = ${list.value}")
+            Log.d("lazyListState", "size = ${list.value.size}")
+            Log.d("lazyListState", "Current Index: ${currentIndex.value}")
+            Log.d(
+                "lazyListState",
+                "selectedItemFromBottomSheetId: ${uiState.selectedItemFromBottomSheetId}"
+            )
+            if (list.value.isNotEmpty()) {
                 send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
             }
-            Log.e("lazyListState", "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}")
+            Log.e(
+                "lazyListState",
+                "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}"
+            )
         }
+
+
     }
 
     Box(
