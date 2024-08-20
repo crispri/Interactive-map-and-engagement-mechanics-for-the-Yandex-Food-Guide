@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { truncateString, formatTime } from '../../lib/utils.js'
 import { useParams } from 'react-router-dom'
 
-const RestaurantSnippet = ({}) => {
+const RestaurantSnippet = ({collectionRef, collectionSetOpen}) => {
 
     const {restId} = useParams()
     const restaurant = useSelector((state) => state.restaurantsSlice.restaurants).
@@ -20,12 +20,13 @@ const RestaurantSnippet = ({}) => {
             price_upper_bound: el.price_upper_bound,
             tags: el.tags,
             close_time: formatTime(el.close_time),
-            in_collection: el.in_collection
+            in_collection: el.in_collection,
+            pictures: el.pictures,
         }))
     return (
         <>
             <div key={index}>
-                <RestaurantCard restaurantInfo={restaurant[0]}/>
+                <RestaurantCard collectionRef={collectionRef} collectionSetOpen={collectionSetOpen} restaurantInfo={restaurant[0]}/>
             </div>
         </>
     )

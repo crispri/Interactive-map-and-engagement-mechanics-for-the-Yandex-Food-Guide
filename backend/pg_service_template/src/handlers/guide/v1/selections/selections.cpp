@@ -9,12 +9,17 @@
 #include <userver/formats/json/value.hpp>
 #include <userver/logging/log.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/server/http/http_request.hpp>
+#include <userver/server/http/http_status.hpp>
 #include <userver/storages/postgres/cluster.hpp>
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
+
+#include <service/SessionService.hpp>
 #include <service/SelectionService.hpp>
 #include <boost/uuid/string_generator.hpp>
+#include "lib/error_description.hpp"
 
 
 namespace service {
@@ -37,6 +42,10 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
     selection_service_(
         component_context
         .FindComponent<SelectionService>()
+    ),
+    session_service_(
+        component_context
+        .FindComponent<SessionService>()
     )
     {}
 
@@ -58,17 +67,19 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
 
       ErrorResponseBuilder errorBuilder(request);
 
-      if (!request.HasHeader("Authorization")) {
+      const auto& request_body_string = request.RequestBody();
+      userver::formats::json::Value request_body_json = userver::formats::json::FromString(request_body_string);
+      if (!request_body_json.HasMember("return_collections")) {
         return errorBuilder.build(
-            userver::server::http::HttpStatus::kUnauthorized,
-            ErrorDescriprion::kTokenNotSpecified
+              userver::server::http::HttpStatus::kBadRequest,
+              ErrorDescriprion::kReturnCollectionsNotSpecified
         );
       }
-
         boost::uuids::string_generator gen;
-        auto user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
-
-      auto selections = selection_service_.GetAll(user_id);
+        // const auto& session_id = (request.HasCookie("session_id") ? request.GetCookie("session_id") : request.GetHeader("Authorization"));
+        // const auto& user_id = session_service_.GetUserId(gen(session_id));
+      const auto& user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+      auto selections = selection_service_.GetAll(user_id, request_body_json["return_collections"].As<bool>());
         userver::formats::json::ValueBuilder responseJSON;
         responseJSON["items"].Resize(0);
         for (auto& selection : selections) {
@@ -83,6 +94,7 @@ class SelectionController final : public userver::server::handlers::HttpHandlerB
 
     
     SelectionService& selection_service_;
+    SessionService& session_service_;
     };
     
 }   // namespace 

@@ -14,6 +14,7 @@ import { getRestaurants } from '../lib/restaurantsSlice'
 import MainPage from '../components/mainpage/MainPage.jsx';
 import Navbar from '../components/navbar/Navbar.jsx'
 import MyBottomSheet from '../components/bottomsheet/MyBottomSheet.jsx'
+import CollectionBottomSheet from '../components/bottomsheet/CollectionBottomSheet.jsx'
 import MapComponent from '../components/map/MapComponent.jsx';
 import { useRef } from "react";
 import RestaurantCard from "../components/card/RestaurantCard.jsx";
@@ -22,16 +23,26 @@ import { useSelector } from "react-redux";
 import RestaurantFullView from "../components/fullview/RestaurantFullView.jsx";
 import sample from '../assets/sample.jpeg'
 import FiltersFullView from "../components/filter/FiltersFullView.jsx";
+import NewCollectionBottomSheet from "../components/bottomsheet/NewCollectionBottomSheet.jsx";
 
 const SheetContent = lazy(() => import('../components/sheetcontent/SheetContent.jsx'))
  
 function App() {
   const sheetRef = useRef()
+  const collectionRef = useRef()
+  const newCollectionRef = useRef()
+
+  const [collectionOpen, collectionSetOpen] = React.useState(false)
+  const [newCollectionOpen, newCollectionSetOpen] = React.useState(false);
+
   const current_pin = useSelector((state) => state.restaurantsSlice.current_pin)
   const restaurants = useSelector((state) => state.restaurantsSlice.restaurants)
   const current_selection = useSelector((state) => state.restaurantsSlice.currentSelection)
+  const isInCollection = useSelector((state) => state.restaurantsSlice.is_in_collection)
   // console.log(current_pin, restaurants.filter(el => el.name === current_pin?.name));
   const {restId} = useParams()
+
+  const [currentRest, setCurrentRest] = React.useState('');
 
   const [location, setLocation] = React.useState({
     bounds: [
@@ -51,7 +62,8 @@ function App() {
   }
   const [isMiddlePos, setIsMiddlePos] = useState(false)
   const debouncedValue = useDebounce(currentPolygon, 300);
-  
+
+
   useEffect(() => {
     let body = {
       "lower_left_corner": {
@@ -88,12 +100,15 @@ function App() {
         ]
       }
     }
+    if (isInCollection) {
+      body["only_collections"] = true
+    }
     dispatch(getRestaurants(body))
-  }, [debouncedValue, current_selection, isMiddlePos])
 
   function onSpringEnd()  {
       setIsMiddlePos(sheetRef.current.height ===  Math.round(window.screen.height * 0.45))
   }
+  }, [debouncedValue, current_selection,isMiddlePos, isInCollection])
   const router = createBrowserRouter([
     {
       path: "/",
@@ -106,16 +121,18 @@ function App() {
           <Navbar/>
           <MapComponent sheetRef={sheetRef} location={location} updateHandler={updateHandler} setLocation={setLocation}/>
           <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue} onSpringEnd={onSpringEnd}/>
+          <CollectionBottomSheet currentRest={currentRest} collectionSetOpen={collectionSetOpen} newCollectionSetOpen={newCollectionSetOpen} newCollectionRef={newCollectionRef} collectionOpen={collectionOpen} collectionRef={collectionRef}/>
+          <NewCollectionBottomSheet newCollectionSetOpen={newCollectionSetOpen} newCollectionOpen={newCollectionOpen} newCollectionRef={newCollectionRef}/>
         </>
       ),
       children: [
         {
           index: true,
-          element: <SheetContent restaurants={restaurants}/>
+          element: <SheetContent currentRest={currentRest} setCurrentRest={setCurrentRest} collectionSetOpen={collectionSetOpen} collectionRef={collectionRef} restaurants={restaurants}/>
         },
         {
           path: 'map/:restId',
-          element:  <RestaurantCard restaurantInfo={current_pin}/>
+          element:  <RestaurantCard setCurrentRest={setCurrentRest} collectionSetOpen={collectionSetOpen} collectionRef={collectionRef} restaurantInfo={current_pin}/>
         },
         {
           path: ':restId',

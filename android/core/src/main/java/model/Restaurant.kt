@@ -16,4 +16,10 @@ data class Restaurant(
     val closeTime: String,
     val isFavorite: Boolean,
     val tags: List<String>,
-)
+    val inCollection: Boolean,
+    val pin: String,
+    val pictures: List<String>,
+    val score: Long,
+    val type: Pins = Pins.NONE,
+    val additionalInfo: String,
+) // 19

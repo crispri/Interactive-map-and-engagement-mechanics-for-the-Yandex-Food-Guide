@@ -1,20 +1,24 @@
 package pins
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import coil.load
-import coil.transform.CircleCropTransformation
+import androidx.core.util.TypedValueCompat.dpToPx
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.core.R
 
 class CustomPinViewSelected @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
+    isFavorite: Boolean,
+    isUltima: Boolean,
+    isOpenKitchen: Boolean
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val imageView: ImageView
@@ -24,44 +28,46 @@ class CustomPinViewSelected @JvmOverloads constructor(
 
     init {
         // Inflate the layout
-        inflate(context, R.layout.view_custom_pin_selected, this)
+
+        if(!isFavorite && !isUltima && !isOpenKitchen){ //0
+            inflate(context, R.layout.view_custom_pin_selected, this)
+        } else if(!isFavorite && !isUltima && isOpenKitchen){ //1
+            inflate(context, R.layout.view_pin_selected__openk, this)
+        } else if(!isFavorite && isUltima && !isOpenKitchen){ //2
+            inflate(context, R.layout.view_pin_selected__ultima, this)
+        } else if(!isFavorite && isUltima && isOpenKitchen){ //3
+            inflate(context, R.layout.view_pin_selected__ultima_openk, this)
+        } else if(isFavorite && !isUltima && !isOpenKitchen){ //4
+            inflate(context, R.layout.view_pin_selected__fav, this)
+        } else if(isFavorite && !isUltima && isOpenKitchen){ //5
+            inflate(context, R.layout.view_pin_selected__openk_fav, this)
+        } else if(isFavorite && isUltima && !isOpenKitchen){ //6
+            inflate(context, R.layout.view_pin_selected__ultima_fav, this)
+        } else if(isFavorite && isUltima && isOpenKitchen){ //7
+            inflate(context, R.layout.view_pin_selected__ultima_openk_fav, this)
+        }
 
         // Get references to the views
-        imageView = findViewById(R.id.ivPictureOfPlace)
+        imageView = findViewById(R.id.ivPictureOfPlace1)
         titleTextView = findViewById(R.id.titleTextView)
         ratingTextView = findViewById(R.id.ratingTextView)
         descriptionTextView = findViewById(R.id.descriptionTextView)
     }
 
-    fun setImageWithGlide(url: String) {
+    fun setImageWithGlide(url: String, onSuccess: () -> Unit) {
         Glide.with(this)
             .load(url)
-            .placeholder(R.drawable.ic_mini_pin) // Плейсхолдер на время загрузки
-            .error(R.drawable.baseline_language_24) // Изображение ошибки
-            .into(imageView) // Замените на ваш ImageView
-
-    }
-    fun setImageWithCoil(imageUrl: String) {
-        Log.d("setImageStart", imageUrl)
-
-        imageView.load(imageUrl) {
-            placeholder(R.drawable.ic_mini_pin) // Плейсхолдер на время загрузки
-            error(R.drawable.baseline_language_24) // Изображение ошибки, если не удалось загрузить
-            transformations(CircleCropTransformation()) // Скругление изображения
-            listener(
-                onStart = {
-                    Log.d("setImageLoading", "Загрузка изображения начата: $imageUrl")
-                },
-                onSuccess = { _, result ->
-                    Log.d("setImageSuccess", "Изображение загружено успешно: $imageUrl")
-                },
-                onError = { _, result ->
-                    Log.d("setImageError", "Ошибка при загрузке изображения: $imageUrl")
+            .placeholder(R.drawable.ic_mini_pin)
+            .error(R.drawable.baseline_language_24)
+            .transform(CenterCrop(), RoundedCorners(dpToPx(40f, context.resources.displayMetrics).toInt()))
+            .into(object : com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>() {
+                override fun onResourceReady(resource: android.graphics.drawable.Drawable, transition: com.bumptech.glide.request.transition.Transition<in android.graphics.drawable.Drawable>?) {
+                    imageView.setImageDrawable(resource)
+                    onSuccess() // Notify that the image has been loaded
                 }
-            )
-        }
 
-        Log.d("setImageEnd", imageUrl)
+                override fun onLoadCleared(placeholder: android.graphics.drawable.Drawable?) {}
+            })
     }
 
     fun setTitle(title: String) {

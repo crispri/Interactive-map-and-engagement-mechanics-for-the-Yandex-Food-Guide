@@ -44,6 +44,20 @@ properties:
 
     in_collection:
         type: boolean
+    
+    food:
+        type: string
+    
+    interior:
+        type: array
+        items:
+            type: string
+
+    score:
+        type: integer
+
+    additional_info:
+        type: string
 
 required:
     - id
@@ -58,4 +72,7 @@ required:
     - open_time
     - close_time
     - tags
-    - is_favorite
+    - in_collection
+    - food
+    - interior
+    - additional_info

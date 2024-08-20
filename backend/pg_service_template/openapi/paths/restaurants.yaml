@@ -16,6 +16,9 @@ post:
                         top_right_corner:
                             description: "Координаты правого верхнего угла"
                             $ref: "../openapi.yaml#/components/schemas/Coordinates"
+                        
+                        only_collections:
+                            type: boolean
 
                         filters:
                             type: array

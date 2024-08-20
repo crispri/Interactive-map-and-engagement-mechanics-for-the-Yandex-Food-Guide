@@ -9,7 +9,8 @@ import com.example.core.R
 class NormalPinView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
+    isFavorite: Boolean,
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val titleTextView: TextView
@@ -17,7 +18,12 @@ class NormalPinView @JvmOverloads constructor(
 
     init {
         // Inflate the layout
-        inflate(context, R.layout.view_normal_pin, this)
+        if(isFavorite){
+            inflate(context, R.layout.view_normal_pin, this)
+        } else{
+            inflate(context, R.layout.view_normal_pin_fav, this)
+        }
+
 
         // Get references to the views
         titleTextView = findViewById(R.id.titleTextView)

@@ -2,6 +2,7 @@ package ui
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -45,10 +47,14 @@ fun CardWithImageAndText(
     onInfoClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isBlackText: Boolean = false,
+    isUltima: Boolean = false
 ) {
 
-    Card(
+    val alpha = if (isBlackText) 0f else 0.3f
+
+        Card(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
             .clickable { onClick() }
@@ -56,15 +62,32 @@ fun CardWithImageAndText(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
 
-            Image(
-                painter = imagePainter,
-                contentDescription = "Фон",
-                modifier = Modifier.fillMaxSize(), // Заменили на fillMaxSize
-                contentScale = ContentScale.Crop
-                /*                modifier = Modifier.wrapContentSize(unbounded = true, align = Alignment.Center)*/
+            if (isUltima){
+                Image(
+                    painter = imagePainter,
+                    contentDescription = "Фон",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.TopCenter
+                )
+            }
+            else{
+                Image(
+                    painter = imagePainter,
+                    contentDescription = "Фон",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            /*                modifier = Modifier.wrapContentSize(unbounded = true, align = Alignment.Center)*/
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = alpha))
             )
 
             Column(
@@ -76,7 +99,7 @@ fun CardWithImageAndText(
                     text = text,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = if (isBlackText) Color.Black else Color.White,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
@@ -88,7 +111,7 @@ fun CardWithImageAndText(
                     text = description,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = if (isBlackText) Color.Black else Color.White,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
