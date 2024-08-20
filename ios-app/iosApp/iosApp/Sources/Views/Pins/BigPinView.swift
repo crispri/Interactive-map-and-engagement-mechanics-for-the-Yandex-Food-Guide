@@ -41,7 +41,7 @@ final class BigPinView: UIView {
 
     private lazy var imageRest: UIImageView = {
         let image = UIImageView()
-        image.frame = .init(x: 0, y: 0, width: 160, height: 60)
+        image.frame = .init(x: 0, y: 0, width: 160, height: 80)
         image.clipsToBounds = true
         image.image = UIImage(named: "1rest")
         image.layer.cornerRadius = 12
