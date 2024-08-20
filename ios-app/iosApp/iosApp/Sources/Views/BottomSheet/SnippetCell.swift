@@ -1,5 +1,5 @@
 //
-//  InfoRestaurantCell.swift
+//  SnippetCell.swift
 //  iosApp
 //
 //  Created by Христина Буянова on 03.08.2024.
@@ -61,7 +61,6 @@ struct SnippetCell: View {
             }
             .padding(10)
             .onTapGesture {
-                viemModel.currentRestaurantID = restaurant.id
                 mainAction?() // MARK: shows collections editing sheet
                 Task { await viemModel.fetchUserCollections() }
             }

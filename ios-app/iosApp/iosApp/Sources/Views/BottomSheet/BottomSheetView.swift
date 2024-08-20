@@ -20,6 +20,7 @@ struct BottomSheetView: View {
                 ForEach(viewModel.snippets) { restaurant in
                     SnippetCell(restaurant: restaurant) {
                         isEditUserCollectionsPresented.toggle()
+                        viewModel.currentRestaurantID = restaurant.id
                     }
                     .onTapGesture {
                         selectedSnipped = restaurant
