@@ -37,7 +37,7 @@ std::tuple<
     std::optional<std::string>&,
     std::optional<std::string>&,
     std::optional<std::string>&,
-    int
+    int&
     > TSelection::Introspect()
 {
     return std::tie(

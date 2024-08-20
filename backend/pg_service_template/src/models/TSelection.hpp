@@ -24,7 +24,7 @@ struct TSelection {
         std::optional<std::string>&,
         std::optional<std::string>&,
         std::optional<std::string>&,
-        int
+        int&
     > Introspect();
 };
 
