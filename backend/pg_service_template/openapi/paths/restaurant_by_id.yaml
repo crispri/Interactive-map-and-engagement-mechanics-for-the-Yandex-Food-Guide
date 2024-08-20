@@ -1,6 +1,7 @@
 get:
     description: "Получение ресторана по ID"
-
+    ags:
+            - Рестораны
     parameters:
         -   $ref: "../params/PathUUID.yaml"
 

@@ -1,5 +1,7 @@
 post:
     description: "Приоритезация заведений через ML"
+    tags:
+            - ML
     requestBody:
         required: true
         content:

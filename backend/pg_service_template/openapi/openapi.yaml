@@ -52,30 +52,23 @@ components:
 paths:
     /restaurants:
         $ref: "./paths/restaurants.yaml"
-        tags:
-            - Рестораны
+        
 
     /restaurants/{id}:
         $ref: "./paths/restaurant_by_id.yaml"
-        tags:
-            - Рестораны
 
     /selections:
         $ref: "./paths/selections.yaml"
-        tags:
-            - Подборки
+
     /selections/{id}:
         $ref: "./paths/selection_by_id.yaml"
-        tags:
-            - Подборки
+
     /collection:
         $ref: "./paths/create_collection.yaml"
-        tags:
-            - Подборки
+
     /collection/{id}:
         $ref: "./paths/insert_into_collection.yaml"
-        tags:
-            - Подборки
+
 
     /ml-rate:
         $ref: "./paths/ml-rate.yaml"

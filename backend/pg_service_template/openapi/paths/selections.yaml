@@ -1,7 +1,8 @@
 post:
     summary: "Получение всех подборок"
     description: "Возвращает списка всех подборок"
-
+    tags:
+            - Подборки
     security:
         -   UserTicketAuth: [ ]
 
