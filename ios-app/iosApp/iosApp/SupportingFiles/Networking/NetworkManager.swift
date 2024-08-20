@@ -53,16 +53,34 @@ final class NetworkManager {
         return decodedResponse
     }
     
-    func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point, filters: [FilterDTO]?) async throws -> [SnippetDTO] {
+    func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point, filters: [FilterDTO]?, onlyUserCollections: Bool) async throws -> [SnippetDTO] {
         let request = try makeRequest(
             path: .restaurants,
             method: .post,
             with: SnippetRequest(
                 lowerLeftCorner: lowerLeftCorner,
                 topRightCorner: topRightCorner,
-                onlyCollections: false,
+                onlyCollections: onlyUserCollections,
                 maxCount: 0,
                 filters: filters
+            )
+        )
+        
+        let data: SnippetsResponse = try await performRequest(request: request)
+        
+        return data.items
+    }
+    
+    func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point, collectionID: String) async throws -> [SnippetDTO] {
+        let request = try makeRequest(
+            path: .restaurants,
+            method: .post,
+            with: SnippetRequest(
+                lowerLeftCorner: lowerLeftCorner,
+                topRightCorner: topRightCorner,
+                onlyCollections: true,
+                maxCount: 0,
+                filters: [FilterDTO(property: .selectionID, operator: .in, value: collectionID)]
             )
         )
         

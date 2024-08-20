@@ -29,10 +29,6 @@ struct BottomSheetView: View {
                     selectedSnipped = selectedPin
                     isSheetPresented = true
                 }
-                .sheet(item: $selectedSnipped, content: { item in
-                    RestaurantView(restaurant: item)
-                        .presentationCornerRadius(20)
-                })
             }
             .background(
                 Color.white
@@ -50,14 +46,20 @@ struct BottomSheetView: View {
             ScrollView {
                 LazyVStack(spacing: 0) {
                     ForEach($viewModel.snippets, id: \.self) { snippet in
-                        SnippetCell(restaurant: snippet, isEditUserCollectionsPresented: $isEditUserCollectionsPresented)
-                            .onTapGesture {
-                                selectedSnipped = snippet.wrappedValue
-                                isSheetPresented = true
-                            }
-                            .sheet(item: $selectedSnipped, content: { item in
-                                RestaurantView(restaurant: item)
-                            })
+                        SnippetCell(restaurant: restaurant) {
+                            isEditUserCollectionsPresented.toggle()
+                        }
+                        .onTapGesture {
+                            selectedSnipped = restaurant
+                            isSheetPresented = true
+                        }
+                        .sheet(item: $selectedSnipped, content: { item in
+                            RestaurantView(restaurant: item)
+                        })
+                        .sheet(isPresented: $isEditUserCollectionsPresented) {
+                            EditUserCollectionsView()
+                            .presentationDetents([.medium])
+                        }
                     }
                 }
                 .padding(.bottom)

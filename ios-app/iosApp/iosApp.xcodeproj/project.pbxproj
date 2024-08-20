@@ -47,6 +47,7 @@
 		CB6037C82C73B02700B1F664 /* CollectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037C72C73B02700B1F664 /* CollectionRequest.swift */; };
 		CB6037CA2C73B09D00B1F664 /* ICollectionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037C92C73B09D00B1F664 /* ICollectionResponse.swift */; };
 		CB6037CC2C73B12500B1F664 /* CollectionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6037CB2C73B12500B1F664 /* CollectionResponse.swift */; };
+		CBA9BCD62C73C83700B6A2F5 /* RestaurantPicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9BCD52C73C83700B6A2F5 /* RestaurantPicture.swift */; };
 		CBB2A2892C715D550056A105 /* SelectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB2A2882C715D550056A105 /* SelectionRequest.swift */; };
 		CBBDC6AB2C6ECF95007EB943 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */; };
 		CBBDC6AD2C6ECFBB007EB943 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDC6AC2C6ECFBB007EB943 /* Point.swift */; };
@@ -148,6 +149,7 @@
 		CB6037C72C73B02700B1F664 /* CollectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRequest.swift; sourceTree = "<group>"; };
 		CB6037C92C73B09D00B1F664 /* ICollectionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICollectionResponse.swift; sourceTree = "<group>"; };
 		CB6037CB2C73B12500B1F664 /* CollectionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionResponse.swift; sourceTree = "<group>"; };
+		CBA9BCD52C73C83700B6A2F5 /* RestaurantPicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantPicture.swift; sourceTree = "<group>"; };
 		CBB2A2882C715D550056A105 /* SelectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionRequest.swift; sourceTree = "<group>"; };
 		CBBDC6AA2C6ECF95007EB943 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		CBBDC6AC2C6ECFBB007EB943 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 			children = (
 				CBDE654A2C71ED8600753BBB /* EditUserCollectionsView.swift */,
 				CB6037C12C722CFC00B1F664 /* UserCollectionsView.swift */,
+				CBA9BCD52C73C83700B6A2F5 /* RestaurantPicture.swift */,
 			);
 			path = UserCollection;
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 				6E11AC772C70E59000B7E075 /* StyleMap.swift in Sources */,
 				CBFD7ED22C655C6F00CEC0BC /* SelectionDTO.swift in Sources */,
 				4F9DCAE72C5E6B3F00B39252 /* MapManager.swift in Sources */,
+				CBA9BCD62C73C83700B6A2F5 /* RestaurantPicture.swift in Sources */,
 				CBF46D3C2C6F937F00186255 /* GeocoderResponse.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
 				CB6037C62C73AFF300B1F664 /* ICollectionRequest.swift in Sources */,

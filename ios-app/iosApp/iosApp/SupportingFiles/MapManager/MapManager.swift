@@ -122,11 +122,15 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         print("\(cnt) restaurants added;")
     }
     
+    // MARK: Gives all pins mark for future deletion
+    
     func disablePins() {
         for kv in placedPins {
             placedPins[kv.key] = (kv.value.0, false)
         }
     }
+    
+    // MARK: Deletes all marked pins
     
     func cleanPins() {
         for kv in placedPins {
