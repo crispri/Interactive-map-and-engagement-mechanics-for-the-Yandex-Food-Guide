@@ -49,16 +49,12 @@ struct GuideView: View {
                         DetailsView()
                             .environmentObject(viewModel)
                     } label: {
-                        Image(systemName: "map")
+                        Image(systemName: "bookmark")
                             .foregroundStyle(.black)
                     }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-//            .background{
-//                Image("Main")
-//                    .ignoresSafeArea(edges: .all)
-//            }
         }
     }
 }
