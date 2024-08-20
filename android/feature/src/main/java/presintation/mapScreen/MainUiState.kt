@@ -17,6 +17,7 @@ data class MainUiState(
 
     val currentAddress: String = "Льва Толстого, 16",
     val restaurantsOnMap: List<Restaurant> = listOf(),
+    val restaurantsOnMapUnsorted: List<Restaurant> = listOf(),
 
     val converterPins: MutableMap<Pins, Int> = mutableMapOf(Pins.MAXI to 0, Pins.NORMAL to 0, Pins.MINI to 0),
 

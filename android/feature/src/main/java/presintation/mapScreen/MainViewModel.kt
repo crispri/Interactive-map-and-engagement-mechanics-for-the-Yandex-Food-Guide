@@ -18,6 +18,7 @@ import model.NavigateToLocationEvent
 import model.Pins
 import model.RaiseCameraPosition
 import model.RecommendationIsSelected
+import model.Rect
 import model.Restaurant
 import model.SaveInCollectionEvent
 import model.SelectFilter
@@ -74,7 +75,7 @@ class MainViewModel @Inject constructor(
                                 it.copy(
                                     errorMessage = state.cause.message,
                                     isLoading = false,
-                                    restaurantsOnMap = Utils.restaurants,
+                                    restaurantsOnMapUnsorted = Utils.restaurants,
                                     listOfRestaurant = Utils.restaurants,
                                 )
                             }
@@ -250,18 +251,18 @@ class MainViewModel @Inject constructor(
             }
 
 
-            is HideIntersections -> {
+            /*is HideIntersections -> {
                 _uiState.update { it.copy(
                     restaurantsOnMap = filterNonOverlappingRestaurants(event.list, event.w, event.h)
                 ) }
-            }
+            }*/
 
             is SelectFilter -> {
                 selectFilter(event.isAdding, event.filter)
             }
 
             is SetNewList -> {
-                _uiState.update { it.copy(restaurantsOnMap =  event.restaurants) }
+                _uiState.update { it.copy(restaurantsOnMapUnsorted =  event.restaurants) }
             }
         }
     }
@@ -325,35 +326,6 @@ class MainViewModel @Inject constructor(
         Log.d("AddItem", "${collectionId} ${restaurantId}")
     }
 
-    fun filterNonOverlappingRestaurants(
-        restaurants: List<Restaurant>,
-        rectWidth: Double,
-        rectHeight: Double
-    ): List<Restaurant> {
-
-        val nonOverlappingRestaurants = mutableListOf<Restaurant>()
-
-        for (restaurant in restaurants) {
-            val restaurantRect = createRectangle(restaurant.coordinates, rectWidth, rectHeight)
-
-
-            var isOverlapping = false
-            for (filteredRestaurant in nonOverlappingRestaurants) {
-                val filteredRestaurantRect = createRectangle(filteredRestaurant.coordinates, rectWidth, rectHeight)
-
-                if (rectanglesOverlap(restaurantRect, filteredRestaurantRect)) {
-                    isOverlapping = true
-                    break
-                }
-            }
-
-            if (!isOverlapping) {
-                nonOverlappingRestaurants.add(restaurant)
-            }
-        }
-
-        return nonOverlappingRestaurants
-    }
 
     fun createRectangle(center: Point, width: Double, height: Double): Rect {
         val halfWidth = width / 2
@@ -376,28 +348,6 @@ class MainViewModel @Inject constructor(
                 rect1.bottomLeft.longitude > rect2.topRight.longitude)  // rect1 правее rect2
     }
 
-    // Данные прямоугольника
-    data class Rect(val bottomLeft: Point, val topRight: Point)
-
-    private fun switchUserMode() {
-        if (!uiState.value.isCollectionMode) {
-            fetchUserCollections()
-            _uiState.update {
-                it.copy(
-                    isCollectionMode = true,
-                )
-            }
-            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList, 0.0,0.0)
-    } else{
-            fetchCollections()
-            _uiState.update {
-                it.copy(
-                    isCollectionMode = false,
-                )
-            }
-            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList, 0.0,0.0)
-        }
-    }
 
     fun lowerType(type: Pins) : Pins {
         return when(type){
@@ -410,29 +360,6 @@ class MainViewModel @Inject constructor(
 
 
 
-    fun createRectangle(center: Point, width: Double, height: Double): Rect {
-        val halfWidth = width / 2
-        val halfHeight = height / 2
-        return Rect(
-            bottomLeft = Point(center.latitude - halfHeight, center.longitude - halfWidth),
-            topRight = Point(center.latitude + halfHeight, center.longitude + halfWidth)
-        )
-    }
-
-    fun rectanglesOverlap(rect1: Rect, rect2: Rect): Boolean {
-        Log.d("rectanglesOverlap", "rect1.topRight.latitude = ${rect1.topRight.latitude}, rect2.bottomLeft.latitude = ${rect2.bottomLeft.latitude }")
-        Log.d("rectanglesOverlap", "rect1.bottomLeft.latitude = ${rect1.bottomLeft.latitude}, rect2.topRight.latitude = ${rect2.topRight.latitude }")
-        Log.d("rectanglesOverlap", "rect1.topRight.longitude = ${rect1.topRight.longitude}, rect2.bottomLeft.longitude = ${rect2.bottomLeft.longitude }")
-        Log.d("rectanglesOverlap", " rect1.bottomLeft.longitude = ${ rect1.bottomLeft.longitude}, rect2.topRight.longitude = ${rect2.topRight.longitude }")
-        Log.d("rectanglesOverlap", " rect1.bottomLeft.longitude = ${ (rect1.topRight.latitude < rect2.bottomLeft.latitude || rect1.bottomLeft.latitude > rect2.topRight.latitude ||  rect1.topRight.longitude < rect2.bottomLeft.longitude ||  rect1.bottomLeft.longitude > rect2.topRight.longitude)}")
-        return !(rect1.topRight.latitude < rect2.bottomLeft.latitude || // rect1 ниже rect2
-                rect1.bottomLeft.latitude > rect2.topRight.latitude || // rect1 выше rect2
-                rect1.topRight.longitude < rect2.bottomLeft.longitude || // rect1 левее rect2
-                rect1.bottomLeft.longitude > rect2.topRight.longitude)  // rect1 правее rect2
-    }
-
-
-    data class Rect(val bottomLeft: Point, val topRight: Point)
 
     private fun filterNonOverlappingRestaurants(
         list: List<Restaurant>,
@@ -479,8 +406,8 @@ class MainViewModel @Inject constructor(
                     rectWidth = w / 10.0
                     rectHeight = h / 10.0
                 } else -> {
-                    break
-                }
+                break
+            }
             }
 
             var restaurantRect = createRectangle(list[i].coordinates, rectWidth, rectHeight)
@@ -528,7 +455,7 @@ class MainViewModel @Inject constructor(
                                     rectWidth2 = w / 2.0
                                     rectHeight2 = h / 2.0
                                 } else -> {
-                                }
+                            }
                             }
                             restaurantRect = createRectangle(pin2.coordinates, rectWidth2, rectHeight2)
                             Log.d("lowerType", "${resultPinType}, ${pin1.id}, ${pin2.id}, ")
@@ -566,4 +493,27 @@ class MainViewModel @Inject constructor(
 
         return resList
     }
+
+
+
+    private fun switchUserMode() {
+        if (!uiState.value.isCollectionMode) {
+            fetchUserCollections()
+            _uiState.update {
+                it.copy(
+                    isCollectionMode = true,
+                )
+            }
+            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList, 0.0,0.0)
+    } else{
+            fetchCollections()
+            _uiState.update {
+                it.copy(
+                    isCollectionMode = false,
+                )
+            }
+            fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, uiState.value.filterList, 0.0,0.0)
+        }
+    }
+
 }

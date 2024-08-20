@@ -53,13 +53,11 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
@@ -77,10 +75,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.feature.R
 import com.yandex.mapkit.geometry.Point
-import model.MainScreenEvent
-import model.NavigateToLocationEvent
-import model.Restaurant
-import model.SaveInCollectionEvent
 import custom_bottom_sheet.rememberBottomSheetState
 import model.CollectionOfPlace
 import model.Filter
@@ -94,7 +88,6 @@ import model.SwitchUserModeEvent
 import model.UpdateItemsOnMap
 import ui.BigCard
 import ui.CardWithImageAndText
-import ui.CategoryButtonCard
 import ui.TextCard
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
