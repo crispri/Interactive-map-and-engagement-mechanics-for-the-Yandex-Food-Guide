@@ -58,121 +58,7 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     func placePins(_ pins: [SnippetDTO]) {
         var cnt = 0
         
-        var bigPins = [SnippetDTO]()
-        for i in pins.indices {
-            if i >= 3 { break }
-            if i == 0 {
-                bigPins.append(pins[i])
-                continue
-            }
-            var intersects = false
-            
-            let currentOrigin = mapView?.mapWindow.worldToScreen(
-                withWorldPoint: YMKPoint(
-                    latitude: pins[i].coordinates.lat,
-                    longitude: pins[i].coordinates.lon
-                )
-            ) ?? YMKScreenPoint()
-            let currentRect = getRectByOrigin(currentOrigin, with: .high)
-            
-            for j in bigPins.indices {
-                let originToCompare = mapView?.mapWindow.worldToScreen(
-                    withWorldPoint: YMKPoint(
-                        latitude: pins[j].coordinates.lat,
-                        longitude: pins[j].coordinates.lon
-                    )
-                ) ?? YMKScreenPoint()
-                let rectToCompare = getRectByOrigin(originToCompare, with: .high)
-                if currentRect.intersects(rectToCompare) {
-                    intersects = true
-                    break
-                }
-            }
-            if !intersects {
-                bigPins.append(pins[i])
-            }
-        }
-        
-        var normalPins = [SnippetDTO]()
-        for i in pins.indices {
-            if i >= 6 { break }
-            if bigPins.contains(pins[i]) { continue }
-            var intersects = false
-            
-            let currentOrigin = mapView?.mapWindow.worldToScreen(
-                withWorldPoint: YMKPoint(
-                    latitude: pins[i].coordinates.lat,
-                    longitude: pins[i].coordinates.lon
-                )
-            ) ?? YMKScreenPoint()
-            let currentRect = getRectByOrigin(currentOrigin, with: .medium)
-            
-            for j in bigPins.indices {
-                let originToCompare = mapView?.mapWindow.worldToScreen(
-                    withWorldPoint: YMKPoint(
-                        latitude: pins[j].coordinates.lat,
-                        longitude: pins[j].coordinates.lon
-                    )
-                ) ?? YMKScreenPoint()
-                let rectToCompare = getRectByOrigin(originToCompare, with: .high)
-                if currentRect.intersects(rectToCompare) {
-                    intersects = true
-                    break
-                }
-            }
-            
-            for j in normalPins.indices {
-                let originToCompare = mapView?.mapWindow.worldToScreen(
-                    withWorldPoint: YMKPoint(
-                        latitude: pins[j].coordinates.lat,
-                        longitude: pins[j].coordinates.lon
-                    )
-                ) ?? YMKScreenPoint()
-                let rectToCompare = getRectByOrigin(originToCompare, with: .medium)
-                if currentRect.intersects(rectToCompare) {
-                    intersects = true
-                    break
-                }
-            }
-            
-            if !intersects {
-                normalPins.append(pins[i])
-            }
-        }
-        
-        var smallPins = [SnippetDTO]()
-        for  i in pins.indices {
-            if !bigPins.contains(pins[i]) && !normalPins.contains(pins[i]) {
-                var intersects = false
-                
-                let currentOrigin = mapView?.mapWindow.worldToScreen(
-                    withWorldPoint: YMKPoint(
-                        latitude: pins[i].coordinates.lat,
-                        longitude: pins[i].coordinates.lon
-                    )
-                ) ?? YMKScreenPoint()
-                let currentRect = getRectByOrigin(currentOrigin, with: .low)
-                
-                for j in smallPins.indices {
-                    let originToCompare = mapView?.mapWindow.worldToScreen(
-                        withWorldPoint: YMKPoint(
-                            latitude: pins[j].coordinates.lat,
-                            longitude: pins[j].coordinates.lon
-                        )
-                    ) ?? YMKScreenPoint()
-                    let rectToCompare = getRectByOrigin(originToCompare, with: .low)
-                    if currentRect.intersects(rectToCompare) {
-                        intersects = true
-                        break
-                    }
-                }
-                
-                if !intersects {
-                    smallPins.append(pins[i])
-                }
-            }
-        }
-        
+        let (bigPins, normalPins, smallPins) = getPinsToShow(pins)
         let result = bigPins + normalPins + smallPins
         
         for index in result.indices {
@@ -234,32 +120,6 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
             }
         }
         print("\(cnt) restaurants added;")
-    }
-    
-    private func getRectByOrigin(_ originPoint: YMKScreenPoint, with priority: PinPriority) -> CGRect {
-        guard let coef = mapView?.mapWindow.scaleFactor else { return .init() }
-        
-        var x = CGFloat(originPoint.x)
-        var y = CGFloat(originPoint.y)
-        var width = CGFloat(coef) * PinSize.small.width
-        var height = CGFloat(coef) * PinSize.small.height
-        switch priority {
-        case .low:
-            x -= CGFloat(coef) * PinSize.normal.width / 2
-            y -= CGFloat(coef) * PinSize.normal.height / 2
-        case .medium:
-            x -= CGFloat(coef) * PinSize.normal.width / 2
-            y -= CGFloat(coef) * PinSize.normal.height
-            width = CGFloat(coef) * PinSize.normal.width
-            height = CGFloat(coef) * PinSize.normal.height
-        case .high:
-            x -= CGFloat(coef) * PinSize.big.width / 2
-            y -= CGFloat(coef) * PinSize.big.height
-            width = CGFloat(coef) * PinSize.big.width
-            height = CGFloat(coef) * PinSize.big.height
-        }
-        
-        return CGRect(x: Int(x), y: Int(y), width: Int(width), height: Int(height))
     }
     
     func disablePins() {
@@ -429,6 +289,13 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         )
     }
     
+    func getUserLocation() throws -> Point {
+        guard let userLocation = manager.location else {
+            throw CLError(.locationUnknown)
+        }
+        return Point(lat: userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
+    }
+    
     private func centerMapLocation(target location: YMKPoint?, zoom: Float = 16, map: YMKMapView) {
         guard let location = location else {
             print("Failed to get user location")
@@ -450,11 +317,149 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         return PinSize.small
     }
     
-    func getUserLocation() throws -> Point {
-        guard let userLocation = manager.location else {
-            throw CLError(.locationUnknown)
+    private func getPinsToShow(_ pins: [SnippetDTO]) -> ([SnippetDTO], [SnippetDTO], [SnippetDTO]) {
+        var bigPins = [SnippetDTO]()
+        for i in pins.indices {
+            if i >= 3 { break }
+            if i == 0 {
+                bigPins.append(pins[i])
+                continue
+            }
+            var intersects = false
+            
+            let currentOrigin = mapView?.mapWindow.worldToScreen(
+                withWorldPoint: YMKPoint(
+                    latitude: pins[i].coordinates.lat,
+                    longitude: pins[i].coordinates.lon
+                )
+            ) ?? YMKScreenPoint()
+            let currentRect = getRectByOrigin(currentOrigin, with: .high)
+            
+            for j in bigPins.indices {
+                let originToCompare = mapView?.mapWindow.worldToScreen(
+                    withWorldPoint: YMKPoint(
+                        latitude: pins[j].coordinates.lat,
+                        longitude: pins[j].coordinates.lon
+                    )
+                ) ?? YMKScreenPoint()
+                let rectToCompare = getRectByOrigin(originToCompare, with: .high)
+                if currentRect.intersects(rectToCompare) {
+                    intersects = true
+                    break
+                }
+            }
+            if !intersects {
+                bigPins.append(pins[i])
+            }
         }
-        return Point(lat: userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
+        
+        var normalPins = [SnippetDTO]()
+        for i in pins.indices {
+            if i >= 6 { break }
+            if bigPins.contains(pins[i]) { continue }
+            var intersects = false
+            
+            let currentOrigin = mapView?.mapWindow.worldToScreen(
+                withWorldPoint: YMKPoint(
+                    latitude: pins[i].coordinates.lat,
+                    longitude: pins[i].coordinates.lon
+                )
+            ) ?? YMKScreenPoint()
+            let currentRect = getRectByOrigin(currentOrigin, with: .medium)
+            
+            for j in bigPins.indices {
+                let originToCompare = mapView?.mapWindow.worldToScreen(
+                    withWorldPoint: YMKPoint(
+                        latitude: pins[j].coordinates.lat,
+                        longitude: pins[j].coordinates.lon
+                    )
+                ) ?? YMKScreenPoint()
+                let rectToCompare = getRectByOrigin(originToCompare, with: .high)
+                if currentRect.intersects(rectToCompare) {
+                    intersects = true
+                    break
+                }
+            }
+            
+            for j in normalPins.indices {
+                let originToCompare = mapView?.mapWindow.worldToScreen(
+                    withWorldPoint: YMKPoint(
+                        latitude: pins[j].coordinates.lat,
+                        longitude: pins[j].coordinates.lon
+                    )
+                ) ?? YMKScreenPoint()
+                let rectToCompare = getRectByOrigin(originToCompare, with: .medium)
+                if currentRect.intersects(rectToCompare) {
+                    intersects = true
+                    break
+                }
+            }
+            
+            if !intersects {
+                normalPins.append(pins[i])
+            }
+        }
+        
+        var smallPins = [SnippetDTO]()
+        for  i in pins.indices {
+            if !bigPins.contains(pins[i]) && !normalPins.contains(pins[i]) {
+                var intersects = false
+                
+                let currentOrigin = mapView?.mapWindow.worldToScreen(
+                    withWorldPoint: YMKPoint(
+                        latitude: pins[i].coordinates.lat,
+                        longitude: pins[i].coordinates.lon
+                    )
+                ) ?? YMKScreenPoint()
+                let currentRect = getRectByOrigin(currentOrigin, with: .low)
+                
+                for j in smallPins.indices {
+                    let originToCompare = mapView?.mapWindow.worldToScreen(
+                        withWorldPoint: YMKPoint(
+                            latitude: pins[j].coordinates.lat,
+                            longitude: pins[j].coordinates.lon
+                        )
+                    ) ?? YMKScreenPoint()
+                    let rectToCompare = getRectByOrigin(originToCompare, with: .low)
+                    if currentRect.intersects(rectToCompare) {
+                        intersects = true
+                        break
+                    }
+                }
+                
+                if !intersects {
+                    smallPins.append(pins[i])
+                }
+            }
+        }
+        
+        return (bigPins, normalPins, smallPins)
+    }
+    
+    private func getRectByOrigin(_ originPoint: YMKScreenPoint, with priority: PinPriority) -> CGRect {
+        guard let coef = mapView?.mapWindow.scaleFactor else { return .init() }
+        
+        var x = CGFloat(originPoint.x)
+        var y = CGFloat(originPoint.y)
+        var width = CGFloat(coef) * PinSize.small.width
+        var height = CGFloat(coef) * PinSize.small.height
+        switch priority {
+        case .low:
+            x -= CGFloat(coef) * PinSize.normal.width / 2
+            y -= CGFloat(coef) * PinSize.normal.height / 2
+        case .medium:
+            x -= CGFloat(coef) * PinSize.normal.width / 2
+            y -= CGFloat(coef) * PinSize.normal.height
+            width = CGFloat(coef) * PinSize.normal.width
+            height = CGFloat(coef) * PinSize.normal.height
+        case .high:
+            x -= CGFloat(coef) * PinSize.big.width / 2
+            y -= CGFloat(coef) * PinSize.big.height
+            width = CGFloat(coef) * PinSize.big.width
+            height = CGFloat(coef) * PinSize.big.height
+        }
+        
+        return CGRect(x: Int(x), y: Int(y), width: Int(width), height: Int(height))
     }
 }
 
