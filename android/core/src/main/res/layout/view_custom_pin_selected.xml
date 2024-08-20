@@ -25,6 +25,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:backgroundTint="#9747FF"
+                android:src="@drawable/hardcode_pin_image"
                 android:scaleType="centerCrop" />
         </FrameLayout>
 

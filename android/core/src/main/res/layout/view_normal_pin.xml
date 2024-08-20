@@ -63,15 +63,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Добавляем иконку закладки -->
-        <ImageView
-            android:id="@+id/bookmarkIcon"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_gravity="end|top"
-            android:layout_marginEnd="12dp"
-            android:src="@drawable/ic_favorite"
-            android:tint="@color/black" /> <!-- Изначально скрыта -->
 
     </androidx.cardview.widget.CardView>
 

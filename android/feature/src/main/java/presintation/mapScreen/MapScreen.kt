@@ -92,7 +92,11 @@ fun MapScreen(
 
     //Mini
     val restaurantMarkerMini = remember { createBitmapFromVector(com.example.core.R.drawable.ic_mini_pin, context = mapView.context) }
+    val restaurantMarkerMiniUltima = remember { createBitmapFromVector(com.example.core.R.drawable.ic_ultima_pin, context = mapView.context) }
+    val restaurantMarkerMiniOpenK = remember { createBitmapFromVector(com.example.core.R.drawable.ic_openk_pin, context = mapView.context) }
     val restaurantMarkerImageProviderMini = remember { ImageProvider.fromBitmap(restaurantMarkerMini) }
+    val restaurantMarkerImageProviderMiniUltima = remember { ImageProvider.fromBitmap(restaurantMarkerMiniUltima) }
+    val restaurantMarkerImageProviderMiniOpenK = remember { ImageProvider.fromBitmap(restaurantMarkerMiniOpenK) }
 
     //Mini - Selected
     var invertedBitmap = remember { restaurantMarkerMini }
@@ -100,23 +104,21 @@ fun MapScreen(
     val restaurantMarkerImageProviderMiniSelected =
         remember { ImageProvider.fromBitmap(invertedBitmap) }
 
-    val pinViewNorm: NormalPinView = NormalPinView(context = mapView.context)
+    val pinViewNorm: NormalPinView = NormalPinView(context = mapView.context, isFavorite = false)
     val restaurantMarkerNormal =
         remember { createBitmapFromView(pinViewNorm, com.example.core.R.color.grey, 32f, 0f, 0f) }
 
     //Maxi
-    val pinView = remember { CustomPinView(context = mapView.context) }
+    val pinView = remember { CustomPinView(context = mapView.context, isFavorite = false, isUltima = false, isOpenKitchen = false) }
     val restaurantMarkerMaxiWidth = remember { mutableStateOf<Int>(0) }
     val restaurantMarkerMaxiHeight = remember { mutableStateOf<Int>(0) }
     val restaurantMarkerImageProviderMaxi = remember { mutableStateOf<ImageProvider>(ImageProvider.fromBitmap(restaurantMarkerNormal)) }
 
     LaunchedEffect(Unit) {
-        pinView.setImageWithGlide("https://img.razrisyika.ru/kart/23/1200/89464-kafe-9.jpg") {
-            val restaurantMarkerMaxi = createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f)
-            restaurantMarkerMaxiWidth.value = restaurantMarkerMaxi.width
-            restaurantMarkerMaxiHeight.value = restaurantMarkerMaxi.height
-            restaurantMarkerImageProviderMaxi.value = ImageProvider.fromBitmap(restaurantMarkerMaxi)
-        }
+        val restaurantMarkerMaxi = createBitmapFromView(pinView, com.example.core.R.color.grey, 16f, 0f, 0f)
+        restaurantMarkerMaxiWidth.value = restaurantMarkerMaxi.width
+        restaurantMarkerMaxiHeight.value = restaurantMarkerMaxi.height
+        restaurantMarkerImageProviderMaxi.value = ImageProvider.fromBitmap(restaurantMarkerMaxi)
     }
 
 
@@ -197,17 +199,152 @@ fun MapScreen(
             if (actionIsFinished) {
                 val topRightPoint = mapView.mapWindow.map.visibleRegion.topRight
                 val bottomLeftPoint = mapView.mapWindow.map.visibleRegion.bottomLeft
-                Log.d("CameraListener", "Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
-                val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, bottomLeftPoint, topRightPoint)
-                val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, bottomLeftPoint, topRightPoint)
+                val dx = (topRightPoint.latitude - bottomLeftPoint.latitude)*0.25
+                val dy = (topRightPoint.longitude - bottomLeftPoint.longitude)*0.2
+
+                val newTopRight = Point(topRightPoint.latitude-dx, topRightPoint.longitude-dy)
+                val newBottomLeft = Point(bottomLeftPoint.latitude+dx, bottomLeftPoint.longitude+dy)
+
+                Log.d("CameraListener", "Top right: $newTopRight, Bottom left: $newBottomLeft")
+                val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, newBottomLeft, newTopRight)
+                val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, newBottomLeft, newTopRight)
                 send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList, w, h))
             }
         }
         mapView.addCameraListener(cameraListener)
     }
 
+    // general
+    val superPin = remember {
+        mutableStateOf(CustomPinView(context = mapView.context, isFavorite = false, isOpenKitchen = false, isUltima = false))
+    }
+    val superPinUltima = remember {
+        mutableStateOf(CustomPinView(context = mapView.context, isFavorite = false, isOpenKitchen = false, isUltima = true))
+    }
+    val superPinOpenk = remember {
+        mutableStateOf(CustomPinView(context = mapView.context, isFavorite = false, isOpenKitchen = true, isUltima = false))
+    }
+    val superPinFav = remember {
+        mutableStateOf(CustomPinView(context = mapView.context, isFavorite = true, isOpenKitchen = false, isUltima = false))
+    }
+    val superPinUltimaOpenk = remember {
+        mutableStateOf(CustomPinView(context = mapView.context, isFavorite = false, isOpenKitchen = true, isUltima = true))
+    }
+    val superPinOpenkFav = remember {
+        mutableStateOf(CustomPinView(context = mapView.context, isFavorite = true, isOpenKitchen = true, isUltima = false))
+    }
+    val superPinUtlimaFav = remember {
+        mutableStateOf(CustomPinView(context = mapView.context, isFavorite = true, isOpenKitchen = false, isUltima = true))
+    }
+    val superPinUtlimaOpenkFav = remember {
+        mutableStateOf(CustomPinView(context = mapView.context, isFavorite = true, isOpenKitchen = true, isUltima = true))
+    }
 
-    LaunchedEffect(uiState.restaurantsOnMap) {
+    //selected
+    val superPinSelected = remember {
+        mutableStateOf(CustomPinViewSelected(context = mapView.context, isFavorite = false, isOpenKitchen = false, isUltima = false))
+    }
+    val superPinSelectedUltima = remember {
+        mutableStateOf(CustomPinViewSelected(context = mapView.context, isFavorite = false, isOpenKitchen = false, isUltima = true))
+    }
+    val superPinSelectedOpenk = remember {
+        mutableStateOf(CustomPinViewSelected(context = mapView.context, isFavorite = false, isOpenKitchen = true, isUltima = false))
+    }
+    val superPinSelectedFav = remember {
+        mutableStateOf(CustomPinViewSelected(context = mapView.context, isFavorite = true, isOpenKitchen = false, isUltima = false))
+    }
+    val superPinSelectedUltimaOpenk = remember {
+        mutableStateOf(CustomPinViewSelected(context = mapView.context, isFavorite = false, isOpenKitchen = true, isUltima = true))
+    }
+    val superPinSelectedOpenkFav = remember {
+        mutableStateOf(CustomPinViewSelected(context = mapView.context, isFavorite = true, isOpenKitchen = true, isUltima = false))
+    }
+    val superPinSelectedUtlimaFav = remember {
+        mutableStateOf(CustomPinViewSelected(context = mapView.context, isFavorite = true, isOpenKitchen = false, isUltima = true))
+    }
+    val superPinSelectedUtlimaOpenkFav = remember {
+        mutableStateOf(CustomPinViewSelected(context = mapView.context, isFavorite = true, isOpenKitchen = true, isUltima = true))
+    }
+
+    //norm pin
+    val normPinFav = remember {
+        mutableStateOf(NormalPinView(context = mapView.context, isFavorite = true))
+    }
+    val normPin = remember {
+        mutableStateOf(NormalPinView(context = mapView.context, isFavorite = false))
+    }
+    LaunchedEffect(uiState.raiseRequired) {
+        if (uiState.raiseRequired == true && uiState.selectedItemFromMapId == null) {
+            val topRightPoint= mapView.mapWindow.map.visibleRegion.topRight
+            val bottomLeftPoint:Point = mapView.mapWindow.map.visibleRegion.bottomLeft
+
+            val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, bottomLeftPoint, topRightPoint)
+            val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, bottomLeftPoint, topRightPoint)
+
+            Log.d("CameraListener", "w = $w h = $h")
+
+            val raisedBottomLeftPoint = Point(
+                bottomLeftPoint.latitude + ((topRightPoint.latitude - bottomLeftPoint.latitude) * 0.7),
+                bottomLeftPoint.longitude
+            )
+            Log.d("CameraListener", "uiState.raiseRequired = Top right: ${topRightPoint.latitude} : ${topRightPoint.longitude}, Bottom left:  ${raisedBottomLeftPoint.latitude} : ${raisedBottomLeftPoint.longitude}, last Left:   ${bottomLeftPoint.latitude} : ${bottomLeftPoint.longitude}")
+            send(UpdateItemsOnMap(raisedBottomLeftPoint, topRightPoint, uiState.filterList, w, h))
+            Log.e("CameraListener", "size = ${uiState.restaurantsOnMap.size}  list = ${uiState.restaurantsOnMap}")
+
+        }
+        else {
+            val topRightPoint= mapView.mapWindow.map.visibleRegion.topRight
+            val bottomLeftPoint:Point = mapView.mapWindow.map.visibleRegion.bottomLeft
+            val w = updateOverlayWidth(uiState.zoomValue.toInt(), restaurantMarkerMaxiWidth.value, bottomLeftPoint, topRightPoint)
+            val h = updateOverlayHeight(uiState.zoomValue.toInt(), restaurantMarkerMaxiHeight.value, bottomLeftPoint, topRightPoint)
+            Log.d("CameraListener", "uiState.raiseRequired = Top right: $topRightPoint, Bottom left: $bottomLeftPoint")
+            send(UpdateItemsOnMap(bottomLeftPoint, topRightPoint, uiState.filterList, w, h))
+        }
+    }
+
+    fun convertToSuperPin(isFavorite: Boolean, isOpenK: Boolean, isUltima: Boolean) : MutableState<CustomPinView> {
+        if(!isFavorite && !isOpenK && !isUltima){
+            return superPin
+        } else if(!isFavorite && !isOpenK && isUltima){
+            return superPinUltima
+        } else if(!isFavorite && isOpenK && !isUltima){
+            return superPinOpenk
+        } else if(!isFavorite && isOpenK && isUltima){
+            return superPinUltimaOpenk
+        } else if(isFavorite && !isOpenK && !isUltima){
+            return superPinFav
+        } else if(isFavorite && !isOpenK && isUltima){
+            return superPinUtlimaFav
+        } else if(isFavorite && isOpenK && !isUltima){
+            return superPinOpenkFav
+        } else {
+            return superPinUtlimaOpenkFav
+        }
+    }
+
+    fun convertToSuperSelectedPin(isFavorite: Boolean, isOpenK: Boolean, isUltima: Boolean) : MutableState<CustomPinViewSelected> {
+        if(!isFavorite && !isOpenK && !isUltima){
+            return superPinSelected
+        } else if(!isFavorite && !isOpenK && isUltima){
+            return superPinSelectedUltima
+        } else if(!isFavorite && isOpenK && !isUltima){
+            return superPinSelectedOpenk
+        } else if(!isFavorite && isOpenK && isUltima){
+            return superPinSelectedUltimaOpenk
+        } else if(isFavorite && !isOpenK && !isUltima){
+            return superPinSelectedFav
+        } else if(isFavorite && !isOpenK && isUltima){
+            return superPinSelectedUtlimaFav
+        } else if(isFavorite && isOpenK && !isUltima){
+            return superPinSelectedOpenkFav
+        } else {
+            return superPinSelectedUtlimaOpenkFav
+        }
+    }
+
+
+    LaunchedEffect(uiState.restaurantsOnMap, uiState.selectedItemFromMapId, uiState.selectedItemFromBottomSheetId) {
+
         mapObjectCollection.clear()
 
         mapObjectCollection.addPlacemark().apply {
@@ -216,6 +353,9 @@ fun MapScreen(
         }
 
         Log.e("POINT_UISTATE", uiState.restaurantsOnMap.toString())
+        Log.e("lazyListState", "id=${uiState.selectedItemFromBottomSheetId}")
+        Log.e("lazyListState", "id=${uiState.selectedItemFromMapId}")
+
 
         mapObjectCollection.addPlacemark().apply {
             geometry = curLocation.value ?: Point(55.733415, 37.590042)
@@ -223,86 +363,71 @@ fun MapScreen(
         }
 
         for(restaurant in uiState.restaurantsOnMap){
+            val isFavorite = restaurant.isFavorite
+            val isOpenKitchen = "Открытая кухня" in restaurant.tags
+            val isUltima = "ULTIMA GUIDE" in restaurant.tags
             val placemark = mapObjectCollection.addPlacemark()
+
+            val pinSelected = convertToSuperSelectedPin(isFavorite, isOpenKitchen, isUltima)
+            val pinCommon = convertToSuperPin(isFavorite, isOpenKitchen, isUltima)
+
             placemark.userData = restaurant.id
             placemark.geometry = restaurant.coordinates
             when(restaurant.type){
                 Pins.MAXI -> {
                     if(uiState.selectedItemFromMapId == restaurant.id || uiState.selectedItemFromBottomSheetId == restaurant.id){
-                        val superPinSelected = CustomPinViewSelected(context = mapView.context)
-                        //val restaurantMarkerMaxiSelected = createBitmapFromView(superPinSelected, com.example.core.R.color.grey, 16f, 0f, 0f)
-                        superPinSelected.setTitle(restaurant.name)
-                        superPinSelected.setDescription(restaurant.additionalInfo)
-                        superPinSelected.setRating(DecimalFormat("#.#").format(restaurant.rating))
-                        val restaurantMarkerImageProviderSuperSelected = mutableStateOf<ImageProvider?>(null)
-                        //LaunchedEffect(key1 = restaurant.id) {
-                            superPinSelected.setImageWithGlide(restaurant.pin) {
-                                val restaurantMarkerSuper = createBitmapFromView(superPinSelected, com.example.core.R.color.grey, 16f, 0f, 0f)
-                                restaurantMarkerMaxiWidth.value = restaurantMarkerSuper.width
-                                restaurantMarkerMaxiHeight.value = restaurantMarkerSuper.height
-                                restaurantMarkerImageProviderSuperSelected.value = ImageProvider.fromBitmap(restaurantMarkerSuper)
-                            }
-                        //}
-                        if (restaurantMarkerImageProviderSuperSelected.value != null) {
-                            placemark.setIcon(restaurantMarkerImageProviderSuperSelected.value!!)
-                        } else {
-                            // Пока изображение не загружено, можно отобразить загрузчик или placeholder
-                        }
+                        pinSelected.value.setTitle(restaurant.name)
+                        pinSelected.value.setDescription(restaurant.additionalInfo)
+                        pinSelected.value.setRating(DecimalFormat("#.#").format(restaurant.rating))
+                        val superPinMarkerSelected = createBitmapFromView(pinSelected.value, com.example.core.R.color.grey, 16f, 0f, 0f)
+                        val restaurantMarkerImageProviderSuperSelected =  ImageProvider.fromBitmap(superPinMarkerSelected)
+                        placemark.setIcon(restaurantMarkerImageProviderSuperSelected)
                         placemark.zIndex = 100f
                     } else if (uiState.selectedItemFromMapId != null || uiState.selectedItemFromBottomSheetId != null){
-                        placemark.setIcon(restaurantMarkerImageProviderMini)
+                        if(isUltima){
+                            placemark.setIcon(restaurantMarkerImageProviderMiniUltima)
+                        } else if(isOpenKitchen){
+                            placemark.setIcon(restaurantMarkerImageProviderMiniOpenK)
+                        } else{
+                            placemark.setIcon(restaurantMarkerImageProviderMini)
+                        }
                         placemark.zIndex = 10f
                     } else{
-                        val superPin = CustomPinView(context = mapView.context)
-                        superPin.setTitle(restaurant.name)
-                        superPin.setDescription(restaurant.additionalInfo)
-                        superPin.setRating(DecimalFormat("#.#").format(restaurant.rating))
-                        val restaurantMarkerImageProviderSuper =  mutableStateOf<ImageProvider?>(null)
+                        pinCommon.value.setTitle(restaurant.name)
+                        pinCommon.value.setDescription(restaurant.additionalInfo)
+                        pinCommon.value.setRating(DecimalFormat("#.#").format(restaurant.rating))
+                        val superPinMarker = createBitmapFromView(pinCommon.value, com.example.core.R.color.grey, 16f, 0f, 0f)
+                        val restaurantMarkerImageProviderSuper =  ImageProvider.fromBitmap(superPinMarker)
+                        placemark.setIcon(restaurantMarkerImageProviderSuper)
 
-                        //LaunchedEffect(key1 = restaurant.id) {
-                            superPin.setImageWithGlide(restaurant.pin) {
-                                val restaurantMarkerSuper = createBitmapFromView(superPin, com.example.core.R.color.grey, 16f, 0f, 0f)
-                                restaurantMarkerMaxiWidth.value = restaurantMarkerSuper.width
-                                restaurantMarkerMaxiHeight.value = restaurantMarkerSuper.height
-                                restaurantMarkerImageProviderSuper.value = ImageProvider.fromBitmap(restaurantMarkerSuper)
-                            }
-                        //}
-                        if (restaurantMarkerImageProviderSuper.value != null) {
-                            placemark.setIcon(restaurantMarkerImageProviderSuper.value!!)
-                        } else {
-                            // Пока изображение не загружено, можно отобразить загрузчик или placeholder
-                        }
                         placemark.zIndex = 100f
                     }
                 }
                 Pins.NORMAL -> {
-
                     if(uiState.selectedItemFromMapId == restaurant.id || uiState.selectedItemFromBottomSheetId == restaurant.id){
-                        val superPinSelected = CustomPinViewSelected(context = mapView.context)
-                        //val restaurantMarkerMaxiSelected = createBitmapFromView(superPinSelected, com.example.core.R.color.grey, 16f, 0f, 0f)
-                        superPinSelected.setTitle(restaurant.name)
-                        superPinSelected.setDescription(restaurant.additionalInfo)
-                        superPinSelected.setRating(DecimalFormat("#.#").format(restaurant.rating))
-                        val restaurantMarkerImageProviderSuperSelected =  mutableStateOf<ImageProvider?>(null)
-                        //LaunchedEffect(key1 = restaurant.id) {
-                            superPinSelected.setImageWithGlide(restaurant.pin) {
-                                val restaurantMarkerSuper = createBitmapFromView(superPinSelected, com.example.core.R.color.grey, 16f, 0f, 0f)
-                                restaurantMarkerMaxiWidth.value = restaurantMarkerSuper.width
-                                restaurantMarkerMaxiHeight.value = restaurantMarkerSuper.height
-                                restaurantMarkerImageProviderSuperSelected.value = ImageProvider.fromBitmap(restaurantMarkerSuper)
-                            }
-                        //}
-                        if (restaurantMarkerImageProviderSuperSelected.value != null) {
-                            placemark.setIcon(restaurantMarkerImageProviderSuperSelected.value!!)
-                        } else {
-                            // Пока изображение не загружено, можно отобразить загрузчик или placeholder
-                        }
+                        pinSelected.value.setTitle(restaurant.name)
+                        pinSelected.value.setDescription(restaurant.additionalInfo)
+                        pinSelected.value.setRating(DecimalFormat("#.#").format(restaurant.rating))
+                        val superPinMarkerSelected = createBitmapFromView(pinSelected.value, com.example.core.R.color.grey, 16f, 0f, 0f)
+                        val restaurantMarkerImageProviderSuperSelected = ImageProvider.fromBitmap(superPinMarkerSelected)
+                        placemark.setIcon(restaurantMarkerImageProviderSuperSelected)
+
                         placemark.zIndex = 100f
                     } else if (uiState.selectedItemFromMapId != null || uiState.selectedItemFromBottomSheetId != null){
-                        placemark.setIcon(restaurantMarkerImageProviderMini)
+                        if(isUltima){
+                            placemark.setIcon(restaurantMarkerImageProviderMiniUltima)
+                        } else if(isOpenKitchen){
+                            placemark.setIcon(restaurantMarkerImageProviderMiniOpenK)
+                        } else{
+                            placemark.setIcon(restaurantMarkerImageProviderMini)
+                        }
                         placemark.zIndex = 10f
                     } else{
-                        val pinViewNormal = NormalPinView(context = mapView.context)
+                        val pinViewNormal: NormalPinView = if(isFavorite){
+                            normPinFav.value
+                        } else{
+                            normPinFav.value
+                        }
                         pinViewNormal.setTitle(restaurant.name)
                         pinViewNormal.setRating(DecimalFormat("#.#").format(restaurant.rating))
 
@@ -311,31 +436,23 @@ fun MapScreen(
                         placemark.setIcon(restaurantMarkerImageProviderNormal)
                         placemark.zIndex = 50f
                     }
-
                 }
                 Pins.MINI -> {
                     if(uiState.selectedItemFromMapId == restaurant.id || uiState.selectedItemFromBottomSheetId == restaurant.id){
-                        val superPinSelected = CustomPinViewSelected(context = mapView.context)
-                        //val restaurantMarkerMaxiSelected = createBitmapFromView(superPinSelected, com.example.core.R.color.grey, 16f, 0f, 0f)
-                        superPinSelected.setTitle(restaurant.name)
-                        superPinSelected.setDescription(restaurant.additionalInfo)
-                        superPinSelected.setRating(DecimalFormat("#.#").format(restaurant.rating))
-                        val restaurantMarkerImageProviderSuperSelected =  mutableStateOf<ImageProvider?>(null)
-                        //LaunchedEffect(key1 = restaurant.id) {
-                            superPinSelected.setImageWithGlide(restaurant.pin) {
-                                val restaurantMarkerSuper = createBitmapFromView(superPinSelected, com.example.core.R.color.grey, 16f, 0f, 0f)
-                                restaurantMarkerMaxiWidth.value = restaurantMarkerSuper.width
-                                restaurantMarkerMaxiHeight.value = restaurantMarkerSuper.height
-                                restaurantMarkerImageProviderSuperSelected.value = ImageProvider.fromBitmap(restaurantMarkerSuper)
-                            }
-                        //}
-                        if (restaurantMarkerImageProviderSuperSelected.value != null) {
-                            placemark.setIcon(restaurantMarkerImageProviderSuperSelected.value!!)
-                        } else {
-                            // Пока изображение не загружено, можно отобразить загрузчик или placeholder
-                        }
+                        pinSelected.value.setTitle(restaurant.name)
+                        pinSelected.value.setDescription(restaurant.additionalInfo)
+                        pinSelected.value.setRating(DecimalFormat("#.#").format(restaurant.rating))
+                        val superPinMarkerSelected = createBitmapFromView(pinSelected.value, com.example.core.R.color.grey, 16f, 0f, 0f)
+                        val restaurantMarkerImageProviderSuperSelected =  ImageProvider.fromBitmap(superPinMarkerSelected)
+                        placemark.setIcon(restaurantMarkerImageProviderSuperSelected)
                     } else{
-                        placemark.setIcon(restaurantMarkerImageProviderMini)
+                        if(isUltima){
+                            placemark.setIcon(restaurantMarkerImageProviderMiniUltima)
+                        } else if(isOpenKitchen){
+                            placemark.setIcon(restaurantMarkerImageProviderMiniOpenK)
+                        } else{
+                            placemark.setIcon(restaurantMarkerImageProviderMini)
+                        }
                         placemark.zIndex = 10f
                     }
 
