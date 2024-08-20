@@ -102,6 +102,9 @@ fun MainScreen(
     mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
+
+    val offsetValue = remember { mutableStateOf((-160).dp) }
+
     val offsetState = remember { mutableFloatStateOf(-96f) }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -117,7 +120,6 @@ fun MainScreen(
     val bottomSheetHeight = remember { mutableStateOf<Dp?>(null) }
 
     val list = remember { mutableStateOf(uiState.restaurantsOnMap) }
-
 
     val isMapSelected = remember { mutableStateOf(false) }
     var isSheetOpen by remember { mutableStateOf(false) }
@@ -166,15 +168,6 @@ fun MainScreen(
             }
     }
 
-//    LaunchedEffect(uiState.selectedItemFromMapId) {
-//        if (uiState.selectedItemFromMapId != null) {
-//            sheetState.animateTo(SheetValue.PartiallyExpanded)
-//        } else {
-//            send(SelectItemFromBottomSheet(null))
-//            sheetState.animateTo(SheetValue.Hidden)
-//        }
-//    }
-
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Hidden) {
             send(SelectItemFromBottomSheet(null))
@@ -196,6 +189,7 @@ fun MainScreen(
             val index = uiState.restaurantsOnMap.indexOfFirst { it.id == selectedId }
             if (index != -1) {
                 list.value = listOf(uiState.restaurantsOnMap[index])
+                offsetValue.value = (-60).dp
                 Log.d("CameraListener", "${list.value}")
                 sheetState.animateTo(SheetValue.PartiallyExpanded)
             } else {
@@ -208,18 +202,12 @@ fun MainScreen(
         } else {
             list.value = uiState.restaurantsOnMap
             Log.e("CameraListener", " main screen size = ${uiState.restaurantsOnMap.size}  list = ${uiState.restaurantsOnMap}")
-            if (uiState.selectedItemFromMapId == null && uiState.selectedItemFromBottomSheetId == null) {
+            offsetValue.value = (-160).dp
+            if (uiState.selectedItemFromBottomSheetId == null) {
                 sheetState.animateTo(SheetValue.Hidden)
             }
         }
     }
-
-    LaunchedEffect(uiState.restaurantsOnMap) {
-//        if (uiState.restaurantsOnMap.size != 0){
-//            list.value = uiState.restaurantsOnMap
-//        }
-    }
-
 
     val currentIndex = remember { mutableStateOf(0) }
 
@@ -277,7 +265,9 @@ fun MainScreen(
                         .background(Color.White)
 
                 ) {
-                    Carousel(uiState = uiState, onFilterClick = { isSheetOpen = true }, send = send)
+                    if (uiState.selectedItemFromMapId == null) {
+                        Carousel(uiState = uiState, onFilterClick = { isSheetOpen = true }, send = send)
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
 //                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
@@ -516,12 +506,14 @@ fun MainScreen(
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
-            CollectionCarousel(uiState.recommendations, uiState, send)
+            if (uiState.selectedItemFromMapId == null) {
+                CollectionCarousel(uiState.recommendations, uiState, send)
+            }
         }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = (-160).dp)
+                .offset(y = offsetValue.value)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
             AnimatedVisibility(
