@@ -1,5 +1,5 @@
 //
-//  InfoRestaurantCell.swift
+//  SnippetCell.swift
 //  iosApp
 //
 //  Created by Христина Буянова on 03.08.2024.

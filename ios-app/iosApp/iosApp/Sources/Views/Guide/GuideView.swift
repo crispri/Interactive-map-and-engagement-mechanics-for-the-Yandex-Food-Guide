@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GuideView: View {
     @StateObject var viewModel = SnippetViewModel()
+    @State private var isUserCollectionsViewPresented: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -28,6 +29,9 @@ struct GuideView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 24, height: 24)
+                        .onTapGesture {
+                            isUserCollectionsViewPresented.toggle()
+                        }
                 }
                 .padding(.horizontal)
                 
@@ -48,6 +52,10 @@ struct GuideView: View {
                     .scaledToFit()
             }
             .toolbar(.hidden, for: .navigationBar)
+            .sheet(isPresented: $isUserCollectionsViewPresented, content: {
+                UserCollectionsView()
+                    .environmentObject(viewModel)
+            })
         }
     }
     

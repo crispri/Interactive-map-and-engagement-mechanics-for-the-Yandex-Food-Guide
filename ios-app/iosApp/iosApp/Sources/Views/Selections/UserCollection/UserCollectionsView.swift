@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UserCollectionsView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
+    @State private var isNewCollectionViewPresented: Bool = false
     
     var body: some View {
         VStack {
@@ -17,28 +18,39 @@ struct UserCollectionsView: View {
                     .font(.title2)
                     .padding(.leading)
                 Spacer()
-                AddUserCollectionButton()
+                AddUserCollectionButton() {
+                    isNewCollectionViewPresented.toggle()
+                }
             }
             ScrollView {
-                ForEach($viewModel.userCollections) { collection in
-                    UserCollectionItem(userCollection: collection)
+                ForEach(viewModel.userCollections) { collection in
+                    UserCollectionItem(
+                        picture: collection.selection.picture ?? "PlaceHolder",
+                        name: collection.selection.name,
+                        restaurantsCount: collection.count
+                    )
                 }
             }
         }
+        .sheet(isPresented: $isNewCollectionViewPresented, content: {
+            NewCollectionView() {
+                isNewCollectionViewPresented.toggle()
+            }
+                .presentationDetents([.medium])
+        })
     }
 }
 
 struct UserCollectionItem: View {
-    @Binding var userCollection: UserCollection
-    var restaurantsCount: Int {
-        userCollection.restaurantIDs.count
-    }
+    @State var picture: String
+    @State var name: String
+    @State var restaurantsCount: Int
     
     var body: some View {
         HStack {
-            RestaurantPicture(userCollection: userCollection)
+            RestaurantPicture(picture: picture)
             VStack(alignment: .leading) {
-                Text(userCollection.selection.name)
+                Text(name)
                     .bold()
                     .font(.system(size: 16))
                 Text(restaurantsCount == 0 ? "Пока ничего не сохранено" : "Сохранено мест:  \(restaurantsCount)")

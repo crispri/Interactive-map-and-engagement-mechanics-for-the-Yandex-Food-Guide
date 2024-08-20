@@ -25,6 +25,20 @@ final class SnippetViewModel: ObservableObject {
     @Published var userCollections: [UserCollection] = UserCollection.mockData
     @Published var onlyUserCollections: Bool = false
     @Published var currentRestaurantID: String?
+    func addRestaurant(to collectionID: String, restaurantID: String) {
+        if let index = userCollections.firstIndex(where: { $0.id == collectionID }) {
+            objectWillChange.send()
+            userCollections[index].restaurantIDs.insert(restaurantID)
+            Task { try await putRestaurantTo(collectionID: userCollections[index].selection.id, restaurantID: restaurantID) }
+        }
+    }
+    
+    func removeRestaurant(from collectionID: String, restaurantID: String) {
+        if let index = userCollections.firstIndex(where: { $0.id == collectionID }) {
+            objectWillChange.send()
+            userCollections[index].restaurantIDs.remove(restaurantID)
+        }
+        }
     
     @Published var filterCategories: [FilterCategory] = FilterDTO.mockData
     
@@ -198,18 +212,49 @@ final class SnippetViewModel: ObservableObject {
             let remoteUserCollections = try await loadUserCollections()
             var userCollectionsTail: [UserCollection] = []
             for selection in remoteUserCollections {
-                if ["Хочу сходить", "Хочу заказать"].contains(selection.preCreatedCollectionName)
-                    || ["Хочу сходить", "Хочу заказать"].contains(selection.name) {
-                    continue
+                if selection.preCreatedCollectionName == "Хочу сходить" {
+                    let restaurants = try await loadSelectionSnippets(id: selection.id)
+                    userCollections[0] = UserCollection(
+                        id: selection.id,
+                        selection: SelectionDTO(
+                            id: selection.id,
+                            name: selection.name,
+                            description: selection.description,
+                            picture: "WantToGo",
+                            link: selection.link,
+                            preCreatedCollectionName: selection.preCreatedCollectionName
+                        ),
+                        restaurantIDs: Set(restaurants.map { restaurant in restaurant.id } + userCollections[0].restaurantIDs)
+                    )
+                } else if selection.preCreatedCollectionName == "Хочу заказать" {
+                    let restaurants = try await loadSelectionSnippets(id: selection.id)
+                    userCollections[1] = UserCollection(
+                        id: selection.id,
+                        selection: SelectionDTO(
+                            id: selection.id,
+                            name: selection.name,
+                            description: selection.description,
+                            picture: "WantToOrder",
+                            link: selection.link,
+                            preCreatedCollectionName: selection.preCreatedCollectionName
+                        ),
+                        restaurantIDs: Set(restaurants.map { restaurant in restaurant.id } + userCollections[1].restaurantIDs)
+                    )
+                } else {
+                    if ["Хочу сходить", "Хочу заказать"].contains(selection.name) { continue } // not good
+                    let restaurants = try await loadSelectionSnippets(id: selection.id)
+                    
+                    userCollectionsTail += [UserCollection(
+                        selection: selection,
+                        restaurantIDs: Set(restaurants.map { restaurant in restaurant.id })
+                    )]
                 }
-                let restaurants = try await loadSelectionSnippets(id: selection.id)
-                
-                userCollectionsTail += [UserCollection(
-                    selection: selection,
-                    restaurantIDs: Set(restaurants.map { restaurant in restaurant.id })
-                )]
             }
-            userCollections = UserCollection.mockData + userCollectionsTail
+            if userCollections == UserCollection.mockData {
+                userCollections = UserCollection.mockData + userCollectionsTail
+            } else {
+                userCollections = userCollections + userCollectionsTail
+            }
         } catch { print(error) }
     }
     
@@ -259,5 +304,9 @@ final class SnippetViewModel: ObservableObject {
     
     func sendUserCollection(name: String, description: String) async throws -> String {
         return try await networkManager.sendCollection(name: name, description: description)
+    }
+    
+    func putRestaurantTo(collectionID: String, restaurantID: String) async throws {
+        try await networkManager.putRestaurantToCollection(collectionID: collectionID, restaurantID: restaurantID)
     }
 }

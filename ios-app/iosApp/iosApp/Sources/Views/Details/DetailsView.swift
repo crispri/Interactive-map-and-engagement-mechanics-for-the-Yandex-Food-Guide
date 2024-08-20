@@ -102,6 +102,7 @@ struct DetailsView: View {
     private var bookmarkButton: some View {
         Button {
             viewModel.onlyUserCollections.toggle()
+            viewModel.currentSelection = nil
             viewModel.eventCenterCamera(to: .pins)
         } label: {
             Image("Bookmark")

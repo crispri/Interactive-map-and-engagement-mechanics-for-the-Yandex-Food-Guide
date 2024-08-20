@@ -53,6 +53,18 @@ final class NetworkManager {
         return decodedResponse
     }
     
+    private func performRequest(request: URLRequest) async throws {
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkingError.serverError(statucCode: httpResponse.statusCode)
+        }
+    }
+    
     func fetchSnippets(lowerLeftCorner: Point, topRightCorner: Point, filters: [FilterDTO]?, onlyUserCollections: Bool) async throws -> [SnippetDTO] {
         let request = try makeRequest(
             path: .restaurants,
@@ -182,5 +194,17 @@ final class NetworkManager {
         let data: CollectionResponse = try await performRequest(request: request)
         
         return data.id
+    }
+    
+    func putRestaurantToCollection(collectionID: String, restaurantID: String) async throws {
+        let request = try makeRequest(
+            path: .collections(id: collectionID),
+            method: .put,
+            with: PutCollectionRequest(
+                restaurantID: restaurantID
+            )
+        )
+        
+        try await performRequest(request: request)
     }
 }

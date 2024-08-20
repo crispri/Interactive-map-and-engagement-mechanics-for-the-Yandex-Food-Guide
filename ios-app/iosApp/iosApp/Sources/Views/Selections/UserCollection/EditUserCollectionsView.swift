@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EditUserCollectionsView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
+    @State private var isNewCollectionViewPresented: Bool = false
     
     var body: some View {
         VStack {
@@ -17,67 +18,87 @@ struct EditUserCollectionsView: View {
                     .font(.title2)
                     .padding(.leading)
                 Spacer()
-                AddUserCollectionButton()
+                AddUserCollectionButton() {
+                    isNewCollectionViewPresented.toggle()
+                }
             }
             ScrollView {
-                ForEach($viewModel.userCollections) { $collection in
+                ForEach(viewModel.userCollections.indices, id: \.self) { index in
                     EditUserCollectionItem(
-                        userCollection: $collection
+                        picture: viewModel.userCollections[index].selection.picture ?? "PlaceHolder",
+                        name: viewModel.userCollections[index].selection.name,
+                        restaurantsCount: viewModel.userCollections[index].count,
+                        id: viewModel.userCollections[index].id,
+                        inCollection: Binding(get: {
+                            viewModel.userCollections[index].contains(viewModel.currentRestaurantID!)
+                        },
+                                              set: {
+                                                  inCollection in if inCollection { viewModel.userCollections[index].restaurantIDs.insert(
+                                                    viewModel.currentRestaurantID!
+                                                  ) } else { viewModel.userCollections[index].restaurantIDs.remove(
+                                                    viewModel.currentRestaurantID!
+                                                  )
+                                                  }
+                                              }),
+                        addToCollection: {
+                            viewModel.addRestaurant(to: viewModel.userCollections[index].id, restaurantID: viewModel.currentRestaurantID!)
+                        },
+                        removeFromCollection: {
+                            viewModel.removeRestaurant(from: viewModel.userCollections[index].id, restaurantID: viewModel.currentRestaurantID!)
+                        }
                     )
                 }
             }
         }
+        .sheet(isPresented: $isNewCollectionViewPresented, content: {
+            NewCollectionView() {
+                isNewCollectionViewPresented.toggle()
+            }
+                .presentationDetents([.medium])
+        })
     }
 }
 
 struct EditUserCollectionItem: View {
-    @EnvironmentObject var viewModel: SnippetViewModel
-    @Binding var userCollection: UserCollection
+    @State var picture: String
+    @State var name: String
+    @State var restaurantsCount: Int
+    @State var id: String
+    @Binding var inCollection: Bool
+    var addToCollection: (() -> Void)?
+    var removeFromCollection: (() -> Void)?
     
     var body: some View {
         HStack {
-            RestaurantPicture(userCollection: userCollection)
+            RestaurantPicture(picture: picture)
             VStack(alignment: .leading) {
-                Text(userCollection.selection.name)
+                Text(name)
                     .bold()
                     .font(.system(size: 16))
-                Text(userCollection.count == 0 ? "Пока ничего не сохранено" : "Сохранено мест:  \(userCollection.count)")
+                Text(restaurantsCount == 0 ? "Пока ничего не сохранено" : "Сохранено мест:  \(restaurantsCount)")
                     .foregroundStyle(.gray)
                     .font(.system(size: 13))
             }
             Spacer()
             Button {
-                if let RID = viewModel.currentRestaurantID {
-                    if userCollection.contains(RID) {
-                        userCollection.restaurantIDs = userCollection.restaurantIDs.filter { $0 != RID }
-                    } else {
-                        userCollection.restaurantIDs.insert(RID)
-                    }
+                if inCollection {
+                    removeFromCollection?()
+                    inCollection = false
+                    restaurantsCount -= 1
+                } else {
+                    addToCollection?()
+                    inCollection = true
+                    restaurantsCount += 1
                 }
-                else { print("boockmark pressed but no RID") }
             } label: {
                 Image("Check")
                     .frame(width: 32, height: 32)
-                    .opacity(userCollection.contains(viewModel.currentRestaurantID ?? "") ? 1 : 0)
-                    .background(userCollection.contains(viewModel.currentRestaurantID ?? "") ? Color(hex: 0x302F2D) : Color(hex: 0x5C5A57).opacity(0.1))
+                    .opacity(inCollection ? 1 : 0)
+                    .background(inCollection ? Color(hex: 0x302F2D) : Color(hex: 0x5C5A57).opacity(0.1))
                     .clipShape(RoundedRectangle(cornerSize: CGSize(width: 8, height: 8)))
             }
             .padding()
         }
-    }
-}
-
-struct AddUserCollectionButton: View {
-    var body: some View {
-        Button {
-            // TODO: add action.
-        } label: {
-            Image(systemName: "plus")
-                .bold()
-                .foregroundStyle(.black)
-                .padding()
-        }
-        .shadow(radius: 20, x: 0, y: 8)
     }
 }
 
