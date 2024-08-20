@@ -10,6 +10,7 @@ import AppMetricaCore
 
 final class MetricaManager {
     static func logEvent(name: String, params: [AnyHashable : Any]?) {
+        print("LOG EVENT: \(name)")
         AppMetrica.reportEvent(name: name, parameters: params, onFailure: { (error) in
             print("DID FAIL REPORT EVENT: %@", name)
             print("REPORT ERROR: %@", error.localizedDescription)

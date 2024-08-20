@@ -61,7 +61,17 @@ struct RestaurantView: View {
                 }
         }
         .edgesIgnoringSafeArea(.all)
-
+        .onAppear {
+            let params: [AnyHashable : Any]? = [
+                "user_id": "iOS user id",
+                "timestamp": Int(Date().timeIntervalSince1970),
+                "restaurant_id": restaurant.id
+            ]
+            MetricaManager.logEvent(
+                name: "open_on_full_screen_restaurant_card",
+                params: params
+            )
+        }
     }
 
 //    кнопки назад и поделиться

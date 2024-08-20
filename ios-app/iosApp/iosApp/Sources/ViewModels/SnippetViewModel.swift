@@ -139,6 +139,21 @@ final class SnippetViewModel: ObservableObject {
     func fetchSelections() async {
         do {
             selections = try await loadSelections()
+            let userLocation = try mapManager.getUserLocation()
+            let screenPoints = mapManager.getScreenPoints()
+            let params: [AnyHashable : Any]? = [
+                "user_id": "iOS user id",
+                "timestamp": Int(Date().timeIntervalSince1970),
+                "current_lat":  userLocation.lat,
+                "current_long": userLocation.lon,
+                "user_lat": screenPoints.lowerLeftCorner.lat,
+                "user_long": screenPoints.lowerLeftCorner.lon,
+                "selections_array": selections.map { $0.id }
+            ]
+            MetricaManager.logEvent(
+                name: "main_screen_button_open_map",
+                params: params
+            )
         } catch { print(error) }
     }
         
