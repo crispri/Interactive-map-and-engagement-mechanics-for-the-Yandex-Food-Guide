@@ -76,16 +76,14 @@ struct SnippetCell: View {
         HStack {
             Text(restaurant.name)
                 .bold()
-                .font(.custom("YS-Bold", size: 16))
-//                .font(.system(size: 16))
+                .font(.system(size: 16))
             Spacer()
             HStack {
                 Image(systemName: "star.fill")
                     .resizable()
                     .frame(width: 12, height: 12)
                 Text("\(String(format: "%.1f" , restaurant.rating))")
-                    .font(.custom("YS-Regular", size: 14))
-//                    .font(.system(size: 14))
+                    .font(.system(size: 14))
             }
         }
     }
@@ -104,16 +102,14 @@ struct SnippetCell: View {
             Text("28 мин на машине")
             Spacer()
         }
-        .font(.custom("YS-Regular", size: 13))
-//        .font(.system(size: 13))
+        .font(.system(size: 13))
     }
 
     private func Description() -> some View {
         Text(restaurant.description)
             .foregroundStyle(.gray)
             .lineLimit(2)
-            .font(.custom("YS-Regular", size: 13))
-//            .font(.system(size: 13))
+            .font(.system(size: 13))
     }
 
     private func BadgesTrain() -> some View {
@@ -129,8 +125,7 @@ struct SnippetCell: View {
     private func Chips(text: String) -> some View {
         Text(text)
             .padding([.trailing, .leading, .bottom, .top], 4)
-            .font(.custom("YS-Regular", size: 11))
-//            .font(.system(size: 11))
+            .font(.system(size: 11))
             .foregroundStyle(Color.grayNameChips)
             .background(Color.lightGrayChips)
             .cornerRadius(20)

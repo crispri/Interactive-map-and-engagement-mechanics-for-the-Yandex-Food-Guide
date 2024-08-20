@@ -95,8 +95,7 @@ struct RestaurantView: View {
         Text(restaurant.name)
             .foregroundStyle(.white)
             .bold()
-            .font(.custom("YS-Bold", size: 30))
-//            .font(.system(size: 30))
+            .font(.system(size: 30))
     }
 
 //    рейтинг и оценки
@@ -107,18 +106,15 @@ struct RestaurantView: View {
                 .frame(width: 24, height: 24)
                 .padding(.top, 4)
             Text(String(format: "%.1f" , restaurant.rating))
-                .font(.custom("YS-Regular", size: 22))
-//                .font(.system(size: 22))
+                .font(.system(size: 22))
                 .bold()
             Spacer()
             Text("82")
                 .foregroundStyle(.gray)
-                .font(.custom("YS-Regular", size: 14))
-//                .font(.system(size: 14))
+                .font(.system(size: 14))
             Text("оценки")
                 .foregroundStyle(.gray)
-                .font(.custom("YS-Regular", size: 14))
-//                .font(.system(size: 14))
+                .font(.system(size: 14))
             Spacer()
         }
         .frame(width: 70, height: 110)
@@ -169,8 +165,7 @@ struct RestaurantView: View {
     private func Chips(text: String) -> some View {
         Text(text)
             .padding([.trailing, .leading, .bottom, .top], 10)
-            .font(.custom("YS-Regular", size: 11))
-//            .font(.system(size: 11))
+            .font(.system(size: 11))
             .foregroundStyle(Color.grayNameChips)
             .background(Color.lightGrayChips)
             .cornerRadius(20)
@@ -213,8 +208,7 @@ struct RestaurantView: View {
                 HStack {
                     Text("сгенерировано нейросетью на основе отзывов")
                         .lineLimit(1)
-                        .font(.custom("YS-Regular", size: 11))
-//                        .font(.system(size: 11))
+                        .font(.system(size: 11))
                     Image(systemName: "chevron.right")
                 }
                 .foregroundStyle(.gray)
@@ -224,8 +218,7 @@ struct RestaurantView: View {
 
     private func ComentYGPT() -> some View {
         Text(restaurant.description)
-            .font(.custom("YS-Regular", size: 14))
-//            .font(.system(size: 14))
+            .font(.system(size: 14))
     }
 }
 

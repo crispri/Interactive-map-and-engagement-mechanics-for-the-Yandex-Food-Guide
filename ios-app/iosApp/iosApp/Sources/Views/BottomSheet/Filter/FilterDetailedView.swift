@@ -30,8 +30,7 @@ struct SectionView: View {
         VStack(alignment: .leading, spacing: 16) {
             if !filterCategory.title.isEmpty {
                 Text(filterCategory.title)
-                    .font(.custom("YS-Bold", size: 20))
-//                    .font(.title2)
+                    .font(.title2)
                     .fontWeight(.bold)
                     .padding(.leading, 8)
             }
@@ -61,8 +60,7 @@ struct TagView: View {
             viewModel.onCameraMove()
         } label: {
             Text(filter.name)
-                .font(.custom("YS-Regular", size: 14))
-//                .font(.system(size: 14, weight: .medium))
+                .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(filter.isActive ? .white : .black)
                 .tint(.primary)
                 .padding(16)

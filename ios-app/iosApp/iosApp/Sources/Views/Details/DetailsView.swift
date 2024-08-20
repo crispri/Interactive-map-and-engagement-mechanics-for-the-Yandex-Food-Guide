@@ -86,8 +86,7 @@ struct DetailsView: View {
             VStack(spacing: 0) {
                 HStack(spacing: 4) {
                     Text("Ваше местоположение")
-                        .font(.custom("YS-Regular", size: 13))
-//                        .font(.system(size: 13))
+                        .font(.system(size: 13))
                         .foregroundStyle(.black)
                     Image(systemName: "chevron.right")
                         .resizable()
@@ -96,8 +95,7 @@ struct DetailsView: View {
                         .foregroundStyle(.black)
                 }
                 Text(viewModel.userLocaitonTitle)
-                    .font(.custom("YS-Bold", size: 16))
-//                    .font(.system(size: 16, weight: .medium))
+                    .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(.black)
             }
         }
