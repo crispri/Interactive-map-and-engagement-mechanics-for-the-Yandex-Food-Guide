@@ -13,8 +13,6 @@ struct DetailsView: View {
     @EnvironmentObject private var viewModel: SnippetViewModel
     @State private var isBottomSheetPresented = true
     @State var isFiltersPresented = false
-    @State var sheetPosition: BottomSheetPosition = .dynamicBottom
-    
     @State var isUserCollectionsPresented = false
     
     var body: some View {
@@ -23,7 +21,7 @@ struct DetailsView: View {
                 .edgesIgnoringSafeArea(.all)
                 .environmentObject(viewModel.mapManager)
                 .bottomSheet(
-                    bottomSheetPosition: $sheetPosition,
+                    bottomSheetPosition: $viewModel.sheetPosition,
                     switchablePositions: [
                         .dynamicBottom,
                         .absolute(500),
