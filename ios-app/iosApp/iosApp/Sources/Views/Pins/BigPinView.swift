@@ -12,6 +12,7 @@ final class BigPinView: UIView {
 
    private var isSelected = true
     var model: SnippetDTO
+//    var isImageLoaded = false
 
     private lazy var squareView: UIView = {
         let view = UIView()
@@ -42,18 +43,7 @@ final class BigPinView: UIView {
         let image = UIImageView()
         image.frame = .init(x: 0, y: 0, width: 160, height: 60)
         image.clipsToBounds = true
-
-        if let url = URL(string: model.food) {
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if let data = data {
-                    DispatchQueue.main.async {
-                        image.image = UIImage(data: data)
-                    }
-                }
-            }.resume()
-        }
-
-//        image.image = UIImage(named: "1rest")
+        image.image = UIImage(named: "1rest")
         image.layer.cornerRadius = 12
         image.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         return image
