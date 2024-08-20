@@ -5,15 +5,42 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.view.View
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import com.yandex.mapkit.geometry.Point
+import com.yandex.runtime.image.ImageProvider
 import model.CollectionOfPlace
 import model.Restaurant
+import pins.CustomPinView
+import pins.CustomPinViewSelected
+import java.text.DecimalFormat
+import kotlin.math.cos
+import kotlin.math.pow
 
 
 object Utils {
+
+    fun updateOverlayHeight(zoomLevel: Int, viewHeightInPx: Int, bl: Point, tr: Point) : Double {
+        val latitude = (tr.latitude + bl.latitude) / 2
+        val metersPerPixel = (40075016.686 / (256 * 2.0.pow(zoomLevel))) * cos(latitude * (Math.PI / 180))
+        val heightInMeters = viewHeightInPx * metersPerPixel
+        val metersPerDegree = 111320.0
+        val latitudeDelta = heightInMeters / metersPerDegree
+        return latitudeDelta
+
+    }
+
+    fun updateOverlayWidth(zoomLevel: Int, viewWidthInPx: Int, bl: Point, tr: Point): Double {
+        val latitude = (tr.latitude + bl.latitude) / 2
+        val metersPerPixel = (40075016.686 / (256 * 2.0.pow(zoomLevel))) * cos(latitude * (Math.PI / 180))
+        val widthInMeters = viewWidthInPx * metersPerPixel
+        val metersPerDegreeLongitude = 40075016.686 / 360.0 * cos(latitude * (Math.PI / 180))
+        val longitudeDelta = widthInMeters / metersPerDegreeLongitude
+        return longitudeDelta
+    }
 
     fun createBitmapFromView(
         view: View,

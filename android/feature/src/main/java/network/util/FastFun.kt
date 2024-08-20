@@ -6,6 +6,7 @@ import model.Restaurant
 import network.dto.response.RestaurantItemForJson
 import model.Coordinates
 import model.Filter
+import model.Pins
 import network.api.FilterForJson
 import network.dto.response.CollectionItemForJson
 
@@ -42,7 +43,7 @@ fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
     isFavorite,
     tags,
     inCollection,
-    food, interior, score, additionalInfo
+    food, interior, score, Pins.NONE, additionalInfo
 )
 
 fun CollectionItemForJson.toModel(): CollectionOfPlace = CollectionOfPlace(

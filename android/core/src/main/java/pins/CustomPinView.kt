@@ -52,26 +52,6 @@ class CustomPinView @JvmOverloads constructor(
             })
     }
 
-//        imageView.load(imageUrl) {
-//            placeholder(R.drawable.ic_mini_pin) // Плейсхолдер на время загрузки
-//            error(R.drawable.baseline_language_24)error(R.drawable.baseline_language_24) // Изображение ошибки, если не удалось загрузить
-//            transformations(CircleCropTransformation()) // Скругление изображения
-//            listener(
-//                onStart = {
-//                    Log.d("setImageLoading", "Загрузка изображения начата: $imageUrl")
-//                },
-//                onSuccess = { _, result ->
-//                    Log.d("setImageSuccess", "Изображение загружено успешно: $imageUrl")
-//                },
-//                onError = { _, result ->
-//                    Log.d("setImageError", "Ошибка при загрузке изображения: $imageUrl")
-//                }
-//            )
-//        }
-//
-//        Log.d("setImageEnd", imageUrl)
-//    }
-
     fun setTitle(title: String) {
         titleTextView.text = title
     }
