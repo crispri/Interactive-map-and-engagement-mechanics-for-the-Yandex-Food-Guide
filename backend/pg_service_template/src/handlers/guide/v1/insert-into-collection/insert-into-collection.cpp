@@ -78,8 +78,9 @@ class InsertIntoCollectionController final : public userver::server::handlers::H
         }
 
         boost::uuids::string_generator gen;
-        const auto& session_id = (request.HasCookie("session_id") ? request.GetCookie("session_id") : request.GetHeader("Authorization"));
-        const auto& user_id = session_service_.GetUserId(gen(session_id));
+        // const auto& session_id = (request.HasCookie("session_id") ? request.GetCookie("session_id") : request.GetHeader("Authorization"));
+        // const auto& user_id = session_service_.GetUserId(gen(session_id));
+        const auto& user_id = gen("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
         const auto& restaurant_id = gen(request_body_json["restaurant_id"].As<std::string>());
         const auto& collection_id = gen(request.GetPathArg("id"));
 
