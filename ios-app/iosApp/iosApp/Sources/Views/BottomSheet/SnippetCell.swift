@@ -10,7 +10,7 @@ import SwiftUI
 var imageRest = ["1rest", "2rest", "3rest"]
 
 struct SnippetCell: View {
-    @EnvironmentObject private var viemModel: SnippetViewModel
+    @EnvironmentObject private var viewModel: SnippetViewModel
     @Binding var restaurant: SnippetDTO
     
     @State private var currentPage = 0
@@ -21,6 +21,9 @@ struct SnippetCell: View {
         VStack {
             ImageRest()
             NameRest()
+                .onAppear {
+                    viewModel.eventSnippetAppeared(restaurant)
+                }
             Meta()
             HStack {
                 Description()
@@ -64,7 +67,7 @@ struct SnippetCell: View {
                     .bold()
                     .onTapGesture {
                         isEditUserCollectionsPresented.toggle()
-                        Task { await viemModel.fetchUserCollections() }
+                        Task { await viewModel.fetchUserCollections() }
                     }
                 .foregroundStyle(.white)
             }

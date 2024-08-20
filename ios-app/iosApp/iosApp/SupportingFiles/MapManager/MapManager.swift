@@ -365,6 +365,44 @@ final class MapManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         delegate?.selectedPin = userData
     }
     
+    func eventSnippetAppeared(_ snippet: SnippetDTO) {
+        let smallPinStyle = YMKIconStyle(
+            anchor: CGPoint(x: 0.5, y: 0.5) as NSValue,
+            rotationType: .none,
+            zIndex: 0,
+            flat: false,
+            visible: true,
+            scale: 1.5,
+            tappableArea: nil
+        )
+        for kv in placedPins {
+            if kv.key != snippet.id,
+               let userData = kv.value.0.userData as? SnippetDTO {
+                let uiView = SmallPinView(
+                    frame: .init(x: 0, y: 0, width: PinSize.small.width, height: PinSize.small.height),
+                    model: userData
+                )
+                kv.value.0.setIconWith(uiView.asImage(), style: smallPinStyle)
+            }
+        }
+        
+        let bigPinStyle = YMKIconStyle(
+            anchor: CGPoint(x: 0.5, y: 1.0) as NSValue,
+            rotationType: .none,
+            zIndex: 1,
+            flat: false,
+            visible: true,
+            scale: 1.0,
+            tappableArea: nil
+        )
+        let uiView = BigPinView(
+            frame: .init(x: 0, y: 0, width: PinSize.big.width, height: PinSize.big.height),
+            model: snippet
+        )
+        uiView.setSelected(true)
+        placedPins[snippet.id]?.0.setIconWith(uiView.asImage(), style: bigPinStyle)
+    }
+    
     func getScreenPoints(sheetPosition: SheetPosition = .bottom) -> (lowerLeftCorner: Point, topRightCorner: Point) {
         var coef: Float = 1.0
         switch sheetPosition {

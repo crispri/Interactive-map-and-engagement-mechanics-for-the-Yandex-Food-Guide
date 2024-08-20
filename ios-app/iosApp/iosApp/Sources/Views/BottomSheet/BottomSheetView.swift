@@ -13,6 +13,7 @@ struct BottomSheetView: View {
     @State private var isEditUserCollectionsPresented = false
     @State private var isSheetPresented = false
     @State private var selectedSnipped: SnippetDTO?
+    @State private var scrolledID: Int? = nil
     
     var body: some View {
         if let selectedPin = viewModel.selectedPin, viewModel.isPinFocusMode {
@@ -47,7 +48,7 @@ struct BottomSheetView: View {
             )
         } else {
             ScrollView {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) {
                     ForEach($viewModel.snippets, id: \.self) { snippet in
                         SnippetCell(restaurant: snippet, isEditUserCollectionsPresented: $isEditUserCollectionsPresented)
                             .onTapGesture {
@@ -60,10 +61,11 @@ struct BottomSheetView: View {
                     }
                 }
                 .padding(.bottom)
-                .animation(.easeInOut, value: viewModel.snippets)
                 .scrollTargetLayout()
+                .animation(.easeInOut, value: viewModel.snippets)
                 .background(Color.white)
             }
+            .scrollPosition(id: $scrolledID, anchor: .bottom)
             .scrollTargetBehavior(.viewAligned)
         }
     }

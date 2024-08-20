@@ -121,6 +121,10 @@ final class SnippetViewModel: ObservableObject {
         sheetPosition = isEnabled ? .absolute(500) : .dynamicBottom
     }
     
+    func eventSnippetAppeared(_ snippet: SnippetDTO) {
+        mapManager.eventSnippetAppeared(snippet)
+    }
+    
     // MARK: Wrappers for fetching snippets and selections.
     
     func fetchSnippets() async {
