@@ -1,5 +1,5 @@
 post:
-  summary: Rate restaurants ids list by ML based on user info (mock)
+  summary: Получения скоринга ресторанов по пользователю
   description: Rate restaurants ids list by ML based on user info (mock)
   tags:
     - ML
