@@ -27,6 +27,36 @@
                 android:backgroundTint="#9747FF"
                 android:src="@drawable/hardcode_pin_image"
                 android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_badge_white" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_bookmark_bg_black"
+                    android:visibility="visible"/>
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:src="@drawable/ic_bookmark_bg_yellow" />
+            </LinearLayout>
         </FrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -102,6 +102,9 @@ fun MainScreen(
     mapView: CustomMapView,
     curLocation: MutableState<Point?>
 ) {
+
+    val offsetValue = remember { mutableStateOf((-160).dp) }
+
     val offsetState = remember { mutableFloatStateOf(-96f) }
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -116,11 +119,10 @@ fun MainScreen(
 
     val bottomSheetHeight = remember { mutableStateOf<Dp?>(null) }
 
-    val list = mutableStateOf(uiState.restaurantsOnMap)
-
+    val list = remember { mutableStateOf(uiState.restaurantsOnMap) }
 
     val isMapSelected = remember { mutableStateOf(false) }
-    var isSheetOpen by remember{ mutableStateOf(false) }
+    var isSheetOpen by remember { mutableStateOf(false) }
     val filterBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val sheetState = rememberBottomSheetState(
@@ -166,15 +168,6 @@ fun MainScreen(
             }
     }
 
-    LaunchedEffect(uiState.selectedItemFromMapId) {
-        if (uiState.selectedItemFromMapId != null) {
-            sheetState.animateTo(SheetValue.PartiallyExpanded)
-        } else {
-            send(SelectItemFromBottomSheet(null))
-            sheetState.animateTo(SheetValue.Hidden)
-        }
-    }
-
     LaunchedEffect(sheetState.currentValue) {
         if (sheetState.currentValue == SheetValue.Hidden) {
             send(SelectItemFromBottomSheet(null))
@@ -182,15 +175,23 @@ fun MainScreen(
         }
         if (sheetState.currentValue == SheetValue.PartiallyExpanded) {
             send(RaiseCameraPosition(true))
+            Log.d("CameraListener", "LaunchedEffect(sheetState.currentValue)")
         }
     }
 
-    LaunchedEffect(uiState.selectedItemFromMapId) {
+
+    LaunchedEffect(
+        key1 = uiState.selectedItemFromMapId,
+        key2 = uiState.restaurantsOnMap
+    ) {
         val selectedId = uiState.selectedItemFromMapId
         if (selectedId != null) {
             val index = uiState.restaurantsOnMap.indexOfFirst { it.id == selectedId }
             if (index != -1) {
                 list.value = listOf(uiState.restaurantsOnMap[index])
+                offsetValue.value = (-60).dp
+                Log.d("CameraListener", "${list.value}")
+                sheetState.animateTo(SheetValue.PartiallyExpanded)
             } else {
                 Log.e(
                     "selectedItemFromMapId",
@@ -200,13 +201,13 @@ fun MainScreen(
             }
         } else {
             list.value = uiState.restaurantsOnMap
+            Log.e("CameraListener", " main screen size = ${uiState.restaurantsOnMap.size}  list = ${uiState.restaurantsOnMap}")
+            offsetValue.value = (-160).dp
+            if (uiState.selectedItemFromBottomSheetId == null) {
+                sheetState.animateTo(SheetValue.Hidden)
+            }
         }
     }
-
-    LaunchedEffect(list.value) {
-        Log.d("CameraListener", "List in Main Screen = ${list.value}")
-    }
-
 
     val currentIndex = remember { mutableStateOf(0) }
 
@@ -214,28 +215,33 @@ fun MainScreen(
         key1 = lazyListState.firstVisibleItemScrollOffset,
         key2 = sheetState.currentValue
     ) {
-        val visibleIndex = lazyListState.firstVisibleItemIndex
-        val visibleItemOffset = lazyListState.firstVisibleItemScrollOffset
-        val itemHeightPx = itemHeight.value.value
+        if (uiState.selectedItemFromMapId == null && sheetState.currentValue == SheetValue.PartiallyExpanded) {
+            val visibleIndex = lazyListState.firstVisibleItemIndex
+            val visibleItemOffset = lazyListState.firstVisibleItemScrollOffset
+            val itemHeightPx = itemHeight.value.value
 
-        currentIndex.value = if (visibleItemOffset > itemHeightPx / 2) {
-            visibleIndex + 1
-        } else {
-            visibleIndex
-        }
-
-
-        Log.d("lazyListState", "list = ${list.value}")
-        Log.d("lazyListState", "size = ${list.value.size}")
-        Log.d("lazyListState", "Current Index: ${currentIndex.value}")
-        Log.d("lazyListState", "selectedItemFromBottomSheetId: ${uiState.selectedItemFromBottomSheetId}")
-        if (sheetState.currentValue == SheetValue.PartiallyExpanded
-            && uiState.selectedItemFromMapId == null) {
-            if (list.value.isNotEmpty()){
+            currentIndex.value = if (visibleItemOffset > itemHeightPx / 2) {
+                visibleIndex + 1
+            } else {
+                visibleIndex
+            }
+            Log.d("lazyListState", "list = ${list.value}")
+            Log.d("lazyListState", "size = ${list.value.size}")
+            Log.d("lazyListState", "Current Index: ${currentIndex.value}")
+            Log.d(
+                "lazyListState",
+                "selectedItemFromBottomSheetId: ${uiState.selectedItemFromBottomSheetId}"
+            )
+            if (list.value.isNotEmpty()) {
                 send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
             }
-            Log.e("lazyListState", "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}")
+            Log.e(
+                "lazyListState",
+                "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}"
+            )
         }
+
+
     }
 
     Box(
@@ -259,7 +265,9 @@ fun MainScreen(
                         .background(Color.White)
 
                 ) {
-                    Carousel(uiState = uiState, onFilterClick = { isSheetOpen = true }, send = send)
+                    if (uiState.selectedItemFromMapId == null) {
+                        Carousel(uiState = uiState, onFilterClick = { isSheetOpen = true }, send = send)
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
 //                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
@@ -498,12 +506,14 @@ fun MainScreen(
                 .offset(y = (-100).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
-            CollectionCarousel(uiState.recommendations, uiState, send)
+            if (uiState.selectedItemFromMapId == null) {
+                CollectionCarousel(uiState.recommendations, uiState, send)
+            }
         }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = (-160).dp)
+                .offset(y = offsetValue.value)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
             AnimatedVisibility(
