@@ -103,14 +103,15 @@ struct DetailsView: View {
     
     private var bookmarkButton: some View {
         Button {
-            isUserCollectionsPresented.toggle()
-            Task { await viewModel.fetchUserCollections() }
+            viewModel.onlyUserCollections.toggle()
+            viewModel.eventCenterCamera(to: .pins)
         } label: {
-            Image(systemName: "bookmark")
+            Image("Bookmark")
+                .renderingMode(.template)
                 .bold()
-                .foregroundStyle(.black)
+                .foregroundStyle(viewModel.onlyUserCollections ? .white : .black)
                 .padding()
-                .background(.white)
+                .background(viewModel.onlyUserCollections ? .black : .white)
                 .clipShape(Circle())
         }
         .shadow(radius: 20, x: 0, y: 8)

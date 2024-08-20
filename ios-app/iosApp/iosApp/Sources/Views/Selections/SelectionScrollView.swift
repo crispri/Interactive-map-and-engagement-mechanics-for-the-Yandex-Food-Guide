@@ -18,7 +18,7 @@ struct SelectionScrollView: View {
                         SelectionView(
                             title: viewModel.selections[index].name,
                             desc: viewModel.selections[index].description,
-                            imageUrlString: viewModel.selections[index].picture,
+                            imageUrlString: viewModel.selections[index].picture ?? "PersonalSelection",
                             selected: Binding(
                                 get: {
                                     if let selectedCollection = viewModel.currentSelection,
@@ -34,7 +34,7 @@ struct SelectionScrollView: View {
                                 await viewModel.eventSelectionPressed(at: index, reader: reader)
                             }
                         } bookmarkAction: {
-                            // TODO: add bookmarkAction.
+                            viewModel.userCollections += [UserCollection(selection: viewModel.selections[index], restaurantIDs: [])]
                         } infoAction: {
                             // TODO: add bookmarkAction.
                         }
