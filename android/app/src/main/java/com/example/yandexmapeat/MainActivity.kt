@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
 
         mapView = CustomMapView(context)
 
-        val style = loadJsonFromAsset(this, "my_json.json")
+        val style = loadJsonFromAsset(this, "map_style.json")
         if (style != null) {
             mapView.mapWindow.map.setMapStyle(style)
         } else {
