@@ -15,6 +15,7 @@ struct TSelection {
     std::optional<std::string> picture;
     std::optional<std::string> link;
     std::optional<std::string> pre_created_collection_name;
+    int size;
     std::tuple<
         boost::uuids::uuid&,
         std::string&,
@@ -22,7 +23,8 @@ struct TSelection {
         std::optional<boost::uuids::uuid>&,
         std::optional<std::string>&,
         std::optional<std::string>&,
-        std::optional<std::string>&
+        std::optional<std::string>&,
+        int
     > Introspect();
 };
 

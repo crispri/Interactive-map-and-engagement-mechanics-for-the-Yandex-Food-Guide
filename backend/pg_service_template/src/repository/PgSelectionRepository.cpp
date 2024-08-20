@@ -69,14 +69,16 @@ std::vector<TRestaurant> PgSelectionRepository::GetById(const boost::uuids::uuid
 }
 
 boost::uuids::uuid PgSelectionRepository::CreateCollection(const boost::uuids::uuid& user_id, const std::string& name, const std::string& description) {
+    int initial_size = 0;
     const auto& result = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
-        R"( INSERT INTO guide.selections(name, description, owner_id) )"
-        R"( VALUES ($1, $2, $3) )"
+        R"( INSERT INTO guide.selections(name, description, owner_id, size) )"
+        R"( VALUES ($1, $2, $3, $4) )"
         R"( RETURNING id; )",
         name,
         description,
-        user_id
+        user_id,
+        initial_size
     );
     return result[0].As< boost::uuids::uuid >();
 }
@@ -86,25 +88,43 @@ void PgSelectionRepository::InsertIntoCollection(const boost::uuids::uuid& user_
     pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
         R"( INSERT INTO guide.places_selections(place_id, selection_id) )"
-        R"( VALUES ($1, $2) )"
-        R"( ON CONFLICT DO NOTHING; )",
+        R"( VALUES ($1, $2); )",
         restaurant_id, collection_id
+    );
+
+    const auto& prev_size = pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"( SELECT size FROM guide.selections )"
+        R"( WHERE id = $1; )",
+        collection_id
+    );
+
+    int size_after_insertion = prev_size[0].As< int >() + 1;
+
+    pg_cluster_->Execute(
+        userver::storages::postgres::ClusterHostType::kSlave,
+        R"( UPDATE guide.selections )"
+        R"( SET size = $1 )"
+        R"( WHERE id = $2; )",
+        size_after_insertion,
+        collection_id
     );
 
     const auto& query_result = pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
-        R"( SELECT food FROM guide.places )"
+        R"( SELECT interior FROM guide.places )"
         R"( WHERE id = $1; )",
         restaurant_id
     );
 
-    const auto& food_picture_url = query_result[0].As<std::string>();
+    const auto& interiors_url = query_result.AsContainer<std::vector<std::string>>();
+    const auto& interior = interiors_url[0];
     pg_cluster_->Execute(
         userver::storages::postgres::ClusterHostType::kSlave,
         R"( UPDATE guide.selections )"
         R"( SET picture = $1 )"
         R"( WHERE id = $2; )",
-        food_picture_url,
+        interior,
         collection_id
     );
 }

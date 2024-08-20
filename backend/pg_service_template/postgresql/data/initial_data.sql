@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS guide.selections (
     picture TEXT,
     link TEXT,
     pre_created_collection_name TEXT,
+    size INTEGER NOT NULL,
     FOREIGN KEY(owner_id) REFERENCES guide.users(id)
 );
 
@@ -77,15 +78,16 @@ INSERT INTO guide.selections(
              description,
              owner_id,
              picture,
-             link
+             link,
+             size
 )
 VALUES
-    ('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Чебурек размером с подушку, лебеди и метеорит: выходной в Парке Горького с детьми', 'Прогулка с детьми — и радость, и работа, и умение идти на компромисс. Парк Горького в этом плане отлично подходит: и универсальный общепит, и диковинный музей с минералами, где любой почувствует себя ребёнком, и фонтаны, и великий чебурек, облетевший все соцсети. Редакция собрала план для идеального дня', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/46ebe70d-f028-475d-8343-02e5d50462db.jpg', 'https://openkitchen.eda.yandex/article/places/guides/cheburek-razmerom-s-podushku-lebedi-i-meteorit-vykhodnoy-v-parke-gorkogo-s-detmi'),
-    ('d387e611-05a1-4505-8bf8-9d1486a00f83', 'Чем заняться в выходные 17–18 августа в Москве', 'Позавтракать эклером с икрой в Atlantica Seafood, съесть ватрушку с сусальным золотом в Uhvat, стать героем аниме Ra’men или совместить искусство и коктейли в Beer& Brut — если вы ещё не придумали, чем заняться в эти выходные, «Открытая кухня» собрала интересные активности от ресторанов Москвы', NULL, 'https://yastatic.net/s3/eats-media/c6df5081-d406-463b-8d81-a19c797fdb3c.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-17-18-avgusta-v-moskve'),
-    ('4f06e661-7fed-4713-81c1-9df4ac2d17dd', 'Чем заняться в выходные 3–4 августа в Москве', 'Обновить гардероб на Perelmarket в Beer& Brut, побывать в новом Atlantica Bistro на Цветном бульваре, стать девочкой (или мальчиком) с персиками в Lumicino — если вы ещё не придумали, чем заняться в эти выходные, «Открытая кухня» собрала интересные активности от ресторанов Москвы', NULL, 'https://yastatic.net/s3/eats-media/23928c2b-8deb-4f60-aba5-ac5f945d53a5.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve'),
-    ('8f23fa1e-6a09-4226-93d3-2221adf73da4', '9 веранд, где можно попробовать апероль спритц', 'Вкус темпераментной Италии можно с лёгкостью ощутить и в Москве, удобно расположившись на уютных столичных террасах с бокалом «Апероль спритца». «Открытая кухня» разузнала, где подают самый популярный итальянский коктейль и за какими эмоциями туда стоит отправиться',NULL,'https://yastatic.net/s3/eats-media/78e9c1fe-9b2a-4dd1-9481-5161ca6b0912.jpg','https://openkitchen.eda.yandex/article/places/guides/leto-v-moskve-gde-i-s-chem-probovat-znamenitiy-italyanskiy-aperitiv'),
-    ('c6373fe5-a28e-4838-bf55-441af1532bfd', '10 кафе и кофеен в Москве с книгами, искусством, лекциями и кино', 'Посмотреть кино, полистать альбомы по искусству, выбрать книжные новинки себе и детям, послушать лекции, обсудить книги и заняться шопингом — всё это можно совместить с обедом или ужином. Редакция «Открытой кухни» собрала локальные и неочевидные гастрономические места, в которых можно интересно провести время, а не только поесть (хотя и это тоже)', NULL, 'https://yastatic.net/s3/eats-media/daac07a5-600f-42b2-8c8f-4d6bd2316750.jpeg', 'https://openkitchen.eda.yandex/article/places/guides/10-kafe-i-kofeen-v-moskve-s-knigami-iskusstvom-lektsiyami-i-kino'),
-    ('10dc61b8-dafe-4f23-88e3-a2560bef3f1a', 'Бенедикт с авокадо, мраморный лев и водные процедуры: на Остоженке вдвоём','Когда-то на месте Остоженки были пойменные луга, перед революцией здесь выросли причудливые особняки, а в XXI веке она обрела статус «Золотой мили», оставаясь про этом одной из самых впечатляющих улиц московского центра. Редакция составила романтический маршрут: утро, как в Париже, затем глоток лимончелло, даже джакузи под открытым небом, а вечером — мистерия с коктейлями',NULL,'https://yastatic.net/s3/eats-media/934a8cc1-a1d5-4ada-bd3f-13614a49005a.jpg','https://openkitchen.eda.yandex/article/places/guides/benedikt-s-avokado-mramorniy-lev-i-vodnye-protsedury-na-ostozhenke-vdvoyom')
+    ('d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Чебурек размером с подушку, лебеди и метеорит: выходной в Парке Горького с детьми', 'Прогулка с детьми — и радость, и работа, и умение идти на компромисс. Парк Горького в этом плане отлично подходит: и универсальный общепит, и диковинный музей с минералами, где любой почувствует себя ребёнком, и фонтаны, и великий чебурек, облетевший все соцсети. Редакция собрала план для идеального дня', NULL, 'https://storage.yandexcloud.net/yandex-guide/guides/46ebe70d-f028-475d-8343-02e5d50462db.jpg', 'https://openkitchen.eda.yandex/article/places/guides/cheburek-razmerom-s-podushku-lebedi-i-meteorit-vykhodnoy-v-parke-gorkogo-s-detmi',5),
+    ('d387e611-05a1-4505-8bf8-9d1486a00f83', 'Чем заняться в выходные 17–18 августа в Москве', 'Позавтракать эклером с икрой в Atlantica Seafood, съесть ватрушку с сусальным золотом в Uhvat, стать героем аниме Ra’men или совместить искусство и коктейли в Beer& Brut — если вы ещё не придумали, чем заняться в эти выходные, «Открытая кухня» собрала интересные активности от ресторанов Москвы', NULL, 'https://yastatic.net/s3/eats-media/c6df5081-d406-463b-8d81-a19c797fdb3c.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-17-18-avgusta-v-moskve', 5),
+    ('4f06e661-7fed-4713-81c1-9df4ac2d17dd', 'Чем заняться в выходные 3–4 августа в Москве', 'Обновить гардероб на Perelmarket в Beer& Brut, побывать в новом Atlantica Bistro на Цветном бульваре, стать девочкой (или мальчиком) с персиками в Lumicino — если вы ещё не придумали, чем заняться в эти выходные, «Открытая кухня» собрала интересные активности от ресторанов Москвы', NULL, 'https://yastatic.net/s3/eats-media/23928c2b-8deb-4f60-aba5-ac5f945d53a5.jpg', 'https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve', 5),
+    ('8f23fa1e-6a09-4226-93d3-2221adf73da4', '9 веранд, где можно попробовать апероль спритц', 'Вкус темпераментной Италии можно с лёгкостью ощутить и в Москве, удобно расположившись на уютных столичных террасах с бокалом «Апероль спритца». «Открытая кухня» разузнала, где подают самый популярный итальянский коктейль и за какими эмоциями туда стоит отправиться',NULL,'https://yastatic.net/s3/eats-media/78e9c1fe-9b2a-4dd1-9481-5161ca6b0912.jpg','https://openkitchen.eda.yandex/article/places/guides/leto-v-moskve-gde-i-s-chem-probovat-znamenitiy-italyanskiy-aperitiv', 9),
+    ('c6373fe5-a28e-4838-bf55-441af1532bfd', '10 кафе и кофеен в Москве с книгами, искусством, лекциями и кино', 'Посмотреть кино, полистать альбомы по искусству, выбрать книжные новинки себе и детям, послушать лекции, обсудить книги и заняться шопингом — всё это можно совместить с обедом или ужином. Редакция «Открытой кухни» собрала локальные и неочевидные гастрономические места, в которых можно интересно провести время, а не только поесть (хотя и это тоже)', NULL, 'https://yastatic.net/s3/eats-media/daac07a5-600f-42b2-8c8f-4d6bd2316750.jpeg', 'https://openkitchen.eda.yandex/article/places/guides/10-kafe-i-kofeen-v-moskve-s-knigami-iskusstvom-lektsiyami-i-kino', 10),
+    ('10dc61b8-dafe-4f23-88e3-a2560bef3f1a', 'Бенедикт с авокадо, мраморный лев и водные процедуры: на Остоженке вдвоём','Когда-то на месте Остоженки были пойменные луга, перед революцией здесь выросли причудливые особняки, а в XXI веке она обрела статус «Золотой мили», оставаясь про этом одной из самых впечатляющих улиц московского центра. Редакция составила романтический маршрут: утро, как в Париже, затем глоток лимончелло, даже джакузи под открытым небом, а вечером — мистерия с коктейлями',NULL,'https://yastatic.net/s3/eats-media/934a8cc1-a1d5-4ada-bd3f-13614a49005a.jpg','https://openkitchen.eda.yandex/article/places/guides/benedikt-s-avokado-mramorniy-lev-i-vodnye-protsedury-na-ostozhenke-vdvoyom', 15)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO guide.places(
@@ -578,11 +580,12 @@ INSERT INTO guide.selections (
     name,
     description,
     owner_id,
-    pre_created_collection_name
+    pre_created_collection_name,
+    size
 )
 VALUES
-    ('30fa4fb1-03ab-499c-b036-3e69e1772ed0', 'Хочу сходить', '', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Хочу сходить'),
-    ('50061c85-14b3-41a3-a934-e8a36022667f', 'Хочу заказать', '', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Хочу заказать');
+    ('30fa4fb1-03ab-499c-b036-3e69e1772ed0', 'Хочу сходить', '', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Хочу сходить', 3),
+    ('50061c85-14b3-41a3-a934-e8a36022667f', 'Хочу заказать', '', 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Хочу заказать', 5);
 
 INSERT INTO guide.places_selections(place_id, selection_id) VALUES
                                                                 ('0ca6a848-74c8-4916-abb3-c9bb7f102992', '30fa4fb1-03ab-499c-b036-3e69e1772ed0'),
