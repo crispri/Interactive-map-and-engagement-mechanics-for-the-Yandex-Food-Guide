@@ -34,11 +34,11 @@ struct SelectionScrollView: View {
                                 await viewModel.eventSelectionPressed(at: index, reader: reader)
                             }
                         } bookmarkAction: {
-                            viewModel.userCollections += [UserCollection(selection: viewModel.selections[index])]
+                            toggleSelectionInCollections(index: index)
                         } isSavedToCollection: {
                             viewModel.userCollections.contains { $0.id == viewModel.selections[index].id }
                         } infoAction: {
-                            // TODO: add bookmarkAction.
+                            // TODO: add infoAction.
                         }
                         .id(index)
                     }
@@ -49,5 +49,14 @@ struct SelectionScrollView: View {
             .scrollIndicators(.hidden)
             .frame(height: 100)
         }
+    }
+    
+    private func toggleSelectionInCollections(index: Int) {
+            let selectionToAdd = UserCollection(selection: viewModel.selections[index])
+            if viewModel.userCollections.contains(selectionToAdd) {
+                viewModel.userCollections = viewModel.userCollections.filter { $0.id != selectionToAdd.id }
+            } else {
+                viewModel.userCollections.append(selectionToAdd)
+            }
     }
 }

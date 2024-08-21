@@ -41,8 +41,14 @@ struct SelectionView: View {
                         Button {
                             bookmarkAction?()
                         } label: {
-                            Image(systemName: "bookmark")
+                            Image(isSavedToCollection() ? "Bookmark.fill" : "Bookmark")
+                                .renderingMode(.template)
+                                .resizable()
+                                .frame(width: 12, height: 15)
+                                .bold()
                                 .tint(.white)
+                                .padding(.trailing, 4)
+                                .padding(.top, 0)
                         }
                     }
                     .frame(height: 16)
