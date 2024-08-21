@@ -23,6 +23,7 @@ function SelectionsList() {
 			dispatch(setSelection(null))
 		} else {
 			dispatch(setSelection(id))
+			ym(98116436,'reachGoal','map_main_screen_button_selection');
 			setTimeout(() => {
 				const selectedCard = document.querySelector(`.${styles.card_active}`);
 				if (selectedCard && wrapperRef.current) {

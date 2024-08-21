@@ -29,6 +29,11 @@ const RestaurantFullView = ({ sheetRef }) => {
 
     const restaurant = map(useSelector((state) => state.restaurantByIdSlice.restaurant))
 
+    function handleGdu() {
+      ym(98116436,'reachGoal','full_screen_restaurant_card_gdu');
+      ym(98116436,'reachGoal','full_screen_restaurant_card_ddu');
+    }
+
     useEffect(() => {
         sheetRef.current.snapTo(({ maxHeight }) => maxHeight);
         console.log('Full view of restaurant');
@@ -77,9 +82,9 @@ const RestaurantFullView = ({ sheetRef }) => {
             </p>
           </div>
           <div className={styles.footer}>
-            <button className={styles.actionButton}>Такси</button>
-            <button className={styles.actionButton}>Маршрут</button>
-            <button className={styles.actionButton}>Позвонить</button>
+            <button className={styles.actionButton} onClick={handleGdu}>Такси</button>
+            <button className={styles.actionButton} onClick={handleGdu}>Маршрут</button>
+            <button className={styles.actionButton} onClick={handleGdu}>Позвонить</button>
           </div>
         </div>
       );

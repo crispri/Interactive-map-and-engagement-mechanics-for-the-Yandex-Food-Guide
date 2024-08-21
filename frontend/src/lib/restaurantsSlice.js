@@ -29,6 +29,31 @@ export const getRestaurants = createAsyncThunk(
 	}
 )
 
+export const login = createAsyncThunk(
+	'restaurants/login',
+	async () => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/login`,
+				{
+					method: "POST",
+					headers: {
+					},
+					body: {},
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
 export const getSelections = createAsyncThunk(
 	'restaurants/getSelections',
 	async () => {
