@@ -126,7 +126,9 @@ function App() {
         <>
           <Navbar/>
           <MapComponent sheetRef={sheetRef} location={location} updateHandler={updateHandler} setLocation={setLocation}/>
-          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue} onSpringEnd={onSpringEnd}/>
+          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue} onSpringEnd={() => {
+            setIsMiddlePos(sheetRef.current.height ===  Math.round(window.screen.height * 0.45))
+          }}/>
           <CollectionBottomSheet currentRest={currentRest} collectionSetOpen={collectionSetOpen} newCollectionSetOpen={newCollectionSetOpen} newCollectionRef={newCollectionRef} collectionOpen={collectionOpen} collectionRef={collectionRef}/>
           <NewCollectionBottomSheet newCollectionSetOpen={newCollectionSetOpen} newCollectionOpen={newCollectionOpen} newCollectionRef={newCollectionRef}/>
         </>
