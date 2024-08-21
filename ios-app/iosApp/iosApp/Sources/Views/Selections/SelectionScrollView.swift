@@ -34,9 +34,7 @@ struct SelectionScrollView: View {
                                 await viewModel.eventSelectionPressed(at: index, reader: reader)
                             }
                         } bookmarkAction: {
-                            print(viewModel.userCollections)
                             viewModel.userCollections += [UserCollection(selection: viewModel.selections[index])]
-                            print(viewModel.userCollections)
                         } isSavedToCollection: {
                             viewModel.userCollections.contains { $0.id == viewModel.selections[index].id }
                         } infoAction: {
