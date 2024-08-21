@@ -1,27 +1,21 @@
 package repository
 
-import Utils
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import model.CollectionOfPlace
 import model.Coordinates
 import model.Filter
-import model.Recommendation
 import model.Restaurant
-import network.api.FilterForJson
 import network.api.RequestBody
 import network.api.RequestBodyAddItemCollection
 import network.api.RequestBodyCollection
 import network.api.YandexMapEatApi
-import network.dto.request.RestaurantItemRequestForJson
 import network.dto.response.CollectionItemForJson
 import network.dto.response.RestaurantItemForJson
 import network.util.NetworkState
-import network.util.forJson
 import network.util.toJson
 import network.util.toModel
 import network.util.toToken
@@ -31,6 +25,7 @@ import javax.inject.Inject
 class RestaurantRepositoryImpl @Inject constructor(
     private val api: YandexMapEatApi
 ) : RestaurantRepository {
+
 
     override fun getRestaurants(
         token: String,
@@ -116,17 +111,12 @@ class RestaurantRepositoryImpl @Inject constructor(
         Log.d("SourceGetLoading", "end")
 
         try {
-            val bearToken = token.toToken()
-
             val response = api.getCollections(
                 token,
                 requestBody = RequestBodyCollection(isUserCollection)
             )
 
-            Log.d(
-                "SourceGet", response.items.toString()
-            )
-
+            Log.d("SourceGet", response.items.toString())
             Log.d("Response", response.toString())
             Log.d("ResponseItems", response.items.toString())
             emit(

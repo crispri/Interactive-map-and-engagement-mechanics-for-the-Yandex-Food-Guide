@@ -269,7 +269,6 @@ fun MainScreen(
                         Carousel(uiState = uiState, onFilterClick = { isSheetOpen = true }, send = send)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-//                    BottomSheetContent(uiState.restaurantsOnMap, navToRestaurant)
                     LazyColumn(
                         state = lazyListState,
                         flingBehavior = snapBehavior,

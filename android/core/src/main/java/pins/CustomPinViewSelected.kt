@@ -1,7 +1,6 @@
 package pins
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -12,6 +11,11 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.core.R
 
+/**
+ * Custom view representing a selected pin with various configurations based on favorite status,
+ * Ultima status, and Open Kitchen status. Inflates different layouts depending on
+ * the combination of these attributes.
+ */
 class CustomPinViewSelected @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

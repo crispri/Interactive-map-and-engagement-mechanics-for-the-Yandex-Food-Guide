@@ -2,6 +2,9 @@ package model
 
 import com.yandex.mapkit.geometry.Point
 
+/**
+ * Represents a restaurant with detailed information.
+ */
 data class Restaurant(
     val id: String,
     val coordinates: Point,

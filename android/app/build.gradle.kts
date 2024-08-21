@@ -52,7 +52,9 @@ android {
 }
 
 dependencies {
+
     implementation(project(":feature"))
+    testImplementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -63,24 +65,30 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+
     // mapkit
     implementation(libs.map.kit)
 
+
     //DI - Hilt
     implementation(libs.hilt)
-    implementation(libs.firebase.common.ktx)
-    testImplementation(project(":core"))
-    testImplementation(project(":core"))
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.fragment:fragment-ktx:1.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
 
+    //Firebase
+    implementation(libs.firebase.common.ktx)
+
+
+    //JUnit
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

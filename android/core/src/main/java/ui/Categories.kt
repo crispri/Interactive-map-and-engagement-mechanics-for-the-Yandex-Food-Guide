@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,9 +35,7 @@ fun CategoriesButton() {
         "Можно с собакой",
         "Веранда"
     )
-    Row(
-        /*        modifier = Modifier.padding(top = 8.dp)*/
-    ) {
+    Row {
         IconButton(
             onClick = { /*TODO*/ },
             colors = IconButtonColors(
@@ -48,7 +45,6 @@ fun CategoriesButton() {
                 Color.LightGray
             ),
             modifier = Modifier
-                /*                .padding(vertical = 4.dp)*/
                 .clip(RoundedCornerShape(16.dp))
                 .height(38.dp),
             content = {

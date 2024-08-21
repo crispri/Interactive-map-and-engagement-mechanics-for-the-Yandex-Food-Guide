@@ -24,8 +24,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.R
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 
 
 fun createViewNormalPinCard(context: Context): View {

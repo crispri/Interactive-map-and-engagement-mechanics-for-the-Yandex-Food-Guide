@@ -6,6 +6,11 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import com.example.core.R
 
+/**
+ * Custom view representing a pin with various configurations based on favorite status,
+ * Ultima status, and Open Kitchen status. Inflates different layouts depending on
+ * the combination of these attributes.
+ */
 class NormalPinView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

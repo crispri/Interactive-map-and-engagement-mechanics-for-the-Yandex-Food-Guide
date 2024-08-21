@@ -5,13 +5,13 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.util.TypedValueCompat.dpToPx
-import coil.load
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.core.R
 
+/**
+ * Custom view representing a pin with various configurations based on favorite status,
+ * Ultima status, and Open Kitchen status. Inflates different layouts depending on
+ * the combination of these attributes.
+ */
 class CustomPinView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

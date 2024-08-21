@@ -1,8 +1,8 @@
 package model
 
-import android.graphics.Picture
-import com.yandex.mapkit.geometry.Point
-
+/**
+ ** A data class representing the user's personal collection.
+ */
 data class CollectionOfPlace(
     val id: String,
     val name: String,

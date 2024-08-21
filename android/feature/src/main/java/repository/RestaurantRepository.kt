@@ -3,7 +3,6 @@ package repository
 import kotlinx.coroutines.flow.Flow
 import model.CollectionOfPlace
 import model.Filter
-import model.Recommendation
 import model.Restaurant
 import network.util.NetworkState
 

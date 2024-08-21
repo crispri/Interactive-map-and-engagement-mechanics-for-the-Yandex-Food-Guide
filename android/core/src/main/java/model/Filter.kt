@@ -1,5 +1,9 @@
 package model
 
+
+/**
+ * Data class representing a filter with specific criteria.
+ */
 data class Filter(
     val property: String,
     val value: List<Any>,

@@ -16,12 +16,31 @@ import model.CollectionOfPlace
 import model.Restaurant
 import pins.CustomPinView
 import pins.CustomPinViewSelected
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.text.DecimalFormat
 import kotlin.math.cos
 import kotlin.math.pow
 
 
 object Utils {
+
+    fun loadJsonFromAsset(context: Context, fileName: String): String? {
+        return try {
+            val inputStream = context.assets.open(fileName)
+            val buffer = BufferedReader(InputStreamReader(inputStream))
+            val sb = StringBuilder()
+            var line: String?
+            while (buffer.readLine().also { line = it } != null) {
+                sb.append(line)
+            }
+            buffer.close()
+            sb.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     fun updateOverlayHeight(zoomLevel: Int, viewHeightInPx: Int, bl: Point, tr: Point) : Double {
         val latitude = (tr.latitude + bl.latitude) / 2

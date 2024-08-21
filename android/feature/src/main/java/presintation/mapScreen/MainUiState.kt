@@ -19,9 +19,12 @@ data class MainUiState(
     val restaurantsOnMap: List<Restaurant> = listOf(),
     val restaurantsOnMapUnsorted: List<Restaurant> = listOf(),
 
-    val converterPins: MutableMap<Pins, Int> = mutableMapOf(Pins.MAXI to 0, Pins.NORMAL to 0, Pins.MINI to 0),
+    val converterPins: MutableMap<Pins, Int> = mutableMapOf(
+        Pins.MAXI to 0,
+        Pins.NORMAL to 0,
+        Pins.MINI to 0
+    ),
 
-    //val points: MutableList<MyPin> = mutableListOf(),
     val recommendations: List<CollectionOfPlace> = listOf(),
     val recommendationIsSelected: Boolean = false,
     val zoomValue: Float = 16.0f,
@@ -37,8 +40,6 @@ data class MainUiState(
     val errorMessage: String? = null,
 
     val isCollectionMode: Boolean = false,
-    /*val mapObjectCollection: MapObjectCollection? = null,
-    val placemarkMapObject: PlacemarkMapObject? = null,*/
 
 
     val itemsList: List<String> = listOf(
@@ -50,6 +51,4 @@ data class MainUiState(
         "Можно с собакой",
         "Веранда"
     ),
-
-
-    )
+)
