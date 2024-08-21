@@ -33,7 +33,6 @@ import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,7 +54,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.feature.R
-import presintation.mapScreen.Carousel
 import ui.AboutPlaceCard
 import ui.CategoryButtonCard
 import ui.GetRestaurantInfo
@@ -64,9 +62,13 @@ import ui.PlaceCard
 import ui.PlaceWidgetCard
 import ui.RestaurantScreenEvent
 import ui.TopCard
-import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
+/**
+ * A composable function that represents the restaurant detail screen.
+ *
+ * This screen displays detailed information about a restaurant, including images, tags, and descriptions.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(

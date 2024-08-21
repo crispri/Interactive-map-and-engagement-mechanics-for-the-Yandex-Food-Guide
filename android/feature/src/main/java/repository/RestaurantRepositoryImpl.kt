@@ -22,6 +22,14 @@ import network.util.toToken
 import javax.inject.Inject
 
 
+/**
+ * Implementation of [RestaurantRepository] for handling restaurant-related data operations using YandexMapEatApi.
+ *
+ * This class provides concrete implementations of the repository methods defined in the [RestaurantRepository] interface,
+ * using the YandexMapEatApi for network requests. The methods are responsible for fetching restaurant data, collections,
+ * and managing items in collections. The results are returned as [Flow]s of [NetworkState] to handle loading, success,
+ * and failure states.
+ */
 class RestaurantRepositoryImpl @Inject constructor(
     private val api: YandexMapEatApi
 ) : RestaurantRepository {

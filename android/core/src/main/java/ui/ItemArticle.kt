@@ -30,6 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.R
 
+/**
+ * A Composable function that displays a card with an image background and text content.
+ */
 @Composable
 fun CardWithImageAndText(
     imagePainter: Painter,

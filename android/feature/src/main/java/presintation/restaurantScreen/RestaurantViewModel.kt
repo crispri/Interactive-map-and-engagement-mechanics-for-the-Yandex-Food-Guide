@@ -15,6 +15,12 @@ import ui.GetRestaurantInfo
 import ui.RestaurantScreenEvent
 import javax.inject.Inject
 
+/**
+ * ViewModel class for managing the state of the restaurant screen.
+ *
+ * This ViewModel handles the business logic for fetching and managing restaurant data. It communicates with
+ * the repository to retrieve restaurant information and updates the UI state accordingly.
+ */
 @HiltViewModel
 class RestaurantViewModel @Inject constructor(
     private val repository: RestaurantRepositoryImpl,

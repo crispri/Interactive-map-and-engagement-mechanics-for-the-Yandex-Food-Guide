@@ -7,7 +7,9 @@ import model.Pins
 import model.Restaurant
 
 
-//все отображаемые элементы
+/**
+ * Represents the UI state for the main screen of the application.
+ */
 data class MainUiState(
     val selectedItemFromMapId: String? = null,
     val selectedItemFromBottomSheetId: String? = null,
@@ -19,7 +21,11 @@ data class MainUiState(
     val restaurantsOnMap: List<Restaurant> = listOf(),
     val restaurantsOnMapUnsorted: List<Restaurant> = listOf(),
 
-    val converterPins: MutableMap<Pins, Int> = mutableMapOf(Pins.MAXI to 0, Pins.NORMAL to 0, Pins.MINI to 0),
+    val converterPins: MutableMap<Pins, Int> = mutableMapOf(
+        Pins.MAXI to 0,
+        Pins.NORMAL to 0,
+        Pins.MINI to 0
+    ),
 
     val recommendations: List<CollectionOfPlace> = listOf(),
     val recommendationIsSelected: Boolean = false,

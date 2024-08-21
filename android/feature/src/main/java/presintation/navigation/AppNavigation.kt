@@ -38,9 +38,6 @@ fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
         }
 
         composable(AppDestination.MAP_SCREEN) {
-
-
-
             MainScreen(
                 navToRestaurant = actions.onRestaurantScreen,
                 uiState = mainUiState,

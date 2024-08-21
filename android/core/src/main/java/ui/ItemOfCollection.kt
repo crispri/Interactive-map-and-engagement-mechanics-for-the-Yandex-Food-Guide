@@ -30,6 +30,9 @@ import com.example.core.R
 import model.Restaurant
 import java.text.DecimalFormat
 
+/**
+ * A Composable function that displays a detailed card for a restaurant.
+ */
 @Composable
 fun BigCard(restaurant: Restaurant, navToRestaurant: () -> Unit) {
     Card(

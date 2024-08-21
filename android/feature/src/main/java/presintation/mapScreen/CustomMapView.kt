@@ -9,6 +9,16 @@ import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
 
+/**
+ * A custom view class extending `MapView` to provide additional functionalities such as managing camera position listeners,
+ * * adding custom placemarks, and handling tap events on map objects.
+ *
+ * This class allows you to:
+ * - Add and manage camera position listeners.
+ * - Add custom place marks to the map.
+ * - Register and remove tap listeners for map objects.
+ * - Retrieve coordinates of the currently visible region on the map.
+ */
 class CustomMapView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

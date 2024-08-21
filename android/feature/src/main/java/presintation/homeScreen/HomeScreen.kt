@@ -61,6 +61,24 @@ import ui.CategoryButtonCard
 import ui.TextCard
 import java.text.DecimalFormat
 
+
+/**
+ * Contains Composable functions for the home screen of the application, including layout and UI components.
+ *
+ * The `HomeScreen` function represents the main UI for the home screen, displaying a map frame, image carousels,
+ * and a section to choose restaurants according to taste. It also manages UI state and interactions.
+ *
+ * The `MapFrame` function displays a static image representing the map frame used in the home screen layout.
+ *
+ * The `ChooseAccordingToYourTaste` function presents a section in the home screen where users can choose restaurants
+ * based on their preferences, including a filter carousel and a list of restaurant cards.
+ *
+ * The `RestaurantCard` function represents an individual restaurant card in the home screen, displaying the restaurant's
+ * details such as name, rating, address, and description, as well as an image carousel and tags associated with the
+ * restaurant.
+ *
+ * The `TextCard` function is used to display individual tags associated with restaurants in a card format.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(

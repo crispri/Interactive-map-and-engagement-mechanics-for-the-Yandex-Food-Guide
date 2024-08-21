@@ -23,7 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.R
 
-
+/**
+ * A Composable function that displays a row of filters buttons and an icon button.
+ */
 @Composable
 fun CategoriesButton() {
     val itemsList = listOf(

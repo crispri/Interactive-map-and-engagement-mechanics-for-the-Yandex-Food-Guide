@@ -32,12 +32,20 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.core.R
 import model.MainScreenEvent
-import model.Restaurant
 import model.SaveInCollectionEvent
 
+/**
+ * A Composable function that displays
+ * an image carousel with indicators and a button for saving items to a collection.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ImageCarousel(imageUrls: List<String>, restaurantId: String, inCollection: Boolean, send: (MainScreenEvent) -> Unit) {
+fun ImageCarousel(
+    imageUrls: List<String>,
+    restaurantId: String,
+    inCollection: Boolean,
+    send: (MainScreenEvent) -> Unit
+) {
     val pagerState = rememberPagerState(pageCount = { imageUrls.size })
 
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -67,9 +75,18 @@ fun ImageCarousel(imageUrls: List<String>, restaurantId: String, inCollection: B
                 .align(Alignment.TopEnd)
                 .padding(8.dp)
         ) {
-            IconButton(onClick = { send(SaveInCollectionEvent("91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75", restaurantId)) }, content = {
+            IconButton(onClick = {
+                send(
+                    SaveInCollectionEvent(
+                        "91c0a3ee-76b3-4fac-a0f6-247dd1cf5f75",
+                        restaurantId
+                    )
+                )
+            }, content = {
                 Icon(
-                    painter = if (!inCollection) painterResource(id = R.drawable.ic_favorite) else painterResource(id = R.drawable.ic_favorite_on),
+                    painter = if (!inCollection) painterResource(id = R.drawable.ic_favorite) else painterResource(
+                        id = R.drawable.ic_favorite_on
+                    ),
                     contentDescription = "Кнопка добавления в личные подборки",
                     modifier = Modifier.size(24.dp),
                     tint = Color.White,
@@ -95,7 +112,6 @@ fun ImageCarousel(imageUrls: List<String>, restaurantId: String, inCollection: B
             }
         }
     }
-
 }
 
 

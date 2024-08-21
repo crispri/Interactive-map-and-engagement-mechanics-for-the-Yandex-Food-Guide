@@ -8,6 +8,9 @@ import network.api.YandexMapEatApi
 import repository.RestaurantRepositoryImpl
 import javax.inject.Singleton
 
+/**
+ * * Provides a singleton instance of [Restaurant RepositoryImpl].
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {

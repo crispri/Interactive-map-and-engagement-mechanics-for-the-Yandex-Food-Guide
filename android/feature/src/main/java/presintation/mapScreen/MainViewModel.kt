@@ -30,6 +30,9 @@ import network.util.NetworkState
 import repository.RestaurantRepositoryImpl
 import javax.inject.Inject
 
+/**
+ * ViewModel class responsible for managing and processing the UI state for the main screen.
+ */
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: RestaurantRepositoryImpl,
@@ -338,6 +341,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
+/**
+ * Filters out overlapping restaurants from the given list by adjusting their pin types and sizes.
+ */
     private fun filterNonOverlappingRestaurants(
         list: List<Restaurant>,
         w : Double,

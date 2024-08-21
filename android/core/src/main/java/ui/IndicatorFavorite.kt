@@ -13,6 +13,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.core.R
 
+/**
+ * A Composable function that displays a badge with a favorite icon.
+ */
 @Composable
 fun IndicatorFavorite(onFavoriteClick: () -> Unit) {
     Badge(

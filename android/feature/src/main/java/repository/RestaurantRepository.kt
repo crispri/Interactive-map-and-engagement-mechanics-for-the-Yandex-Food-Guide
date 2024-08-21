@@ -6,6 +6,13 @@ import model.Filter
 import model.Restaurant
 import network.util.NetworkState
 
+/**
+ * Interface for repository operations related to restaurants and collections.
+ *
+ * This interface defines the methods for interacting with the data source to fetch and manage restaurant and
+ * collection data. Implementations of this interface handle network requests and provide the results as [Flow]s
+ * * of [NetworkState] to the ViewModel or other consumers.
+ */
 interface RestaurantRepository {
 
     fun getRestaurants(

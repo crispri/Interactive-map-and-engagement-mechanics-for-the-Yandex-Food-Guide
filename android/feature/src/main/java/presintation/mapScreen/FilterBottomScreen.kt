@@ -58,6 +58,15 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+* A Composable function that displays a filter screen at the bottom of the layout.
+*
+* This screen includes various filter categories and options for the user to refine their search.
+* The UI consists of:
+* - A bottom-aligned filter result card.
+* - A `Lazy Column` that lists different filter categories, such as type of establishment, dishes, cuisines, opening hours, accessibility, and food malls.
+* - A sorting card at the end of the list, which allows users to sort results based on preferences or rating.
+*/
 @Composable
 fun FilterBottomScreen(
     send: (MainScreenEvent) -> Unit,

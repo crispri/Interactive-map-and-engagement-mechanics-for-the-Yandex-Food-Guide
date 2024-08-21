@@ -33,7 +33,10 @@ import pins.CustomPinViewSelected
 import pins.NormalPinView
 import java.text.DecimalFormat
 
-
+/**
+ * Displays a map screen with various functionalities including displaying and updating restaurant markers,
+ * handling user interactions, and adjusting the camera position based on state changes.
+ */
 @Composable
 fun MapScreen(
     uiState: MainUiState,

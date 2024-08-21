@@ -12,6 +12,12 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
+/**
+ * Defines the API endpoints for interacting with the Yandex Map Eat service.
+ *
+ * This interface provides methods for performing various network operations related to restaurants and collections,
+ * using Retrofit for network requests.
+ */
 interface YandexMapEatApi {
 
     @POST("guide/v1/restaurants")

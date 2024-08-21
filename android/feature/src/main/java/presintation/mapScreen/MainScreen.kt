@@ -82,16 +82,17 @@ import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.RaiseCameraPosition
 import model.RecommendationIsSelected
-import model.Restaurant
 import model.SelectItemFromBottomSheet
 import model.SwitchUserModeEvent
 import model.UpdateItemsOnMap
-import ui.BigCard
 import ui.CardWithImageAndText
 import ui.TextCard
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
+/**
+ * The main screen composable for displaying the map and bottom sheet with a list of restaurants.
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
