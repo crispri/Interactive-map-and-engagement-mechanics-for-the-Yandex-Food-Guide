@@ -28,6 +28,7 @@ import NewCollectionBottomSheet from "../components/bottomsheet/NewCollectionBot
 const SheetContent = lazy(() => import('../components/sheetcontent/SheetContent.jsx'))
  
 function App() {
+  console.log(`23`);
   const sheetRef = useRef()
   const collectionRef = useRef()
   const newCollectionRef = useRef()
@@ -80,7 +81,12 @@ function App() {
       body.lower_left_corner.lat = debouncedValue[1][1] + (debouncedValue[0][1] - debouncedValue[1][1])*0.5
     }
     if (current_selection) {
-      if (current_selection === 'ultima' || current_selection === 'experts') {
+      if (isInCollection) {
+        ym(98116436,'reachGoal','collection_on_the_map_change_polygon');
+      } else {
+        ym(98116436,'reachGoal','selection_on_the_map_change_polygon');
+      }
+      if (current_selection === 'ultima' || current_selection === 'experts' && !isInCollection) {
         body["filters"] = [
           {
           "property": "tags", // tags
@@ -105,9 +111,6 @@ function App() {
     }
     dispatch(getRestaurants(body))
 
-  function onSpringEnd()  {
-      setIsMiddlePos(sheetRef.current.height ===  Math.round(window.screen.height * 0.45))
-  }
   }, [debouncedValue, current_selection,isMiddlePos, isInCollection])
   const router = createBrowserRouter([
     {
@@ -120,7 +123,9 @@ function App() {
         <>
           <Navbar/>
           <MapComponent sheetRef={sheetRef} location={location} updateHandler={updateHandler} setLocation={setLocation}/>
-          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue} onSpringEnd={onSpringEnd}/>
+          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue} onSpringEnd={() => {
+            setIsMiddlePos(sheetRef.current.height ===  Math.round(window.screen.height * 0.45))
+          }}/>
           <CollectionBottomSheet currentRest={currentRest} collectionSetOpen={collectionSetOpen} newCollectionSetOpen={newCollectionSetOpen} newCollectionRef={newCollectionRef} collectionOpen={collectionOpen} collectionRef={collectionRef}/>
           <NewCollectionBottomSheet newCollectionSetOpen={newCollectionSetOpen} newCollectionOpen={newCollectionOpen} newCollectionRef={newCollectionRef}/>
         </>

@@ -6,3 +6,4 @@ export const COORDINATES = [
 ]
 
 export const _apiUrl = import.meta.env.VITE_API_URL;
+export const _yandexMetricsApiUrl = import.meta.env.YANDEX_METRICA_API_URL;
