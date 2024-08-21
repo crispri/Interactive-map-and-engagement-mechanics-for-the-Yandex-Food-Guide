@@ -185,7 +185,12 @@ final class SnippetViewModel: ObservableObject {
     
     func fetchSelections() async {
         do {
-            selections = try await loadSelections()
+            if onlyUserCollections {
+                selections = userCollections.map{ $0.selection }
+            } else {
+                selections = try await loadSelections()
+            }
+            
             let userLocation = try mapManager.getUserLocation()
             let screenPoints = mapManager.getScreenPoints()
             let params: [AnyHashable : Any]? = [
