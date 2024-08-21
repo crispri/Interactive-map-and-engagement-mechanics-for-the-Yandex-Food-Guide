@@ -39,6 +39,8 @@
 		8450397E015068C0754611A2 /* Pods_iosAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */; };
 		85FEE69FFF6D5E7FB6785FFF /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 628EC9234413B8A27E25DE28 /* Pods_iosApp.framework */; };
 		CB1156102C6FFDB10060F399 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = CB11560F2C6FFDB10060F399 /* WrappingHStack */; };
+		CB138FED2C7636AB00AC1AA6 /* UserCollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB138FEC2C7636AB00AC1AA6 /* UserCollectionItem.swift */; };
+		CB138FF02C7642D600AC1AA6 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = CB138FEF2C7642D600AC1AA6 /* OrderedCollections */; };
 		CB28CEE62C6926B400266944 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CB28CEE52C6926B400266944 /* README.md */; };
 		CB2BF5C72C74D71C00082368 /* PutCollectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2BF5C62C74D71C00082368 /* PutCollectionRequest.swift */; };
 		CB2BF5C92C74D72600082368 /* IPutCollectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2BF5C82C74D72600082368 /* IPutCollectionRequest.swift */; };
@@ -46,6 +48,7 @@
 		CB3714192C5E781C00C045A6 /* PersonalSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */; };
 		CB37141B2C5E808400C045A6 /* SelectionScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */; };
 		CB47919C2C74B956007B39D3 /* AddUserCollectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47919B2C74B956007B39D3 /* AddUserCollectionButton.swift */; };
+		CB52F5D32C75731C002FFEA2 /* EditUserCollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB52F5D22C75731C002FFEA2 /* EditUserCollectionItem.swift */; };
 		CB5CA3902C5FB60B0025F771 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA38F2C5FB60B0025F771 /* Api.swift */; };
 		CB5CA3922C5FB6560025F771 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3912C5FB6560025F771 /* NetworkManager.swift */; };
 		CB5CA3942C5FB9BC0025F771 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */; };
@@ -147,6 +150,7 @@
 		AB953BFC42B520C290826951 /* Pods-iosAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.release.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		B05B86BAF462A14D58EF0BB8 /* Pods_iosAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B97334D73D92638EBD7FC9C4 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
+		CB138FEC2C7636AB00AC1AA6 /* UserCollectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionItem.swift; sourceTree = "<group>"; };
 		CB1F19172C68FF35006DE5EC /* GeocoderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocoderResponse.swift; sourceTree = "<group>"; };
 		CB28CEE52C6926B400266944 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CB2BF5C62C74D71C00082368 /* PutCollectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutCollectionRequest.swift; sourceTree = "<group>"; };
@@ -155,6 +159,7 @@
 		CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalSelectionView.swift; sourceTree = "<group>"; };
 		CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionScrollView.swift; sourceTree = "<group>"; };
 		CB47919B2C74B956007B39D3 /* AddUserCollectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserCollectionButton.swift; sourceTree = "<group>"; };
+		CB52F5D22C75731C002FFEA2 /* EditUserCollectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserCollectionItem.swift; sourceTree = "<group>"; };
 		CB5CA38F2C5FB60B0025F771 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		CB5CA3912C5FB6560025F771 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CB5CA3932C5FB9BC0025F771 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
@@ -202,6 +207,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB138FF02C7642D600AC1AA6 /* OrderedCollections in Frameworks */,
 				85FEE69FFF6D5E7FB6785FFF /* Pods_iosApp.framework in Frameworks */,
 				4FA166812C7486C2008114B7 /* AppMetricaCore in Frameworks */,
 				CB1156102C6FFDB10060F399 /* WrappingHStack in Frameworks */,
@@ -455,6 +461,24 @@
 			path = Pins;
 			sourceTree = "<group>";
 		};
+		CB138FF12C7644DB00AC1AA6 /* EditUserCollections */ = {
+			isa = PBXGroup;
+			children = (
+				CBDE654A2C71ED8600753BBB /* EditUserCollectionsView.swift */,
+				CB52F5D22C75731C002FFEA2 /* EditUserCollectionItem.swift */,
+			);
+			path = EditUserCollections;
+			sourceTree = "<group>";
+		};
+		CB138FF22C7644EE00AC1AA6 /* UserCollectionsGuide */ = {
+			isa = PBXGroup;
+			children = (
+				CB6037C12C722CFC00B1F664 /* UserCollectionsView.swift */,
+				CB138FEC2C7636AB00AC1AA6 /* UserCollectionItem.swift */,
+			);
+			path = UserCollectionsGuide;
+			sourceTree = "<group>";
+		};
 		CB5CA38E2C5FB5CD0025F771 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -494,11 +518,11 @@
 		CBDE65492C71ED6400753BBB /* UserCollection */ = {
 			isa = PBXGroup;
 			children = (
-				CBDE654A2C71ED8600753BBB /* EditUserCollectionsView.swift */,
-				CB6037C12C722CFC00B1F664 /* UserCollectionsView.swift */,
-				CBA9BCD52C73C83700B6A2F5 /* RestaurantPicture.swift */,
-				CB47919B2C74B956007B39D3 /* AddUserCollectionButton.swift */,
+				CB138FF22C7644EE00AC1AA6 /* UserCollectionsGuide */,
+				CB138FF12C7644DB00AC1AA6 /* EditUserCollections */,
 				CB2BF5CA2C74DD4900082368 /* NewCollectionView.swift */,
+				CB47919B2C74B956007B39D3 /* AddUserCollectionButton.swift */,
+				CBA9BCD52C73C83700B6A2F5 /* RestaurantPicture.swift */,
 			);
 			path = UserCollection;
 			sourceTree = "<group>";
@@ -544,9 +568,9 @@
 			isa = PBXGroup;
 			children = (
 				CBDE65492C71ED6400753BBB /* UserCollection */,
-				CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */,
-				CBFD7EDB2C655CC100CEC0BC /* SelectionView.swift */,
 				CB37141A2C5E808400C045A6 /* SelectionScrollView.swift */,
+				CBFD7EDB2C655CC100CEC0BC /* SelectionView.swift */,
+				CB3714182C5E781C00C045A6 /* PersonalSelectionView.swift */,
 			);
 			path = Selections;
 			sourceTree = "<group>";
@@ -595,6 +619,7 @@
 				4F69DC822C678BD00026828E /* BottomSheet */,
 				CB11560F2C6FFDB10060F399 /* WrappingHStack */,
 				4FA166802C7486C2008114B7 /* AppMetricaCore */,
+				CB138FEF2C7642D600AC1AA6 /* OrderedCollections */,
 			);
 			productName = iosApp;
 			productReference = 4FC5121A2C5E5585006ED790 /* iosApp.app */;
@@ -675,6 +700,7 @@
 				4F69DC812C678BD00026828E /* XCRemoteSwiftPackageReference "BottomSheet" */,
 				CB11560E2C6FFDB10060F399 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				4FA1667F2C7486C2008114B7 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */,
+				CB138FEE2C7642D600AC1AA6 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = 4FC5121B2C5E5585006ED790 /* Products */;
 			projectDirPath = "";
@@ -838,6 +864,7 @@
 				CB2BF5CB2C74DD4900082368 /* NewCollectionView.swift in Sources */,
 				CB47919C2C74B956007B39D3 /* AddUserCollectionButton.swift in Sources */,
 				6EF9100E2C6F9AFD00680AEE /* NormalPinView.swift in Sources */,
+				CB138FED2C7636AB00AC1AA6 /* UserCollectionItem.swift in Sources */,
 				4F7D1CFE2C70C714002D126C /* PinSize.swift in Sources */,
 				4F1C8F502C739D4B00B2B4A6 /* MapObjectTapListener.swift in Sources */,
 				4FC512202C5E5585006ED790 /* GuideView.swift in Sources */,
@@ -880,6 +907,7 @@
 				CBA9BCD62C73C83700B6A2F5 /* RestaurantPicture.swift in Sources */,
 				CBF46D3C2C6F937F00186255 /* GeocoderResponse.swift in Sources */,
 				CBFD7EE62C655CC100CEC0BC /* PageControl.swift in Sources */,
+				CB52F5D32C75731C002FFEA2 /* EditUserCollectionItem.swift in Sources */,
 				CB2BF5C72C74D71C00082368 /* PutCollectionRequest.swift in Sources */,
 				CB6037C62C73AFF300B1F664 /* ICollectionRequest.swift in Sources */,
 				CBFD7EEF2C65723100CEC0BC /* CameraListener.swift in Sources */,
@@ -1052,12 +1080,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 2H4VAW9HQQ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Яндекс Гид";
+				INFOPLIST_KEY_CFBundleDisplayName = "Гид Яндекс Еды";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = Message;
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = Message;
@@ -1074,7 +1102,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.guide.app.iosApp1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guide.app.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1095,12 +1123,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 2H4VAW9HQQ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Яндекс Гид";
+				INFOPLIST_KEY_CFBundleDisplayName = "Гид Яндекс Еды";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = Message;
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = Message;
@@ -1117,7 +1145,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.guide.app.iosApp1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guide.app.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1279,6 +1307,14 @@
 				minimumVersion = 0.2.0;
 			};
 		};
+		CB138FEE2C7642D600AC1AA6 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1296,6 +1332,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB11560E2C6FFDB10060F399 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
+		};
+		CB138FEF2C7642D600AC1AA6 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB138FEE2C7642D600AC1AA6 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

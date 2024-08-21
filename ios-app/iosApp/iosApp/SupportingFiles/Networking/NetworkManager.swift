@@ -181,7 +181,7 @@ final class NetworkManager {
         return data
     }
     
-    func sendCollection(name: String, description: String) async throws -> String {
+    func postCollection(name: String, description: String) async throws -> String {
         let request = try makeRequest(
             path: .collection,
             method: .post,
@@ -197,6 +197,7 @@ final class NetworkManager {
     }
     
     func putRestaurantToCollection(collectionID: String, restaurantID: String) async throws {
+        print("put restaurant \(restaurantID) to \(collectionID)")
         let request = try makeRequest(
             path: .collections(id: collectionID),
             method: .put,
@@ -206,5 +207,6 @@ final class NetworkManager {
         )
         
         try await performRequest(request: request)
+        print("success")
     }
 }

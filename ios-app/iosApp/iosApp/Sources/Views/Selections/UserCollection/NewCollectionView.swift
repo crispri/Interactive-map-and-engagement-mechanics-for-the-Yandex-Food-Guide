@@ -37,8 +37,7 @@ struct NewCollectionView: View {
                         name: collectionName,
                         description: collectionDescription,
                         picture: "PlaceHolder"
-                    ),
-                    restaurantIDs: []
+                    )
                 )]
                 mainAction?()
             }) {

@@ -41,8 +41,14 @@ struct SelectionView: View {
                         Button {
                             bookmarkAction?()
                         } label: {
-                            Image(systemName: "bookmark")
+                            Image(isSavedToCollection() ? "Bookmark.fill" : "Bookmark")
+                                .renderingMode(.template)
+                                .resizable()
+                                .frame(width: 12, height: 15)
+                                .bold()
                                 .tint(.white)
+                                .padding(.trailing, 4)
+                                .padding(.top, 0)
                         }
                     }
                     .frame(height: 16)
@@ -67,7 +73,11 @@ struct SelectionView: View {
                             .resizable()
                             .scaledToFill()
                             .overlay {
-                                Color.black.opacity(0.5)
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.black.opacity(0.1), Color.black.opacity(0.8)]),
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
                             }
                     } placeholder: { Color.gray }
                 } else {
