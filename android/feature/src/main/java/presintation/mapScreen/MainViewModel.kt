@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import model.CancelCentering
 import model.Filter
-import model.HideIntersections
 import model.MainScreenEvent
 import model.NavigateToLocationEvent
 import model.Pins

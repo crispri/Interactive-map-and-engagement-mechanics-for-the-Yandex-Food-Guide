@@ -103,7 +103,7 @@ fun MainScreen(
     curLocation: MutableState<Point?>
 ) {
 
-    val offsetValue = remember { mutableStateOf((-160).dp) }
+    val offsetValue = remember { mutableStateOf((-130).dp) }
 
     val offsetState = remember { mutableFloatStateOf(-96f) }
     val configuration = LocalConfiguration.current
@@ -194,7 +194,7 @@ fun MainScreen(
             }
         } else {
             list.value = uiState.restaurantsOnMap
-            offsetValue.value = (-160).dp
+            offsetValue.value = (-130).dp
             if (uiState.selectedItemFromBottomSheetId == null) {
                 sheetState.animateTo(SheetValue.Hidden)
             }

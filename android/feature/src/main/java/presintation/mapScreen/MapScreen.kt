@@ -2,11 +2,8 @@ package presintation.mapScreen
 
 import Utils.createBitmapFromVector
 import Utils.createBitmapFromView
-import Utils.invertColors
 import Utils.updateOverlayHeight
 import Utils.updateOverlayWidth
-import android.graphics.Bitmap
-import android.graphics.PointF
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -23,28 +20,18 @@ import com.yandex.mapkit.Animation
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.runtime.image.ImageProvider
 import model.CancelCentering
-import model.HideIntersections
 import model.MainScreenEvent
-import model.PinIcon
 import model.Pins
-import model.Restaurant
 import model.SelectItemFromMap
-import model.SetNewList
 import model.UpdateItemsOnMap
 import pins.CustomPinView
 import pins.CustomPinViewSelected
 import pins.NormalPinView
-import pins.NormalPinViewSelected
-import kotlin.math.cos
-import kotlin.math.pow
 import java.text.DecimalFormat
-import kotlin.math.cos
-import kotlin.math.pow
 
 
 @Composable
