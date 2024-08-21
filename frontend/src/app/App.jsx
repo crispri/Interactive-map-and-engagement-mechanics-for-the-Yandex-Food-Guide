@@ -126,11 +126,7 @@ function App() {
         <>
           <Navbar/>
           <MapComponent sheetRef={sheetRef} location={location} updateHandler={updateHandler} setLocation={setLocation}/>
-<<<<<<< HEAD
-          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue}/>
-=======
           <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue} onSpringEnd={onSpringEnd}/>
->>>>>>> origin
           <CollectionBottomSheet currentRest={currentRest} collectionSetOpen={collectionSetOpen} newCollectionSetOpen={newCollectionSetOpen} newCollectionRef={newCollectionRef} collectionOpen={collectionOpen} collectionRef={collectionRef}/>
           <NewCollectionBottomSheet newCollectionSetOpen={newCollectionSetOpen} newCollectionOpen={newCollectionOpen} newCollectionRef={newCollectionRef}/>
         </>
