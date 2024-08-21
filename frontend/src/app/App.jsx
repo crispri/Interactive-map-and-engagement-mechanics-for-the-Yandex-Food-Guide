@@ -28,6 +28,7 @@ import NewCollectionBottomSheet from "../components/bottomsheet/NewCollectionBot
 const SheetContent = lazy(() => import('../components/sheetcontent/SheetContent.jsx'))
  
 function App() {
+  console.log(`23`);
   const sheetRef = useRef()
   const collectionRef = useRef()
   const newCollectionRef = useRef()
@@ -75,6 +76,11 @@ function App() {
       },
     }
     if (current_selection) {
+      if (isInCollection) {
+        ym(98116436,'reachGoal','collection_on_the_map_change_polygon');
+      } else {
+        ym(98116436,'reachGoal','selection_on_the_map_change_polygon');
+      }
       body["filters"] = [{
         "property": "selection_id",
         "operator": "in",

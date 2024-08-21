@@ -5,8 +5,10 @@ import CollectionBottomSheetHeader from './CollectionBottomSheetHeader'
 import { useDispatch, useSelector } from "react-redux";
 import { getCollections, putInCollection } from '../../lib/restaurantsSlice';
 import { useEffect, useMemo, useState } from 'react';
+import wantToGo from '../../assets/want_to_go_bottomsheet.svg'
+import wantToOrder from '../../assets/want_to_order_bottomsheet.svg'
 
-const CollectionBottomSheet = ({ currentRest, newCollectionSetOpen, newCollectionRef, collectionOpen, collectionSetOpen, collectionRef}) => {
+const CollectionBottomSheet = ({ currentRest, newCollectionSetOpen, newCollectionRef, collectionOpen, collectionSetOpen, collectionRef }) => {
 
     const dispatch = useDispatch();
 
@@ -20,7 +22,7 @@ const CollectionBottomSheet = ({ currentRest, newCollectionSetOpen, newCollectio
     };
 
     function handleClick() {
-        dispatch(putInCollection({id: selectedCollection, restaurantId: currentRest.id}))
+        dispatch(putInCollection({ id: selectedCollection, restaurantId: currentRest.id }))
         onDismiss()
     }
 
@@ -30,13 +32,30 @@ const CollectionBottomSheet = ({ currentRest, newCollectionSetOpen, newCollectio
     const onDismiss = () => {
         collectionSetOpen(false);
     }
-
     const contentNode = useMemo(() => collections?.map((collection, index) => (
         <div key={index} className={styles.collection_items}>
             <div className={styles.collection_info}>
-                <div className={styles.collection_image}>
-                    <img src={collection?.picture} alt={collection.name} />
-                </div>
+                {collection?.pre_created_collection_name === "Хочу сходить"
+                    ?
+                    <div className={styles.collection_image_hard}>
+                        <img src={wantToGo} alt={collection.name} />
+                    </div>
+                    :
+                    collection?.pre_created_collection_name === "Хочу заказать"
+                        ?
+                        <div className={styles.collection_image_hard}>
+                            <img src={wantToOrder} alt={collection.name} />
+                        </div>
+                        :
+                        collection?.picture
+                        ?
+                        <div className={styles.collection_image}>
+                            <img src={collection.picture} alt={collection.name} />
+                        </div>
+                        :
+                        <div className={styles.collection_image_hard}>
+                        </div>
+                }
                 <div className={styles.collection_text}>
                     <span className={styles.collection_name}>{collection.name}</span>
                     <span className={styles.collection_subtext}>{`Сохранено ${restaurants.length} мест`}</span>
@@ -59,13 +78,26 @@ const CollectionBottomSheet = ({ currentRest, newCollectionSetOpen, newCollectio
             <BottomSheet
                 ref={collectionRef}
                 onDismiss={onDismiss}
-                header={<CollectionBottomSheetHeader newCollectionSetOpen={newCollectionSetOpen} newCollectionRef={newCollectionRef}/>}
+                header={<CollectionBottomSheetHeader newCollectionSetOpen={newCollectionSetOpen} newCollectionRef={newCollectionRef} />}
                 open={collectionOpen}
-                snapPoints={({ maxHeight }) => [maxHeight * 0.6]}>
+                snapPoints={({ maxHeight }) => [maxHeight * 0.8]}>
                 <div className="collections-container">
                     {contentNode}
                 </div>
-                <button className={styles.save_button} onClick={handleClick}>Сохранить</button>
+                <button className={styles.save_button} style={
+                   {
+                    height: '56px',
+                    display: 'block',
+                    margin: 'auto',
+                    backgroundColor: '#FCE000',
+                    border: 'none',
+                    padding: '10px 20px',
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    width: '90%',
+                } 
+                }
+                onClick={handleClick}>Сохранить</button>
             </BottomSheet >
         </>
     )

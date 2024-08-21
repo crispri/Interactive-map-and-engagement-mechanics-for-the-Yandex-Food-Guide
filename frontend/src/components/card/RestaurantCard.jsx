@@ -14,6 +14,7 @@ const RestaurantCard = ({ setCurrentRest, collectionSetOpen, collectionRef, rest
   const dispatch = useDispatch();
 
   function handleClick() {
+    ym(98116436,'reachGoal','open_on_full_screen_restaurant_card');
     navigateTo("/restaurants/" + restaurantInfo?.id);
     // setId(restaurantInfo?.id);
     // sheetRef.current.snapTo(({ maxHeight }) => maxHeight);

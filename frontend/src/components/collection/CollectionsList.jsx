@@ -5,6 +5,8 @@ import { useRef } from 'react'
 import { getRestaurants } from '../../lib/restaurantsSlice'
 import info_picture from '../../assets/info.svg'
 import bookmark_outline from '../../assets/bookmark_outline.svg'
+import wantToGo from '../../assets/want_to_go_map.svg'
+import wantToOrder from '../../assets/want_to_order_map.svg'
 
 function CollectionsList() {
 	const selections = useSelector((state) => state.restaurantsSlice.collections)
@@ -18,6 +20,7 @@ function CollectionsList() {
 			dispatch(setSelection(null))
 		} else {
 			dispatch(setSelection(id))
+			ym(98116436,'reachGoal','map_main_screen_button_collection');
 			setTimeout(() => {
 				const selectedCard = document.querySelector(`.${styles.card_active}`);
 				if (selectedCard && wrapperRef.current) {
@@ -44,7 +47,17 @@ function CollectionsList() {
 			
 			>
 				<div className={styles.fade}></div>
-				<img src={el.picture} alt="image" className={styles.picture}/>
+				{	el?.pre_created_collection_name === "Хочу сходить"
+                    ?
+                    <img src={wantToGo} alt={el.name} /> 
+                    :
+                    el?.pre_created_collection_name === "Хочу заказать"
+                    ?
+                    <img src={wantToOrder} alt={el.name} />
+                    :
+                    <img src={el.picture} alt={el.name} className={styles.picture}/>
+                }
+				{/* <img src={el.picture} alt="image" className={styles.picture}/> */}
 				<div className={styles.text}>
 					{current_selection === el.id 
 					? <div style={{display: 'flex', justifyContent: 'space-between'}}>

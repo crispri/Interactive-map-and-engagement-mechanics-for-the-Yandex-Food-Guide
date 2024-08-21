@@ -11,10 +11,33 @@ export const getRestaurants = createAsyncThunk(
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json;charset=utf-8",
-						"Authorization": "token",
-
 					},
 					body: JSON.stringify(body),
+				}
+			)
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				return response.status;
+			}
+		} catch (error) {
+			return error
+		}
+	}
+)
+
+export const login = createAsyncThunk(
+	'restaurants/login',
+	async () => {
+		try {
+			const response = await fetch(
+				`${_apiUrl}/guide/v1/login`,
+				{
+					method: "POST",
+					headers: {
+					},
+					body: {},
 				}
 			)
 			if (response.ok) {
@@ -39,7 +62,6 @@ export const getSelections = createAsyncThunk(
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json;charset=utf-8",
-						"Authorization": "token",
 					},
 					body: JSON.stringify({
 						"return_collections": false
@@ -68,7 +90,6 @@ export const getCollections = createAsyncThunk(
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json;charset=utf-8",
-						"Authorization": "token",
 					},
 					body: JSON.stringify({ "return_collections": true }),
 				}
@@ -96,7 +117,6 @@ export const createCollection = createAsyncThunk(
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json;charset=utf-8",
-						"Authorization": "token",
 					},
 					body: JSON.stringify({ "name": name, "description": description }),
 				}
@@ -123,7 +143,6 @@ export const putInCollection = createAsyncThunk(
 					method: "PUT",
 					headers: {
 						"Content-Type": "application/json;charset=utf-8",
-						"Authorization": "token",
 					},
 					body: JSON.stringify({ "restaurant_id": restaurantId }),
 				}
