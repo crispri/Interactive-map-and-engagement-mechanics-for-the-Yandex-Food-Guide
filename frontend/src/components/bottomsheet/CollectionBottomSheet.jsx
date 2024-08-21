@@ -22,6 +22,7 @@ const CollectionBottomSheet = ({ currentRest, newCollectionSetOpen, newCollectio
     };
 
     function handleClick() {
+        console.log(currentRest.id)
         dispatch(putInCollection({ id: selectedCollection, restaurantId: currentRest.id }))
         onDismiss()
     }
