@@ -50,7 +50,11 @@ const MyBottomSheet = ({sheetRef, content, debouncedValue, onSpringEnd}) => {
       blocking={false}
       header={
         <>
-        <SelectionsList/>
+        { isInCollection ?
+          <CollectionsList/>
+          :
+          <SelectionsList/>
+        }
         {/* {shouldShowHeader ? <HeaderFilters debouncedValue={debouncedValue}></HeaderFilters> : null} */}
         </>
 

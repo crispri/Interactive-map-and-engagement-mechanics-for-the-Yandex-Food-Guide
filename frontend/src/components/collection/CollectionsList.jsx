@@ -20,7 +20,7 @@ function CollectionsList() {
 			dispatch(setSelection(null))
 		} else {
 			dispatch(setSelection(id))
-			ym(98116436,'reachGoal','map_main_screen_button_collection');
+			ym(98116436, 'reachGoal', 'map_main_screen_button_collection');
 			setTimeout(() => {
 				const selectedCard = document.querySelector(`.${styles.card_active}`);
 				if (selectedCard && wrapperRef.current) {
@@ -38,50 +38,59 @@ function CollectionsList() {
 	}
 
 	const cards = selections?.map((el) => {
-		return (<div 
-			key={el.id} 
-			className={`${styles.card} ${current_selection === el.id ? styles.card_active : ''}`} 
+		return (<div
+			key={el.id}
+			className={`${styles.card} ${current_selection === el.id ? styles.card_active : ''}`}
 			onClick={() => onSetSelection(el.id)}
 			// style={{width : current_selection === el.id ? '274px' : '146px'}}
 			transition={{ duration: 0.3 }}
-			
-			>
-				<div className={styles.fade}></div>
-				{	el?.pre_created_collection_name === "Хочу сходить"
-                    ?
-                    <img src={wantToGo} alt={el.name} /> 
-                    :
-                    el?.pre_created_collection_name === "Хочу заказать"
-                    ?
-                    <img src={wantToOrder} alt={el.name} />
-                    :
-                    <img src={el.picture} alt={el.name} className={styles.picture}/>
-                }
-				{/* <img src={el.picture} alt="image" className={styles.picture}/> */}
-				<div className={styles.text}>
-					{current_selection === el.id 
-					? <div style={{display: 'flex', justifyContent: 'space-between'}}>
+		>
+			{el?.pre_created_collection_name === "Хочу сходить"
+				?
+				<div className={styles.fade}>
+					<img src={wantToGo} className={styles.icon} alt={el.name} />
+				</div>
+				:
+				el?.pre_created_collection_name === "Хочу заказать"
+					?
+					<div className={styles.fade}>
+						<img src={wantToOrder} className={styles.icon} alt={el.name} />
+					</div>
+					:
+					el.picture ?
+						<div className={styles.fade}>
+							<img src={el.picture} alt={el.name} className={styles.picture} />
+						</div>
+						:
+						<div className={styles.fade}>
+						</div>
+			}
+			{/* <img src={el.picture} alt="image" className={styles.picture}/> */}
+			<div className={styles.text}>
+				{current_selection === el.id
+					? <div style={{ display: 'flex', justifyContent: 'space-between' }}>
 						<img src={info_picture} alt="info" />
 						<p>{restaurants.length} мест</p>
 						<img src={bookmark_outline} alt="bookmark" />
 					</div>
 					: null}
-					<p>{el.name}</p>
-				</div>
-		</div>)})
-  return (
-	<div className={styles.wrapper} ref={wrapperRef}>
-		<div className={styles.categories}>
-            {/* <div className={styles.card} transition={{ duration: 0.3 }}>
+				<p>{el.name}</p>
+			</div>
+		</div>)
+	})
+	return (
+		<div className={styles.wrapper} ref={wrapperRef}>
+			<div className={styles.categories}>
+				{/* <div className={styles.card} transition={{ duration: 0.3 }}>
 
             </div>
             <div className={styles.card} transition={{ duration: 0.3 }}> */}
 
-            {/* </div> */}
-			{cards}
+				{/* </div> */}
+				{cards}
+			</div>
 		</div>
-	</div>
-  )
+	)
 }
 
 export default CollectionsList

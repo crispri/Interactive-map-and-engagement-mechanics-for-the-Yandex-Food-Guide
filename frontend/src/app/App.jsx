@@ -86,7 +86,7 @@ function App() {
       } else {
         ym(98116436,'reachGoal','selection_on_the_map_change_polygon');
       }
-      if (current_selection === 'ultima' || current_selection === 'experts') {
+      if (current_selection === 'ultima' || current_selection === 'experts' && !isInCollection) {
         body["filters"] = [
           {
           "property": "tags", // tags
@@ -111,9 +111,6 @@ function App() {
     }
     dispatch(getRestaurants(body))
 
-  function onSpringEnd()  {
-      setIsMiddlePos(sheetRef.current.height ===  Math.round(window.screen.height * 0.45))
-  }
   }, [debouncedValue, current_selection,isMiddlePos, isInCollection])
   const router = createBrowserRouter([
     {
