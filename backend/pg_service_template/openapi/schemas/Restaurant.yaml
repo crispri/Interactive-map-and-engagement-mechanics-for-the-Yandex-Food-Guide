@@ -45,13 +45,19 @@ properties:
     in_collection:
         type: boolean
     
-    pin:
+    food:
         type: string
     
-    pictures:
+    interior:
         type: array
         items:
             type: string
+
+    score:
+        type: integer
+
+    additional_info:
+        type: string
 
 required:
     - id
@@ -67,5 +73,6 @@ required:
     - close_time
     - tags
     - in_collection
-    - pin
-    - pictures
+    - food
+    - interior
+    - additional_info

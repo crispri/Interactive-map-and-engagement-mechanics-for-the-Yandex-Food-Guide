@@ -6,12 +6,13 @@ import model.Restaurant
 import network.dto.response.RestaurantItemForJson
 import model.Coordinates
 import model.Filter
+import model.Pins
 import network.api.FilterForJson
 import network.dto.response.CollectionItemForJson
 
 fun Restaurant.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     id,
-    Coordinates(lat = coordinates.latitude,  lon = coordinates.longitude),
+    Coordinates(lat = coordinates.latitude, lon = coordinates.longitude),
     name,
     description,
     address,
@@ -23,6 +24,8 @@ fun Restaurant.forJson(): RestaurantItemForJson = RestaurantItemForJson(
     closeTime,
     isFavorite,
     tags,
+    inCollection,
+    pin, pictures, score, additionalInfo,
 )
 
 fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
@@ -39,6 +42,8 @@ fun RestaurantItemForJson.toModel(): Restaurant = Restaurant(
     closeTime,
     isFavorite,
     tags,
+    inCollection,
+    food, interior, score, Pins.NONE, additionalInfo
 )
 
 fun CollectionItemForJson.toModel(): CollectionOfPlace = CollectionOfPlace(
@@ -46,14 +51,15 @@ fun CollectionItemForJson.toModel(): CollectionOfPlace = CollectionOfPlace(
     name,
     description,
     isPublic,
+    picture, link,
 )
 
-fun Filter.toJson() : FilterForJson = FilterForJson(
+fun Filter.toJson(): FilterForJson = FilterForJson(
     property, value, operator
 )
 
-fun FilterForJson.toModel() : Filter = Filter(
-    property, value, operator
+fun FilterForJson.toModel(): Filter = Filter(
+    property, value, operator, true
 )
 
-fun String.toToken(): String = "Bearer $this"
+fun String.toToken(): String = "$this"

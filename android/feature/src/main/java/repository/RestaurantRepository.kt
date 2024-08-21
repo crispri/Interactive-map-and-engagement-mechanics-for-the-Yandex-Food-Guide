@@ -15,6 +15,7 @@ interface RestaurantRepository {
         lowerLeftLon: Double,
         topRightLat: Double,
         topRightLon: Double,
+        onCollection: Boolean,
         filterList: List<Filter>,
     ): Flow<NetworkState<List<Restaurant>>>
 
@@ -25,8 +26,13 @@ interface RestaurantRepository {
 
     fun getCollections(
         token: String,
+        isUserCollection: Boolean,
     ): Flow<NetworkState<List<CollectionOfPlace>>>
 
-
+    fun addItemInCollection(
+        token: String,
+        idUserCollection: String,
+        restaurantId: String,
+    ): Flow<NetworkState<String>>
 }
 

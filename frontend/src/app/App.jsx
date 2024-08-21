@@ -5,7 +5,7 @@ import {
   useParams,
 } from "react-router-dom";
 
-import { lazy, useEffect } from "react";
+import { lazy, useEffect, useState } from "react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import useDebounce from '../lib/useDebounce'
@@ -61,6 +61,7 @@ function App() {
   const updateHandler = (obj) => {
     setCurrentPolygon(obj.location.bounds)
   }
+  const [isMiddlePos, setIsMiddlePos] = useState(false)
   const debouncedValue = useDebounce(currentPolygon, 300);
 
 
@@ -68,6 +69,7 @@ function App() {
     let body = {
       "lower_left_corner": {
         "lat": debouncedValue[1][1],
+        // debouncedValue[1][1] + (debouncedValue[0][1] - debouncedValue[1][1])*0.5
         "lon": debouncedValue[0][0]
       },
       "top_right_corner": {
@@ -75,25 +77,44 @@ function App() {
         "lon": debouncedValue[1][0]
       },
     }
+    if (isMiddlePos) {
+      body.lower_left_corner.lat = debouncedValue[1][1] + (debouncedValue[0][1] - debouncedValue[1][1])*0.5
+    }
     if (current_selection) {
       if (isInCollection) {
         ym(98116436,'reachGoal','collection_on_the_map_change_polygon');
       } else {
         ym(98116436,'reachGoal','selection_on_the_map_change_polygon');
       }
-      body["filters"] = [{
-        "property": "selection_id",
-        "operator": "in",
-        "value": [
-          current_selection
+      if (current_selection === 'ultima' || current_selection === 'experts') {
+        body["filters"] = [
+          {
+          "property": "tags", // tags
+          "operator": "in",
+          "value": [
+            current_selection === 'ultima' ? "ULTIMA GUIDE" : "Открытая кухня"
+          ]}
         ]
-      }]
+      } else {
+        body["filters"] = [
+          {
+          "property": "selection_id",
+          "operator": "in",
+          "value": [
+            current_selection
+          ]}
+        ]
+      }
     }
     if (isInCollection) {
       body["only_collections"] = true
     }
     dispatch(getRestaurants(body))
-  }, [debouncedValue, current_selection, isInCollection])
+
+  function onSpringEnd()  {
+      setIsMiddlePos(sheetRef.current.height ===  Math.round(window.screen.height * 0.45))
+  }
+  }, [debouncedValue, current_selection,isMiddlePos, isInCollection])
   const router = createBrowserRouter([
     {
       path: "/",
@@ -105,7 +126,11 @@ function App() {
         <>
           <Navbar/>
           <MapComponent sheetRef={sheetRef} location={location} updateHandler={updateHandler} setLocation={setLocation}/>
+<<<<<<< HEAD
           <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue}/>
+=======
+          <MyBottomSheet sheetRef={sheetRef} content={<Outlet/>} debouncedValue={debouncedValue} onSpringEnd={onSpringEnd}/>
+>>>>>>> origin
           <CollectionBottomSheet currentRest={currentRest} collectionSetOpen={collectionSetOpen} newCollectionSetOpen={newCollectionSetOpen} newCollectionRef={newCollectionRef} collectionOpen={collectionOpen} collectionRef={collectionRef}/>
           <NewCollectionBottomSheet newCollectionSetOpen={newCollectionSetOpen} newCollectionOpen={newCollectionOpen} newCollectionRef={newCollectionRef}/>
         </>

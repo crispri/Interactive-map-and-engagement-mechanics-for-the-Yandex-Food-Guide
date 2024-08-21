@@ -15,7 +15,10 @@ import com.example.core.R
 class CustomPinViewSelected @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
+    isFavorite: Boolean,
+    isUltima: Boolean,
+    isOpenKitchen: Boolean
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val imageView: ImageView
@@ -25,7 +28,24 @@ class CustomPinViewSelected @JvmOverloads constructor(
 
     init {
         // Inflate the layout
-        inflate(context, R.layout.view_custom_pin_selected, this)
+
+        if(!isFavorite && !isUltima && !isOpenKitchen){ //0
+            inflate(context, R.layout.view_custom_pin_selected, this)
+        } else if(!isFavorite && !isUltima && isOpenKitchen){ //1
+            inflate(context, R.layout.view_pin_selected__openk, this)
+        } else if(!isFavorite && isUltima && !isOpenKitchen){ //2
+            inflate(context, R.layout.view_pin_selected__ultima, this)
+        } else if(!isFavorite && isUltima && isOpenKitchen){ //3
+            inflate(context, R.layout.view_pin_selected__ultima_openk, this)
+        } else if(isFavorite && !isUltima && !isOpenKitchen){ //4
+            inflate(context, R.layout.view_pin_selected__fav, this)
+        } else if(isFavorite && !isUltima && isOpenKitchen){ //5
+            inflate(context, R.layout.view_pin_selected__openk_fav, this)
+        } else if(isFavorite && isUltima && !isOpenKitchen){ //6
+            inflate(context, R.layout.view_pin_selected__ultima_fav, this)
+        } else if(isFavorite && isUltima && isOpenKitchen){ //7
+            inflate(context, R.layout.view_pin_selected__ultima_openk_fav, this)
+        }
 
         // Get references to the views
         imageView = findViewById(R.id.ivPictureOfPlace1)
@@ -39,7 +59,7 @@ class CustomPinViewSelected @JvmOverloads constructor(
             .load(url)
             .placeholder(R.drawable.ic_mini_pin)
             .error(R.drawable.baseline_language_24)
-            .transform(CenterCrop(), RoundedCorners(dpToPx(50f, context.resources.displayMetrics).toInt()))
+            .transform(CenterCrop(), RoundedCorners(dpToPx(40f, context.resources.displayMetrics).toInt()))
             .into(object : com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>() {
                 override fun onResourceReady(resource: android.graphics.drawable.Drawable, transition: com.bumptech.glide.request.transition.Transition<in android.graphics.drawable.Drawable>?) {
                     imageView.setImageDrawable(resource)

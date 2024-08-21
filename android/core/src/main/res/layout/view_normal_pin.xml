@@ -55,25 +55,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-
                 android:text="4.9"
                 android:textColor="@android:color/black"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/badge"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="end|top"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/ic_badge_white"
-            android:visibility="gone" />
 
     </androidx.cardview.widget.CardView>
 

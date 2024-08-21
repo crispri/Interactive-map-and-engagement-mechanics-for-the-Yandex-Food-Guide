@@ -1,5 +1,6 @@
 package presintation.restaurantScreen
 
+import Utils
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -17,12 +18,18 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -38,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -45,9 +53,11 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.feature.R
 import presintation.mapScreen.Carousel
 import ui.AboutPlaceCard
+import ui.CategoryButtonCard
 import ui.GetRestaurantInfo
 import ui.ImageCarousel
 import ui.PlaceCard
@@ -138,13 +148,15 @@ fun RestaurantScreen(
                         .verticalScroll(rememberScrollState())
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    Carousel()
+                    RestaurantTagsCarousel {
+
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
-                    ImageCarousel(listImages = listImages)
+                    ImageCarousel(listImages = uiState.currentRestaurant?.pictures ?: Utils.restaurants[0].pictures)
                     Spacer(modifier = Modifier.height(4.dp))
                     AboutPlaceCard(true, uiState.currentRestaurant?.description)
                     Spacer(modifier = Modifier.height(16.dp))
-                    ImageCarousel(listImages = listImages)
+                    ImageCarousel(listImages = uiState.currentRestaurant?.pictures ?: Utils.restaurants[0].pictures)
                 }
             },
             sheetContainerColor = Color.White,
@@ -159,7 +171,7 @@ fun RestaurantScreen(
                     .height(screenHeight / 2)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.rest),
+                    painter = rememberAsyncImagePainter(model = uiState.currentRestaurant?.pin),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -249,7 +261,7 @@ fun RestaurantScreen(
                     enter = fadeIn(),
                     exit = fadeOut()
                 ){
-                    TopCard(navToBack = navToBack)
+                    TopCard(navToBack = navToBack, name = uiState.currentRestaurant?.name ?: "Ян Примус")
                 }
             }
         }
@@ -268,4 +280,50 @@ fun SheetStateSaver(
         SheetState(skipPartiallyExpanded, savedValue, confirmValueChange, skipHiddenState)
     }
 )
+
+@Composable
+fun RestaurantTagsCarousel(onFilterClick: () -> Unit) {
+
+    val itemsList = listOf(
+        "ULTIMA GUIDE",
+        "Рядом со мной",
+        "Завтрак",
+        "Винотека",
+        "Европейская",
+        "Коктели",
+        "Можно с собакой",
+        "Веранда"
+    )
+    Row{
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+        ) {
+            item{
+                IconButton(
+                    onClick = {onFilterClick()},
+                    colors = IconButtonColors(
+                        Color(0xFFE2E2E2),
+                        Color.Black,
+                        Color(0xFFE2E2E2),
+                        Color(0xFFE2E2E2)
+                    ),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .height(38.dp),
+                    content = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_slot),
+                            contentDescription = "Фильтр"
+                        )
+                    }
+                )
+            }
+            items(itemsList) { item ->
+                CategoryButtonCard(text = item, clickOnCategory = {})
+            }
+        }
+    }
+}
 
