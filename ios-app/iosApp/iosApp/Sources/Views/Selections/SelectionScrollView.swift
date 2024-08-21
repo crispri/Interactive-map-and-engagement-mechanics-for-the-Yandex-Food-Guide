@@ -35,6 +35,8 @@ struct SelectionScrollView: View {
                             }
                         } bookmarkAction: {
                             viewModel.userCollections += [UserCollection(selection: viewModel.selections[index], restaurantIDs: [])]
+                        } isSavedToCollection: {
+                            return false
                         } infoAction: {
                             // TODO: add bookmarkAction.
                         }
