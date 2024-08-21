@@ -21,16 +21,16 @@ class CustomMapView @JvmOverloads constructor(
     private val tapListeners: MutableList<MapObjectTapListener> = mutableListOf()
 
 
-    fun addCameraListener(cameraListener: CameraListener){
+    fun addCameraListener(cameraListener: CameraListener) {
         cameraListeners.add(cameraListener)
         mapWindow.map.addCameraListener(cameraListener)
     }
 
-    fun addCustomPlaceMark(placeMark : PlacemarkMapObject) {
+    fun addCustomPlaceMark(placeMark: PlacemarkMapObject) {
         placeMarks.add(placeMark)
     }
 
-    fun addTabListener(tapListener: MapObjectTapListener){
+    fun addTabListener(tapListener: MapObjectTapListener) {
         tapListeners.add(tapListener)
     }
 

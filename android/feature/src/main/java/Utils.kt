@@ -108,53 +108,6 @@ object Utils {
         return view.drawToBitmap()
     }
 
-//    fun createBitmapFromView(
-//        view: View,
-//        shadowColor: Int,
-//        shadowRadius: Float,
-//        dx: Float,
-//        dy: Float
-//    ): Bitmap {
-//        // Создаем bitmap из view
-//        val originalBitmap = createBitmapFromViewForShadow(view)
-//
-//        // Создаем bitmap с добавлением тени
-//        val shadowBitmap = Bitmap.createBitmap(
-//            originalBitmap.width + (shadowRadius * 2).toInt(),
-//            originalBitmap.height + (shadowRadius * 2).toInt(),
-//            Bitmap.Config.ARGB_8888
-//        )
-//
-//        val canvas = Canvas(shadowBitmap)
-//        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-//
-//        // Добавляем тень
-//        paint.setShadowLayer(shadowRadius, dx, dy, shadowColor)
-//
-//        // Рисуем элемент, у которого будет тень
-//        canvas.drawRoundRect(
-//            0f, 0f,
-//            originalBitmap.width.toFloat(),
-//            originalBitmap.height.dp.value - 21.dp.value,
-//            40.dp.value,
-//            40.dp.value,
-//            paint,
-//        )
-//
-//        // Рисуем исходный bitmap поверх тени
-//        canvas.drawBitmap(originalBitmap, 0f, 0f, null)
-//
-//        return shadowBitmap
-//    }
-//
-//    private fun createBitmapFromViewForShadow(view: View): Bitmap {
-//        view.forceLayout()
-//        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-//        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-//
-//        return view.drawToBitmap()
-//    }
-
 
     fun createBitmapFromVector(art: Int, context: Context): Bitmap? {
         val drawable = ContextCompat.getDrawable(context, art) ?: return null
@@ -169,7 +122,7 @@ object Utils {
         return bitmap
     }
 
-
+// Моковые данные для тестирования
     val recommendations = listOf(
         CollectionOfPlace(
             "",
@@ -178,6 +131,7 @@ object Utils {
             1,
             "https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg",
             "https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve",
+            ""
         ),
         CollectionOfPlace(
             "",
@@ -186,6 +140,7 @@ object Utils {
             0,
             "https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg",
             "https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve",
+            ""
         ),
         CollectionOfPlace(
             "",
@@ -194,6 +149,7 @@ object Utils {
             1,
             "https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg",
             "https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve",
+            ""
         ),
         CollectionOfPlace(
             "",
@@ -202,6 +158,7 @@ object Utils {
             0,
             "https://storage.yandexcloud.net/yandex-guide/guides/adc42f8a-683d-430e-82fe-18e7ae6139ef.jpg",
             "https://openkitchen.eda.yandex/article/places/guides/chem-zanyatsya-v-vykhodnye-3-4-avgusta-v-moskve",
+            ""
         )
 
     )

@@ -1,4 +1,4 @@
-import './NewCollectionBottomSheet.module.scss'
+import styles from './NewCollectionBottomSheet.module.scss'
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import { useDispatch } from 'react-redux'
@@ -27,7 +27,7 @@ const NewCollectionBottomSheet = ({ newCollectionSetOpen, newCollectionOpen, new
                 ref={newCollectionRef}
                 open={newCollectionOpen}
                 onDismiss={onDismiss}
-                header={<h1>Новая коллекция</h1>}
+                header={<h1 className={styles.header}>Новая коллекция</h1>}
                 defaultSnap={({ maxHeight }) => maxHeight * 0.05}
                 snapPoints={({ maxHeight }) => [
                     maxHeight * 0.45,
@@ -40,12 +40,13 @@ const NewCollectionBottomSheet = ({ newCollectionSetOpen, newCollectionOpen, new
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                className={styles.input}
                                 style={{
                                     width: '100%',
                                     padding: '10px',
                                     marginTop: '8px',
                                     borderRadius: '5px',
-                                    border: '1px solid #ccc',
+                                    borderBottom: '1px solid #ccc',
                                 }}
                             />
                         </label>
@@ -61,12 +62,13 @@ const NewCollectionBottomSheet = ({ newCollectionSetOpen, newCollectionOpen, new
                                     setDescription(e.target.value)
                                 }
                                 }
+                                className={styles.textarea}
                                 style={{
                                     width: '100%',
                                     padding: '10px',
                                     marginTop: '8px',
                                     borderRadius: '5px',
-                                    border: '1px solid #ccc',
+                                    borderBottom: '1px solid #ccc',
                                 }}
                             />
                         </label>
@@ -74,11 +76,15 @@ const NewCollectionBottomSheet = ({ newCollectionSetOpen, newCollectionOpen, new
                     <button
                         onClick={handleCreateCollection}
                         style={{
-                            backgroundColor: '#ffc107',
+                            height: '56px',
+                            display: 'block',
+                            margin: 'auto',
+                            backgroundColor: '#FCE000',
                             border: 'none',
                             padding: '10px 20px',
-                            borderRadius: '5px',
+                            borderRadius: '12px',
                             cursor: 'pointer',
+                            width: '90%'
                         }}
                     >
                         Создать

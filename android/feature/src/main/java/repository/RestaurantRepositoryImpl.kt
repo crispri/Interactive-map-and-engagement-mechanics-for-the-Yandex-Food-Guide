@@ -26,7 +26,6 @@ class RestaurantRepositoryImpl @Inject constructor(
     private val api: YandexMapEatApi
 ) : RestaurantRepository {
 
-
     override fun getRestaurants(
         token: String,
         lowerLeftLon: Double,
@@ -36,10 +35,7 @@ class RestaurantRepositoryImpl @Inject constructor(
         onCollection: Boolean,
         filterList: List<Filter>,
     ): Flow<NetworkState<List<Restaurant>>> = flow {
-        Log.d("SourceGetLoading", "start")
         emit(NetworkState.Loading)
-        Log.d("SourceGetLoading", "end")
-
         try {
             val bearToken = token.toToken()
             Log.d("Token", bearToken)
@@ -75,9 +71,7 @@ class RestaurantRepositoryImpl @Inject constructor(
         token: String,
         id: String,
     ): Flow<NetworkState<Restaurant>> = flow {
-        Log.d("SourceGetItemLoading", "start")
         emit(NetworkState.Loading)
-        Log.d("SourceGetItemLoading", "end")
 
         try {
             val bearToken = token.toToken()
@@ -106,9 +100,7 @@ class RestaurantRepositoryImpl @Inject constructor(
         token: String,
         isUserCollection: Boolean,
     ): Flow<NetworkState<List<CollectionOfPlace>>> = flow {
-        Log.d("SourceGetLoading", "start")
         emit(NetworkState.Loading)
-        Log.d("SourceGetLoading", "end")
 
         try {
             val response = api.getCollections(
@@ -116,16 +108,12 @@ class RestaurantRepositoryImpl @Inject constructor(
                 requestBody = RequestBodyCollection(isUserCollection)
             )
 
-            Log.d("SourceGet", response.items.toString())
-            Log.d("Response", response.toString())
-            Log.d("ResponseItems", response.items.toString())
             emit(
                 NetworkState.Success(
                     response.items.map(CollectionItemForJson::toModel)
                 )
             )
         } catch (e: Exception) {
-            Log.d("SourceGetException", "${e.message}")
             emit(NetworkState.Failure(e))
         }
     }.flowOn(Dispatchers.IO)
@@ -135,10 +123,7 @@ class RestaurantRepositoryImpl @Inject constructor(
         idUserCollection: String,
         restaurantId: String,
     ): Flow<NetworkState<String>> = flow {
-        Log.d("SourceGetItemLoading", "start")
         emit(NetworkState.Loading)
-        Log.d("SourceGetItemLoading", "end")
-
         try {
             val bearToken = token.toToken()
             Log.d("Token", bearToken)
@@ -149,7 +134,6 @@ class RestaurantRepositoryImpl @Inject constructor(
                 requestBody = RequestBodyAddItemCollection(restaurantId)
             )
             emit(NetworkState.Success("OK"))
-            Log.d("AddItemRepository", "")
 
         } catch (e: Exception) {
             Log.d("SourceGetException", "${e.message}")

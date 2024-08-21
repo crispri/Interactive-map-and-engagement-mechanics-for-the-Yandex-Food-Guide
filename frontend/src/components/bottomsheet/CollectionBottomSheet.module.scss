@@ -2,6 +2,14 @@
     padding: 16px;
 }
 
+.collection_items {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
 .collection_item {
     display: flex;
     align-items: center;
@@ -13,11 +21,29 @@
 .collection_info {
     display: flex;
     align-items: center;
+    gap: 10px;
+}
+
+.collection_image_hard {
+    width: 86px;
+    height: 86px;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+}
+
+.collection_image_hard img  {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    object-fit: cover;
 }
 
 .collection_image img {
-    width: 40px;
-    height: 40px;
+    width: 86px;
+    height: 86px;
     border-radius: 8px;
     object-fit: cover;
     margin-right: 12px;
@@ -44,13 +70,10 @@
 }
 
 .save_button {
-    width: 100%;
-    background-color: #ffc107;
-    color: white;
-    border: none;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 16px;
+    background-color: '#ffc107';
+    border: 'none';
+    padding: '10px 20px';
+    border-radius: '5px';
+    cursor: 'pointer';
+    width: '100%';
 }

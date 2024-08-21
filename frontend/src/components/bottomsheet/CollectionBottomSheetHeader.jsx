@@ -1,6 +1,7 @@
 import './CollectionBottomSheet.module.scss'
 import 'react-spring-bottom-sheet/dist/style.css'
 import styles from './CollectionBottomSheet.module.scss';
+import plus from '../../assets/plus_icon.svg'
 
 const CollectionBottomSheetHeader = ({ newCollectionSetOpen, newCollectionRef }) => {
 
@@ -12,12 +13,12 @@ const CollectionBottomSheetHeader = ({ newCollectionSetOpen, newCollectionRef })
 
     return (
         <>
-            <div className={styles.inline}>
+            <div className={styles.collection_items}>
                 <h1>
                     Коллекции
                 </h1>
                 <h1 onClick={handleClick}>
-                    +
+                    <img src={plus} alt='add collection'/>
                 </h1>
             </div>
         </>

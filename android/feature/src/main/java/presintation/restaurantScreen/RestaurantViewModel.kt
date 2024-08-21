@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import model.Restaurant
 import network.util.NetworkState
 import repository.RestaurantRepositoryImpl
 import ui.GetRestaurantInfo
@@ -28,7 +27,6 @@ class RestaurantViewModel @Inject constructor(
         when (event) {
             is GetRestaurantInfo -> {
                 getRestaurantById(event.restaurantId)
-                Log.d("SendGetRestaurant",event.restaurantId.toString())
             }
         }
     }
@@ -42,7 +40,10 @@ class RestaurantViewModel @Inject constructor(
             }
         } else {
             viewModelScope.launch {
-                repository.getRestaurantById("session_id=5142cece-b22e-4a4f-adf9-990949d053ff", restaurantId)
+                repository.getRestaurantById(
+                    "session_id=5142cece-b22e-4a4f-adf9-990949d053ff",
+                    restaurantId
+                )
                     .collect { state ->
                         when (state) {
                             is NetworkState.Failure -> {
@@ -72,8 +73,6 @@ class RestaurantViewModel @Inject constructor(
                                     )
                                 }
                             }
-
-                            else -> {}
                         }
                     }
             }

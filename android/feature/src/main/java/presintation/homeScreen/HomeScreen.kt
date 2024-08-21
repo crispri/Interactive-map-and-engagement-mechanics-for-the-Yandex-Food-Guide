@@ -72,14 +72,22 @@ fun HomeScreen(
     val list = mutableStateOf(uiState.restaurantsOnMap)
 
     LaunchedEffect(Unit) {
-        send(UpdateItemsOnMap(Point(55.0, 37.0), Point(55.737, 37.597), filterList = emptyList(), 0.0, 0.0))
+        send(
+            UpdateItemsOnMap(
+                Point(55.0, 37.0),
+                Point(55.737, 37.597),
+                filterList = emptyList(),
+                0.0,
+                0.0
+            )
+        )
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .background(Color.White)
@@ -119,7 +127,7 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(
-                    onClick = {navToMap()},
+                    onClick = { navToMap() },
                     content = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_map),
@@ -135,7 +143,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .background(Color.White)
         ) {
-            item{
+            item {
                 Spacer(modifier = Modifier.height(6.dp))
                 MapFrame()
                 Spacer(modifier = Modifier.height(6.dp))
@@ -177,7 +185,6 @@ fun MapFrame() {
 }
 
 
-
 @Composable
 fun ChooseAccordingToYourTaste(list: List<Restaurant>, send: (MainScreenEvent) -> Unit) {
     Column(
@@ -198,9 +205,8 @@ fun ChooseAccordingToYourTaste(list: List<Restaurant>, send: (MainScreenEvent) -
 }
 
 
-
 @Composable
-fun RestaurantCard(restaurant: Restaurant, send: (MainScreenEvent) -> Unit){
+fun RestaurantCard(restaurant: Restaurant, send: (MainScreenEvent) -> Unit) {
     Card(
         modifier = Modifier
             .padding(bottom = 16.dp, start = 10.dp, end = 10.dp)
@@ -209,7 +215,7 @@ fun RestaurantCard(restaurant: Restaurant, send: (MainScreenEvent) -> Unit){
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {
-        Column{
+        Column {
             ImageCarousel(
                 imageUrls = restaurant.pictures,
                 restaurantId = restaurant.id,
@@ -293,13 +299,13 @@ fun HomeScreenFilterCarousel() {
         "Можно с собакой",
         "Веранда"
     )
-    Row{
+    Row {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
         ) {
-            item{
+            item {
                 IconButton(
                     onClick = {},
                     colors = IconButtonColors(
@@ -320,10 +326,9 @@ fun HomeScreenFilterCarousel() {
                 )
             }
             items(itemsList) { item ->
-                if (item == "ULTIMA GUIDE"){
+                if (item == "ULTIMA GUIDE") {
                     HomeFilterImageButton(text = item, image = R.drawable.food)
-                }
-                else{
+                } else {
                     CategoryButtonCard(text = item, clickOnCategory = {})
                 }
             }
@@ -368,11 +373,8 @@ fun HomeFilterImageButton(text: String, image: Int) {
 }
 
 
-
-
-
 @Composable
-fun SearchRow(){
+fun SearchRow() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -406,8 +408,13 @@ fun SearchRow(){
 
 @Preview
 @Composable
-fun HomeScreenImageCarousel(){
-    val list = arrayOf(R.drawable.top_50_ultima, R.drawable.for_you_home, R.drawable.top_50_ultima, R.drawable.for_you_home)
+fun HomeScreenImageCarousel() {
+    val list = arrayOf(
+        R.drawable.top_50_ultima,
+        R.drawable.for_you_home,
+        R.drawable.top_50_ultima,
+        R.drawable.for_you_home
+    )
     LazyRow(
         modifier = Modifier
             .padding(horizontal = 10.dp)
@@ -437,26 +444,35 @@ fun HomeScreenImageCarousel(){
     }
 }
 
-val description = arrayOf("Фрески, шампань и русская печь: 5 ресторанов на Трёхгорной мануфактуре",
+val description = arrayOf(
+    "Фрески, шампань и русская печь: 5 ресторанов на Трёхгорной мануфактуре",
     "Топ-10 мест Москвы от Арины Журавлёвой",
     "15 dog-friendly ресторанов и кафе Москвы",
     "Латиноамериканская кухня в Москве: 6 ресторанов, где искать вкусы " +
             "другого континента",
-    "Лавандовые поля, фермы, виноградники: 6 место для агротуризма в России")
+    "Лавандовые поля, фермы, виноградники: 6 место для агротуризма в России"
+)
 
 @Preview
 @Composable
-fun WhereToGoCarousel(){
-    val list = arrayOf(R.drawable.manufacture, R.drawable.arina, R.drawable.dog_friendly, R.drawable.latina, R.drawable.lavanda)
+fun WhereToGoCarousel() {
+    val list = arrayOf(
+        R.drawable.manufacture,
+        R.drawable.arina,
+        R.drawable.dog_friendly,
+        R.drawable.latina,
+        R.drawable.lavanda
+    )
 
     Column(
         modifier = Modifier.padding(top = 16.dp, start = 10.dp, end = 10.dp)
-    ){
+    ) {
         Text(
             text = "Куда сходить",
             color = Color.Black,
             fontWeight = FontWeight.ExtraBold,
-            fontSize = 18.sp)
+            fontSize = 18.sp
+        )
         LazyRow(
             modifier = Modifier
                 .background(Color.Transparent)
@@ -475,7 +491,7 @@ fun WhereToGoCarousel(){
 
 
 @Composable
-fun ImageInHomeCarousel(text: String, image: Int){
+fun ImageInHomeCarousel(text: String, image: Int) {
     Box(
         modifier = Modifier
             .width(205.dp)
@@ -489,7 +505,7 @@ fun ImageInHomeCarousel(text: String, image: Int){
                 .padding(bottom = 10.dp)
                 .zIndex(1f),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Text(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)

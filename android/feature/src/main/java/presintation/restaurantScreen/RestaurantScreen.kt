@@ -67,24 +67,6 @@ import ui.TopCard
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
-
-
-//моки:)
-val description =
-    "Ресторан «William Bass» - это классический английский паб с камином и террасой, откуда открывается прекрасный вид на исторический центр Москвы. Здесь можно попробовать разнообразные сорта пива, в том числе «Гиннесс» и «Стаут», а также насладиться блюдами традиционной немецкой кухни, такими как рулька и штрудель. Посетители отмечают, что порции в ресторане большие, а цены демократичные."
-
-val listImages = listOf(
-    R.drawable.hardcode_picture_of_cafe,
-    R.drawable.hardcode_picture_of_cafe,
-    R.drawable.hardcode_picture_of_cafe,
-    R.drawable.hardcode_picture_of_cafe,
-    R.drawable.hardcode_picture_of_cafe,
-    R.drawable.hardcode_picture_of_cafe,
-    R.drawable.hardcode_picture_of_cafe,
-    R.drawable.hardcode_picture_of_cafe,
-    R.drawable.hardcode_picture_of_cafe
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(

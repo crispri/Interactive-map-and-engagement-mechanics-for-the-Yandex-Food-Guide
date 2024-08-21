@@ -25,5 +25,4 @@ class MapEatApplication : Application() {
         AppMetrica.activate(this, config)
         AppMetrica.enableActivityAutoTracking(this)
     }
-
 }

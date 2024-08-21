@@ -25,4 +25,4 @@ data class Restaurant(
     val score: Long,
     val type: Pins = Pins.NONE,
     val additionalInfo: String,
-) // 19
+)

@@ -103,7 +103,7 @@ fun MainScreen(
     curLocation: MutableState<Point?>
 ) {
 
-    val offsetValue = remember { mutableStateOf((-160).dp) }
+    val offsetValue = remember { mutableStateOf((-130).dp) }
 
     val offsetState = remember { mutableFloatStateOf(-96f) }
     val configuration = LocalConfiguration.current
@@ -114,8 +114,6 @@ fun MainScreen(
     val isExpandedAtOffset = remember { mutableStateOf(false) }
 
     val itemHeight = remember { mutableStateOf(0.dp) }
-
-    val listState = rememberLazyListState()
 
     val bottomSheetHeight = remember { mutableStateOf<Dp?>(null) }
 
@@ -175,7 +173,6 @@ fun MainScreen(
         }
         if (sheetState.currentValue == SheetValue.PartiallyExpanded) {
             send(RaiseCameraPosition(true))
-            Log.d("CameraListener", "LaunchedEffect(sheetState.currentValue)")
         }
     }
 
@@ -193,16 +190,11 @@ fun MainScreen(
                 Log.d("CameraListener", "${list.value}")
                 sheetState.animateTo(SheetValue.PartiallyExpanded)
             } else {
-                Log.e(
-                    "selectedItemFromMapId",
-                    "not found with id = $selectedId"
-                )
                 list.value = uiState.restaurantsOnMap
             }
         } else {
             list.value = uiState.restaurantsOnMap
-            Log.e("CameraListener", " main screen size = ${uiState.restaurantsOnMap.size}  list = ${uiState.restaurantsOnMap}")
-            offsetValue.value = (-160).dp
+            offsetValue.value = (-130).dp
             if (uiState.selectedItemFromBottomSheetId == null) {
                 sheetState.animateTo(SheetValue.Hidden)
             }
@@ -225,20 +217,10 @@ fun MainScreen(
             } else {
                 visibleIndex
             }
-            Log.d("lazyListState", "list = ${list.value}")
-            Log.d("lazyListState", "size = ${list.value.size}")
-            Log.d("lazyListState", "Current Index: ${currentIndex.value}")
-            Log.d(
-                "lazyListState",
-                "selectedItemFromBottomSheetId: ${uiState.selectedItemFromBottomSheetId}"
-            )
+
             if (list.value.isNotEmpty()) {
                 send(SelectItemFromBottomSheet(list.value[currentIndex.value].id))
             }
-            Log.e(
-                "lazyListState",
-                "Selected Index: ${currentIndex.value} map = ${uiState.selectedItemFromMapId} bs = ${uiState.selectedItemFromBottomSheetId}"
-            )
         }
 
 
@@ -269,6 +251,7 @@ fun MainScreen(
                         Carousel(uiState = uiState, onFilterClick = { isSheetOpen = true }, send = send)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
+
                     LazyColumn(
                         state = lazyListState,
                         flingBehavior = snapBehavior,
@@ -278,7 +261,6 @@ fun MainScreen(
                                     onPress = {
                                         if (sheetState.currentValue != SheetValue.Expanded) {
                                             isExpandedAtOffset.value = true
-                                            Log.d("tap111", "Палец поставлен на экран контент")
                                         }
                                     }
                                 )
@@ -291,7 +273,6 @@ fun MainScreen(
                                     .fillMaxWidth()
                                     .background(Color.White)
                                     .clickable {
-                                        Log.d("ClickOnCard", restaurant.id)
                                         navToRestaurant(restaurant.id)
                                     }
                                     .onGloballyPositioned { coordinates ->
@@ -502,7 +483,7 @@ fun MainScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = (-100).dp)
+                .offset(y = (-68).dp)
                 .offset { IntOffset(0, offsetState.floatValue.roundToInt()) }
         ) {
             if (uiState.selectedItemFromMapId == null) {
@@ -592,6 +573,7 @@ fun CollectionCarousel(
                 imagePainter = painterResource(id = R.drawable.ultima),
                 text = "",
                 description = "Топ-50 ресторанов Москвы",
+                size = uiState.restaurantsOnMap.size,
                 {},
                 {},
                 onClick = {
@@ -616,7 +598,7 @@ fun CollectionCarousel(
                 },
                 modifier = Modifier
                     .width(cardWidth)
-                    .height(90.dp),
+                    .height(60.dp),
                 isBlackText = true,
                 isUltima = true
             )
@@ -629,12 +611,11 @@ fun CollectionCarousel(
             val isSelected = secondFixedCardIndex == selectedCardIndex
             val cardWidth = if (isSelected) (260.dp) else 180.dp
 
-
-
             CardWithImageAndText(
                 imagePainter = painterResource(id = R.drawable.kitchen),
                 text = "Открытая кухня",
                 description = "Выбор экспертов",
+                size = uiState.restaurantsOnMap.size,
                 {},
                 {},
                 onClick = {
@@ -657,8 +638,10 @@ fun CollectionCarousel(
                 },
                 modifier = Modifier
                     .width(cardWidth)
-                    .height(90.dp),
-                isBlackText = true
+                    .height(60.dp),
+                isBlackText = true,
+                isSelected = isSelected,
+
             )
             Spacer(modifier = Modifier.width(6.dp))
         }
@@ -676,6 +659,7 @@ fun CollectionCarousel(
                 imagePainter = rememberAsyncImagePainter(model = item.picture),
                 text = item.name,
                 description = item.description,
+                size = uiState.restaurantsOnMap.size,
                 {},
                 {},
                 onClick = {
@@ -699,33 +683,14 @@ fun CollectionCarousel(
                         )
                     )
                 },
+                isSelected = isSelected,
                 modifier = Modifier
                     .width(cardWidth)
-                    .height(90.dp)
+                    .height(60.dp)
             )
         }
     }
 }
-
-
-
-@Composable
-fun BottomSheetContent(
-    isLoading: Boolean,
-    restaurants: List<Restaurant>,
-    navToRestaurant: () -> Unit,
-) {
-    if (isLoading) {
-        CircularProgressBar()
-    } else {
-        LazyColumn {
-            items(restaurants) { item ->
-                BigCard(item, navToRestaurant)
-            }
-        }
-    }
-}
-
 
 @Composable
 fun Carousel(uiState: MainUiState, onFilterClick: () -> Unit, send: (MainScreenEvent) -> Unit) {
