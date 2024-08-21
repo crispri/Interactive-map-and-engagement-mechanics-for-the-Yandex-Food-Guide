@@ -59,7 +59,7 @@ const CollectionBottomSheet = ({ currentRest, newCollectionSetOpen, newCollectio
                 }
                 <div className={styles.collection_text}>
                     <span className={styles.collection_name}>{collection.name}</span>
-                    <span className={styles.collection_subtext}>{`Сохранено ${restaurants.length} мест`}</span>
+                    {/* <span className={styles.collection_subtext}>{`Сохранено ${restaurants.length} мест`}</span> */}
                 </div>
             </div>
             <input
