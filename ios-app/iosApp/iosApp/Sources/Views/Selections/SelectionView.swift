@@ -14,6 +14,7 @@ struct SelectionView: View {
     @Binding var selected: Bool
     var mainAction: (() -> Void)?
     var bookmarkAction: (() -> Void)?
+    var isSavedToCollection: (() -> Bool)
     var infoAction: (() -> Void)?
     
     var body: some View {
@@ -25,8 +26,11 @@ struct SelectionView: View {
                     Button {
                         bookmarkAction?()
                     } label: {
-                        Image(systemName: "bookmark")
+                        Image(isSavedToCollection() ? "Bookmark.fill" : "Bookmark")
+                            .renderingMode(.template)
+                            .bold()
                             .tint(.white)
+                            .padding([.bottom, .leading], 8)
                     }
                     .frame(width: 40, height: 40, alignment: .bottomLeading)
                 }
@@ -40,12 +44,14 @@ struct SelectionView: View {
                         .shadow(color: .black, radius: 4)
                         .multilineTextAlignment(.center)
                         .lineLimit(selected ? 1 : 2)
+//                        .shadow(color: .black, radius: 4, x: 5, y: 5)
                     if selected {
                         Text(desc)
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.center)
+                            .lineLimit(2)
                             .font(.system(size: 13))
-                            .shadow(color: .black, radius: 4)
+//                            .shadow(color: .black, radius: 4, x: 5, y: 5)
                     }
                 }
                 .padding(.vertical, 8)
@@ -58,23 +64,28 @@ struct SelectionView: View {
                     } label: {
                         Image(systemName: "info.circle")
                             .tint(.white)
+                            .padding([.bottom, .trailing], 8)
                     }
                     .frame(width: 40, height: 40, alignment: .bottomTrailing)
                 }
             }
-            .background {
-                if let url = URL(string: imageUrlString) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(
-                                width: selected ? UIScreen.main.bounds.width - 100 : 145.73,
-                                height: selected ? 80 : 60.05
-                            )
-                    } placeholder: { Color.gray.opacity(0.5) }
+            .background(
+                ZStack {
+                    if let url = URL(string: imageUrlString) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(
+                                    width: selected ? UIScreen.main.bounds.width - 100 : 145.73,
+                                    height: selected ? 80 : 60.05
+                                )
+                        } placeholder: { Color.gray.opacity(0.5) }
+                    }
+                    LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.1), Color.black.opacity(0.8)]), startPoint: .top, endPoint: .bottom)
                 }
-            }
+                
+            )
             .frame(
                 width: selected ? UIScreen.main.bounds.width - 100 : 145.73,
                 height: selected ? 80 : 60.05

@@ -89,6 +89,7 @@ final class SnippetViewModel: ObservableObject {
     func eventOnAppearForMain() {
         eventCenterCamera(to: .user)
         eventOnGesture()
+        Task { await fetchUserCollections() }
         mapManager.map.isScrollGesturesEnabled = true
         mapManager.map.isRotateGesturesEnabled = true
         mapManager.map.isZoomGesturesEnabled = true
@@ -253,11 +254,7 @@ final class SnippetViewModel: ObservableObject {
                     )]
                 }
             }
-            if userCollections == UserCollection.mockData {
-                userCollections = UserCollection.mockData + userCollectionsTail
-            } else {
-                userCollections = userCollections + userCollectionsTail
-            }
+            userCollections = userCollections[0...1] + userCollectionsTail
         } catch { print(error) }
     }
     
@@ -274,7 +271,7 @@ final class SnippetViewModel: ObservableObject {
     }
         
     private func loadSelectionSnippets(id: String) async throws -> [SnippetDTO] {
-        let data = try await networkManager.fetchSnippets(lowerLeftCorner: .init(lat: 60.170125, lon: 24.950026), topRightCorner: .init(lat: 48.135370, lon: 67.149113), collectionID: id)
+        let data = try await networkManager.fetchSnippets(lowerLeftCorner: .init(lat: 0, lon: 0), topRightCorner: .init(lat: 90, lon: 90), collectionID: id)
         return data
     }
     
