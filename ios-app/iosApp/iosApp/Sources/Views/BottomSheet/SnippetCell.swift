@@ -38,7 +38,7 @@ struct SnippetCell: View {
         ZStack(alignment: .topTrailing) {
 
             TabView {
-                var interiors = restaurant.interior.prefix(3)
+                let interiors = restaurant.interior.prefix(3)
                 ForEach (interiors, id: \.self) { photo in
                     AsyncImage(url: URL(string: photo)) { image in
                         image

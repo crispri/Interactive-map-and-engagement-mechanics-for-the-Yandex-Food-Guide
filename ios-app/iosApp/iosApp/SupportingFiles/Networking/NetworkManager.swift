@@ -54,7 +54,7 @@ final class NetworkManager {
     }
     
     private func performRequest(request: URLRequest) async throws {
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (_, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
