@@ -34,7 +34,9 @@ struct SelectionScrollView: View {
                                 await viewModel.eventSelectionPressed(at: index, reader: reader)
                             }
                         } bookmarkAction: {
-                            viewModel.userCollections += [UserCollection(selection: viewModel.selections[index], restaurantIDs: [])]
+                            viewModel.toggleSelectionInUserCollections(selection: viewModel.selections[index])
+                        } isSavedToCollection: {
+                            viewModel.userCollectionsContains(selectionID: viewModel.selections[index].id)
                         } infoAction: {
                             // TODO: add bookmarkAction.
                         }
