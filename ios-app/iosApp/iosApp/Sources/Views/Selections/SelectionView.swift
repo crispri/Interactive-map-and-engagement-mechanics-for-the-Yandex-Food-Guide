@@ -67,7 +67,11 @@ struct SelectionView: View {
                             .resizable()
                             .scaledToFill()
                             .overlay {
-                                Color.black.opacity(0.5)
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.black.opacity(0.1), Color.black.opacity(0.8)]),
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
                             }
                     } placeholder: { Color.gray }
                 } else {
