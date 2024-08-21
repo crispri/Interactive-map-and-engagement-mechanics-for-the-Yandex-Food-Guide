@@ -14,6 +14,7 @@ struct SelectionDTO: Codable, Identifiable, Equatable, Hashable {
     let picture: String?
     let link: String?
     let preCreatedCollectionName: String?
+    
     init(
         id: String = UUID().uuidString,
         name: String = "",
@@ -28,6 +29,14 @@ struct SelectionDTO: Codable, Identifiable, Equatable, Hashable {
         self.picture = picture
         self.link = link
         self.preCreatedCollectionName = preCreatedCollectionName
+    }
+    init(selection: SelectionDTO, picture: String) {
+        self.id = selection.id
+        self.name = selection.name
+        self.description = selection.description
+        self.picture = picture
+        self.link = selection.link
+        self.preCreatedCollectionName = selection.preCreatedCollectionName
     }
     
     private enum CodingKeys: String, CodingKey {

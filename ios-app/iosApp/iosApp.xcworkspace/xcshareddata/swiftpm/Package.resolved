@@ -1,5 +1,5 @@
 {
-  "originHash" : "824145ca84304febe92d4876fe89ec26fabfeb020e9809f95355a5f32e1fc20f",
+  "originHash" : "43c72f2569ac2b345698855a50cf8026925bf9b5c40a6ab81386e4ae4617ddfa",
   "pins" : [
     {
       "identity" : "appmetrica-sdk-ios",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "a6504bb7d9b76731accc141aa9ed1c8dd5063b1b",
         "version" : "1.17.5"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "3d2dc41a01f9e49d84f0a3925fb858bed64f702d",
+        "version" : "1.1.2"
       }
     },
     {

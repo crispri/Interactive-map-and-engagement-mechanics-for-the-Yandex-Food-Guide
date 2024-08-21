@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreLocation
 import BottomSheet
+import OrderedCollections
 
 @MainActor
 final class SnippetViewModel: ObservableObject {
@@ -28,15 +29,23 @@ final class SnippetViewModel: ObservableObject {
     func addRestaurant(to collectionID: String, restaurantID: String) {
         if let index = userCollections.firstIndex(where: { $0.id == collectionID }) {
             objectWillChange.send()
-            userCollections[index].restaurantIDs.insert(restaurantID)
-            Task { try await putRestaurantTo(collectionID: userCollections[index].selection.id, restaurantID: restaurantID) }
+            Task { try await putRestaurantTo(collectionID: userCollections[index].id, restaurantID: restaurantID) }
         }
     }
     
     func removeRestaurant(from collectionID: String, restaurantID: String) {
-        if let index = userCollections.firstIndex(where: { $0.id == collectionID }) {
-            objectWillChange.send()
-            userCollections[index].restaurantIDs.remove(restaurantID)
+        objectWillChange.send()
+    }
+    
+    func userCollectionsContains(selectionID: String) -> Bool {
+        userCollections.map { uc in uc.selection.id }.contains(selectionID)
+    }
+    
+    func toggleSelectionInUserCollections(selection: SelectionDTO) {
+        if userCollectionsContains(selectionID: selection.id) {
+            userCollections = userCollections.filter { $0.selection.id != selection.id }
+        } else {
+            userCollections.append(.init(selection: selection))
         }
     }
     
@@ -65,15 +74,6 @@ final class SnippetViewModel: ObservableObject {
     
     init() {
         mapManager = MapManager(delegate: self)
-//        for index in userCollections.indices {
-//            Task {
-//                let id = try await sendUserCollection(
-//                    name: userCollections[index].selection.name,
-//                    description: userCollections[index].selection.description
-//                )
-//                userCollections[index].id = id
-//            }
-//        }
     }
     init(selections: [SelectionDTO]) {
         self.selections = selections
@@ -216,45 +216,20 @@ final class SnippetViewModel: ObservableObject {
             let remoteUserCollections = try await loadUserCollections()
             var userCollectionsTail: [UserCollection] = []
             for selection in remoteUserCollections {
-                if selection.preCreatedCollectionName == "Хочу сходить" {
-                    let restaurants = try await loadSelectionSnippets(id: selection.id)
-                    userCollections[0] = UserCollection(
-                        id: selection.id,
-                        selection: SelectionDTO(
-                            id: selection.id,
-                            name: selection.name,
-                            description: selection.description,
-                            picture: "WantToGo",
-                            link: selection.link,
-                            preCreatedCollectionName: selection.preCreatedCollectionName
-                        ),
-                        restaurantIDs: Set(restaurants.map { restaurant in restaurant.id } + userCollections[0].restaurantIDs)
-                    )
-                } else if selection.preCreatedCollectionName == "Хочу заказать" {
-                    let restaurants = try await loadSelectionSnippets(id: selection.id)
-                    userCollections[1] = UserCollection(
-                        id: selection.id,
-                        selection: SelectionDTO(
-                            id: selection.id,
-                            name: selection.name,
-                            description: selection.description,
-                            picture: "WantToOrder",
-                            link: selection.link,
-                            preCreatedCollectionName: selection.preCreatedCollectionName
-                        ),
-                        restaurantIDs: Set(restaurants.map { restaurant in restaurant.id } + userCollections[1].restaurantIDs)
-                    )
-                } else {
-                    if ["Хочу сходить", "Хочу заказать"].contains(selection.name) { continue } // not good
-                    let restaurants = try await loadSelectionSnippets(id: selection.id)
-                    
-                    userCollectionsTail += [UserCollection(
-                        selection: selection,
-                        restaurantIDs: Set(restaurants.map { restaurant in restaurant.id })
-                    )]
+                switch selection.preCreatedCollectionName {
+                case "Хочу сходить":
+                    userCollections[0] = UserCollection(selection: selection, picture: "WantToGo")
+                case "Хочу заказать":
+                    userCollections[1] = UserCollection(selection: selection, picture: "WantToOrder")
+                default:
+                    if ["Хочу сходить", "Хочу заказать"].contains(selection.name) {
+                        continue
+                    }
+                    userCollectionsTail.append(.init(selection: selection))
                 }
             }
-            userCollections = userCollections[0...1] + userCollectionsTail
+            userCollections = userCollections[0...1] + Array(OrderedSet(userCollectionsTail + userCollections[2...]))
+            
         } catch { print(error) }
     }
     
@@ -302,8 +277,8 @@ final class SnippetViewModel: ObservableObject {
     
     // MARK: send data to server
     
-    func sendUserCollection(name: String, description: String) async throws -> String {
-        return try await networkManager.sendCollection(name: name, description: description)
+    func postCollection(name: String, description: String) async throws -> String {
+        return try await networkManager.postCollection(name: name, description: description)
     }
     
     func putRestaurantTo(collectionID: String, restaurantID: String) async throws {

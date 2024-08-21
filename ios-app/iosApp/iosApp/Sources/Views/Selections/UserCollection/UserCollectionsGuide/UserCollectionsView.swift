@@ -24,11 +24,7 @@ struct UserCollectionsView: View {
             }
             ScrollView {
                 ForEach(viewModel.userCollections) { collection in
-                    UserCollectionItem(
-                        picture: collection.selection.picture ?? "PlaceHolder",
-                        name: collection.selection.name,
-                        restaurantsCount: collection.count
-                    )
+                    UserCollectionItem(collection: collection)
                 }
             }
         }
@@ -38,27 +34,6 @@ struct UserCollectionsView: View {
             }
                 .presentationDetents([.medium])
         })
-    }
-}
-
-struct UserCollectionItem: View {
-    @State var picture: String
-    @State var name: String
-    @State var restaurantsCount: Int
-    
-    var body: some View {
-        HStack {
-            RestaurantPicture(picture: picture)
-            VStack(alignment: .leading) {
-                Text(name)
-                    .bold()
-                    .font(.system(size: 16))
-                Text(restaurantsCount == 0 ? "Пока ничего не сохранено" : "Сохранено мест:  \(restaurantsCount)")
-                    .foregroundStyle(.gray)
-                    .font(.system(size: 13))
-            }
-            Spacer()
-        }
     }
 }
 
