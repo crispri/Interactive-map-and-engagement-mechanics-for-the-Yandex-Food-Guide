@@ -36,9 +36,7 @@ fun CategoriesButton() {
         "Можно с собакой",
         "Веранда"
     )
-    Row(
-        /*        modifier = Modifier.padding(top = 8.dp)*/
-    ) {
+    Row {
         IconButton(
             onClick = { /*TODO*/ },
             colors = IconButtonColors(
@@ -48,7 +46,6 @@ fun CategoriesButton() {
                 Color.LightGray
             ),
             modifier = Modifier
-                /*                .padding(vertical = 4.dp)*/
                 .clip(RoundedCornerShape(16.dp))
                 .height(38.dp),
             content = {

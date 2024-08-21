@@ -28,7 +28,6 @@ class CustomPinViewSelected @JvmOverloads constructor(
 
     init {
         // Inflate the layout
-
         if(!isFavorite && !isUltima && !isOpenKitchen){ //0
             inflate(context, R.layout.view_custom_pin_selected, this)
         } else if(!isFavorite && !isUltima && isOpenKitchen){ //1

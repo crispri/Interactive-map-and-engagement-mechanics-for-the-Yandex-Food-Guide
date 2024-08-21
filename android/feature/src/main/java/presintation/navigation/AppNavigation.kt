@@ -58,21 +58,5 @@ fun AppNavigation(mapView: CustomMapView, curLocation: MutableState<Point?>) {
             val uiState by restaurantViewModel.uiState.collectAsState()
             RestaurantScreen(uiState = uiState, restaurantId = itemId, send = restaurantViewModel::send, navToBack = actions.onBack)
         }
-
-//        composable(route = "${AppDestination.RESTAURANT_SCREEN}/{itemId}",
-//            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
-//         )
-//         { backStackEntry ->
-//             val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
-//             val restaurantViewModel: RestaurantViewModel = hiltViewModel()
-//             val uiState by restaurantViewModel.uiState.collectAsState()
-//             RestaurantScreen(navToBack = actions.onBack, restaurantId = itemId, send = restaurantViewModel::send, uiState = uiState)
-//         }
     }
 }
-
-
-
-// [4, 7, 9, 2, 6, 1, 3]
-// [1->4, 7, 9]
-

@@ -54,7 +54,7 @@ class CustomPinView @JvmOverloads constructor(
         descriptionTextView = findViewById(R.id.descriptionTextView)
     }
 
-    /*fun setImageWithGlide(url: String, onSuccess: () -> Unit) {
+    fun setImageWithGlide(url: String, onSuccess: () -> Unit) {
         Glide.with(this)
             .load(url)
             .placeholder(R.drawable.ic_mini_pin)
@@ -68,7 +68,7 @@ class CustomPinView @JvmOverloads constructor(
 
                 override fun onLoadCleared(placeholder: android.graphics.drawable.Drawable?) {}
             })
-    }*/
+    }
 
     fun setTitle(title: String) {
         titleTextView.text = title

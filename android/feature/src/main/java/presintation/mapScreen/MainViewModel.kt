@@ -82,8 +82,6 @@ class MainViewModel @Inject constructor(
                         }
 
                         is NetworkState.Success -> {
-                            Log.d("NetworkSuccess", "")
-                            Log.e("CameraListener", "size = ${state.data.size}  list = ${state.data}")
                             val ls = filterNonOverlappingRestaurants(state.data, w, h)
                             _uiState.update {
                                 it.copy(
@@ -131,7 +129,6 @@ class MainViewModel @Inject constructor(
                         }
 
                         is NetworkState.Success -> {
-                            Log.d("NetworkSuccess", "")
                             _uiState.update {
                                 it.copy(
                                     isLoading = false,
@@ -164,7 +161,7 @@ class MainViewModel @Inject constructor(
                 .collect { state ->
                     when (state) {
                         is NetworkState.Failure -> {
-                            Log.d("NetworkException", "NetworkFailure")
+                            Log.d("NetworkException", state.cause.message.toString())
 
                             _uiState.update {
                                 it.copy(
@@ -250,13 +247,6 @@ class MainViewModel @Inject constructor(
                 _uiState.update { it.copy(raiseRequired = event.raiseRequired) }
             }
 
-
-            /*is HideIntersections -> {
-                _uiState.update { it.copy(
-                    restaurantsOnMap = filterNonOverlappingRestaurants(event.list, event.w, event.h)
-                ) }
-            }*/
-
             is SelectFilter -> {
                 selectFilter(event.isAdding, event.filter)
             }
@@ -270,13 +260,11 @@ class MainViewModel @Inject constructor(
     private fun selectFilter(isAdding: Boolean, filter: Filter) {
         val newList: MutableList<Filter> = _uiState.value.filterList
         if (isAdding) {
-            Log.d("selectFilter", "isAdding ${filter.property}")
             val newFilter = filter.copy(isSelected = true)
             newList.add(newFilter)
             _uiState.value.filterMap[filter.property] = true
             fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, newList, 0.0,0.0)
         } else {
-            Log.d("selectFilter", "remove ${filter.property}")
             newList.remove(filter)
             _uiState.value.filterMap[filter.property] = false
             fetchRestaurants(uiState.value.lowerLeft, uiState.value.topRight, newList, 0.0,0.0)
@@ -286,9 +274,6 @@ class MainViewModel @Inject constructor(
 
     private fun saveInCollection(collectionId: String, restaurantId: String) {
         viewModelScope.launch {
-            Log.e(
-                "in fetchRestaurants", ""
-            )
             repository.addItemInCollection("session_id=5142cece-b22e-4a4f-adf9-990949d053ff", collectionId, restaurantId).collect { state ->
                 when (state) {
                     is NetworkState.Failure -> {
@@ -303,7 +288,6 @@ class MainViewModel @Inject constructor(
                     }
 
                     is NetworkState.Success -> {
-                        Log.d("NetworkSuccess", "")
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
@@ -321,13 +305,10 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
-
-
-        Log.d("AddItem", "${collectionId} ${restaurantId}")
     }
 
 
-    fun createRectangle(center: Point, width: Double, height: Double): Rect {
+    private fun createRectangle(center: Point, width: Double, height: Double): Rect {
         val halfWidth = width / 2
         val halfHeight = height / 2
         return Rect(
@@ -336,7 +317,7 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun rectanglesOverlap(rect1: Rect, rect2: Rect): Boolean {
+    private fun rectanglesOverlap(rect1: Rect, rect2: Rect): Boolean {
         Log.d("rectanglesOverlap", "rect1.topRight.latitude = ${rect1.topRight.latitude}, rect2.bottomLeft.latitude = ${rect2.bottomLeft.latitude }")
         Log.d("rectanglesOverlap", "rect1.bottomLeft.latitude = ${rect1.bottomLeft.latitude}, rect2.topRight.latitude = ${rect2.topRight.latitude }")
         Log.d("rectanglesOverlap", "rect1.topRight.longitude = ${rect1.topRight.longitude}, rect2.bottomLeft.longitude = ${rect2.bottomLeft.longitude }")
@@ -349,7 +330,7 @@ class MainViewModel @Inject constructor(
     }
 
 
-    fun lowerType(type: Pins) : Pins {
+    private fun lowerType(type: Pins) : Pins {
         return when(type){
             Pins.MINI -> Pins.NONE
             Pins.NORMAL -> Pins.MINI
@@ -358,16 +339,12 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
-
-
     private fun filterNonOverlappingRestaurants(
         list: List<Restaurant>,
         w : Double,
         h : Double
     ): MutableList<Restaurant> {
 
-        Log.d("List empty", list.size.toString(), )
         if(list.isEmpty()){ return mutableListOf() }
 
         val resList = mutableListOf<Restaurant>(list[0])
@@ -377,8 +354,6 @@ class MainViewModel @Inject constructor(
             Pins.NORMAL to 0,
             Pins.MINI to 0,
         )
-
-        Log.d("Map before", map.toString())
 
         for(i in 1 until list.size){
             var resultPinType =
@@ -440,7 +415,6 @@ class MainViewModel @Inject constructor(
                     else -> {
                         var overlap = rectanglesOverlap(restaurantRect, filteredRestaurantRect)
                         while (resultPinType != Pins.NONE && overlap) {
-                            Log.d("overlapped", "$overlap")
                             resultPinType = lowerType(resultPinType)
                             when(resultPinType){
                                 Pins.MAXI -> {
@@ -458,11 +432,7 @@ class MainViewModel @Inject constructor(
                             }
                             }
                             restaurantRect = createRectangle(pin2.coordinates, rectWidth2, rectHeight2)
-                            Log.d("lowerType", "${resultPinType}, ${pin1.id}, ${pin2.id}, ")
-                            Log.d(
-                                "in getDisjointPoints",
-                                "pin1 = ${pin1.id}, pin2 = ${pin2.id},  resultPinType = ${resultPinType.text}"
-                            )
+
                             overlap = rectanglesOverlap(restaurantRect, filteredRestaurantRect)
                         }
                     }
@@ -488,8 +458,6 @@ class MainViewModel @Inject constructor(
             }
         }
         _uiState.update { it.copy(converterPins = map) }
-
-        Log.d("Map after", map.toString())
 
         return resList
     }

@@ -128,10 +128,3 @@ fun TextCard(text: String) {
         )
     }
 }
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun BigCardPreview() {
-//    BigCard()
-//}
