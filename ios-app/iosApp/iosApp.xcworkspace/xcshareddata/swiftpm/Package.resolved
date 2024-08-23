@@ -1,0 +1,51 @@
+{
+  "originHash" : "43c72f2569ac2b345698855a50cf8026925bf9b5c40a6ab81386e4ae4617ddfa",
+  "pins" : [
+    {
+      "identity" : "appmetrica-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/appmetrica/appmetrica-sdk-ios",
+      "state" : {
+        "revision" : "a303a87183464d0143e3cc2eaf09cf98a3b7d8e0",
+        "version" : "5.7.0"
+      }
+    },
+    {
+      "identity" : "bottomsheet",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lucaszischka/BottomSheet.git",
+      "state" : {
+        "revision" : "720ddbd1371fef2a09cc1ab65fc503df37767f9c",
+        "version" : "3.1.1"
+      }
+    },
+    {
+      "identity" : "kscrash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kstenerud/KSCrash",
+      "state" : {
+        "revision" : "a6504bb7d9b76731accc141aa9ed1c8dd5063b1b",
+        "version" : "1.17.5"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "3d2dc41a01f9e49d84f0a3925fb858bed64f702d",
+        "version" : "1.1.2"
+      }
+    },
+    {
+      "identity" : "wrappinghstack",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ksemianov/WrappingHStack.git",
+      "state" : {
+        "revision" : "3300f68b6bf5f8a75ee7ca8a40f136a558053d10",
+        "version" : "0.2.0"
+      }
+    }
+  ],
+  "version" : 3
+}
