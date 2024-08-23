@@ -1,0 +1,78 @@
+type: object
+properties:
+    id:
+        type: string
+        format: uuid
+
+    coordinates:
+        $ref: "../openapi.yaml#/components/schemas/Coordinates"
+
+    name:
+        type: string
+
+    description:
+        type: string
+
+    address:
+        type: string
+
+    is_approved:
+        type: boolean
+
+    rating:
+        type: number
+        format: double
+
+    price_lower_bound:
+        type: integer
+
+    price_upper_bound:
+        type: integer
+
+    open_time:
+        type: string
+        format: time
+
+    close_time:
+        type: string
+        format: time
+
+    tags:
+        type: array
+        items:
+            type: string
+
+    in_collection:
+        type: boolean
+    
+    food:
+        type: string
+    
+    interior:
+        type: array
+        items:
+            type: string
+
+    score:
+        type: integer
+
+    additional_info:
+        type: string
+
+required:
+    - id
+    - coordinates
+    - name
+    - description
+    - address
+    - is_approved
+    - rating
+    - price_lower_bound
+    - price_upper_bound
+    - open_time
+    - close_time
+    - tags
+    - in_collection
+    - food
+    - interior
+    - additional_info

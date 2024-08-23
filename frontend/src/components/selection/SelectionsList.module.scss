@@ -1,0 +1,92 @@
+.wrapper{
+	position: absolute;
+	width: 100%;
+	top: -66px;
+	left: 0px;
+	overflow: scroll;
+    overflow-y: hidden;
+	z-index: 1000;
+	scroll-behavior: smooth;
+	&::-webkit-scrollbar {
+		width: 0;
+	  }
+}
+.categories{
+	padding: 0px 6px;
+	gap: 6px;
+	display: flex;
+	transition: transform 0.3s ease;
+}
+.card{
+	height: 60px;
+	width: 145px;
+	background-color: white;
+	border-radius: 20px;
+	padding: 6px 12px;
+	font-size: 13px;
+	font-weight: 500;
+	min-width: 146px;
+	transition: all 0.3s ease;
+	display: flex;
+	justify-content: center;
+	position: relative;
+	align-items: center;
+	&_active{
+		min-width: 274px;
+		transition: all 0.3s ease;
+	}
+}
+.text{
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	gap: 4px;
+	z-index: 3;
+	height: fit-content;
+	color: white;
+}
+.fade{
+	position: absolute;
+	top: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(0deg, #1e1e1e 0%, rgba(30, 30, 30, 0) 100%);
+	border-radius: 20px;
+}
+.picture{
+	position: absolute;
+	top: 0;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 20px;
+}
+.ultima{
+	height: 60px;
+	width: 100px;
+	border-radius: 20px;
+	padding: 6px 12px;
+	font-size: 13px;
+	font-weight: 500;
+	min-width: 100px;
+	transition: all 0.3s ease;
+	display: flex;
+	justify-content: center;
+	position: relative;
+	align-items: center;
+	color: black;
+	&_active{
+		min-width: 274px;
+		transition: all 0.3s ease;
+	}
+	&__text{
+		z-index: 3;
+		height: fit-content;
+		font-size: 11px;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+}

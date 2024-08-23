@@ -1,0 +1,24 @@
+.filters {
+    display: flex;
+    overflow: scroll;
+    overflow-y: hidden;
+    position: relative;
+    width: 100%;
+}
+.filters::before, .filters::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.info-separator {
+    margin: 0 5px;
+}
+
+.filters_button {
+    margin-right: 10px;
+}
